@@ -373,6 +373,22 @@ select.eingabe{padding-right:6px}
 .etk-name{font-size:var(--fs-mini);font-weight:600;line-height:1.2;max-height:2.4em;overflow:hidden}
 .etk-code{font-size:var(--fs-mini)}
 
+/* ---------- Systembereich (SPEC 6.13) ---------- */
+.system-link{margin:24px 4px 0;text-align:center}
+.system{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.system-form{max-width:440px}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.schluessel{font-size:var(--fs-titel);letter-spacing:.06em;padding:14px 16px;border-radius:var(--r-ctrl);background:var(--sunk);
+  border:1px dashed var(--line-2);text-align:center;word-break:break-all;user-select:all}
+.pruefzeile{display:flex;align-items:center;gap:10px;min-height:44px}
+.pruefzeile input{width:20px;height:20px;accent-color:var(--accent)}
+.sicherungen{display:flex;flex-direction:column;gap:6px}
+.sicherung-zeile{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line)}
+.rueckfrage{padding:14px;border-radius:var(--r-ctrl);background:var(--accent-soft);color:var(--accent-ink);display:flex;flex-direction:column;gap:10px}
+.rueckfrage p{margin:0}
+.datei-eingabe{padding:8px 12px}
+@media print{.kopf,.leiste,.seitenleiste,.actions,.pruefzeile,[data-weiter]{display:none!important}.inhalt{margin:0}}
+
 /* Programmstand unten rechts (wie counts) */
 .version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}
 @media (max-width:899px){.version{display:none}}

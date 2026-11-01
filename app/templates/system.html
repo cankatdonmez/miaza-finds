@@ -1,0 +1,6 @@
+{% extends "shell.html" %}
+{# Systembereich (SPEC 6.13). Inhalt je nach Zustand (einrichten, anmelden, Schlüssel, Bereich) von system.js #}
+{% block inhalt %}
+<div class="system" data-system></div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/system.js?v={{ asset_v }}"></script>{% endblock %}

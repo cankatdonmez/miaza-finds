@@ -33,7 +33,13 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   önizleme, etikete tıklayınca çıkar), PDF (ReportLab, vektör QR → `/p/<Nr>`, ad 2 satır + kod), PDF sonrası
   „gedruckt“ + Rückgängig; detayda „Auf die Druckliste“. Izgara `app/etikett_bogen.json` (geçici 20'li, 48×52).
   QR adresi `MF_BASIS_URL` veya istek adresi; localhost ise sayfa uyarır.
-- Sıradaki: adım 10 (Systembereich).
+- Adım 10 bitti (148 test): migration 002 + `/system` (Einstellungen › Allgemein en altta küçük link). İlk açılışta
+  yönetici + bir kez gösterilen güvenlik anahtarı (yazdır / dosya); giriş (5 hatada 15 dk kilit, 30 dk oturum,
+  CSRF); anahtarla şifre sıfırlama (anahtar yenilenir); yedek al / indir / geri yükle (ZIP: finds.db + media +
+  info.json, `backups/`); veri taşıma (ZIP yükle veya sunucudaki klasör/ZIP, eski sürüm yükseltilir, yönetici
+  kalır); „Alle Produkte löschen“ ve „Alles löschen“ (sayaçlar 1'e döner); her biri önce etkiyi yazar ve otomatik
+  yedek alır; şifre değiştir, anahtarı yenile. Ekranda denendi; deneme yöneticisi dev.db'den silindi.
+- Sıradaki: adım 11 (Tekrar bak: kontrol listesi, açık/koyu, telefon, Almanca metinler).
 - Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
   portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 

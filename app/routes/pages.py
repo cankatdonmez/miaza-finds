@@ -57,6 +57,12 @@ def mehr(request: Request):
     return _seite(request, "mehr", "mehr.titel")
 
 
+@router.get("/system")
+def system(request: Request):
+    """Systembereich (SPEC 6.13): nicht im Menü, nur über Einstellungen erreichbar."""
+    return _seite(request, "einstellungen", "system.titel", vorlage="system")
+
+
 @router.get("/produkt/neu")
 def produkt_neu(request: Request):
     return _seite(request, "bibliothek", "produkt.neu_titel", vorlage="produkt", inventar_nr=None)
