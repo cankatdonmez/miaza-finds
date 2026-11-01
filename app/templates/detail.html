@@ -1,0 +1,9 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Produktdetail als ganze Seite (Telefon, QR-Link). Inhalt wie im Seitenpanel der Bibliothek: detail.js #}
+{% block seitenaktion %}<a class="btn" href="/produkt/{{ inventar_nr }}/bearbeiten">{{ t("produkt.bearbeiten") }}</a>{% endblock %}
+{% block inhalt %}
+<article class="detail-seite" data-detail="{{ inventar_nr }}"></article>
+{% endblock %}
+{% block scripts %}<script src="/static/js/detail.js?v={{ asset_v }}"></script>
+<script src="/static/js/detail-seite.js?v={{ asset_v }}"></script>{% endblock %}

@@ -62,13 +62,26 @@ def produkt_neu(request: Request):
     return _seite(request, "bibliothek", "produkt.neu_titel", vorlage="produkt", inventar_nr=None)
 
 
-@router.get("/produkt/{inventar_nr}")
-def produkt(request: Request, inventar_nr: int, db: sqlite3.Connection = Depends(get_db)):
+def _produkt_oder_404(db: sqlite3.Connection, inventar_nr: int) -> dict:
     try:
-        p = produkte.lesen(db, inventar_nr)
+        return produkte.lesen(db, inventar_nr)
     except Fehler:
         raise HTTPException(404) from None
-    return _seite(request, "bibliothek", None, vorlage="produkt", titel=p["name"] or p["code"], inventar_nr=inventar_nr)
+
+
+@router.get("/produkt/{inventar_nr}")
+def produkt(request: Request, inventar_nr: int, db: sqlite3.Connection = Depends(get_db)):
+    """Detail; am Telefon als ganze Seite, am Desktop öffnet die Bibliothek dasselbe im Seitenpanel (SPEC 6.1)."""
+    p = _produkt_oder_404(db, inventar_nr)
+    return _seite(request, "bibliothek", None, vorlage="detail", titel=p["name"] or t("produkt.unbenannt", nr=inventar_nr),
+                  inventar_nr=inventar_nr)
+
+
+@router.get("/produkt/{inventar_nr}/bearbeiten")
+def produkt_bearbeiten(request: Request, inventar_nr: int, db: sqlite3.Connection = Depends(get_db)):
+    p = _produkt_oder_404(db, inventar_nr)
+    return _seite(request, "bibliothek", None, vorlage="produkt", titel=p["name"] or t("produkt.unbenannt", nr=inventar_nr),
+                  inventar_nr=inventar_nr)
 
 
 @router.get("/p/{inventar_nr}")

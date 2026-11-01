@@ -230,6 +230,95 @@ select.eingabe{padding-right:6px}
   border:1px solid var(--line);box-shadow:var(--shadow);z-index:20}
 @media (min-width:900px){.formleiste{bottom:16px}}
 
+/* ---------- Bibliothek (SPEC 6.1) ---------- */
+.bib{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+@media (min-width:900px){.bib{grid-template-columns:232px minmax(0,1fr)}}
+.bib-filter{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;padding-right:4px;display:flex;flex-direction:column;gap:18px}
+.bib-haupt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.suchzeile{display:flex;align-items:center;gap:8px}
+.suchfeld{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 14px;border-radius:999px;background:var(--card);
+  border:1px solid var(--line-2);color:var(--muted)}
+.suchfeld:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.sucheingabe{flex:1;min-width:0;border:0;background:none;font:inherit;color:var(--ink);outline:none;min-height:44px}
+.filterknopf{position:relative;background:var(--card);border:1px solid var(--line-2)}
+.filterzahl{position:absolute;top:2px;right:2px;min-width:18px;height:18px;border-radius:999px;background:var(--accent);color:var(--on-accent);
+  font-size:var(--fs-mini);display:grid;place-items:center;padding:0 4px}
+.ansicht{max-width:none;flex:none}
+.ansicht .segbtn{width:44px;flex:none;display:grid;place-items:center}
+.art-wahl{max-width:360px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips:empty{display:none}
+.chip{display:inline-flex;align-items:center;gap:2px;padding-left:12px;min-height:34px;border-radius:999px;background:var(--accent-soft);
+  color:var(--accent-ink);font-size:var(--fs-text);font-weight:500}
+.chip-x{width:34px;height:34px;border-radius:999px;color:inherit}
+.statuszeile{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:var(--fs-text)}
+.leise{min-height:28px;color:var(--muted);text-decoration:none}
+.leise:hover{color:var(--accent-ink);text-decoration:underline}
+
+.ergebnis.raster{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+@media (min-width:900px){.ergebnis.raster{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}}
+.ergebnis.liste{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:6px}
+.karte{display:flex;flex-direction:column;border-radius:var(--r-card);background:var(--card);border:1px solid var(--line);overflow:hidden;
+  text-decoration:none;color:var(--ink);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+@media (hover:hover){.karte:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
+.karte.gewaehlt,.zeile.gewaehlt{border-color:var(--accent)}
+.karte-bild{position:relative;aspect-ratio:1;background:var(--sunk);display:block}
+.karte-img{width:100%;height:100%;object-fit:cover;display:block}
+.leer-bild{display:grid;place-items:center;color:var(--line-2)}
+.karte-bild .leer-bild{width:100%;height:100%}
+.karte-bild .badge-digital{position:absolute;left:8px;top:8px}
+.karte-text{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
+.karte-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.karte-sub{font-size:var(--fs-klein);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.karte-preis{font-size:var(--fs-text);margin-top:2px}
+.badge-digital{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:var(--digital-soft);color:var(--digital);
+  font-size:var(--fs-mini);font-weight:600;letter-spacing:.02em}
+.zeile{display:flex;align-items:center;gap:12px;min-height:60px;padding:6px 8px;border-radius:12px;text-decoration:none;color:var(--ink);border:1px solid transparent}
+.zeile:hover{background:var(--sunk)}
+.zeile-img{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--sunk);flex:none}
+.zeile-haupt{flex:1;min-width:0;display:flex;flex-direction:column}
+.zeile-spalte{width:140px;color:var(--muted);font-size:var(--fs-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zeile-preis{font-size:var(--fs-text);white-space:nowrap}
+.mehr-laden{display:flex;justify-content:center}
+
+/* Filter (Spalte am Desktop, Blatt am Telefon) */
+.fgruppe{display:flex;flex-direction:column;gap:8px}
+.fgruppe .abschnitt{margin:0}
+.flinks{display:flex;flex-direction:column;gap:2px}
+.flink{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:40px;padding:0 10px;border-radius:10px;text-align:left;color:var(--ink)}
+.flink:hover{background:var(--card)}
+.flink[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.von-bis{display:flex;align-items:center;gap:6px}
+.von-bis .eingabe{width:0;flex:1}
+.blatt-scrim{position:fixed;inset:0;z-index:90;background:var(--scrim);display:flex;align-items:flex-end}
+.blatt{width:100%;max-height:85vh;display:flex;flex-direction:column;gap:12px;background:var(--bg);border-radius:24px 24px 0 0;
+  padding:18px 16px calc(16px + env(safe-area-inset-bottom))}
+.blatt-inhalt{overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+
+/* Detail: Panel rechts (Desktop) und ganze Seite (Telefon) */
+.panel{position:fixed;top:0;right:0;bottom:0;z-index:60;width:min(460px,100vw);overflow-y:auto;background:var(--card);
+  border-left:1px solid var(--line);box-shadow:var(--shadow);padding:16px 20px 32px;display:flex;flex-direction:column;gap:14px}
+@media (prefers-reduced-motion:no-preference){.panel:not([hidden]){animation:panel-ein .2s ease-out}}
+@keyframes panel-ein{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+.panel-kopf{display:flex;align-items:center;gap:8px}
+.detail-seite{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.detail-bildrahmen{border-radius:var(--r-card);overflow:hidden;background:var(--sunk)}
+.detail-bild{width:100%;max-height:60vh;object-fit:contain;display:block}
+.detail-bild.leer-bild{aspect-ratio:4/3}
+.detail-fotos{display:flex;gap:8px;overflow-x:auto}
+.detail-foto{width:64px;height:64px;flex:none;border-radius:10px;overflow:hidden;border:2px solid transparent}
+.detail-foto[aria-pressed="true"]{border-color:var(--accent)}
+.detail-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.detail-titel{display:flex;flex-direction:column;gap:4px}
+.detail-name{font-size:var(--fs-titel);font-weight:600;margin:0;line-height:1.25}
+.detail-zeile{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:var(--fs-text)}
+.merkmale{margin:0;display:flex;flex-direction:column}
+.merkmal{display:grid;grid-template-columns:minmax(110px,40%) 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.merkmal dt{color:var(--muted);font-size:var(--fs-text)}
+.merkmal dd{margin:0}
+.detail-notiz{margin:0;white-space:pre-wrap;color:var(--ink)}
+.farbknopf.statisch{cursor:default}
+
 /* Programmstand unten rechts (wie counts) */
 .version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}
 @media (max-width:899px){.version{display:none}}

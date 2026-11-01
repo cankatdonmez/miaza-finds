@@ -35,6 +35,7 @@ def lesen(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
     preis = conn.execute("SELECT cent, einheit, datum FROM preis WHERE produkt_id = ?", (inventar_nr,)).fetchone()
     d["preis"] = dict(preis) if preis else None
     d["werte"] = _werte_lesen(conn, inventar_nr)
+    d["merkmale"] = _merkmale(conn, inventar_nr, p["kategorie_id"])
     d["fotos"] = [dict(r) for r in conn.execute(
         "SELECT id, datei, breite, hoehe FROM foto WHERE produkt_id = ? ORDER BY sortierung, id", (inventar_nr,))]
     return d
@@ -55,6 +56,25 @@ def _werte_lesen(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
         else:
             werte[key] = bool(w["janein"])
     return werte
+
+
+def _merkmale(conn: sqlite3.Connection, inventar_nr: int, kategorie_id: int) -> list[dict[str, str]]:
+    """Filterwerte zum Anzeigen, in der Reihenfolge der Filter: [{"name": "Stärke", "wert": "10,5 mm"}]."""
+    liste = []
+    for f in conn.execute("SELECT id, name, typ, einheit FROM filter WHERE kategorie_id = ? ORDER BY sortierung, id", (kategorie_id,)):
+        zeilen = conn.execute("""SELECT w.zahl, w.janein, o.name FROM produkt_wert w LEFT JOIN filter_option o ON o.id = w.option_id
+                                 WHERE w.produkt_id = ? AND w.filter_id = ? ORDER BY o.sortierung""", (inventar_nr, f["id"])).fetchall()
+        if not zeilen:
+            continue
+        if f["typ"] == "mass":
+            zahl = zeilen[0]["zahl"]
+            text = (f"{zahl:g}".replace(".", ",")) + f" {f['einheit']}"
+        elif f["typ"] == "janein":
+            text = t("produkt.ja") if zeilen[0]["janein"] else t("produkt.nein")
+        else:
+            text = ", ".join(z["name"] for z in zeilen)
+        liste.append({"name": f["name"], "wert": text})
+    return liste
 
 
 # ---------- Prüfen ----------

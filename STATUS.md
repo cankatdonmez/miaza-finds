@@ -16,7 +16,12 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   fotoğraf (çek/seç, masaüstünde sürükle/yapıştır; sunucu 320/960 webp + 2400 jpg üretir), tür, ad, kategori
   (değişince kod sorusu + filtre değerleri uyarısı), filtre değerleri, marka, ebat, fiyat (Almanca yazım, tarih),
   adet, link, renk paleti, not, silme (onaylı). Son kategori cihazda hatırlanır. Ekranda denendi.
-- Sıradaki: adım 7 (kütüphane: arama, filtreler, ızgara/liste, durum satırı, detay paneli).
+- Adım 7 bitti (109 test): `/api/bibliothek` (her kelime eşleşmeli, ä/ae duyarsız, numara önce; tür, renk,
+  marka, fiyat, durum, kategori + kategoriye özel filtreler; kategori sayıları; 120'lik sayfalar; 3.000 üründe
+  < 200 ms). Ekran: arama, Alle/Physisch/Digital, çıkarılabilir filtre etiketleri, masaüstünde filtre sütunu +
+  durum satırı + sağ detay paneli, telefonda alttan filtre paneli + detay sayfası, ızgara/liste. Filtreler adreste.
+  `/produkt/{nr}` artık detay, düzenleme `/produkt/{nr}/bearbeiten`. Dilim 1'de her fiziki ürün „Ohne Platz“.
+- Sıradaki: adım 7b (toplu düzenleme, D-012).
 - Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
   portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 

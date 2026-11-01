@@ -8,6 +8,8 @@
   const EINHEITEN = ["m2", "m", "stueck", "paket"];
   const LETZTE = "mf-letzte-kategorie";
   const inventarNr = Number(form.dataset.inventarNr) || null;
+  // Nach Speichern/Abbrechen: bestehendes Produkt → seine Detailseite, neues → Bibliothek
+  const zurueck = inventarNr ? `/produkt/${inventarNr}` : "/bibliothek";
 
   let kategorien = [];
   let original = null;       // gespeicherter Stand (null = neu)
@@ -111,7 +113,7 @@
       ${inventarNr ? `<div class="produkt-fuss"><span class="num sub">${esc(p.code_alt || "")}</span><button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("produkt.loeschen"))}</button></div>` : ""}
 
       <div class="formleiste">
-        <a class="btn" href="/bibliothek" data-aktion="abbrechen">${esc(t("produkt.abbrechen"))}</a>
+        <a class="btn" href="${zurueck}" data-aktion="abbrechen">${esc(t("produkt.abbrechen"))}</a>
         <button class="btn primary" type="submit">${esc(t("produkt.speichern"))}</button>
       </div>`;
   }
@@ -291,7 +293,7 @@
       }
       original = daten();      // kein „nicht gespeichert“-Hinweis beim Verlassen
       toastNachher(t("produkt.gespeichert", { code: r.code }));
-      location.href = "/bibliothek";
+      location.href = zurueck;
     } catch (err) {
       toast(err.message, { fehler: true });
       if (err.feld) $(`[data-feld="${err.feld}"]`, form)?.focus();

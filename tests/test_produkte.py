@@ -78,6 +78,15 @@ def test_alle_felder_und_werte(client, fliese, tag):
                           str(f["Oberfläche"]["id"]): [matt, glaenzend], str(f["Rektifiziert"]["id"]): True}
 
 
+def test_merkmale_zum_anzeigen(client, fliese):
+    f = {x["name"]: x for x in fliese["filter"]}
+    p = _neu(client, fliese["id"], werte={str(f["Stärke"]["id"]): "10,5", str(f["Rektifiziert"]["id"]): False,
+                                          str(f["Oberfläche"]["id"]): [o["id"] for o in f["Oberfläche"]["optionen"]]})
+    assert p["merkmale"] == [{"name": "Stärke", "wert": "10,5 mm"}, {"name": "Oberfläche", "wert": "Matt, Glänzend"},
+                             {"name": "Rektifiziert", "wert": "Nein"}]
+    assert client.get(f"/produkt/{p['inventar_nr']}/bearbeiten").status_code == 200
+
+
 @pytest.mark.parametrize("text, cent", [("36,50", 3650), ("1.234,56", 123456), ("10", 1000), ("0,5", 50), ("12 €", 1200)])
 def test_preis_deutsch(text, cent):
     assert preis_lesen(text) == cent
