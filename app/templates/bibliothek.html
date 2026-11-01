@@ -1,4 +1,6 @@
 {% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{% block seitenaktion %}<a class="iconbtn nur-telefon" href="/produkt/neu" aria-label="{{ t('menue.neues_produkt') }}">{{ icon("plus") }}</a>{% endblock %}
 {% block inhalt %}
 <div class="card leer">{{ t("bibliothek.leer") }}</div>
 {% endblock %}

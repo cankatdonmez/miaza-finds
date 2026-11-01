@@ -40,7 +40,9 @@ def test_farben_nur_im_tokenblock():
 def test_dunkles_thema_definiert_jedes_farbtoken():
     hell = CSS.split(TOKEN_ENDE, 1)[0]
     root = re.search(r":root\{(.*?)\n\}", hell, re.S).group(1)
-    farbtoken = {n for n, w in re.findall(r"(--[a-z0-9-]+):([^;]+);", root) if re.search(r"#|rgba", w)}
+    # Materialfarben (--farbe-…) sind in beiden Themen gleich (SPEC 4.4: Farben des Materials sind ausgenommen)
+    farbtoken = {n for n, w in re.findall(r"(--[a-z0-9-]+):([^;]+);", root)
+                 if re.search(r"#|rgba", w) and not n.startswith("--farbe-")}
     dunkel = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', hell, re.S).group(1)
     system = re.search(r"prefers-color-scheme:dark\)\{:root:not\(\[data-theme=\"light\"\]\)\{(.*?)\n\}\}", hell, re.S).group(1)
     for block in (dunkel, system):

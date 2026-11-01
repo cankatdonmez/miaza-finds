@@ -26,6 +26,9 @@
   --font-num:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
   --r-card:20px; --r-ctrl:14px;
   --leiste-unten:64px;
+  /* Materialfarben der Farbpalette (SPEC 6.2): eigene Farben des Materials, in beiden Themen gleich */
+  --farbe-weiss:#F7F5F0; --farbe-beige:#D9C7A7; --farbe-braun:#7A5333; --farbe-terracotta:#C0643F; --farbe-gold:#C9A23E;
+  --farbe-rosa:#E3A6B4; --farbe-gruen:#6E8B5A; --farbe-blau:#4F78A8; --farbe-grau:#8E9196; --farbe-schwarz:#1E1E1E;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -186,6 +189,46 @@ select.eingabe{padding-right:6px}
 .speicher-hinweise{flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px}
 .speicher-knoepfe{display:flex;gap:8px;margin-left:auto}
 .hinweis{font-size:var(--fs-text);color:var(--ink)}
+
+@media (min-width:900px){.nur-telefon{display:none!important}}
+
+/* Auswahlknöpfe (Filterwerte) */
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);font-size:var(--fs-text);font-weight:500;
+  color:var(--ink);transition:background .16s ease,border-color .16s ease,color .16s ease}
+.pill[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+
+/* ---------- Produkt erfassen (SPEC 6.2) ---------- */
+.produktform{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.fotos:empty{display:none}
+.foto{position:relative;margin:0;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--sunk)}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto-x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:999px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--card) 85%,transparent);color:var(--ink)}
+.foto-knoepfe{display:flex;gap:8px;flex-wrap:wrap}
+.foto-knoepfe .btn{flex:1 1 160px}
+.feld-reihe{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.preis-zeile,.mass-zeile{display:flex;align-items:center;gap:8px}
+.preis-zeile .eingabe:first-child{flex:1}
+.preis-zeile select{width:auto}
+.mass-zeile .eingabe{max-width:160px}
+.preis-euro{color:var(--muted)}
+.notiz{padding:10px 12px;min-height:88px;resize:vertical}
+.farben{display:flex;flex-wrap:wrap;gap:6px}
+.farbknopf{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px 0 8px;border-radius:999px;border:1px solid var(--line-2);
+  background:var(--card);font-size:var(--fs-text);color:var(--ink)}
+.farbknopf[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.farbpunkt{width:22px;height:22px;border-radius:999px;border:1px solid var(--line-2);flex:none}
+.farbe-weiss{background:var(--farbe-weiss)}.farbe-beige{background:var(--farbe-beige)}.farbe-braun{background:var(--farbe-braun)}
+.farbe-terracotta{background:var(--farbe-terracotta)}.farbe-gold{background:var(--farbe-gold)}.farbe-rosa{background:var(--farbe-rosa)}
+.farbe-gruen{background:var(--farbe-gruen)}.farbe-blau{background:var(--farbe-blau)}.farbe-grau{background:var(--farbe-grau)}
+.farbe-schwarz{background:var(--farbe-schwarz)}
+.produkt-fuss{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4px}
+.formleiste{position:sticky;bottom:calc(var(--leiste-unten) + 12px + env(safe-area-inset-bottom));display:flex;justify-content:flex-end;gap:8px;
+  padding:10px;border-radius:999px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(10px);
+  border:1px solid var(--line);box-shadow:var(--shadow);z-index:20}
+@media (min-width:900px){.formleiste{bottom:16px}}
 
 /* Programmstand unten rechts (wie counts) */
 .version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}

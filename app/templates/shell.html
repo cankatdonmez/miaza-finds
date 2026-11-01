@@ -9,10 +9,12 @@
   {% for ziel, text, ic in menue_desktop %}
   <a class="snav-link" href="/{{ ziel }}" {% if ziel == seite %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ t(text) }}</span></a>
   {% endfor %}
+  <span class="spacer"></span>
+  <a class="btn primary block" href="/produkt/neu">{{ icon("plus", 20) }}<span>{{ t("menue.neues_produkt") }}</span></a>
 </aside>
 <header class="kopf">{{ marke() }}</header>
 <main class="inhalt">
-  <div class="seitenkopf"><h1 class="seitentitel">{{ titel }}</h1></div>
+  <div class="seitenkopf"><h1 class="seitentitel">{{ titel }}</h1><span class="spacer"></span>{% block seitenaktion %}{% endblock %}</div>
   {% block inhalt %}{% endblock %}
 </main>
 <nav class="leiste" aria-label="{{ t('menue.haupt') }}">

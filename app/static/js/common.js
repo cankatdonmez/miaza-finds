@@ -63,5 +63,18 @@ const MF = (() => {
     toastTimer = setTimeout(() => el.remove(), fehler ? 5000 : rueckgaengig ? 7000 : 2400);
   }
 
-  return { $, $$, esc, icon, t, api, ApiError, toast };
+  // Meldung, die nach einem Seitenwechsel erscheint (z. B. „Gespeichert“ beim Zurück zur Bibliothek)
+  function toastNachher(text) {
+    try { sessionStorage.setItem("mf-toast", text); } catch { /* ohne Speicher keine Meldung */ }
+  }
+  try {
+    const wartend = sessionStorage.getItem("mf-toast");
+    if (wartend) { sessionStorage.removeItem("mf-toast"); toast(wartend); }
+  } catch { /* ohne Speicher keine Meldung */ }
+
+  // Datum 2026-11-01 → 01.11.2026, Cent → 1.234,56 (SPEC 8.1)
+  const datum = (iso) => (iso ? iso.split("-").reverse().join(".") : "");
+  const euro = (cent) => (cent / 100).toLocaleString("de-AT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro };
 })();

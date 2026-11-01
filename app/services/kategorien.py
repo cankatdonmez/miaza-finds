@@ -10,6 +10,7 @@ from typing import Any
 
 from ..fehler import Fehler
 from ..texte import t
+from . import produkte
 
 FILTER_TYPEN = ("mass", "einfach", "mehrfach", "janein")
 MASS_EINHEITEN = ("mm", "cm", "m", "kg", "Stk")
@@ -112,6 +113,9 @@ def speichern(conn: sqlite3.Connection, kategorie_id: int, daten: dict[str, Any]
             WHERE kategorie_id = ? AND code_praefix = ?""", (praefix, kategorie_id, alt["praefix"])).rowcount
 
     _filter_speichern(conn, kategorie_id, daten.get("filter") or [])
+    # Kategoriename, Codes und Auswahlnamen stehen im Suchtext der Produkte
+    for (inv,) in conn.execute("SELECT inventar_nr FROM produkt WHERE kategorie_id = ?", (kategorie_id,)).fetchall():
+        produkte.suchtext_erneuern(conn, inv)
     return {"codes_geaendert": codes_geaendert}
 
 

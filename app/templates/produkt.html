@@ -1,0 +1,6 @@
+{% extends "shell.html" %}
+{# Erfassen und Bearbeiten (SPEC 6.2). Das Formular baut produkt.js, weil die Filterfelder von der Kategorie abhängen. #}
+{% block inhalt %}
+<form class="produktform" data-produktform data-inventar-nr="{{ inventar_nr or '' }}" novalidate></form>
+{% endblock %}
+{% block scripts %}<script src="/static/js/produkt.js?v={{ asset_v }}"></script>{% endblock %}

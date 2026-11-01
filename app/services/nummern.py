@@ -13,12 +13,18 @@ def naechste_inventar_nr(conn: sqlite3.Connection) -> int:
 
 
 def naechste_kategorie_nr(conn: sqlite3.Connection, kategorie_id: int) -> int:
-    """Nächste laufende Nummer innerhalb der Kategorie (KKK)."""
-    zeile = conn.execute("UPDATE kategorie SET naechste_nr = naechste_nr + 1 WHERE id = ? RETURNING naechste_nr - 1",
-                         (kategorie_id,)).fetchone()
-    if zeile is None:
-        raise LookupError(f"Kategorie {kategorie_id} gibt es nicht.")
-    return zeile[0]
+    """Nächste laufende Nummer innerhalb der Kategorie (KKK).
+
+    Nummern, die ein hierher verschobenes Produkt mit behaltenem Code schon trägt, werden übersprungen.
+    """
+    while True:
+        zeile = conn.execute("UPDATE kategorie SET naechste_nr = naechste_nr + 1 WHERE id = ? RETURNING naechste_nr - 1",
+                             (kategorie_id,)).fetchone()
+        if zeile is None:
+            raise LookupError(f"Kategorie {kategorie_id} gibt es nicht.")
+        if not conn.execute("SELECT 1 FROM produkt WHERE kategorie_id = ? AND kategorie_nr = ?",
+                            (kategorie_id, zeile[0])).fetchone():
+            return zeile[0]
 
 
 def code(praefix: str, kategorie_nr: int, inventar_nr: int) -> str:

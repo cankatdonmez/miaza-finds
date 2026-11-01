@@ -12,8 +12,13 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 - Adım 5 bitti (61 test): `/api/kategorien` + Einstellungen › Kategorien & Filter (masaüstü; telefonda yalnız
   Allgemein). Önek önerisi, dört filtre tipi, sıralama, kullanım sayıları ve kaydetmeden önce etki notu, sürüm
   kontrolü (409), yalnız boş kategori silinir + „Rückgängig“. Ekranda denendi (oluştur, kaydet, sil, geri al).
-- Sıradaki: adım 6 (tek kayıt: ürün formu, fotoğraf, fiyat, renk, silme).
-- Not: preview_start eski çalışma klasörünü görüyor; dev sunucusu şimdilik Bash ile 8091'de açılıyor.
+- Adım 6 bitti (89 test): `/api/produkte` + `/produkt/neu`, `/produkt/{nr}`, `/p/{nr}` (QR linki). Ürün formu:
+  fotoğraf (çek/seç, masaüstünde sürükle/yapıştır; sunucu 320/960 webp + 2400 jpg üretir), tür, ad, kategori
+  (değişince kod sorusu + filtre değerleri uyarısı), filtre değerleri, marka, ebat, fiyat (Almanca yazım, tarih),
+  adet, link, renk paleti, not, silme (onaylı). Son kategori cihazda hatırlanır. Ekranda denendi.
+- Sıradaki: adım 7 (kütüphane: arama, filtreler, ızgara/liste, durum satırı, detay paneli).
+- Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
+  portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 
 ## Dilim 1: adımlar
 1. İskelet · 2. Görsel temel (token'lar, kabuk, logo) · 3. Sözlük (de) · 4. Migration 001 (kategori, filtre, ürün …)

@@ -20,6 +20,17 @@ def test_seite_laedt_mit_marke_und_menue(client, seite):
     assert f'href="/{seite}" aria-current="page"' in r.text or seite == "mehr"
 
 
+def test_produktseiten_und_qr_link(client):
+    assert 'data-produktform data-inventar-nr=""' in client.get("/produkt/neu").text
+    assert client.get("/produkt/999").status_code == 404
+    kid = client.get("/api/kategorien").json()["kategorien"][0]["id"]
+    inv = client.post("/api/produkte", json={"name": "Eichendiele", "kategorie_id": kid}).json()["inventar_nr"]
+    r = client.get(f"/p/{inv}", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == f"/produkt/{inv}"
+    seite = client.get(f"/produkt/{inv}").text
+    assert '<h1 class="seitentitel">Eichendiele</h1>' in seite
+
+
 def test_einstellungen_liegen_am_telefon_unter_mehr(client):
     html = client.get("/einstellungen").text
     leiste = html[html.index('class="leiste"'):]
