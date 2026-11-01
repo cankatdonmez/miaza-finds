@@ -16,7 +16,9 @@
   let ansicht = "raster";
   try { ansicht = localStorage.getItem("mf-ansicht") || "raster"; } catch { /* Standard */ }
   let auswahl = null;         // Set der Inventarnummern, solange „Auswählen“ läuft (Sammelbearbeitung, D-012)
-  const sichtbar = () => (auswahl ? "liste" : ansicht);
+  // Bei „Fehlende Angaben“ immer Liste: Namen nacheinander eintippen (SPEC 6.2, Serienerfassung Schritt 4)
+  const ergaenzen = () => zustand.status === "fehlend" && !auswahl;
+  const sichtbar = () => (auswahl || ergaenzen() ? "liste" : ansicht);
 
   // ---------- Zustand <-> Adresse ----------
   let zustand = ausAdresse();
@@ -129,7 +131,20 @@
       </span></a>`;
   }
 
+  function ergaenzZeile(p) {
+    return `<div class="zeile" data-ergaenzen="${p.inventar_nr}">
+      ${bild(p, "zeile-img")}
+      <span class="zeile-haupt">
+        <input class="eingabe" data-name-fuer="${p.inventar_nr}" data-version="${p.version}" value="${esc(p.name || "")}"
+          placeholder="${esc(t("produkt.unbenannt", { nr: p.inventar_nr }))}" aria-label="${esc(t("serie.name", { code: p.code }))}" enterkeyhint="next" maxlength="120">
+        <span class="karte-sub num">${esc(p.code)} · ${esc(p.kategorie)}</span>
+      </span>
+      <a class="iconbtn" href="/produkt/${p.inventar_nr}/bearbeiten" aria-label="${esc(t("produkt.bearbeiten"))}">${icon("right", 20)}</a>
+    </div>`;
+  }
+
   function zeile(p) {
+    if (ergaenzen()) return ergaenzZeile(p);
     const an = auswahl?.has(p.inventar_nr);
     return `<a class="zeile${an ? " gewaehlt" : ""}" href="/produkt/${p.inventar_nr}" data-produkt="${p.inventar_nr}" ${auswahl ? `role="checkbox" aria-checked="${an}"` : ""}>
       ${auswahl ? `<span class="waehler">${an ? icon("check", 18) : ""}</span>` : ""}
@@ -363,6 +378,34 @@
 
   // Nach der Sammelbearbeitung (sammel.js): Auswahl beenden und neu laden
   window.addEventListener("mf:sammel-fertig", () => { auswahl = null; laden(); });
+  // Nach der Serienerfassung (serie.js): gleich die Produkte mit fehlenden Angaben zeigen
+  window.addEventListener("mf:serie-fertig", () => {
+    zustand = { ...zustand, q: "", art: "", kategorie: null, farben: [], marken: [], preis_min: "", preis_max: "", werte: {}, status: "fehlend" };
+    $("[data-suche]").value = "";
+    laden();
+  });
+
+  // Name eintippen, Enter → speichern und weiter zum nächsten Feld
+  document.addEventListener("keydown", async (e) => {
+    const feld = e.target.closest?.("[data-name-fuer]");
+    if (!feld || e.key !== "Enter") return;
+    e.preventDefault();
+    const name = feld.value.trim();
+    const alle = $$("[data-name-fuer]");
+    const naechstes = alle[alle.indexOf(feld) + 1];
+    // Sofort weiter, damit schnelles Tippen nicht im alten Feld landet; gespeichert wird im Hintergrund
+    if (naechstes) naechstes.focus();
+    else feld.blur();
+    if (!name) return;
+    try {
+      const r = await api("PATCH", "/api/produkte/" + feld.dataset.nameFuer, { name, version: Number(feld.dataset.version) });
+      feld.dataset.version = r.version;
+      feld.closest(".zeile").classList.add("erledigt");
+    } catch (err) {
+      toast(err.message, { fehler: true });
+      feld.focus();
+    }
+  });
 
   // ---------- Start ----------
   api("GET", "/api/kategorien")

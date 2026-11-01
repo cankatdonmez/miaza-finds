@@ -170,6 +170,21 @@ def aendern(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any]) -
     return lesen(conn, inventar_nr)
 
 
+def name_setzen(conn: sqlite3.Connection, inventar_nr: int, name: Any, version: Any) -> dict[str, Any]:
+    alt = conn.execute("SELECT version FROM produkt WHERE inventar_nr = ?", (inventar_nr,)).fetchone()
+    if alt is None:
+        raise Fehler(t("fehler.produkt_unbekannt"), status=404)
+    if version != alt["version"]:
+        raise Fehler(t("fehler.veraltet"), status=409)
+    neu = _text({"name": name}, "name")
+    if neu is None:
+        raise Fehler(t("fehler.name_fehlt"), "name")
+    conn.execute("""UPDATE produkt SET name = ?, version = version + 1, geaendert_am = strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
+                    WHERE inventar_nr = ?""", (neu, inventar_nr))
+    suchtext_erneuern(conn, inventar_nr)
+    return {"inventar_nr": inventar_nr, "name": neu, "version": alt["version"] + 1}
+
+
 def kategorie_wechseln(conn: sqlite3.Connection, inventar_nr: int, kategorie_id: int, neuer_code: bool) -> None:
     """Auch für die Sammelbearbeitung (D-012). Die Inventarnummer bleibt immer."""
     if neuer_code:

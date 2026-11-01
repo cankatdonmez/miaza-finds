@@ -6,7 +6,7 @@ import time
 import uuid
 from typing import Any
 
-from fastapi import APIRouter, Body, Depends, File, Request, UploadFile
+from fastapi import APIRouter, Body, Depends, File, Form, Request, UploadFile
 
 from ..db import transaction
 from ..deps import get_db
@@ -51,6 +51,27 @@ def sammel_rueckgaengig(schluessel: str, request: Request, db: sqlite3.Connectio
         raise Fehler(t("fehler.sammel_abgelaufen"), status=410)
     with transaction(db):
         return sammel.rueckgaengig(db, eintrag[1])
+
+
+# ---------- Serienerfassung (SPEC 6.2) ----------
+
+@router.post("/serie", status_code=201)
+async def serie(request: Request, kategorie_id: int = Form(...), foto: UploadFile = File(...),
+                db: sqlite3.Connection = Depends(get_db)):
+    """Ein Foto = ein Produkt, sofort mit Code, noch ohne Namen („Fehlende Angaben“). Kein Foto → kein Produkt."""
+    daten = await foto.read(fotos.MAX_BYTES + 1)
+    with transaction(db):
+        inv = produkte.anlegen(db, {"kategorie_id": kategorie_id}, name_pflicht=False)
+        bild = fotos.speichern(db, request.app.state.media_dir, inv, daten)
+    p = produkte.lesen(db, inv)
+    return {"inventar_nr": inv, "code": p["code"], "foto": bild["datei"]}
+
+
+@router.patch("/{inventar_nr}")
+def name_setzen(inventar_nr: int, daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    """Schnelles Ergänzen in der Liste: Name tippen, Enter, nächstes (SPEC 6.2, Serienerfassung Schritt 4)."""
+    with transaction(db):
+        return produkte.name_setzen(db, inventar_nr, daten.get("name"), daten.get("version"))
 
 
 @router.get("/{inventar_nr}")

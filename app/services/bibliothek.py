@@ -148,7 +148,7 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
         oargs = [nummer, q.replace("%", "") + "%"]
     gesamt = conn.execute(f"SELECT count(*) FROM produkt p {where}", args).fetchone()[0]
     zeilen = conn.execute(f"""
-        SELECT p.inventar_nr, p.code_praefix, p.kategorie_nr, p.name, p.marke, p.art, p.etikett, k.name AS kategorie,
+        SELECT p.inventar_nr, p.code_praefix, p.kategorie_nr, p.name, p.marke, p.art, p.etikett, p.version, k.name AS kategorie,
                pr.cent, pr.einheit, pr.datum AS preis_datum,
                (SELECT f.datei FROM foto f WHERE f.produkt_id = p.inventar_nr ORDER BY f.sortierung, f.id LIMIT 1) AS foto
         FROM produkt p JOIN kategorie k ON k.id = p.kategorie_id LEFT JOIN preis pr ON pr.produkt_id = p.inventar_nr
@@ -157,7 +157,7 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
         "inventar_nr": z["inventar_nr"], "code": nummern.code(z["code_praefix"], z["kategorie_nr"], z["inventar_nr"]),
         "name": z["name"], "marke": z["marke"], "art": z["art"], "kategorie": z["kategorie"], "etikett": z["etikett"],
         "preis": {"cent": z["cent"], "einheit": z["einheit"], "datum": z["preis_datum"]} if z["cent"] is not None else None,
-        "foto": z["foto"],
+        "foto": z["foto"], "version": z["version"],
     } for z in zeilen]
     return {"produkte": produkte, "gesamt": gesamt, "seite": seite, "weitere": (seite + 1) * SEITE < gesamt,
             "kategorien": _kategorie_zahlen(conn, auftrag), "marken": _marken(conn)}

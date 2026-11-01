@@ -25,7 +25,11 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   sorusu, marka, tür, renk ekle/kaldır, aynı kategorideyse tekli/Ja-Nein filtre değerleri; panelde etki notu
   (`/sammel/vorschau`), „Anwenden“ sonrası 7 sn „Rückgängig“ (sunucu önceki hali 10 dk tutar; bu arada değişen ürünlere
   dokunmaz). Ekranda denendi.
-- Sıradaki: adım 8 (seri kayıt, telefon).
+- Adım 8 bitti (124 test): telefonda „+“ → Neues Produkt / Serienerfassung. Seri: kategori seç, her foto
+  (`/api/produkte/serie`) hemen adsız ürün olur, yükleme arkada sırayla, sayaç + son foto + kod, „Letztes rückgängig“,
+  „Fertig“ → kütüphane „Fehlende Angaben“ ile açılır. Orada liste satırında ad yaz, Enter, sıradaki (`PATCH`, sürüm
+  kontrollü). Bölmeden başlatma dilim 2'de. Ekranda denendi.
+- Sıradaki: adım 9 (etiket PDF'i).
 - Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
   portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 

@@ -290,6 +290,25 @@ select.eingabe{padding-right:6px}
 .zeile.gewaehlt .waehler{background:var(--accent);border-color:var(--accent)}
 .panel .speicherleiste{bottom:0}
 
+/* Fehlende Angaben ergänzen: Name tippen, Enter, nächstes */
+/* Akzent statt Grün: Grün bedeutet „Am Platz“ (SPEC 4.4) */
+.zeile.erledigt .eingabe{border-color:var(--accent);background:var(--accent-soft)}
+
+/* Serienerfassung (SPEC 6.2): ganze Fläche, Kamera als Hauptknopf */
+.serie{position:fixed;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column;gap:14px;
+  padding:16px 16px calc(16px + env(safe-area-inset-bottom));overflow-y:auto}
+.serie-kopf{display:flex;align-items:center}
+.serie-vorschau{position:relative;flex:1;min-height:180px;border-radius:var(--r-card);background:var(--sunk);overflow:hidden;
+  display:grid;place-items:center}
+.serie-vorschau img{width:100%;height:100%;object-fit:contain;position:absolute;inset:0}
+.serie-code{position:absolute;left:12px;bottom:12px;padding:4px 10px;border-radius:999px;background:var(--card);font-size:var(--fs-text)}
+.serie-zahl{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.serie-anzahl{font-size:var(--fs-titel);font-weight:600}
+.serie-ausloeser{min-height:64px;font-size:var(--fs-titel)}
+.serie-knoepfe{display:flex;gap:8px;flex-wrap:wrap}
+.serie-knoepfe .btn{flex:1 1 140px}
+.blatt .btn{min-height:56px}
+
 /* Filter (Spalte am Desktop, Blatt am Telefon) */
 .fgruppe{display:flex;flex-direction:column;gap:8px}
 .fgruppe .abschnitt{margin:0}
