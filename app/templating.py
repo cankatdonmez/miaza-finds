@@ -5,6 +5,7 @@ import hashlib
 from fastapi.templating import Jinja2Templates
 
 from .config import BASE_DIR
+from .texte import t
 from .version import VERSION
 
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
@@ -21,3 +22,4 @@ def _asset_version() -> str:
 
 templates.env.globals["asset_v"] = _asset_version()
 templates.env.globals["app_version"] = VERSION
+templates.env.globals["t"] = t

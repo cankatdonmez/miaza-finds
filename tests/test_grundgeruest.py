@@ -10,7 +10,7 @@ from app.version import VERSION
 
 def test_start_und_stand(client):
     r = client.get("/")
-    assert r.status_code == 200 and "miaza finds" in r.text and f"v{VERSION}" in r.text
+    assert r.status_code == 200 and r.url.path == "/bibliothek" and f"v{VERSION}" in r.text
     assert client.get("/api/stand").json() == {"version": VERSION}
 
 

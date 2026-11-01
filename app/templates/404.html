@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Nicht gefunden · miaza finds{% endblock %}
+{% block title %}miaza finds{% endblock %}
 {% block body %}
-<main class="wrap"><h1>Diese Seite gibt es nicht.</h1><p><a href="/">Zur Startseite</a></p></main>
+<main class="inhalt"><div class="card leer stack"><div>{{ t("fehler.404") }}</div><div><a class="btn" href="/bibliothek">{{ t("fehler.zur_startseite") }}</a></div></div></main>
 {% endblock %}

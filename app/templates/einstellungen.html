@@ -1,0 +1,15 @@
+{% extends "shell.html" %}
+{% block inhalt %}
+<section class="card">
+  <h2 class="abschnitt">{{ t("einstellungen.dieses_geraet") }}</h2>
+  <div class="stack">
+    <div id="darstellung-titel" class="sub">{{ t("einstellungen.darstellung") }}</div>
+    <div class="segs" role="group" aria-labelledby="darstellung-titel">
+      <button class="segbtn" type="button" data-darstellung="system">{{ t("darstellung.system") }}</button>
+      <button class="segbtn" type="button" data-darstellung="light">{{ t("darstellung.hell") }}</button>
+      <button class="segbtn" type="button" data-darstellung="dark">{{ t("darstellung.dunkel") }}</button>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/js/einstellungen.js?v={{ asset_v }}"></script>{% endblock %}

@@ -1,4 +1,133 @@
-/* miaza finds — eine Stildatei; Token und Gerüst folgen in Dilim 1, Schritt 2 (wie miaza counts). */
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:880px;margin:0 auto;padding:0 16px 64px}
-.version{position:fixed;right:8px;bottom:6px;opacity:.5}
+/* miaza finds — eine Stildatei. Token-Namen wie miaza counts, Farbwerte aus SPEC 4.4 (D-002).
+   Telefon zuerst: Kopf + Inhalt + Leiste unten; ab 900 px Seitenleiste links (SPEC 4.5). */
+
+@font-face{font-family:"Figtree";font-weight:400;font-display:swap;src:url(../fonts/figtree-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:500;font-display:swap;src:url(../fonts/figtree-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:600;font-display:swap;src:url(../fonts/figtree-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
+
+/* ---------- Token (nur hier stehen Farbwerte; tests/test_stil.py prüft das) ---------- */
+:root{
+  /* Schriftgrößen wie counts (D-002): nur diese Stufen */
+  --fs-mini:11px; --fs-klein:12.5px; --fs-text:13.5px; --fs-basis:15px; --fs-titel:19px; --fs-zahl:28px; --fs-hero:52px;
+  --bg:#F3F4F6; --card:#FFFFFF; --sunk:#F8F9FB;
+  --ink:#16181D; --muted:#5F6672;
+  --line:#E7E9EE; --line-2:#D5D9E0;
+  --accent:#2F5BEA; --accent-ink:#2449C4; --accent-soft:#E6ECFD; --on-accent:#FFFFFF;
+  /* Farbe nur für: Akzent, drei Zustände, digitale Art (SPEC 4.4) */
+  --am-platz:#166534; --am-platz-soft:#DCFCE7;
+  --in-benutzung:#1E40AF; --in-benutzung-soft:#DBEAFE;
+  --ausser-haus:#92400E; --ausser-haus-soft:#FEF3C7;
+  --digital:#5B21B6; --digital-soft:#EDE9FE;
+  --scrim:rgba(15,17,21,.42);
+  --shadow:0 1px 2px rgba(22,24,29,.05),0 8px 24px -12px rgba(22,24,29,.16);
+  --font-ui:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-num:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r-card:20px; --r-ctrl:14px;
+  --leiste-unten:64px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1115; --card:#181B21; --sunk:#14171C;
+  --ink:#ECEEF2; --muted:#A0A7B4;
+  --line:#2A2F38; --line-2:#3A404B;
+  --accent:#6E8BFF; --accent-ink:#9DB0FF; --accent-soft:#1C2547; --on-accent:#0F1115;
+  --am-platz:#86EFAC; --am-platz-soft:#14351F;
+  --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
+  --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
+  --digital:#C4B5FD; --digital-soft:#2A1F4A;
+  --scrim:rgba(0,0,0,.55);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F1115; --card:#181B21; --sunk:#14171C;
+  --ink:#ECEEF2; --muted:#A0A7B4;
+  --line:#2A2F38; --line-2:#3A404B;
+  --accent:#6E8BFF; --accent-ink:#9DB0FF; --accent-soft:#1C2547; --on-accent:#0F1115;
+  --am-platz:#86EFAC; --am-platz-soft:#14351F;
+  --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
+  --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
+  --digital:#C4B5FD; --digital-soft:#2A1F4A;
+  --scrim:rgba(0,0,0,.55);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+/* ---------- Ende der Token ---------- */
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:var(--fs-basis);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+a{color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+.icon{width:22px;height:22px;flex:none}
+
+/* ---------- Marke (SPEC 4.1): „miaza“ Textfarbe, Verb im Akzent, gleiche Grundlinie ---------- */
+.marke{display:inline-flex;align-items:baseline;gap:5px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.marke-miaza{font-size:var(--fs-titel);font-weight:600;letter-spacing:-.02em}
+.marke-verb{font-size:var(--fs-klein);font-weight:500;color:var(--accent-ink)}
+
+/* ---------- Gerüst ---------- */
+.kopf{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.inhalt{max-width:1080px;margin:0 auto;padding:18px 16px calc(var(--leiste-unten) + 32px + env(safe-area-inset-bottom))}
+.seitenkopf{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.seitentitel{font-size:var(--fs-zahl);font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15}
+
+/* Leiste unten (Telefon) */
+.leiste{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:space-around;
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--card) 92%,transparent);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+.leiste-link{flex:1;max-width:120px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border-radius:var(--r-ctrl);color:var(--muted);text-decoration:none;font-size:var(--fs-mini);font-weight:500;transition:color .16s ease,transform .12s ease}
+.leiste-link:active{transform:scale(.94)}
+.leiste-link[aria-current="page"]{color:var(--accent-ink)}
+
+/* Seitenleiste (ab 900 px) */
+.seitenleiste{display:none}
+@media (min-width:900px){
+  .kopf,.leiste{display:none}
+  .seitenleiste{position:fixed;top:0;left:0;bottom:0;width:232px;z-index:40;display:flex;flex-direction:column;gap:4px;
+    padding:20px 14px;border-right:1px solid var(--line);background:var(--bg)}
+  .seitenleiste .marke{padding:4px 10px 20px}
+  .inhalt{margin-left:232px;padding:28px 32px 48px;max-width:none}
+}
+.snav-link{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:var(--r-ctrl);color:var(--muted);
+  text-decoration:none;font-weight:500;transition:background .16s ease,color .16s ease}
+.snav-link:hover{background:var(--card);color:var(--ink)}
+.snav-link[aria-current="page"]{background:var(--accent-soft);color:var(--accent-ink)}
+.spacer{flex:1}
+
+/* ---------- Karten, Text ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:20px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.abschnitt{font-size:var(--fs-klein);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.sub{color:var(--muted);font-size:var(--fs-text)}
+.leer{text-align:center;padding:48px 16px;color:var(--muted)}
+
+/* ---------- Schaltflächen ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 20px;border-radius:999px;font-weight:600;
+  border:1px solid var(--line-2);background:var(--card);text-decoration:none;color:var(--ink);
+  transition:background .18s ease,border-color .18s ease,transform .1s ease}
+.btn:hover{border-color:var(--ink)}
+.btn:active{transform:scale(.965)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn.block{width:100%}
+
+/* Umschalter (Segmente), z. B. Darstellung */
+.segs{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-ctrl);padding:4px;gap:4px;max-width:420px}
+.segbtn{flex:1;min-height:44px;border-radius:10px;font-size:var(--fs-text);font-weight:500;color:var(--muted);transition:background .18s ease,color .18s ease}
+.segbtn[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+
+/* Programmstand unten rechts (wie counts) */
+.version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}
+@media (max-width:899px){.version{display:none}}
+@media print{.version{display:none}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

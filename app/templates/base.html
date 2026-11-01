@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% block title %}miaza finds{% endblock %}</title>
 <meta name="app-stand" content="{{ asset_v }}">
+<script src="/static/js/theme.js?v={{ asset_v }}"></script>
 <link rel="stylesheet" href="/static/css/app.css?v={{ asset_v }}">
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
+{% include "_icons.html" %}
 {% block body %}{% endblock %}
 <div class="version num" title="Code-Stand {{ asset_v }}">v{{ app_version }}</div>
 {% block scripts %}{% endblock %}

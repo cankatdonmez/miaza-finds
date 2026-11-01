@@ -4,8 +4,11 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 
 ## Aktueller Stand
 - Dilim 1 (Kütüphane ve kayıt) başladı. Kararlar D-001–D-010.
-- Adım 1 (iskelet) bitti: create_app, db/migrate (yedekli), Origin koruması, config (MF_), 13 test yeşil,
-  Docker + start.bat (8090), launch.json (8091). Docker henüz denenmedi. Sıradaki: adım 2 (görsel temel).
+- Adım 1–3 bitti (25 test yeşil): iskelet; token'lar (açık/koyu), Figtree/Plex Mono, kabuk (telefonda alt
+  leiste, ≥ 900 px'te kenar çubuğu), logo, Einstellungen › Darstellung; sözlük `app/texte.py` + `t()`.
+  Ekranda denendi: açık, koyu, 375 px, yatay kayma yok. Docker ve start.bat henüz denenmedi.
+- Sıradaki: adım 4 (migration 001: kategori, filtre, ürün, fiyat, fotoğraf, sayaçlar).
+- Not: preview_start eski çalışma klasörünü görüyor; dev sunucusu şimdilik Bash ile 8091'de açılıyor.
 
 ## Dilim 1: adımlar
 1. İskelet · 2. Görsel temel (token'lar, kabuk, logo) · 3. Sözlük (de) · 4. Migration 001 (kategori, filtre, ürün …)

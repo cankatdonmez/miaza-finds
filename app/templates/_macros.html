@@ -1,0 +1,4 @@
+{% macro icon(name, size=22) %}<svg class="icon" width="{{ size }}" height="{{ size }}" aria-hidden="true"><use href="#i-{{ name }}"/></svg>{% endmacro %}
+
+{# Marke (SPEC 4.1): „miaza“ + Verb in Akzentfarbe #}
+{% macro marke() %}<a class="marke" href="/bibliothek"><span class="marke-miaza">miaza</span><span class="marke-verb">{{ t("marke.verb") }}</span></a>{% endmacro %}
