@@ -21,7 +21,11 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   < 200 ms). Ekran: arama, Alle/Physisch/Digital, çıkarılabilir filtre etiketleri, masaüstünde filtre sütunu +
   durum satırı + sağ detay paneli, telefonda alttan filtre paneli + detay sayfası, ızgara/liste. Filtreler adreste.
   `/produkt/{nr}` artık detay, düzenleme `/produkt/{nr}/bearbeiten`. Dilim 1'de her fiziki ürün „Ohne Platz“.
-- Sıradaki: adım 7b (toplu düzenleme, D-012).
+- Adım 7b bitti (120 test): masaüstünde „Auswählen“ (liste, tek tek veya „alle N“), sağ panelde kategori + kod
+  sorusu, marka, tür, renk ekle/kaldır, aynı kategorideyse tekli/Ja-Nein filtre değerleri; panelde etki notu
+  (`/sammel/vorschau`), „Anwenden“ sonrası 7 sn „Rückgängig“ (sunucu önceki hali 10 dk tutar; bu arada değişen ürünlere
+  dokunmaz). Ekranda denendi.
+- Sıradaki: adım 8 (seri kayıt, telefon).
 - Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
   portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 

@@ -39,6 +39,28 @@ DE: dict[str, str] = {
     "bibliothek.zeile_ausser_haus": "{n} außer Haus",
     "bibliothek.zeile_ohne_platz": "{n} ohne Platz",
     "bibliothek.zeile_fehlend": "{n} mit fehlenden Angaben",
+    # Sammelbearbeitung (D-012)
+    "sammel.auswaehlen": "Auswählen",
+    "sammel.ausgewaehlt": "{n} ausgewählt",
+    "sammel.alle": "Alle {n} auswählen",
+    "sammel.keine": "Auswahl aufheben",
+    "sammel.fertig": "Fertig",
+    "sammel.bearbeiten": "Bearbeiten",
+    "sammel.titel": "{n} Produkte bearbeiten",
+    "sammel.unveraendert": "– unverändert –",
+    "sammel.art": "Art",
+    "sammel.farben_hinzu": "Farbe hinzufügen",
+    "sammel.farben_weg": "Farbe entfernen",
+    "sammel.code_behalten": "Codes behalten",
+    "sammel.code_neu": "Neue Codes",
+    "sammel.anwenden": "Anwenden",
+    "sammel.hinweis_wechsel": "{n} Produkte nach {kategorie} verschieben",
+    "sammel.hinweis_codes": "{n} Codes neu",
+    "sammel.hinweis_werte": "{n} Filterwerte entfallen",
+    "sammel.werte_nur_eine": "Filterwerte gibt es hier nur, wenn alle Produkte aus einer Kategorie sind.",
+    "sammel.erledigt": "{n} Produkte geändert",
+    "sammel.zurueck": "Zurückgenommen",
+    "sammel.teilweise": "Zurückgenommen; {n} inzwischen geänderte Produkte blieben, wie sie sind.",
     # Zustände (SPEC 4.10)
     "status.am_platz": "Am Platz",
     "status.in_benutzung": "In Benutzung",
@@ -179,6 +201,9 @@ DE: dict[str, str] = {
     "fehler.bild_format": "Dieses Bildformat wird nicht unterstützt (JPG, PNG oder WebP).",
     "fehler.bild_gross": "Das Bild ist zu groß (höchstens 25 MB).",
     "fehler.foto_unbekannt": "Dieses Foto gibt es nicht (mehr).",
+    "fehler.sammel_leer": "Bitte zuerst Produkte auswählen.",
+    "fehler.sammel_werte": "Filterwerte lassen sich nur ändern, wenn alle Produkte in derselben Kategorie bleiben.",
+    "fehler.sammel_abgelaufen": "Rückgängig ist nicht mehr möglich.",
 }
 
 

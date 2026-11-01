@@ -2,15 +2,55 @@
 from __future__ import annotations
 
 import sqlite3
+import time
+import uuid
 from typing import Any
 
 from fastapi import APIRouter, Body, Depends, File, Request, UploadFile
 
 from ..db import transaction
 from ..deps import get_db
-from ..services import fotos, produkte
+from ..fehler import Fehler
+from ..services import fotos, produkte, sammel
+from ..texte import t
 
 router = APIRouter(prefix="/api/produkte")
+
+
+# ---------- Sammelbearbeitung (D-012) ----------
+# Der vorherige Stand bleibt kurz im Speicher, damit „Rückgängig“ ohne Rückfrage möglich ist (SPEC 4.5).
+RUECKGAENGIG_SEKUNDEN = 10 * 60
+
+
+def _ablage(request: Request) -> dict:
+    ablage = request.app.state.sammel_vorher
+    jetzt = time.monotonic()
+    for k in [k for k, (zeit, _) in ablage.items() if jetzt - zeit > RUECKGAENGIG_SEKUNDEN]:
+        del ablage[k]
+    return ablage
+
+
+@router.post("/sammel/vorschau")
+def sammel_vorschau(daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    return sammel.vorschau(db, daten.get("produkte") or [], daten.get("aenderung") or {})
+
+
+@router.post("/sammel")
+def sammel_anwenden(request: Request, daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    with transaction(db):
+        vorher = sammel.anwenden(db, daten.get("produkte") or [], daten.get("aenderung") or {})
+    schluessel = uuid.uuid4().hex
+    _ablage(request)[schluessel] = (time.monotonic(), vorher)
+    return {"geaendert": len(vorher), "rueckgaengig": schluessel}
+
+
+@router.post("/sammel/rueckgaengig/{schluessel}")
+def sammel_rueckgaengig(schluessel: str, request: Request, db: sqlite3.Connection = Depends(get_db)):
+    eintrag = _ablage(request).pop(schluessel, None)
+    if eintrag is None:
+        raise Fehler(t("fehler.sammel_abgelaufen"), status=410)
+    with transaction(db):
+        return sammel.rueckgaengig(db, eintrag[1])
 
 
 @router.get("/{inventar_nr}")

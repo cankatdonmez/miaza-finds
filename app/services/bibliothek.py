@@ -163,6 +163,12 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
             "kategorien": _kategorie_zahlen(conn, auftrag), "marken": _marken(conn)}
 
 
+def alle_nummern(conn: sqlite3.Connection, auftrag: dict[str, Any]) -> list[int]:
+    wo, args = _bedingungen(auftrag)
+    where = ("WHERE " + " AND ".join(wo)) if wo else ""
+    return [r[0] for r in conn.execute(f"SELECT p.inventar_nr FROM produkt p {where} ORDER BY p.inventar_nr DESC", args)]
+
+
 def _kategorie_zahlen(conn: sqlite3.Connection, auftrag: dict[str, Any]) -> dict[int, int]:
     """Anzahl je Kategorie unter allen übrigen Filtern (SPEC 6.1, Desktop)."""
     wo, args = _bedingungen(auftrag, mit_kategorie=False)

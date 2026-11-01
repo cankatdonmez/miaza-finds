@@ -15,6 +15,8 @@
   let abfrage = 0;            // nur die letzte Antwort zählt
   let ansicht = "raster";
   try { ansicht = localStorage.getItem("mf-ansicht") || "raster"; } catch { /* Standard */ }
+  let auswahl = null;         // Set der Inventarnummern, solange „Auswählen“ läuft (Sammelbearbeitung, D-012)
+  const sichtbar = () => (auswahl ? "liste" : ansicht);
 
   // ---------- Zustand <-> Adresse ----------
   let zustand = ausAdresse();
@@ -87,6 +89,7 @@
     zeichneChips();
     zeichneStatuszeile();
     zeichneErgebnis();
+    zeichneAuswahlleiste();
     const n = aktiveFilter();
     const zahl = $("[data-filterzahl]");
     zahl.hidden = !n;
@@ -95,7 +98,7 @@
   }
 
   function zeichneErgebnis() {
-    ergebnis.className = "ergebnis " + ansicht;
+    ergebnis.className = "ergebnis " + sichtbar();
     if (!antwort.produkte.length) {
       const leererBestand = antwort.zaehler.gesamt === 0;
       ergebnis.innerHTML = `<div class="card leer stack">
@@ -104,7 +107,7 @@
                         : `<div><button class="btn" type="button" data-zuruecksetzen>${esc(t("bibliothek.zuruecksetzen"))}</button></div>`}
       </div>`;
     } else {
-      ergebnis.innerHTML = antwort.produkte.map(ansicht === "liste" ? zeile : karte).join("");
+      ergebnis.innerHTML = antwort.produkte.map(sichtbar() === "liste" ? zeile : karte).join("");
     }
     $("[data-mehr]").hidden = !antwort.weitere;
   }
@@ -127,13 +130,35 @@
   }
 
   function zeile(p) {
-    return `<a class="zeile" href="/produkt/${p.inventar_nr}" data-produkt="${p.inventar_nr}">
+    const an = auswahl?.has(p.inventar_nr);
+    return `<a class="zeile${an ? " gewaehlt" : ""}" href="/produkt/${p.inventar_nr}" data-produkt="${p.inventar_nr}" ${auswahl ? `role="checkbox" aria-checked="${an}"` : ""}>
+      ${auswahl ? `<span class="waehler">${an ? icon("check", 18) : ""}</span>` : ""}
       ${bild(p, "zeile-img")}
       <span class="zeile-haupt"><span class="karte-name">${esc(name(p))}</span><span class="karte-sub num">${esc(p.code)}</span></span>
       <span class="zeile-spalte nur-desktop">${esc(p.kategorie)}</span>
       <span class="zeile-spalte nur-desktop">${esc(p.marke || "")}</span>
       <span class="zeile-preis num">${esc(preis(p))}</span>
       ${digital(p)}</a>`;
+  }
+
+  function zeichneAuswahlleiste() {
+    const leiste = $("[data-auswahlleiste]");
+    leiste.hidden = !auswahl;
+    $("[data-auswahl-start]").hidden = !!auswahl;
+    if (!auswahl) return;
+    leiste.innerHTML = `
+      <span class="auswahl-zahl">${esc(t("sammel.ausgewaehlt", { n: auswahl.size }))}</span>
+      ${antwort.gesamt > auswahl.size ? `<button class="linkbtn" type="button" data-auswahl-alle>${esc(t("sammel.alle", { n: antwort.gesamt }))}</button>` : ""}
+      ${auswahl.size ? `<button class="linkbtn" type="button" data-auswahl-keine>${esc(t("sammel.keine"))}</button>` : ""}
+      <span class="spacer"></span>
+      <button class="btn" type="button" data-auswahl-ende>${esc(t("sammel.fertig"))}</button>
+      <button class="btn primary" type="button" data-auswahl-bearbeiten ${auswahl.size ? "" : "disabled"}>${esc(t("sammel.bearbeiten"))}</button>`;
+  }
+
+  function auswahlEnde() {
+    auswahl = null;
+    zeichneErgebnis();
+    zeichneAuswahlleiste();
   }
 
   function zeichneStatuszeile() {
@@ -266,6 +291,28 @@
     if (d.filterOeffnen !== undefined) { $("[data-filterblatt]").hidden = false; return zeichneFilter(); }
     if (d.filterSchliessen !== undefined) { $("[data-filterblatt]").hidden = true; return; }
     if (d.panelZu !== undefined) { panelZu(); return; }
+    if (d.auswahlStart !== undefined) { panelZu(); auswahl = new Set(); return zeichnen(); }
+    if (d.auswahlEnde !== undefined) return auswahlEnde();
+    if (d.auswahlKeine !== undefined) { auswahl.clear(); zeichneErgebnis(); return zeichneAuswahlleiste(); }
+    if (d.auswahlAlle !== undefined) {
+      try {
+        const r = await api("GET", "/api/bibliothek?ids=1&" + alsParameter());
+        r.ids.forEach((i) => auswahl.add(i));
+      } catch (err) { toast(err.message, { fehler: true }); }
+      zeichneErgebnis();
+      return zeichneAuswahlleiste();
+    }
+    if (d.auswahlBearbeiten !== undefined) {
+      window.dispatchEvent(new CustomEvent("mf:sammel", { detail: { ids: [...auswahl], kategorien } }));
+      return;
+    }
+    if (d.produkt && auswahl) {
+      e.preventDefault();
+      const nr = Number(d.produkt);
+      if (auswahl.has(nr)) auswahl.delete(nr); else auswahl.add(nr);
+      zeichneErgebnis();
+      return zeichneAuswahlleiste();
+    }
     if (d.produkt && breit.matches && !e.ctrlKey && !e.metaKey) { e.preventDefault(); panelAuf(Number(d.produkt)); }
   });
 
@@ -313,6 +360,9 @@
     $("[data-filterblatt]").hidden = true;
   });
   breit.addEventListener("change", () => { panelZu(); $("[data-filterblatt]").hidden = true; if (antwort) zeichneFilter(); });
+
+  // Nach der Sammelbearbeitung (sammel.js): Auswahl beenden und neu laden
+  window.addEventListener("mf:sammel-fertig", () => { auswahl = null; laden(); });
 
   // ---------- Start ----------
   api("GET", "/api/kategorien")

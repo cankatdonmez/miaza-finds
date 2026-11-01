@@ -42,6 +42,7 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     app.state.media_dir = media_dir or settings.media_dir
     app.state.sicherung_dir = sicherung_dir or settings.backup_dir
     app.state.media_dir.mkdir(parents=True, exist_ok=True)
+    app.state.sammel_vorher = {}     # Stand vor einer Sammelbearbeitung, für „Rückgängig“ (D-012)
 
     conn = connect(app.state.db_path)
     try:

@@ -281,6 +281,15 @@ select.eingabe{padding-right:6px}
 .zeile-preis{font-size:var(--fs-text);white-space:nowrap}
 .mehr-laden{display:flex;justify-content:center}
 
+/* Auswahl für die Sammelbearbeitung (D-012) */
+.auswahlleiste{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 8px 8px 16px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent-ink)}
+.auswahl-zahl{font-weight:600}
+.waehler{width:24px;height:24px;flex:none;border-radius:7px;border:2px solid var(--line-2);display:grid;place-items:center;color:var(--on-accent)}
+.zeile.gewaehlt{background:var(--accent-soft)}
+.zeile.gewaehlt .waehler{background:var(--accent);border-color:var(--accent)}
+.panel .speicherleiste{bottom:0}
+
 /* Filter (Spalte am Desktop, Blatt am Telefon) */
 .fgruppe{display:flex;flex-direction:column;gap:8px}
 .fgruppe .abschnitt{margin:0}

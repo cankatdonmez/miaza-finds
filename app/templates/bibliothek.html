@@ -10,6 +10,7 @@
       <label class="suchfeld">{{ icon("search", 20) }}
         <input class="sucheingabe" type="search" data-suche placeholder="{{ t('bibliothek.suche') }}" aria-label="{{ t('bibliothek.suche') }}" autocomplete="off" enterkeyhint="search"></label>
       <button class="iconbtn filterknopf nur-telefon" type="button" data-filter-oeffnen aria-label="{{ t('bibliothek.filter') }}">{{ icon("settings") }}<span class="filterzahl num" data-filterzahl hidden></span></button>
+      <button class="btn nur-desktop" type="button" data-auswahl-start>{{ t("sammel.auswaehlen") }}</button>
       <div class="segs ansicht" role="group">
         <button class="segbtn" type="button" data-ansicht="raster" aria-label="{{ t('bibliothek.raster') }}">{{ icon("grid", 20) }}</button>
         <button class="segbtn" type="button" data-ansicht="liste" aria-label="{{ t('bibliothek.liste') }}">{{ icon("list", 20) }}</button>
@@ -22,6 +23,7 @@
     </div>
     <div class="chips" data-chips></div>
     <div class="statuszeile nur-desktop" data-statuszeile></div>
+    <div class="auswahlleiste" data-auswahlleiste hidden></div>
     <div class="ergebnis" data-ergebnis></div>
     <div class="mehr-laden"><button class="btn" type="button" data-mehr hidden>{{ t("bibliothek.mehr_laden") }}</button></div>
   </div>
@@ -35,4 +37,5 @@
 </div>
 {% endblock %}
 {% block scripts %}<script src="/static/js/detail.js?v={{ asset_v }}"></script>
-<script src="/static/js/bibliothek.js?v={{ asset_v }}"></script>{% endblock %}
+<script src="/static/js/bibliothek.js?v={{ asset_v }}"></script>
+<script src="/static/js/sammel.js?v={{ asset_v }}"></script>{% endblock %}
