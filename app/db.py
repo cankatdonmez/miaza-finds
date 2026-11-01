@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Iterator
 
 from .config import BASE_DIR
+from .texte import t
 
 MIGRATIONS_DIR = BASE_DIR / "migrations"
 
@@ -16,8 +17,8 @@ class DBError(Exception):
     """Fehler aus einer Datenbankregel (Trigger), mit deutschem Klartext."""
 
     MESSAGES = {
-        "kategorie_fest": "„Sonstiges“ gibt es immer und kann nicht gelöscht werden.",
-        "inventar_unveraenderlich": "Die Inventarnummer eines Produkts ändert sich nie.",
+        "kategorie_fest": t("fehler.kategorie_fest"),
+        "inventar_unveraenderlich": t("fehler.inventar_unveraenderlich"),
     }
 
     def __init__(self, code: str):

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+import json
 
 from fastapi.templating import Jinja2Templates
 
 from .config import BASE_DIR
-from .texte import t
+from .texte import DE, t
 from .version import VERSION
 
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
@@ -23,3 +24,5 @@ def _asset_version() -> str:
 templates.env.globals["asset_v"] = _asset_version()
 templates.env.globals["app_version"] = VERSION
 templates.env.globals["t"] = t
+# Für die Skripte (MF.t); als JSON-Block in base.html
+templates.env.globals["texte_json"] = json.dumps(DE, ensure_ascii=False).replace("</", "<\\/")

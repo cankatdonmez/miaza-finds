@@ -125,6 +125,68 @@ a{color:var(--accent-ink)}
 .segbtn{flex:1;min-height:44px;border-radius:10px;font-size:var(--fs-text);font-weight:500;color:var(--muted);transition:background .18s ease,color .18s ease}
 .segbtn[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
 
+.linkbtn{color:var(--accent-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px;min-height:44px}
+.iconbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted);flex:none;transition:background .16s ease,color .16s ease}
+.iconbtn:hover:not(:disabled){background:var(--sunk);color:var(--ink)}
+.iconbtn:disabled{opacity:.3;cursor:default}
+
+/* Eingaben */
+.feld{display:flex;flex-direction:column;gap:6px;font-size:var(--fs-text);color:var(--muted);font-weight:500}
+.eingabe{font:inherit;font-size:var(--fs-basis);color:var(--ink);background:var(--card);border:1px solid var(--line-2);border-radius:12px;
+  min-height:44px;padding:0 12px;width:100%;min-width:0}
+.eingabe:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+select.eingabe{padding-right:6px}
+
+/* Reiter und Bereiche, die es nur am Desktop gibt (SPEC 5) */
+.reiter{margin-bottom:16px}
+.reiter-inhalt{display:block}
+@media (max-width:899px){.nur-desktop{display:none!important}}
+
+/* Toast (SPEC 4.5) */
+.toast{position:fixed;left:50%;bottom:calc(var(--leiste-unten) + 20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:95;
+  background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-size:var(--fs-text);font-weight:500;
+  display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);max-width:calc(100vw - 32px)}
+.toast.fehler{outline:2px solid var(--bg);outline-offset:-4px}
+.toast-btn{padding:6px 12px;border-radius:999px;font-weight:600;color:inherit;background:color-mix(in srgb,var(--bg) 20%,transparent)}
+@media (min-width:900px){.toast{bottom:24px;left:calc(50% + 116px)}}
+
+/* ---------- Einstellungen › Kategorien & Filter ---------- */
+.einst-raster{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1180px){.einst-raster{grid-template-columns:minmax(0,1fr)}}
+.katliste{display:flex;flex-direction:column;gap:2px}
+.katlink{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border-radius:var(--r-ctrl);text-align:left;color:var(--ink);transition:background .16s ease}
+.katlink:hover{background:var(--card)}
+.katlink[aria-current="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.katlink-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.katlink-info{font-size:var(--fs-klein);color:var(--muted)}
+.kat-kopf{display:flex;gap:12px;align-items:flex-end}
+.feld-gross{flex:1}
+.feld-praefix{width:88px}
+.feld-praefix .eingabe{text-transform:uppercase;letter-spacing:.08em}
+.feld-einheit{max-width:140px}
+.filterkarte{border:1px solid var(--line);border-radius:var(--r-ctrl);padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--sunk)}
+.filterkopf{display:flex;align-items:center;gap:6px}
+.filter-name{flex:1}
+.typ-chip{padding:4px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:var(--fs-klein);color:var(--muted);white-space:nowrap}
+.optionen{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.option{display:inline-flex;align-items:center;gap:2px;padding:0 2px 0 10px;min-height:36px;border-radius:999px;background:var(--card);border:1px solid var(--line-2)}
+.option-name{font:inherit;font-size:var(--fs-text);color:var(--ink);background:none;border:0;padding:0;min-width:2ch}
+.option-name:focus{outline:none;text-decoration:underline}
+.option-n{font-size:var(--fs-mini);color:var(--muted);padding:0 4px}
+.option-x{width:30px;height:30px;border-radius:999px;color:var(--muted)}
+.option-x:hover{background:var(--sunk);color:var(--ink)}
+.option-neu{width:180px;min-height:36px;border-radius:999px;font-size:var(--fs-text)}
+.typwahl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.typknopf{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border-radius:var(--r-ctrl);border:1px solid var(--line-2);background:var(--card);text-align:left}
+.typknopf:hover{border-color:var(--accent)}
+.typknopf-name{font-weight:600}
+.kat-fuss{border-top:1px solid var(--line);padding-top:8px}
+.speicherleiste{position:sticky;bottom:16px;margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;
+  border-radius:var(--r-card);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
+.speicher-hinweise{flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px}
+.speicher-knoepfe{display:flex;gap:8px;margin-left:auto}
+.hinweis{font-size:var(--fs-text);color:var(--ink)}
+
 /* Programmstand unten rechts (wie counts) */
 .version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}
 @media (max-width:899px){.version{display:none}}

@@ -9,7 +9,10 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   Ekranda denendi: açık, koyu, 375 px, yatay kayma yok. Docker ve start.bat henüz denenmedi.
 - Adım 4 bitti (40 test): migration 001 (kategori + sabit „Sonstiges“/XX, filtre ve seçenekleri, ürün, filtre
   değerleri, renk, fiyat, fotoğraf, envanter sayacı) ve `services/nummern.py` (kod KK-KKK-EEE, numara tekrar verilmez).
-- Sıradaki: adım 5 (kategori ve filtre ayarları: API + masaüstü ekranı).
+- Adım 5 bitti (61 test): `/api/kategorien` + Einstellungen › Kategorien & Filter (masaüstü; telefonda yalnız
+  Allgemein). Önek önerisi, dört filtre tipi, sıralama, kullanım sayıları ve kaydetmeden önce etki notu, sürüm
+  kontrolü (409), yalnız boş kategori silinir + „Rückgängig“. Ekranda denendi (oluştur, kaydet, sil, geri al).
+- Sıradaki: adım 6 (tek kayıt: ürün formu, fotoğraf, fiyat, renk, silme).
 - Not: preview_start eski çalışma klasörünü görüyor; dev sunucusu şimdilik Bash ile 8091'de açılıyor.
 
 ## Dilim 1: adımlar

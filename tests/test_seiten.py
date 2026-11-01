@@ -34,12 +34,21 @@ def test_darstellung_hat_drei_wahlen(client):
 def test_alle_verwendeten_textschluessel_gibt_es():
     quellen = [p.read_text(encoding="utf-8") for p in (APP / "templates").rglob("*.html")]
     quellen += [p.read_text(encoding="utf-8") for p in (APP / "routes").glob("*.py")]
+    quellen += [p.read_text(encoding="utf-8") for p in (APP / "services").glob("*.py")]
+    quellen += [p.read_text(encoding="utf-8") for p in (APP / "static/js").glob("*.js")]
     benutzt = set()
     for q in quellen:
         benutzt |= set(re.findall(r'\bt\(\s*["\']([a-z_]+\.[a-z0-9_]+)["\']', q))
         benutzt |= set(re.findall(r'["\']((?:menue|bibliothek|etiketten|einstellungen|mehr)\.[a-z0-9_]+)["\']', q))
-    fehlend = sorted(benutzt - DE.keys())
+    # Zusammengesetzte Schlüssel („kat.typ_" + typ) werden unten einzeln geprüft
+    fehlend = sorted(k for k in benutzt - DE.keys() if not k.endswith("_"))
     assert not fehlend, f"Text fehlt im Wörterbuch: {fehlend}"
+
+
+def test_texte_fuer_jede_filterart():
+    from app.services.kategorien import FILTER_TYPEN
+    for typ in FILTER_TYPEN:
+        assert f"kat.typ_{typ}" in DE and f"kat.beispiel_{typ}" in DE
 
 
 def test_keine_sichtbaren_texte_direkt_in_seitenvorlagen():

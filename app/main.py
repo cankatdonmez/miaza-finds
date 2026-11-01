@@ -13,7 +13,8 @@ from starlette.exceptions import HTTPException
 
 from .config import BASE_DIR, get_settings
 from .db import DBError, connect, migrate
-from .routes import pages
+from .fehler import Fehler
+from .routes import api_kategorien, pages
 from .templating import templates
 
 SICHERE_METHODEN = {"GET", "HEAD", "OPTIONS"}
@@ -78,10 +79,15 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     async def _validation(_: Request, exc: RequestValidationError):
         return JSONResponse({"fehler": {"text": "Die Eingabe ist unvollständig oder ungültig."}}, status_code=422)
 
+    @app.exception_handler(Fehler)
+    async def _fehler(_: Request, exc: Fehler):
+        return JSONResponse({"fehler": {"text": exc.text, "feld": exc.feld}}, status_code=exc.status)
+
     @app.exception_handler(DBError)
     async def _dberr(_: Request, exc: DBError):
         return JSONResponse({"fehler": {"text": str(exc)}}, status_code=409)
 
     app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+    app.include_router(api_kategorien.router)
     app.include_router(pages.router)
     return app
