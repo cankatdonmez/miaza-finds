@@ -106,7 +106,7 @@ Basılı etiketler, kalıcı kimlikler ve linkler hiçbir düzenlemeyle geçersi
 - Kart tabanlı ekranlar, yuvarlak köşeler, çizgi ikonlar. Emoji ve gradyan süs yok.
 - Dokunma hedefi en az 44 × 44 px; ikincil metin bile zeminde ≥ 4.5:1 kontrast.
 - Renk tek başına anlam taşımaz; açıklık farkı veya yazıyla desteklenir.
-- Yazı tipi: arayüzde Inter; logoda "miaza" Comfortaa SemiBold, fiil Inter Medium ve uygulamanın vurgu rengi.
+- Yazı tipi: bütün ailede miaza counts'un sistemi: arayüzde Figtree, sayı ve kodlarda IBM Plex Mono; yazı boyutları yalnız `--fs-*` basamakları. Logoda "miaza" Figtree SemiBold, fiil Figtree Medium ve uygulamanın vurgu rengi.
 
 *Kontrol:* Bu ekranda kaç farklı renk ve yazı boyutu var? Koyu temada da okunuyor mu?
 
@@ -116,6 +116,7 @@ Yeni fikir ancak gerçek bir ihtiyaca karşılık geliyorsa girer. Ara durumlar 
 
 ### 14. Yerel, sade, bağımsız teknoloji
 Ofisin mini PC'sinde çalışır; bulut servisine, CDN'e veya dış hesaba bağlı değildir. Bilinen, sıkıcı ama sağlam araçlar kullanılır (FastAPI, SQLite, düz JS, build adımı yok). Her uygulama aynı altyapıyı ve klasör düzenini paylaşır (`DATA/Apps/miaza-…`).
+- **Port düzeni:** her uygulamanın kendi port çifti vardır (beta / geliştirme), hiçbir zaman paylaşılmaz: counts 8080/8081, finds 8090/8091; yeni uygulama bir sonraki onluğu alır (8100/8101, 8110/8111 …).
 *Kontrol:* İnternet kesilse veya bir servis kapansa bu özellik çalışmaya devam eder mi?
 
 ---

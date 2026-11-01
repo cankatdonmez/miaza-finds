@@ -1,6 +1,6 @@
 # miaza finds — Ürün Spesifikasyonu (SPEC)
 
-Sürüm: 0.4 · 01.11.2026 · Durum: tasarıma hazır
+Sürüm: 0.5 · 01.11.2026 · Durum: uygulamada (dilim 1)
 Kaynak: tıklanabilir demo (telefon, masaüstü, A4 etiket), demo üzerinde verilen kararlar ve [DEGERLENDIRME-0.3.md](DEGERLENDIRME-0.3.md).
 
 **Yol gösterici:**
@@ -9,6 +9,7 @@ Kaynak: tıklanabilir demo (telefon, masaüstü, A4 etiket), demo üzerinde veri
 - Bu SPEC'teki her parçanın bir sahibi ve gerekçesi vardır. Yeni bir parça ancak 6.12'deki ölçüte uyarsa girer.
 
 **Sürüm geçmişi:**
+- **0.5:** uygulamaya başlarken verilen kararlar (DECISIONS.md D-001–D-008): aile port düzeni, counts'un yazı sistemi, Docker ve start.bat birlikte, dokümanlar dilim 4'te, şifreli Systembereich (6.13), istek koruması.
 - **0.4:** dört aşamalı değerlendirmenin sonucu.
   - **Çıkarılanlar:** "zorunlu" bölme onayı; telefonda kategori düzenleme; serbest metin filtresi; kategori ve oda renkleri; altlığın saydamlık ve ters çevirme ayarları; kategori ayarlarındaki geri al çubuğu; taslağı kaza sonrası geri getirme; 40'lı etiket; birden fazla doküman klasörü.
   - **v2'ye taşınanlar:** linkten doldurma, otomatik renk.
@@ -67,8 +68,8 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 - **miaza counts:** Zeiterfassung
 
 **Logo yazısı:**
-- **"miaza":** Comfortaa SemiBold (600), metin renginde. Her uygulamada aynıdır.
-- **Fiil ("finds"):** "miaza"nın yaklaşık %60'ı boyutunda, Inter Medium (500), uygulamanın vurgu renginde.
+- **"miaza":** Figtree SemiBold (600), metin renginde. Her uygulamada aynıdır (D-002).
+- **Fiil ("finds"):** "miaza"nın yaklaşık %60'ı boyutunda, Figtree Medium (500), uygulamanın vurgu renginde.
 - İki kelime aynı taban çizgisinde durur. Dar yerlerde sadece "m" harfi ve vurgu renginde bir nokta kullanılır.
 
 **Açılış ekranı:**
@@ -93,8 +94,8 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 
 | Öğe | Açık | Koyu |
 |---|---|---|
-| Arayüz yazı tipi | Inter (400, 500, 600, 700) | aynı |
-| **Yazı ölçeği** | **12 · 13 · 15 · 18 · 24 · 34 px** (başka boyut kullanılmaz) | aynı |
+| Arayüz yazı tipi | Figtree (400, 500, 600); sayılar ve kodlar IBM Plex Mono (400, 500) — miaza counts ile aynı (D-002) | aynı |
+| **Yazı ölçeği** | **11 · 12,5 · 13,5 · 15 · 19 · 28 · 52 px** (`--fs-mini … --fs-hero`, counts ile aynı; başka boyut kullanılmaz) | aynı |
 | Zemin | `#F3F4F6` | `#0F1115` |
 | Kart | `#FFFFFF`, kenar `#E7E9EE` | `#181B21`, kenar `#2A2F38` |
 | Kart köşesi | 14–20 px | aynı |
@@ -235,6 +236,7 @@ Daha (telefon) ─ istatistik
 - Kategoriler ve filtreler
 - Ofis planı ve üniteler
 - Genel: kişiler, bölme onayı, doküman klasörü, yedek, bu cihaz, görünüm
+- En altta küçük bir bağlantı: **Systembereich** (şifreli, 6.13)
 
 **Telefon ve masaüstü iş bölümü:**
 - Kategori, filtre, plan ve etiket baskısı sadece masaüstündedir.
@@ -425,6 +427,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
 | Bölme onayı (Açık/Kapalı) | Masaüstü › Genel | büro |
 | Doküman kök klasörü | Masaüstü › Genel | büro |
 | Yedek durumu | Masaüstü › Genel | büro |
+| Yedek alma ve geri yükleme, toplu silme, veri kümesi değiştirme | Systembereich (şifreli, 6.13) | yönetici |
 | Bu cihazı kullanan | Her cihazda | cihaz |
 | Görünüm (tema) | Her cihazda | cihaz |
 
@@ -440,6 +443,19 @@ Bir özellik ancak şu soruların cevabı somutsa eklenir:
 - Dışarıdaki ürün için dönüş tarihi ve hatırlatma.
 - Bir ürünün birden fazla yerde durması.
 - Kurulum sihirbazı (yerine kurulum belgesi yazılır).
+
+### 6.13 Systembereich (şifreli yönetim alanı, D-006)
+Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin tek yeri. Uygulamanın geri kalanı girişsiz kalır.
+
+- **Yeri:** Ayarlar sayfasının en altında küçük bir bağlantı. Menüde, kenar çubuğunda veya ana ekranda görünmez.
+- **Giriş:** tek yönetici, kullanıcı adı ve şifreyle. İlk açılışta oluşturulur. Oturum sadece bu alan için geçerlidir ve kısa sürer.
+- **İçindekiler:**
+  - Yedek: şimdi yedek al, yedeği indir, yedekten geri yükle, son yedeğin zamanı.
+  - Veri kümesini değiştir: mevcut veriyi kaldırıp bir yedek dosyasından yenisini yükle (önce otomatik güvenlik yedeği alınır).
+  - Toplu silme: ör. bütün ürünler, bütün veriler (test verisini temizlemek için).
+  - Diğer güvenlik işleri (ör. şifre değiştirme).
+- Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
+- **Açık:** şifre unutulursa yol (öneri: counts'taki gibi bir kez gösterilen Recovery Key); içe aktarma biçimi (öneri: uygulamanın kendi yedek dosyası).
 
 ## 7. Veri modeli (özet)
 
@@ -470,7 +486,9 @@ Bir özellik ancak şu soruların cevabı somutsa eklenir:
 ## 8. Teknik yaklaşım
 
 ### 8.1 Altyapı (miaza counts ile aynı)
-- **Sunucu:** Python 3.12+, FastAPI, uvicorn, Jinja2. Mini PC'de Docker ile çalışır.
+- **Sunucu:** Python 3.12+, FastAPI, uvicorn, Jinja2. İki çalıştırma yolu da hazır tutulur (D-003): Docker (`Dockerfile`, `docker-compose.yml`) ve Windows için `start.bat` + `.venv`. Mini PC kurulunca kullanılmayan yol kaldırılır.
+- **Portlar (D-001):** ailenin her uygulaması kendi port çiftini kullanır, asla paylaşmaz: counts 8080/8081, **finds 8090/8091** (beta/geliştirme), sonraki uygulamalar 8100/8101, 8110/8111 …
+- **İstek koruması (D-007):** veri değiştiren her istekte tarayıcının gönderdiği köken (Origin) uygulamanın kendi adresi olmalıdır; Systembereich'te ayrıca counts'taki gibi oturum ve CSRF anahtarı.
 - **Veritabanı:** SQLite, tek dosya (`data/finds.db`), WAL modunda.
 - **Arayüz:** düz JavaScript, framework ve build adımı yok. Tek CSS dosyası, açık/koyu tema değişkenleri.
 - **Kütüphaneler:**
@@ -629,7 +647,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 
 ## 12. Hayır listesi: bilerek yapılmayanlar
 
-- Kullanıcı hesabı, şifre, rol ve yetki.
+- Kullanıcı hesabı, şifre, rol ve yetki. Tek istisna: Systembereich'in yönetici şifresi (6.13); uygulamanın geri kalanı girişsizdir.
 - Stok yönetimi, sipariş takibi, muhasebe.
 - "Numune istendi" gibi ara durumlar.
 - Kilit yönetimi ekranı.
