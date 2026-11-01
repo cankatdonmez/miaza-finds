@@ -15,7 +15,10 @@ MIGRATIONS_DIR = BASE_DIR / "migrations"
 class DBError(Exception):
     """Fehler aus einer Datenbankregel (Trigger), mit deutschem Klartext."""
 
-    MESSAGES: dict[str, str] = {}
+    MESSAGES = {
+        "kategorie_fest": "„Sonstiges“ gibt es immer und kann nicht gelöscht werden.",
+        "inventar_unveraenderlich": "Die Inventarnummer eines Produkts ändert sich nie.",
+    }
 
     def __init__(self, code: str):
         self.code = code

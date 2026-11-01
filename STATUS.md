@@ -7,7 +7,9 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 - Adım 1–3 bitti (25 test yeşil): iskelet; token'lar (açık/koyu), Figtree/Plex Mono, kabuk (telefonda alt
   leiste, ≥ 900 px'te kenar çubuğu), logo, Einstellungen › Darstellung; sözlük `app/texte.py` + `t()`.
   Ekranda denendi: açık, koyu, 375 px, yatay kayma yok. Docker ve start.bat henüz denenmedi.
-- Sıradaki: adım 4 (migration 001: kategori, filtre, ürün, fiyat, fotoğraf, sayaçlar).
+- Adım 4 bitti (40 test): migration 001 (kategori + sabit „Sonstiges“/XX, filtre ve seçenekleri, ürün, filtre
+  değerleri, renk, fiyat, fotoğraf, envanter sayacı) ve `services/nummern.py` (kod KK-KKK-EEE, numara tekrar verilmez).
+- Sıradaki: adım 5 (kategori ve filtre ayarları: API + masaüstü ekranı).
 - Not: preview_start eski çalışma klasörünü görüyor; dev sunucusu şimdilik Bash ile 8091'de açılıyor.
 
 ## Dilim 1: adımlar
