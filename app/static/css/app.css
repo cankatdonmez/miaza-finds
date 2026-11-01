@@ -29,6 +29,8 @@
   /* Materialfarben der Farbpalette (SPEC 6.2): eigene Farben des Materials, in beiden Themen gleich */
   --farbe-weiss:#F7F5F0; --farbe-beige:#D9C7A7; --farbe-braun:#7A5333; --farbe-terracotta:#C0643F; --farbe-gold:#C9A23E;
   --farbe-rosa:#E3A6B4; --farbe-gruen:#6E8B5A; --farbe-blau:#4F78A8; --farbe-grau:#8E9196; --farbe-schwarz:#1E1E1E;
+  /* Etiketten sind immer hell (SPEC 4.3): Papier und Druckfarbe, in beiden Themen gleich */
+  --papier:#FFFFFF; --papier-tinte:#111111; --papier-rand:#D5D9E0;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -346,6 +348,30 @@ select.eingabe{padding-right:6px}
 .merkmal dd{margin:0}
 .detail-notiz{margin:0;white-space:pre-wrap;color:var(--ink)}
 .farbknopf.statisch{cursor:default}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.druckliste-ok{display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- Etiketten (SPEC 6.6) ---------- */
+.etk{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+@media (min-width:1100px){.etk{grid-template-columns:380px minmax(0,1fr)}}
+.etk-wahl,.etk-vorschau{min-width:0}
+@media (min-width:1100px){.etk-wahl{position:sticky;top:20px}}
+.etk-liste{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:6px;
+  max-height:calc(100vh - 260px);overflow-y:auto}
+.etk-liste .zeile{width:100%;text-align:left}
+.etk-zustand{font-size:var(--fs-klein);color:var(--muted);white-space:nowrap}
+.etk-zustand.etk-neu_drucken{color:var(--accent-ink);font-weight:600}
+.etk-kopf{display:flex;align-items:center;gap:12px}
+.hinweis-karte{padding:12px 14px;border-radius:var(--r-ctrl);background:var(--accent-soft);color:var(--accent-ink);font-size:var(--fs-text);max-width:640px}
+.etk-boegen{display:flex;flex-direction:column;gap:20px}
+.etk-bogen{position:relative;width:100%;max-width:640px;background:var(--papier);border:1px solid var(--papier-rand);box-shadow:var(--shadow)}
+.etk-etikett{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2px;padding:4% 3%;
+  color:var(--papier-tinte);border:1px dashed var(--papier-rand);overflow:hidden;text-align:center}
+.etk-etikett:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.etk-qr{flex:1;display:grid;place-items:center;min-height:0}
+.etk-qr .icon{width:min(56px,60%);height:auto;aspect-ratio:1}
+.etk-name{font-size:var(--fs-mini);font-weight:600;line-height:1.2;max-height:2.4em;overflow:hidden}
+.etk-code{font-size:var(--fs-mini)}
 
 /* Programmstand unten rechts (wie counts) */
 .version{position:fixed;right:6px;bottom:4px;z-index:30;font-size:var(--fs-mini);color:var(--muted);opacity:.7;pointer-events:none}

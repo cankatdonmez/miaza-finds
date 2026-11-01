@@ -17,6 +17,8 @@ class Settings:
     media_dir: Path = field(default_factory=lambda: Path(os.environ.get("MF_MEDIA_DIR", LOKAL_DIR / "media")))
     backup_dir: Path = field(default_factory=lambda: Path(os.environ.get("MF_BACKUP_DIR", LOKAL_DIR / "backups")))
     timezone: str = os.environ.get("MF_TIMEZONE", "Europe/Vienna")
+    # Adresse im QR der Etiketten (SPEC 6.6), z. B. https://finds.buero.miaza.at; leer = Adresse der Anfrage
+    basis_url: str = os.environ.get("MF_BASIS_URL", "")
     # Cookies des Systembereichs nur über HTTPS senden. Im Büronetz ohne TLS bleibt das aus.
     secure_cookies: bool = os.environ.get("MF_SECURE_COOKIES", "0") == "1"
 

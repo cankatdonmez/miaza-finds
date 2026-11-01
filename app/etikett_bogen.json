@@ -1,0 +1,14 @@
+{
+  "_hinweis": "Bogendefinition für Produktetiketten (SPEC 6.6). Vorläufig, bis das Layout-PDF des Etikettenpapiers da ist (SPEC 11, offene Frage 3). Bei anderem Papier nur diese Datei ändern.",
+  "name": "Vorläufig: 20 je A4 (4 × 5, 48 × 52 mm)",
+  "seite_breite_mm": 210,
+  "seite_hoehe_mm": 297,
+  "spalten": 4,
+  "zeilen": 5,
+  "breite_mm": 48,
+  "hoehe_mm": 52,
+  "rand_links_mm": 9,
+  "rand_oben_mm": 18.5,
+  "abstand_x_mm": 0,
+  "abstand_y_mm": 0
+}

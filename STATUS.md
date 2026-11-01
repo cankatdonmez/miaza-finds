@@ -29,7 +29,11 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
   (`/api/produkte/serie`) hemen adsız ürün olur, yükleme arkada sırayla, sayaç + son foto + kod, „Letztes rückgängig“,
   „Fertig“ → kütüphane „Fehlende Angaben“ ile açılır. Orada liste satırında ad yaz, Enter, sıradaki (`PATCH`, sürüm
   kontrollü). Bölmeden başlatma dilim 2'de. Ekranda denendi.
-- Sıradaki: adım 9 (etiket PDF'i).
+- Adım 9 bitti (131 test): Etiketten sayfası (arama, Ungedruckt / Neu drucken / Treffer / Leeren, ölçekli A4
+  önizleme, etikete tıklayınca çıkar), PDF (ReportLab, vektör QR → `/p/<Nr>`, ad 2 satır + kod), PDF sonrası
+  „gedruckt“ + Rückgängig; detayda „Auf die Druckliste“. Izgara `app/etikett_bogen.json` (geçici 20'li, 48×52).
+  QR adresi `MF_BASIS_URL` veya istek adresi; localhost ise sayfa uyarır.
+- Sıradaki: adım 10 (Systembereich).
 - Not: preview_start eski çalışma klasörünü görüyor. Dev sunucusu PowerShell Start-Process ile 8091'de; kapatırken
   portu dinleyen işlemi bul (venv python bir alt işlem açıyor).
 
@@ -39,4 +43,5 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 8. Seri kayıt · 9. Etiket PDF'i · 10. Systembereich (giriş, yedek, geri yükleme, toplu silme) · 11. Tekrar bak
 
 ## Offene Fragen
-1. SPEC 11'deki açıklar: HTTPS yolu, etiket kâğıdı PDF'i, Drive uygulaması mini PC'de mi, de-AT terimleri, vurgu renkleri.
+1. Etiket QR'ının kalıcı adresi (mini PC'nin ofis adresi veya HTTPS alan adı) → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
+2. SPEC 11'deki açıklar: HTTPS yolu, etiket kâğıdı PDF'i, Drive uygulaması mini PC'de mi, de-AT terimleri, vurgu renkleri.

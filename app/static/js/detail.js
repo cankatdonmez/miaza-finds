@@ -45,8 +45,27 @@
       </dl>
       ${farben ? `<div class="farben">${farben}</div>` : ""}
       ${p.notiz ? `<p class="detail-notiz">${esc(p.notiz)}</p>` : ""}
-      ${p.link ? `<a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">${esc(t("produkt.link_oeffnen"))}</a>` : ""}`;
+      <div class="actions">
+        ${p.link ? `<a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">${esc(t("produkt.link_oeffnen"))}</a>` : ""}
+        ${p.art === "physisch" ? druckliste(p) : ""}
+      </div>`;
   };
+
+  // Druckliste (SPEC 5): auch am Telefon; gedruckt wird am Desktop
+  function druckliste(p) {
+    return p.etikett === "gedruckt"
+      ? `<button class="btn" type="button" data-druckliste="${p.inventar_nr}">${icon("tag", 20)}<span>${esc(t("etiketten.druckliste"))}</span></button>`
+      : `<span class="sub druckliste-ok">${icon("tag", 18)}${esc(t("etiketten.auf_liste"))}</span>`;
+  }
+
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-druckliste]");
+    if (!b) return;
+    try {
+      await MF.api("POST", `/api/produkte/${b.dataset.druckliste}/druckliste`);
+      b.outerHTML = druckliste({ etikett: "neu_drucken" });
+    } catch (err) { MF.toast(err.message, { fehler: true }); }
+  });
 
   // Kleine Fotos tauschen das große Bild (in Seite und Panel)
   document.addEventListener("click", (e) => {

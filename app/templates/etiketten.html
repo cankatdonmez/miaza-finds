@@ -1,4 +1,23 @@
 {% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Etiketten drucken (SPEC 6.6, nur Desktop): links auswählen, rechts die Bögen so, wie sie gedruckt werden #}
 {% block inhalt %}
-<div class="card leer">{{ t("etiketten.leer") }}</div>
+<div class="etk">
+  <section class="etk-wahl stack">
+    <label class="suchfeld">{{ icon("search", 20) }}
+      <input class="sucheingabe" type="search" data-etk-suche placeholder="{{ t('etiketten.suche') }}" aria-label="{{ t('etiketten.suche') }}" autocomplete="off"></label>
+    <div class="pills" data-etk-vorwahl></div>
+    <div class="etk-liste" data-etk-liste></div>
+  </section>
+  <section class="etk-vorschau stack">
+    <div class="etk-kopf">
+      <span class="sub" data-etk-anzahl></span>
+      <span class="spacer"></span>
+      <button class="btn primary" type="button" data-etk-pdf disabled>{{ t("etiketten.pdf") }}</button>
+    </div>
+    <div class="hinweis-karte" data-etk-qr-hinweis hidden></div>
+    <div class="etk-boegen" data-etk-boegen></div>
+  </section>
+</div>
 {% endblock %}
+{% block scripts %}<script src="/static/js/etiketten.js?v={{ asset_v }}"></script>{% endblock %}

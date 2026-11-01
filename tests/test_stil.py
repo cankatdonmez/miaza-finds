@@ -42,7 +42,7 @@ def test_dunkles_thema_definiert_jedes_farbtoken():
     root = re.search(r":root\{(.*?)\n\}", hell, re.S).group(1)
     # Materialfarben (--farbe-…) sind in beiden Themen gleich (SPEC 4.4: Farben des Materials sind ausgenommen)
     farbtoken = {n for n, w in re.findall(r"(--[a-z0-9-]+):([^;]+);", root)
-                 if re.search(r"#|rgba", w) and not n.startswith("--farbe-")}
+                 if re.search(r"#|rgba", w) and not n.startswith(("--farbe-", "--papier"))}
     dunkel = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', hell, re.S).group(1)
     system = re.search(r"prefers-color-scheme:dark\)\{:root:not\(\[data-theme=\"light\"\]\)\{(.*?)\n\}\}", hell, re.S).group(1)
     for block in (dunkel, system):
