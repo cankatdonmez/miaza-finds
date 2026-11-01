@@ -51,3 +51,8 @@ kurulumun yönetici şifresi ve güvenlik anahtarı kalır, eskisi alınmaz. →
 Cankat: bir güvenlik anahtarı olacak, güvenli yerde saklanacak, şifre onunla sıfırlanacak. İlk kurulumda bir kez
 gösterilir (yazdır / indir). Bir kez kullanılınca yenisi verilir (counts'taki Recovery Key gibi). Sunucuda yalnız
 özeti saklanır. → SPEC 6.13.
+
+## D-011 · 01.11.2026 · İçinde ürün olan kategori silinmez
+Cankat: ürün içeren kategori silinemesin, sadece düzenlensin. SPEC 0.4'teki "silinen kategorinin ürünleri Diğer'e
+taşınır" kalktı. Boş kategori silinebilir; dolu kategoride silme yerine ürün sayısı görünür. Veritabanı da bunu
+zorlar (yabancı anahtar, migration 001). → SPEC 6.3.

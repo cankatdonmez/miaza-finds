@@ -309,7 +309,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Önek sonradan değişirse:** kaç kodun değişeceği ve kaç etiketin yeniden basılacağı söylenir.
 
 ### 6.3 Kategoriler ve filtreler (masaüstü › Ayarlar)
-- **Kategori:** eklenir, adlandırılır, öneki girilir, silinir. Silinen kategorinin ürünleri **"Diğer"**e taşınır. "Diğer" her zaman vardır ve silinemez.
+- **Kategori:** eklenir, adlandırılır, öneki girilir. **Sadece boş bir kategori silinebilir** (D-011). İçinde ürün olan kategori yalnız düzenlenir; silme yerine kaç ürün içerdiği gösterilir ("24 Produkte"), ürünler gerekirse önce toplu düzenlemeyle başka kategoriye taşınır. "Diğer" (Sonstiges) her zaman vardır ve silinemez.
 - **Filtreler:** her kategorinin kendi filtre listesi vardır. Filtreler eklenir, silinir, sıralanır; bu sıra filtre panelindeki sıradır.
 - **Kaydetme:** basit form, **Kaydet / Vazgeç**. Geri al çubuğu yoktur (4.6).
 - **Filtre tipleri:**
