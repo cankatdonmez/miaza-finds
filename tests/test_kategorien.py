@@ -154,7 +154,7 @@ def test_nur_leere_kategorie_loeschbar(client, app):
     fl, ho = _neu(client), _neu(client, "Holz")
     _produkt(app, fl["id"])
     r = client.delete(f"{API}/{fl['id']}")
-    assert r.status_code == 409 and "1 Produkte" in r.json()["fehler"]["text"]
+    assert r.status_code == 409 and "enthält 1 Produkt und" in r.json()["fehler"]["text"]
     assert client.delete(f"{API}/{ho['id']}").status_code == 200
     sonst = _kat(client, "Sonstiges")
     assert client.delete(f"{API}/{sonst['id']}").status_code == 409

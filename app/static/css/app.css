@@ -130,7 +130,7 @@ a{color:var(--accent-ink)}
 .segbtn{flex:1;min-height:44px;border-radius:10px;font-size:var(--fs-text);font-weight:500;color:var(--muted);transition:background .18s ease,color .18s ease}
 .segbtn[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
 
-.linkbtn{color:var(--accent-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px;min-height:44px}
+.linkbtn{display:inline-flex;align-items:center;color:var(--accent-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px;min-height:44px}
 .iconbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted);flex:none;transition:background .16s ease,color .16s ease}
 .iconbtn:hover:not(:disabled){background:var(--sunk);color:var(--ink)}
 .iconbtn:disabled{opacity:.3;cursor:default}
@@ -178,7 +178,7 @@ select.eingabe{padding-right:6px}
 .option-name{font:inherit;font-size:var(--fs-text);color:var(--ink);background:none;border:0;padding:0;min-width:2ch}
 .option-name:focus{outline:none;text-decoration:underline}
 .option-n{font-size:var(--fs-mini);color:var(--muted);padding:0 4px}
-.option-x{width:30px;height:30px;border-radius:999px;color:var(--muted)}
+.option-x{width:40px;height:40px;border-radius:999px;color:var(--muted)}
 .option-x:hover{background:var(--sunk);color:var(--ink)}
 .option-neu{width:180px;min-height:36px;border-radius:999px;font-size:var(--fs-text)}
 .typwahl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
@@ -206,7 +206,7 @@ select.eingabe{padding-right:6px}
 .fotos:empty{display:none}
 .foto{position:relative;margin:0;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--sunk)}
 .foto img{width:100%;height:100%;object-fit:cover;display:block}
-.foto-x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:999px;display:grid;place-items:center;
+.foto-x{position:absolute;top:2px;right:2px;width:44px;height:44px;border-radius:999px;display:grid;place-items:center;
   background:color-mix(in srgb,var(--card) 85%,transparent);color:var(--ink)}
 .foto-knoepfe{display:flex;gap:8px;flex-wrap:wrap}
 .foto-knoepfe .btn{flex:1 1 160px}
@@ -250,9 +250,9 @@ select.eingabe{padding-right:6px}
 .art-wahl{max-width:360px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips:empty{display:none}
-.chip{display:inline-flex;align-items:center;gap:2px;padding-left:12px;min-height:34px;border-radius:999px;background:var(--accent-soft);
+.chip{display:inline-flex;align-items:center;gap:2px;padding-left:14px;min-height:44px;border-radius:999px;background:var(--accent-soft);
   color:var(--accent-ink);font-size:var(--fs-text);font-weight:500}
-.chip-x{width:34px;height:34px;border-radius:999px;color:inherit}
+.chip-x{width:44px;height:44px;border-radius:999px;color:inherit}
 .statuszeile{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:var(--fs-text)}
 .leise{min-height:28px;color:var(--muted);text-decoration:none}
 .leise:hover{color:var(--accent-ink);text-decoration:underline}

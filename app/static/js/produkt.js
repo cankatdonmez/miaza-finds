@@ -212,7 +212,7 @@
     if (b.dataset.fotoWeg) { await fotoLoeschen(Number(b.dataset.fotoWeg)); return; }
     if (b.dataset.aktion === "loeschen") { await loeschen(); return; }
     if (b.dataset.aktion === "abbrechen" && geaendert()) {
-      if (!window.confirm(t("kat.ungespeichert"))) { e.preventDefault(); return; }
+      if (!window.confirm(t("allg.ungespeichert"))) { e.preventDefault(); return; }
       original = daten();      // bewusst verworfen: kein zweiter Hinweis beim Verlassen
       neueFotos = [];
     }

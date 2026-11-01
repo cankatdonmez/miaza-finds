@@ -46,7 +46,7 @@
   function zeichneBoegen() {
     const je = bogen.spalten * bogen.zeilen;
     const anzahlBoegen = Math.ceil(auswahl.length / je);
-    $("[data-etk-anzahl]").textContent = t("etiketten.anzahl", { n: auswahl.length, b: anzahlBoegen });
+    $("[data-etk-anzahl]").textContent = t(anzahlBoegen === 1 && auswahl.length > 1 ? "etiketten.anzahl_ein_bogen" : "etiketten.anzahl", { n: auswahl.length, b: anzahlBoegen });
     $("[data-etk-pdf]").disabled = !auswahl.length;
     if (!auswahl.length) {
       $("[data-etk-boegen]").innerHTML = `<div class="card leer">${esc(t("etiketten.keine_auswahl"))}</div>`;

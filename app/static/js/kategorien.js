@@ -15,7 +15,7 @@
   let typwahlOffen = false;
 
   const kopie = (o) => JSON.parse(JSON.stringify(o));
-  const anzahl = (n) => (n === 1 ? t("kat.produkt_eins") : t("kat.produkte", { n }));
+  const anzahl = (n) => t("kat.produkte", { n });
   const vergleichbar = (k) => JSON.stringify({
     name: k.name.trim(), praefix: k.praefix.trim().toUpperCase(),
     filter: k.filter.map((f) => ({ id: f.id, name: f.name.trim(), einheit: f.einheit || null,
@@ -51,7 +51,7 @@
   }
 
   function wechseln(ziel) {
-    if (geaendert() && !window.confirm(t("kat.ungespeichert"))) return;
+    if (geaendert() && !window.confirm(t("allg.ungespeichert"))) return;
     oeffnen(ziel);
   }
 

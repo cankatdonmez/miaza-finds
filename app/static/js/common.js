@@ -12,6 +12,8 @@ const MF = (() => {
   // ---------- Texte (Wörterbuch aus app/texte.py) ----------
   const TEXTE = JSON.parse($("#texte")?.textContent || "{}");
   function t(schluessel, werte) {
+    // Einzahl wie in app/texte.py: bei n == 1 der Schlüssel mit „_eins“, wenn es ihn gibt
+    if (werte && werte.n === 1 && TEXTE[schluessel + "_eins"] !== undefined) schluessel += "_eins";
     const text = TEXTE[schluessel];
     if (text === undefined) { console.error("Text fehlt:", schluessel); return schluessel; }
     return werte ? text.replace(/\{(\w+)\}/g, (_, k) => String(werte[k] ?? "")) : text;
