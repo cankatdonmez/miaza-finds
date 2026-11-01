@@ -449,13 +449,17 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
 
 - **Yeri:** Ayarlar sayfasının en altında küçük bir bağlantı. Menüde, kenar çubuğunda veya ana ekranda görünmez.
 - **Giriş:** tek yönetici, kullanıcı adı ve şifreyle. İlk açılışta oluşturulur. Oturum sadece bu alan için geçerlidir ve kısa sürer.
+- **Güvenlik anahtarı (D-010):** ilk kurulumda bir kez gösterilir. Yazdırılır veya indirilir ve güvenli bir yerde saklanır (ör. kasadaki çıktı, şifre yöneticisi). Şifre unutulursa bu anahtarla yeni şifre belirlenir. Anahtar bir kez kullanılınca geçersiz olur ve yenisi gösterilir. Sunucu anahtarın kendisini değil, yalnız özetini (hash) saklar.
 - **İçindekiler:**
   - Yedek: şimdi yedek al, yedeği indir, yedekten geri yükle, son yedeğin zamanı.
-  - Veri kümesini değiştir: mevcut veriyi kaldırıp bir yedek dosyasından yenisini yükle (önce otomatik güvenlik yedeği alınır).
+  - **Veri taşıma (D-009):** sistem başka bir sunucuya taşınınca eski kurulumun verisi yenisine alınır.
+    - Eski sunucuda: "Dışa aktar" tek bir dosya üretir (veritabanı + bütün fotoğraflar). Eski sunucu artık açılmıyorsa kopyalanmış veri klasörü de kabul edilir (`data/finds.db` + `media/`).
+    - Yeni kurulumda: önce yönetici oluşturulur, sonra "Verileri al" ile dosya veya klasör seçilir. Mevcut veri kaldırılır, eskisi yüklenir (önce otomatik güvenlik yedeği alınır).
+    - Eski bir sürümden gelen veri, açılışta güncel şemaya yükseltilir; daha yeni bir sürümden gelen veri reddedilir.
+    - Yeni kurulumun yönetici şifresi ve güvenlik anahtarı geçerli kalır; eski kurulumunkiler alınmaz.
   - Toplu silme: ör. bütün ürünler, bütün veriler (test verisini temizlemek için).
-  - Diğer güvenlik işleri (ör. şifre değiştirme).
+  - Diğer güvenlik işleri (ör. şifre değiştirme, güvenlik anahtarını yenileme).
 - Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
-- **Açık:** şifre unutulursa yol (öneri: counts'taki gibi bir kez gösterilen Recovery Key); içe aktarma biçimi (öneri: uygulamanın kendi yedek dosyası).
 
 ## 7. Veri modeli (özet)
 

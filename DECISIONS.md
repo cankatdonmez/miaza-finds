@@ -40,3 +40,14 @@ oturum + CSRF anahtarı. Teknik karar (Claude), Cankat'ın seçmesi gereken bir 
 ## D-008 · 01.11.2026 · Yerel çalışma klasörü
 `.venv`, veritabanları ve `media/` Drive dışında: `%USERPROFILE%\miaza-local\finds\`. `%LOCALAPPDATA%` Claude
 masaüstü uygulamasında sanal bir klasöre yönlendiriliyor; oraya kurulan ortamı `start.bat` göremez. → CLAUDE.md.
+
+## D-009 · 01.11.2026 · Veri taşıma (yeni sunucuya)
+Cankat: sunucu değişirse dosyalar kopyalanıp sistem yeniden kurulur; eski veri yeni kuruluma alınabilmeli.
+Systembereich'te "Dışa aktar" (tek dosya: veritabanı + fotoğraflar) ve "Verileri al" (bu dosya ya da kopyalanmış
+`data/` + `media/` klasörü). Eski sürümün verisi yükseltilir, yeni sürümün verisi reddedilir. Öneri (Claude): yeni
+kurulumun yönetici şifresi ve güvenlik anahtarı kalır, eskisi alınmaz. → SPEC 6.13.
+
+## D-010 · 01.11.2026 · Güvenlik anahtarı ile şifre sıfırlama
+Cankat: bir güvenlik anahtarı olacak, güvenli yerde saklanacak, şifre onunla sıfırlanacak. İlk kurulumda bir kez
+gösterilir (yazdır / indir). Bir kez kullanılınca yenisi verilir (counts'taki Recovery Key gibi). Sunucuda yalnız
+özeti saklanır. → SPEC 6.13.
