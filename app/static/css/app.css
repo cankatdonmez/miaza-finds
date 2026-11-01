@@ -1,0 +1,4 @@
+/* miaza finds — eine Stildatei; Token und Gerüst folgen in Dilim 1, Schritt 2 (wie miaza counts). */
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 64px}
+.version{position:fixed;right:8px;bottom:6px;opacity:.5}

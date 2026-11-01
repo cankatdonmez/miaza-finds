@@ -4,7 +4,8 @@ Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 
 ## Aktueller Stand
 - Dilim 1 (Kütüphane ve kayıt) başladı. Kararlar D-001–D-008.
-- Adım 1 (iskelet) yapılıyor: create_app, db/migrate, config (MF_), testler, Docker + start.bat, launch.json (8091).
+- Adım 1 (iskelet) bitti: create_app, db/migrate (yedekli), Origin koruması, config (MF_), 13 test yeşil,
+  Docker + start.bat (8090), launch.json (8091). Docker henüz denenmedi. Sıradaki: adım 2 (görsel temel).
 
 ## Dilim 1: adımlar
 1. İskelet · 2. Görsel temel (token'lar, kabuk, logo) · 3. Sözlük (de) · 4. Migration 001 (kategori, filtre, ürün …)

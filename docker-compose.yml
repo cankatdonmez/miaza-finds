@@ -1,0 +1,14 @@
+# Ordner wie SPEC 8.3: DATA/Apps/miaza-finds/{app,data,media,backups,logs}; diese Datei liegt in app/.
+# Noch nicht auf dem Mini-PC erprobt (D-003).
+services:
+  miaza-finds:
+    build: .
+    container_name: miaza-finds
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    volumes:
+      # Datenbank auf der lokalen Platte des Servers, nicht auf einer Netzwerkfreigabe.
+      - ../data:/data
+      - ../media:/media
+      - ../backups:/backups

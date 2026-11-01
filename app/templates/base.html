@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}miaza finds{% endblock %}</title>
+<meta name="app-stand" content="{{ asset_v }}">
+<link rel="stylesheet" href="/static/css/app.css?v={{ asset_v }}">
+</head>
+<body class="{% block bodyclass %}{% endblock %}">
+{% block body %}{% endblock %}
+<div class="version num" title="Code-Stand {{ asset_v }}">v{{ app_version }}</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>
