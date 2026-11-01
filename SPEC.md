@@ -291,6 +291,16 @@ Seri kayıt yeni bir ekran açmaz. Mevcut kamera, mevcut bölme seçimi ve mevcu
 - Ürünün çıkış kayıtları ve dokümanlarla bağları birlikte silinir. Doküman dosyalarının kendisine dokunulmaz.
 - Etiketi baskı listesindeyse listeden düşer.
 
+#### Toplu düzenleme (masaüstü, D-012)
+Amaç: onlarca ürünün kategorisini veya ortak bir özelliğini tek seferde değiştirmek (ör. "Diğer"deki ürünler kendi kategorisine taşınınca).
+
+- **Yeri:** kütüphanenin liste görünümü › "Auswählen". Ürünler tek tek işaretlenir veya filtre sonucunun tamamı seçilir ("alle 24 auswählen"). Telefonda yoktur.
+- **Değişebilen alanlar:** kategori, marka, tür (fiziki/dijital), renk ekle / renk kaldır. Seçilenlerin hepsi aynı kategorideyse kategoriye özel filtre değerleri de. Ad, link, not ve fiyat toplu değişmez.
+- **Kategori değişince** iki sonuç panelde, uygulamadan önce yazar:
+  - Kod sorusu (6.2) bir kez sorulur, hepsine uygulanır; yenilenen kodların etiketleri baskı listesine girer. Envanter numarası değişmez.
+  - Eski kategorinin filtre değerleri kaldırılır. Örnek: *"24 Produkte nach Fliese verschieben · 24 Codes neu · 18 Filterwerte entfallen"*.
+- **Onay penceresi yok:** etki panelde görünür, "Anwenden" ile uygulanır; ardından birkaç saniye "Rückgängig". Geri alma kaldırılan değerleri ve eski kodları da geri getirir; harcanan numaralar geri dönmez.
+
 #### Ürün kodu
 Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 

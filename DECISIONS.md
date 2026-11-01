@@ -56,3 +56,9 @@ gösterilir (yazdır / indir). Bir kez kullanılınca yenisi verilir (counts'tak
 Cankat: ürün içeren kategori silinemesin, sadece düzenlensin. SPEC 0.4'teki "silinen kategorinin ürünleri Diğer'e
 taşınır" kalktı. Boş kategori silinebilir; dolu kategoride silme yerine ürün sayısı görünür. Veritabanı da bunu
 zorlar (yabancı anahtar, migration 001). → SPEC 6.3.
+
+## D-012 · 01.11.2026 · Toplu düzenleme
+Cankat: ürünleri topluca seçip kategorisini veya diğer özelliklerini değiştirebilmek (kanıt: kategoriler zamanla
+ayrışınca onlarca ürünü tek tek değiştirmek gerekir). Claude'un önerisi, Cankat onayladı: masaüstünde liste
+görünümünde seçim; alanlar kategori, marka, tür, renk ekle/kaldır, aynı kategorideyse filtre değerleri; kod sorusu bir
+kez; etkisi panelde, onay penceresi yerine "Rückgängig". Dilim 1'de kütüphaneden (adım 7) hemen sonra. → SPEC 6.2.
