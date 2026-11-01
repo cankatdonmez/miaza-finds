@@ -3,7 +3,7 @@
 Stand: 01.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest`
 
 ## Aktueller Stand
-- Dilim 1 (Kütüphane ve kayıt) başladı. Kararlar D-001–D-012.
+- Dilim 1 (Kütüphane ve kayıt) başladı. Kararlar D-001–D-013.
 - Adım 1–3 bitti (25 test yeşil): iskelet; token'lar (açık/koyu), Figtree/Plex Mono, kabuk (telefonda alt
   leiste, ≥ 900 px'te kenar çubuğu), logo, Einstellungen › Darstellung; sözlük `app/texte.py` + `t()`.
   Ekranda denendi: açık, koyu, 375 px, yatay kayma yok. Docker ve start.bat henüz denenmedi.

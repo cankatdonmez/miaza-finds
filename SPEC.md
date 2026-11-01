@@ -313,7 +313,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Önek:** kategori ayarlarında girilir; zorunlu ve benzersizdir. Uygulama addan bir öneri getirir. "Diğer" kategorisi için `XX` önerilir.
 - **Basamak:** numaralar 3 haneyle başlar, 999'dan sonra 4 haneye geçer.
 - **Dijital ürünler** de aynı şemayla kod alır; fizikiye çevrilince kod değişmez.
-- **Numaralar asla yeniden kullanılmaz.**
+- **Numaralar asla yeniden kullanılmaz.** Tek istisna: Systembereich › "Alles löschen (Neuanfang)" sayaçları 1'e döndürür (D-013); öncesinde basılmış etiketlerin geçersiz olacağı yazılır.
 - **Envanter numarası ürünün kalıcı kimliğidir.** QR sadece bu numarayı taşır.
 - **Kategori değişirse:** kod aynı mı kalsın, yeni önekle mi yenilensin diye sorulur. Envanter numarası her durumda aynı kalır; yenilenirse etiket baskı listesine eklenir.
 - **Önek sonradan değişirse:** kaç kodun değişeceği ve kaç etiketin yeniden basılacağı söylenir.
@@ -467,7 +467,9 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
     - Yeni kurulumda: önce yönetici oluşturulur, sonra "Verileri al" ile dosya veya klasör seçilir. Mevcut veri kaldırılır, eskisi yüklenir (önce otomatik güvenlik yedeği alınır).
     - Eski bir sürümden gelen veri, açılışta güncel şemaya yükseltilir; daha yeni bir sürümden gelen veri reddedilir.
     - Yeni kurulumun yönetici şifresi ve güvenlik anahtarı geçerli kalır; eski kurulumunkiler alınmaz.
-  - Toplu silme: ör. bütün ürünler, bütün veriler (test verisini temizlemek için).
+  - Toplu silme (D-013):
+    - "Alle Produkte löschen": ürünler ve fotoğrafları; kategoriler, filtreler ve numara sayaçları kalır.
+    - "Alles löschen (Neuanfang)": ürünler, kategoriler (Sonstiges hariç) ve filtreler; numaralar yeniden 1'den başlar (deneme verisinden sonra temiz başlangıç). Basılmış etiketler geçersiz olur.
   - Diğer güvenlik işleri (ör. şifre değiştirme, güvenlik anahtarını yenileme).
 - Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
 

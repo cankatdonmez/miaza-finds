@@ -62,3 +62,8 @@ Cankat: ürünleri topluca seçip kategorisini veya diğer özelliklerini deği�
 ayrışınca onlarca ürünü tek tek değiştirmek gerekir). Claude'un önerisi, Cankat onayladı: masaüstünde liste
 görünümünde seçim; alanlar kategori, marka, tür, renk ekle/kaldır, aynı kategorideyse filtre değerleri; kod sorusu bir
 kez; etkisi panelde, onay penceresi yerine "Rückgängig". Dilim 1'de kütüphaneden (adım 7) hemen sonra. → SPEC 6.2.
+
+## D-013 · 02.11.2026 · „Alles löschen“ numaraları 1'den başlatır
+Claude'un önerisi, Cankat onayladı. Deneme verisi temizlendikten sonra gerçek ürünler temiz numaralarla başlasın.
+"Numaralar asla yeniden kullanılmaz" kuralının tek istisnası; bedeli, önceden basılmış etiketlerin geçersiz olması.
+Arayüz bunu silmeden önce yazar ve otomatik yedek alır. "Alle Produkte löschen" sayaçlara dokunmaz. → SPEC 6.2, 6.13.
