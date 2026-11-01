@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>DC test harness</title></head>
+<body style="margin:0">
+<div id="root"></div>
+<script>
+// Yerel test için asgari .dc.html çalıştırıcı (yalnızca mantığı denemek için)
+window.ERRORS = [];
+window.onerror = function (m) { ERRORS.push(String(m)); };
+var file = new URLSearchParams(location.search).get('f') || 'Desktop';
+var comp, tpl, pending = false;
+class DCLogic {
+  constructor(p) { this.props = p || {}; this.state = {}; }
+  setState(p) { var s = typeof p === 'function' ? p(this.state) : p; Object.assign(this.state, s); schedule(); }
+  forceUpdate() { schedule(); }
+}
+function schedule() { if (pending) return; pending = true; setTimeout(function () { pending = false; render(); }, 0); }
+function lookup(path, scope) {
+  path = path.trim();
+  if (path === 'true') return true; if (path === 'false') return false;
+  if (/^-?\d+(\.\d+)?$/.test(path)) return +path;
+  return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, scope);
+}
+var WHOLE = /^\s*\{\{([^}]+)\}\}\s*$/;
+function interp(str, scope) { return str.replace(/\{\{([^}]+)\}\}/g, function (_, p) { var v = lookup(p, scope); return v == null ? '' : v; }); }
+var EV = { onwheel: 'wheel', onclick: 'click', onchange: 'input', onmousedown: 'mousedown', onmousemove: 'mousemove', onmouseup: 'mouseup', onmouseleave: 'mouseleave', onmouseenter: 'mouseenter', ondoubleclick: 'dblclick' };
+function renderNodes(nodes, scope, out) {
+  nodes.forEach(function (n) {
+    if (n.nodeType === 3) { out.push(document.createTextNode(interp(n.nodeValue, scope))); return; }
+    if (n.nodeType !== 1) return;
+    var tag = n.localName;
+    if (tag === 'helmet') return;
+    if (tag === 'sc-if') { if (lookup(n.getAttribute('value').match(WHOLE)[1], scope)) renderNodes(Array.from(n.childNodes), scope, out); return; }
+    if (tag === 'sc-for') {
+      var list = lookup(n.getAttribute('list').match(WHOLE)[1], scope) || [], as = n.getAttribute('as');
+      list.forEach(function (it, i) { var sc = Object.create(scope); sc[as] = it; sc.$index = i; renderNodes(Array.from(n.childNodes), sc, out); });
+      return;
+    }
+    var el = document.createElementNS(n.namespaceURI, n.localName), val;
+    Array.from(n.attributes).forEach(function (a) {
+      if (a.name.indexOf('hint-') === 0) return;
+      var m = a.value.match(WHOLE);
+      if (EV[a.name]) { var fn = m ? lookup(m[1], scope) : null; if (typeof fn === 'function') el.addEventListener(EV[a.name], function (e) { try { fn(e); } catch (err) { ERRORS.push(a.name + ': ' + err.message); console.error(err); } }); return; }
+      var v = m ? lookup(m[1], scope) : interp(a.value, scope);
+      if (a.name === 'value') { val = v; return; }
+      if (v === undefined || v === null || v === false) return;
+      el.setAttribute(a.name, v);
+    });
+    var kids = []; renderNodes(Array.from(n.childNodes), scope, kids); kids.forEach(function (k) { el.appendChild(k); });
+    if (val !== undefined) el.value = val;
+    out.push(el);
+  });
+}
+function render() {
+  try {
+    var vals = comp.renderVals(), out = [];
+    renderNodes(Array.from(tpl.childNodes), vals, out);
+    var root = document.getElementById('root'); root.replaceChildren.apply(root, out);
+  } catch (err) { ERRORS.push('render: ' + err.message); console.error(err); }
+}
+fetch('project/' + file + '.dc.html').then(function (r) { return r.text(); }).then(function (src) {
+  var doc = new DOMParser().parseFromString(src, 'text/html');
+  tpl = doc.querySelector('x-dc');
+  doc.querySelectorAll('helmet style').forEach(function (s) { document.head.appendChild(s.cloneNode(true)); });
+  doc.querySelectorAll('head script[src^="/_blob"]').forEach(function (s) { var t = document.createElement('script'); t.src = s.getAttribute('src'); document.head.appendChild(t); });
+  var code = doc.querySelector('script[data-dc-script]').textContent;
+  var Component = new Function('DCLogic', code + '\n;return Component;')(DCLogic);
+  comp = new Component({});
+  window.comp = comp;
+  render();
+});
+</script>
+</body>
+</html>

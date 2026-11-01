@@ -1,0 +1,2146 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>miaza finds – telefon</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.app{--bg:#F3F4F6;--card:#FFFFFF;--tx:#16181D;--tx2:#5F6672;--tx3:#3A3F47;--line:#E7E9EE;--line2:#E2E5EA;--line3:#C5CAD3;--sep:#EEF0F3;--sunk:#F3F4F6;--sunk2:#E9EBEF;--inv:#16181D;--on-inv:#FFFFFF;--acc:#2F5BEA;--acc-tx:#1E3FB0;--acc-bg:#F5F8FF;--acc-bg2:#E3EAFF;--acc-line:#C7D4FF;--nav:rgba(255,255,255,.97);--toast:#16181D;--in-bg:#DCFCE7;--in-tx:#166534;--out-bg:#FEF3C7;--out-tx:#92400E;--out-bg2:#FFFBEB;--out-line:#FDE68A;--use-bg:#DBEAFE;--use-tx:#1E40AF;--dig-bg:#EDE9FE;--dig-tx:#5B21B6;--danger:#B42318;--danger-line:#F3C3C3;--plan-bg:#FAFAF8;--pr1:#F3E6F1;--pr2:#E6E5F4;--pr3:#E4F1E2;--pvoid:#FFFFFF;--pstroke:#2A2A2A;--unit-tx:#5E1F22;color-scheme:light}
+.app.dark{--bg:#0F1115;--card:#181B21;--tx:#ECEEF2;--tx2:#A0A7B4;--tx3:#C9CED6;--line:#2A2F38;--line2:#323844;--line3:#4A5160;--sep:#23272F;--sunk:#1F232A;--sunk2:#262A32;--inv:#ECEEF2;--on-inv:#0F1115;--acc:#6E8BFF;--acc-tx:#AFC0FF;--acc-bg:#1A2140;--acc-bg2:#1F2A52;--acc-line:#33427A;--nav:rgba(24,27,33,.97);--toast:#2A2F38;--in-bg:#14351F;--in-tx:#86EFAC;--out-bg:#3A2A0B;--out-tx:#FCD34D;--out-bg2:#2A2109;--out-line:#5A4512;--use-bg:#172A4D;--use-tx:#93C5FD;--dig-bg:#2A1F4A;--dig-tx:#C4B5FD;--danger:#FF8A80;--danger-line:#5A2A2A;--plan-bg:#14171C;--pr1:#3B2C3A;--pr2:#2D2C45;--pr3:#263826;--pvoid:#0F1115;--pstroke:#7D8590;--unit-tx:#FFD9DB;color-scheme:dark}
+.app{transition:background .25s,color .25s}
+.wm{display:inline-flex;align-items:baseline;gap:.28em;line-height:1;white-space:nowrap}
+.wm b{font-family:Comfortaa,Inter,sans-serif;font-weight:600;color:var(--tx)}
+.wm i{font-style:normal;font-family:Inter,sans-serif;font-weight:500;font-size:.6em;color:var(--acc);letter-spacing:.01em}
+.splash{position:absolute;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;justify-content:center;animation:splashOut .7s ease forwards;cursor:pointer}
+.splash .wm{animation:splashIn .7s ease forwards}
+@keyframes splashOut{0%,72%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes splashIn{0%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.splash,.splash .wm{animation:none}}
+.scanfx{position:absolute;left:24px;right:24px;top:50%;height:2px;background:#6E8DFF;box-shadow:0 0 12px #6E8DFF;animation:scanl 1.8s ease-in-out infinite alternate}
+@keyframes scanl{from{transform:translateY(-90px)}to{transform:translateY(90px)}}
+a{color:var(--acc)}a:hover{color:var(--acc-tx)}
+.app *{box-sizing:border-box}
+.app button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
+.app input{font:inherit;color:var(--tx)}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ics{width:18px;height:18px}
+.h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin:0;line-height:1.15}
+.sec{font-size:13px;font-weight:600;color:var(--tx2);margin:0 0 8px 4px}
+.card{background: var(--card);border-radius:18px;border:1px solid var(--line)}
+.pad{padding:16px}
+.row{display:flex;align-items:center;gap:12px}
+.list > * + *{border-top:1px solid var(--sep)}
+.lrow{display:flex !important;align-items:center;gap:12px;padding:12px 14px !important;width:100%;min-height:64px}
+.thumb{width:48px;height:48px;border-radius:12px;flex:none;border:1px solid rgba(0,0,0,.06)}
+.rt{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rs{font-size:13px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.rl{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.chip{display:inline-flex !important;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 14px !important;border-radius:999px;background: var(--card) !important;border:1px solid var(--line2) !important;font-size:14px;font-weight:500;white-space:nowrap;flex:none}
+.chip.on{background: var(--inv) !important;color:var(--on-inv) !important;border-color: var(--inv) !important}
+.chip.sm{min-height:32px;padding:0 12px !important;font-size:13px}
+.achip{display:inline-flex !important;align-items:center;gap:6px;min-height:30px;padding:0 8px 0 12px !important;border-radius:999px;background:var(--acc-bg2) !important;color:var(--acc-tx) !important;font-size:13px;font-weight:600;white-space:nowrap;flex:none}
+.badge{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;flex:none}
+.btn{display:flex !important;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:14px;font-weight:600;font-size:16px;width:100%;text-align:center !important}
+.btn.pri{background:var(--acc) !important;color:#fff !important}
+.btn.ghost{background: var(--card) !important;border:1px solid var(--line2) !important}
+.btn.danger{background: var(--card) !important;border:1px solid var(--danger-line) !important;color:var(--danger) !important}
+.btn.half{height:46px;font-size:15px}
+.iconbtn{width:44px;height:44px;border-radius:12px;display:flex !important;align-items:center;justify-content:center;background: var(--card) !important;border:1px solid var(--line) !important;flex:none}
+.mini{width:34px;height:34px;border-radius:10px;display:flex !important;align-items:center;justify-content:center;background:var(--sunk) !important;flex:none;color:var(--tx3)}
+.muted{color:var(--tx2)}
+.small{font-size:13px}
+.searchbox{display:flex !important;align-items:center;gap:10px;height:48px;padding:0 14px !important;border-radius:14px;background: var(--card) !important;border:1px solid var(--line2) !important;color:var(--tx2);width:100%}
+.searchbox input{border:0;outline:0;flex:1;font-size:16px;background:transparent;min-width:0}
+.seg{display:flex;background:var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;height:36px;border-radius:9px;font-size:14px;font-weight:600;text-align:center !important;color:var(--tx2) !important}
+.seg button.on{background: var(--card) !important;color:var(--tx) !important;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.hscroll{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px;scrollbar-width:none}
+.wrap{display:flex;flex-wrap:wrap;gap:8px}
+.qr{display:grid;grid-template-columns:repeat(15,minmax(0,1fr))}
+.qr i{display:block;aspect-ratio:1}
+.field{display:flex;flex-direction:column;gap:6px}
+.lab{font-size:13px;font-weight:600;color:var(--tx2)}
+.inp{height:48px;border-radius:12px;border:1px solid var(--line2);background: var(--card);padding:0 14px;font-size:16px;width:100%;outline:0}
+.inp:focus{border-color:var(--acc)}
+.inp.sm{height:42px;font-size:15px}
+.irow{display:flex !important;justify-content:space-between;align-items:center;gap:16px;padding:13px 16px !important;font-size:15px;width:100%}
+.tab{display:flex !important;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--tx2) !important;height:100%;text-align:center !important}
+.tab.on{color:var(--acc) !important}
+.check{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--line3);display:flex;align-items:center;justify-content:center;flex:none}
+.check.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.stat{padding:14px 16px !important;display:flex !important;flex-direction:column;gap:2px;width:100%}
+.statn{font-size:28px;font-weight:700;letter-spacing:-0.02em}
+.gcard{display:flex !important;flex-direction:column;gap:2px;width:100%;min-width:0}
+.gname{font-size:14px;font-weight:600;line-height:1.25;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsub{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fsec{display:flex;flex-direction:column;gap:10px;padding:16px 0;border-top:1px solid var(--sep)}
+.flab{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.ftype{font-size:11px;font-weight:600;color:var(--tx2);background:var(--sunk);padding:2px 7px;border-radius:6px}
+.swatch{width:36px;height:36px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.12)}
+.tcard{display:flex !important;flex-direction:column;gap:4px;padding:14px 16px !important;border-radius:16px;background: var(--card) !important;border:1.5px solid var(--line2) !important;width:100%}
+.tcard.on{border-color:var(--acc) !important;background:var(--acc-bg) !important}
+.ext{width:40px;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex:none}
+.pr1{fill:var(--pr1);stroke:var(--pstroke);stroke-width:.8}
+.pr2{fill:var(--pr2);stroke:var(--pstroke);stroke-width:.8}
+.pr3{fill:var(--pr3);stroke:var(--pstroke);stroke-width:.8}
+.pvoid{fill:var(--pvoid);stroke:var(--pstroke);stroke-width:.8}
+.pstair{fill:none;stroke:#A3A8B0;stroke-width:.6}
+.pbar{fill:var(--pstroke)}
+.unit{position:absolute;transition:background .25s}
+.ulab{position:absolute;transform:translate(-50%,-50%);pointer-events:none;font-weight:600;white-space:nowrap;transition:color .25s}
+.rlab{position:absolute;pointer-events:none;font-weight:600;letter-spacing:.08em;color:var(--tx3)}
+.oc{position:absolute;display:flex !important;flex-direction:column;gap:3px;padding:4px !important;background: var(--card) !important;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .6s cubic-bezier(.2,.9,.25,1.12),opacity .35s,box-shadow .3s}
+.oc:hover{box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.ocn{font-size:8.5px;font-weight:600;line-height:1.15;max-height:2.3em;overflow:hidden}
+.cz{position:absolute;border-radius:4px;transition:background .2s}
+.cz:hover{background:rgba(255,255,255,.22) !important}
+.spot{position:absolute;border-radius:6px;pointer-events:none;transition:left .45s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.pulse::after{content:'';position:absolute;inset:-2px;border-radius:8px;border:2px solid var(--acc);animation:pl 1.6s ease-out infinite}
+@keyframes pl{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .8s linear infinite}
+.pill{position:absolute;pointer-events:none;font-size:9px;font-weight:700;color:#fff;padding:2px 5px;border-radius:5px;transition:opacity .3s,background .3s;white-space:nowrap}
+.dot{position:absolute;width:7px;height:7px;border-radius:50%;background: var(--card);border:1.5px solid var(--acc)}
+.fcard{position:absolute;transition:transform .55s cubic-bezier(.2,.9,.25,1.1),opacity .3s}
+.fin{display:flex;flex-direction:column;gap:5px;padding:6px;background: var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.14);transition:transform .2s;width:100%;height:100%}
+.fcard:hover .fin{transform:translateY(-10px)}
+.fn{font-size:11px;font-weight:600;line-height:1.2;max-height:2.4em;overflow:hidden}
+.fc{font-size:10px;color:var(--tx2);font-weight:500}
+</style>
+</helmet>
+<div class="{{appCls}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); color: var(--tx); font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
+
+<div style="flex: 1; overflow-y: auto; overflow-x: hidden">
+
+<!-- KÜTÜPHANE -->
+<sc-if value="{{isLib}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 20px 16px 110px; display: flex; flex-direction: column; gap: 14px">
+  <span class="wm" style="font-size: 17px; margin: 0 0 -4px 2px"><b>miaza</b><i>finds</i></span>
+  <div class="row" style="justify-content: space-between; align-items: flex-end">
+    <div><h1 class="h1">Kütüphane</h1><p class="muted small" style="margin: 4px 0 0">{{libCount}}</p></div>
+    <button class="iconbtn" aria-label="{{viewToggleLabel}}" onClick="{{toggleView}}">
+      <sc-if value="{{isGrid}}" hint-placeholder-val="{{ true }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></sc-if>
+      <sc-if value="{{isList}}" hint-placeholder-val="{{ false }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></sc-if>
+    </button>
+  </div>
+  <div class="row" style="gap: 8px">
+    <label class="searchbox" style="flex: 1"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Kütüphanede ara" placeholder="Ara: isim, marka, seri, kod…" value="{{q}}" onChange="{{onQ}}"></label>
+    <button onClick="{{openFilters}}" aria-label="Filtreler" style="height: 48px; padding: 0 14px; border-radius: 14px; background: var(--inv); color: var(--on-inv); display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; flex: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtre<sc-if value="{{hasActive}}" hint-placeholder-val="{{ false }}"><span style="min-width: 20px; height: 20px; border-radius: 10px; background: var(--acc); font-size: 12px; display: flex; align-items: center; justify-content: center; padding: 0 5px">{{activeCount}}</span></sc-if></button>
+  </div>
+  <div class="seg">
+    <button class="{{segAll}}" onClick="{{setAll}}">Tümü</button>
+    <button class="{{segFiz}}" onClick="{{setFiz}}">Fiziki</button>
+    <button class="{{segDij}}" onClick="{{setDij}}">Dijital</button>
+  </div>
+  <div class="hscroll">
+    <sc-for list="{{catChips}}" as="c" hint-placeholder-count="6">
+    <button class="chip {{c.cls}}" onClick="{{c.pick}}">{{c.name}}</button>
+    </sc-for>
+  </div>
+  <sc-if value="{{hasActiveChips}}" hint-placeholder-val="{{ false }}">
+  <div class="wrap">
+    <sc-for list="{{activeChips}}" as="c" hint-placeholder-count="2">
+    <button class="achip" onClick="{{c.remove}}" aria-label="{{c.aria}}">{{c.label}}<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </sc-for>
+    <button class="achip" style="background: transparent !important; color: var(--tx2) !important" onClick="{{clearFilters}}">Hepsini temizle</button>
+  </div>
+  </sc-if>
+  <sc-if value="{{showGrid}}" hint-placeholder-val="{{ true }}">
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+    <button class="gcard" onClick="{{r.open}}">
+      <div style="{{r.imgSt}}">
+        <sc-if value="{{r.hasBadge}}" hint-placeholder-val="{{ false }}"><span class="badge" style="{{r.gBadgeSt}}">{{r.badge}}</span></sc-if>
+      </div>
+      <span class="gname">{{r.name}}</span>
+      <span class="gsub">{{r.brand}} · {{r.catShort}}</span>
+      <span class="gsub" style="color: var(--tx); font-weight: 500">{{r.price}}</span>
+    </button>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{showList}}" hint-placeholder-val="{{ false }}">
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+    <button class="lrow" onClick="{{r.open}}">
+      <div class="thumb" style="{{r.thumbSt}}"></div>
+      <div style="flex: 1; min-width: 0"><div class="rt">{{r.name}}</div><div class="rs">{{r.sub}}</div><div class="rl">{{r.loc}}</div></div>
+      <span class="badge" style="{{r.badgeSt}}">{{r.badge}}</span>
+    </button>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
+  <div class="card pad" style="text-align: center; padding: 32px 16px">
+    <div style="font-weight: 600">Sonuç yok</div>
+    <div class="muted small" style="margin-top: 4px">Aramayı veya filtreleri değiştir.</div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- ÜRÜN DETAYI -->
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 14px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span style="font-weight: 600; font-size: 15px">{{d.code}}</span>
+    <button class="iconbtn" aria-label="Düzenle" onClick="{{d.edit}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button>
+  </div>
+  <div style="{{d.heroSt}}"></div>
+  <div>
+    <h1 style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin: 0; line-height: 1.2">{{d.name}}</h1>
+    <p class="muted" style="margin: 4px 0 0; font-size: 15px">{{d.brand}} · {{d.catName}}</p>
+    <div class="row" style="gap: 6px; margin-top: 10px"><span class="badge" style="{{d.typeSt}}">{{d.typeLabel}}</span><span class="badge" style="{{d.badgeSt}}">{{d.badge}}</span></div>
+  </div>
+  <div class="row" style="gap: 8px">
+    <button class="btn ghost half" onClick="{{d.openCollect}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>{{d.collectLabel}}</button>
+    <sc-if value="{{d.hasLink}}" hint-placeholder-val="{{ true }}"><button class="btn ghost half" onClick="{{d.openLink}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Ürün sayfası</button></sc-if>
+  </div>
+  <sc-if value="{{d.isOut}}" hint-placeholder-val="{{ false }}">
+  <div class="card pad row" style="background: var(--out-bg2); border-color: var(--out-line); align-items: flex-start">
+    <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--out-bg); color: var(--out-tx); display: flex; align-items: center; justify-content: center; flex: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+    <div><div style="font-weight: 600">{{d.outTitle}}</div><div class="muted small" style="margin-top: 2px">{{d.outSub}}</div></div>
+  </div>
+  </sc-if>
+  <sc-if value="{{d.isPhysical}}" hint-placeholder-val="{{ true }}">
+  <div class="card" style="padding: 12px; display: flex; gap: 14px; align-items: center">
+    <div style="position: relative; width: 64px; height: 96px; border-radius: 10px; overflow: hidden; flex: none; background: #ddd">
+      <img src="/_blob/1b9d655cf9924d3ccaeda90a3bde37f5" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+      <div style="{{d.miniBoxSt}}"></div>
+    </div>
+    <div style="flex: 1; min-width: 0">
+      <div class="muted small">Olması gereken yer</div>
+      <div style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--acc); line-height: 1.15; margin-top: 2px">{{d.zone}}</div>
+      <div class="muted small" style="margin-top: 2px">{{d.zoneSub}}</div>
+      <button class="chip sm" style="margin-top: 8px" onClick="{{d.locate}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Ofiste göster</button>
+    </div>
+  </div>
+  <sc-if value="{{d.isOut}}" hint-placeholder-val="{{ false }}">
+  <button class="btn pri" onClick="{{d.returnIt}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>Yerine koy</button>
+  </sc-if>
+  <sc-if value="{{d.isIn}}" hint-placeholder-val="{{ true }}">
+  <button class="btn pri" onClick="{{d.take}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Ürünü al</button>
+  </sc-if>
+  </sc-if>
+
+  <div class="card pad row" style="justify-content: space-between">
+    <div>
+      <div class="muted small">Fiyat</div>
+      <div style="font-size: 20px; font-weight: 700; margin-top: 2px">{{d.price}}</div>
+      <div class="muted" style="font-size: 12px; margin-top: 2px">{{d.priceDate}}</div>
+    </div>
+    <button class="chip sm" onClick="{{d.editPrice}}">{{d.priceBtn}}</button>
+  </div>
+
+  <sc-if value="{{d.hasAttrs}}" hint-placeholder-val="{{ true }}">
+  <div>
+    <p class="sec">Özellikler</p>
+    <div class="card list" style="overflow: hidden">
+      <sc-for list="{{d.attrs}}" as="f" hint-placeholder-count="4">
+      <div class="irow"><span class="muted">{{f.k}}</span><span style="font-weight: 500; text-align: right">{{f.v}}</span></div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px">
+    <div class="row" style="justify-content: space-between"><span class="muted small">Renkler</span><span class="muted" style="font-size: 11px">fotoğraftan otomatik</span></div>
+    <div class="row" style="gap: 10px">
+      <sc-for list="{{d.colors}}" as="c" hint-placeholder-count="2">
+      <button class="row" style="gap: 8px" onClick="{{c.search}}"><span class="swatch" style="{{c.st}}"></span><span style="font-size: 14px; font-weight: 500">{{c.name}}</span></button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div>
+    <p class="sec">Dokümanlar</p>
+    <div class="card list" style="overflow: hidden">
+      <sc-for list="{{d.docs}}" as="f" hint-placeholder-count="2">
+      <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+        <div class="row">
+          <span class="ext" style="{{f.extSt}}">{{f.ext}}</span>
+          <div style="flex: 1; min-width: 0"><div class="rt" style="font-size: 14px">{{f.name}}</div><div class="rl">{{f.path}}</div></div>
+        </div>
+        <div class="row" style="gap: 8px">
+          <button class="chip sm" onClick="{{f.open}}">Aç</button>
+          <button class="chip sm" onClick="{{f.reveal}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>Klasörde göster</button>
+          <button class="mini" aria-label="Bağlantıyı kaldır" onClick="{{f.unlink}}" style="margin-left: auto"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+      </div>
+      </sc-for>
+      <button class="irow" style="color: var(--acc); font-weight: 600; justify-content: flex-start" onClick="{{d.linkDoc}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Sunucudan doküman bağla</button>
+    </div>
+    <p class="muted" style="font-size: 12px; margin: 6px 4px 0; line-height: 1.45">Dosyalar kopyalanmaz; sunucudaki yerinden açılır.</p>
+  </div>
+
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{d.info}}" as="f" hint-placeholder-count="4">
+    <div class="irow"><span class="muted">{{f.k}}</span><span style="{{f.st}}">{{f.v}}</span></div>
+    </sc-for>
+  </div>
+  <sc-if value="{{d.isPhysical}}" hint-placeholder-val="{{ true }}">
+  <div class="card pad">
+    <p class="sec" style="margin-left: 0">QR etiketi</p>
+    <div class="row" style="gap: 16px; align-items: center">
+      <div style="width: 128px; padding: 10px 8px; border: 1px dashed #C5CAD3; border-radius: 8px; background: #fff; color: #16181D; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none">
+        <div style="font-size: 11px; font-weight: 700; text-align: center; line-height: 1.2">{{d.name}}</div>
+        <div class="qr" style="width: 92px"><sc-for list="{{d.qr}}" as="q" hint-placeholder-count="225"><i style="{{q.st}}"></i></sc-for></div>
+        <div style="font-size: 9px; font-weight: 600; letter-spacing: 0.06em">{{d.code}}</div>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 10px">
+        <p class="muted small" style="margin: 0; line-height: 1.45">Etikette konum yazmaz. Okutunca güncel yeri uygulamada gösterilir.</p>
+        <button class="chip {{d.labelCls}}" onClick="{{d.addLabel}}">{{d.labelBtn}}</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{d.isDigital}}" hint-placeholder-val="{{ false }}">
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="font-weight: 600">Numunesi ofise geldi mi?</div>
+    <div class="muted small" style="line-height: 1.45">Fiziki kayda çevirince bir bölme seçersin ve QR etiketi hazırlanır. Bilgiler, fiyat ve dokümanlar aynen kalır.</div>
+    <button class="btn ghost" onClick="{{d.toPhysical}}">Fiziki kayda çevir</button>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- YENİ ÜRÜN -->
+<sc-if value="{{isAdd}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 18px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Kapat" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <span style="font-weight: 600; font-size: 16px">Yeni ürün</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div class="seg">
+    <button class="{{addFizCls}}" onClick="{{addSetFiz}}">Fiziki ürün</button>
+    <button class="{{addDijCls}}" onClick="{{addSetDij}}">Sadece dijital</button>
+  </div>
+  <div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 10px">
+    <span class="lab">Linkten doldur</span>
+    <div class="row" style="gap: 8px">
+      <input class="inp sm" style="flex: 1" aria-label="Ürün linki" placeholder="Ürün sayfasının linkini yapıştır" value="{{add.link}}" onChange="{{onAddLink}}">
+      <button onClick="{{fetchLink}}" style="height: 42px; padding: 0 16px; border-radius: 12px; background: var(--inv); color: var(--on-inv); font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; flex: none"><sc-if value="{{add.fetching}}" hint-placeholder-val="{{ false }}"><span class="spin"></span></sc-if>Getir</button>
+    </div>
+    <span class="muted" style="font-size: 12px">Ad, marka, görsel ve varsa fiyat sayfadan alınır. Sonra kontrol edersin.</span>
+  </div>
+  <div class="row" style="gap: 12px; align-items: stretch">
+    <div style="{{addImgSt}}"></div>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+      <label class="chip sm" style="cursor: pointer"><input type="file" accept="image/*" capture="environment" onChange="{{onPhotoFile}}" style="display: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Fotoğraf çek</label>
+      <label class="chip sm" style="cursor: pointer"><input type="file" accept="image/*" onChange="{{onPhotoFile}}" style="display: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>Görsel seç</label>
+      <div class="muted" style="font-size: 12px">Renkler</div>
+      <div class="row" style="gap: 6px"><sc-for list="{{addColors}}" as="c" hint-placeholder-count="2"><span class="swatch" style="{{c.st}}; width: 24px; height: 24px"></span></sc-for><span class="muted" style="font-size: 11px">{{addColorsNote}}</span></div>
+    </div>
+  </div>
+  <div class="field"><label class="lab" for="f-name">Ürün adı</label><input id="f-name" class="inp" placeholder="ör. Calacatta Oro Porselen" value="{{add.name}}" onChange="{{onAddName}}"></div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div class="field"><label class="lab" for="f-brand">Marka</label><input id="f-brand" class="inp" placeholder="ör. Florim" value="{{add.brand}}" onChange="{{onAddBrand}}"></div>
+    <div class="field"><label class="lab" for="f-size">Ebat</label><input id="f-size" class="inp" placeholder="ör. 60 × 120 cm" value="{{add.size}}" onChange="{{onAddSize}}"></div>
+  </div>
+  <div class="field">
+    <span class="lab">Kategori</span>
+    <div class="wrap"><sc-for list="{{addCats}}" as="c" hint-placeholder-count="6"><button class="chip sm {{c.cls}}" onClick="{{c.pick}}">{{c.name}}</button></sc-for></div>
+  </div>
+  <sc-if value="{{hasAddFields}}" hint-placeholder-val="{{ true }}">
+  <div class="card" style="padding: 4px 14px">
+    <sc-for list="{{addFields}}" as="f" hint-placeholder-count="3">
+    <div class="fsec" style="{{f.secSt}}">
+      <div class="flab" style="font-size: 14px">{{f.name}} <span class="ftype">{{f.typeName}}</span></div>
+      <sc-if value="{{f.isOpts}}" hint-placeholder-val="{{ true }}"><div class="wrap"><sc-for list="{{f.opts}}" as="o" hint-placeholder-count="4"><button class="chip sm {{o.cls}}" onClick="{{o.pick}}">{{o.name}}</button></sc-for></div></sc-if>
+      <sc-if value="{{f.isRange}}" hint-placeholder-val="{{ false }}"><div class="row" style="gap: 8px"><input class="inp sm" style="width: 120px" inputmode="decimal" aria-label="{{f.name}}" value="{{f.val}}" onChange="{{f.onVal}}"><span class="muted">{{f.unit}}</span></div></sc-if>
+      <sc-if value="{{f.isBool}}" hint-placeholder-val="{{ false }}"><div class="seg" style="width: 180px"><button class="{{f.yesCls}}" onClick="{{f.setYes}}">Var</button><button class="{{f.noCls}}" onClick="{{f.setNo}}">Yok</button></div></sc-if>
+      <sc-if value="{{f.isText}}" hint-placeholder-val="{{ false }}"><input class="inp sm" aria-label="{{f.name}}" value="{{f.val}}" onChange="{{f.onVal}}"></sc-if>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+  <div class="field">
+    <span class="lab">Fiyat</span>
+    <div class="row" style="gap: 8px">
+      <input class="inp" style="width: 130px" inputmode="decimal" aria-label="Fiyat" placeholder="0,00" value="{{add.price}}" onChange="{{onAddPrice}}"><span style="font-weight: 600">€ /</span>
+      <div class="hscroll" style="margin: 0; padding: 0; flex: 1"><sc-for list="{{addUnits}}" as="u" hint-placeholder-count="4"><button class="chip sm {{u.cls}}" onClick="{{u.pick}}">{{u.name}}</button></sc-for></div>
+    </div>
+    <span class="muted" style="font-size: 12px">Kaydedince bugünün tarihi fiyatın yanına yazılır.</span>
+  </div>
+  <sc-if value="{{addIsFiz}}" hint-placeholder-val="{{ true }}">
+  <div class="field">
+    <span class="lab">Konum · ünite ve bölme seç</span>
+    <div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 12px">
+      <div class="hscroll" style="margin: 0; padding: 0"><sc-for list="{{addUnitsLoc}}" as="c" hint-placeholder-count="8"><button class="chip sm {{c.cls}}" style="min-width: 52px" onClick="{{c.pick}}">{{c.name}}</button></sc-for></div>
+      <div class="row" style="align-items: flex-start; gap: 14px">
+        <div style="position: relative; width: 150px; aspect-ratio: 2 / 3; border-radius: 10px; overflow: hidden; flex: none; background: #ddd">
+          <img src="/_blob/1b9d655cf9924d3ccaeda90a3bde37f5" alt="Ünite fotoğrafı" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+          <sc-for list="{{addComps}}" as="c" hint-placeholder-count="18"><button class="cz" aria-label="{{c.code}}" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 4px">
+          <span class="muted small">Seçilen bölme</span>
+          <span style="font-size: 26px; font-weight: 700; color: var(--acc); letter-spacing: -0.02em">{{addZone}}</span>
+          <span class="muted small">{{addZoneSub}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  <button class="btn pri" onClick="{{saveAdd}}">{{saveLabel}}</button>
+</div>
+</sc-if>
+
+<!-- QR OKUT -->
+<sc-if value="{{isScan}}" hint-placeholder-val="{{ false }}">
+<div style="min-height: 844px; background: #0E0F12; color: #fff; padding: 16px; display: flex; flex-direction: column; gap: 24px">
+  <div class="row" style="justify-content: space-between">
+    <button aria-label="Kapat" onClick="{{back}}" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <span style="font-weight: 600">QR okut</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px">
+    <div style="width: 250px; height: 250px; position: relative; border-radius: 28px; background: radial-gradient(circle at 50% 45%, #2A2D33, #15171B 70%)">
+      <div style="position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-left: 4px solid #fff; border-top: 4px solid #fff; border-top-left-radius: 28px"></div>
+      <div style="position: absolute; right: 0; top: 0; width: 46px; height: 46px; border-right: 4px solid #fff; border-top: 4px solid #fff; border-top-right-radius: 28px"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 46px; height: 46px; border-left: 4px solid #fff; border-bottom: 4px solid #fff; border-bottom-left-radius: 28px"></div>
+      <div style="position: absolute; right: 0; bottom: 0; width: 46px; height: 46px; border-right: 4px solid #fff; border-bottom: 4px solid #fff; border-bottom-right-radius: 28px"></div>
+      <div class="scanfx"></div>
+    </div>
+    <p style="margin: 0; font-size: 15px; color: rgba(255,255,255,.75); text-align: center; line-height: 1.5">Ürün ya da raf etiketini<br>çerçeveye hizala</p>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px">
+    <p style="margin: 0 0 2px 4px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.6)">DEMO – bir tarama dene</p>
+    <button onClick="{{scanProduct}}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.1); color: #fff; width: 100%">
+      <div class="thumb" style="{{scanThumb}}"></div>
+      <div style="flex: 1"><div style="font-weight: 600">Ürün etiketi · yerine koy</div><div style="font-size: 13px; color: rgba(255,255,255,.65)">FL-003-087 Terrazzo Grigio</div></div>
+    </button>
+    <button onClick="{{scanShelf}}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.1); color: #fff; width: 100%">
+      <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; flex: none; font-weight: 700; font-size: 13px">2.2.5</div>
+      <div style="flex: 1"><div style="font-weight: 600">Raf etiketi</div><div style="font-size: 13px; color: rgba(255,255,255,.65)">Bu bölmede ne olmalı?</div></div>
+    </button>
+  </div>
+</div>
+</sc-if>
+
+<!-- OFİS -->
+<sc-if value="{{isOffice}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 20px 16px 110px; display: flex; flex-direction: column; gap: 12px">
+
+  <sc-if value="{{o.isPlan}}" hint-placeholder-val="{{ true }}">
+  <div class="row" style="justify-content: space-between; align-items: flex-end">
+    <h1 class="h1">Ofis</h1>
+    <span class="muted small">Zemin kat · Triester Str.</span>
+  </div>
+  <div class="hscroll">
+    <sc-for list="{{o.roomChips}}" as="c" hint-placeholder-count="4"><button class="chip {{c.cls}}" onClick="{{c.pick}}">{{c.name}}</button></sc-for>
+  </div>
+  <div style="{{o.vpSt}}" onMouseLeave="{{o.onLeave}}">
+    <div style="{{o.layerSt}}">
+      <svg viewBox="80 60 1040 640" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%" aria-hidden="true">
+        <polygon class="pr1" points="95,449 250,319 270,343 422,221 576,405 667,405 667,670 351,670 288,596 244,632"/>
+        <polygon class="pr2" points="666,222 729,170 729,76 859,76 859,369 781,369 781,399 755,399 755,404 691,405 691,399 684,399 684,369 667,369"/>
+        <polygon class="pr3" points="667,405 913,404 913,383 1099,383 1099,512 1079,512 1079,555 1099,555 1099,670 820,670 820,686 667,686"/>
+        <polygon class="pvoid" points="409,485 451,450 496,505 454,540"/>
+        <polygon class="pstair" points="195,413 227,451 320,374 290,336"/>
+        <line class="pstair" x1="211" y1="432" x2="305" y2="355"/>
+        <polygon class="pbar" points="230,456 329,375 325,371 227,451"/>
+      </svg>
+      <span class="rlab" style="{{o.rl1}}">WORKSPACE</span>
+      <span class="rlab" style="{{o.rl2}}">LAGER</span>
+      <span class="rlab" style="{{o.rl3}}">MEETING</span>
+      <sc-for list="{{o.units}}" as="u" hint-placeholder-count="20">
+      <button class="unit" aria-label="{{u.aria}}" style="{{u.st}}" onClick="{{u.pick}}" onMouseEnter="{{u.enter}}" onMouseLeave="{{u.leave}}"></button>
+      </sc-for>
+      <sc-for list="{{o.units}}" as="u" hint-placeholder-count="20">
+      <span class="ulab" style="{{u.labSt}}">{{u.code}}</span>
+      </sc-for>
+    </div>
+    <sc-for list="{{o.orbit}}" as="c" hint-placeholder-count="0">
+    <button class="oc" aria-label="{{c.name}}" style="{{c.st}}" onClick="{{c.open}}"><span style="{{c.imgSt}}"></span><span class="ocn">{{c.name}}</span></button>
+    </sc-for>
+    <sc-if value="{{o.showHint}}" hint-placeholder-val="{{ true }}">
+    <span style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(22,24,29,.82); color: #fff; white-space: nowrap; pointer-events: none">Bir üniteye dokun</span>
+    </sc-if>
+  </div>
+  <sc-if value="{{o.panelBrowse}}" hint-placeholder-val="{{ false }}">
+  <div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div class="row" style="justify-content: space-between">
+      <div><div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em">Ünite {{o.unitCode}}</div><div class="muted small">{{o.unitSub}}</div></div>
+      <button class="iconbtn" aria-label="Kapat" onClick="{{o.close}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <button class="btn pri" onClick="{{o.openPhoto}}">Fotoğrafta aç</button>
+  </div>
+  </sc-if>
+  <sc-if value="{{o.panelLocate}}" hint-placeholder-val="{{ false }}">
+  <div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div class="row">
+      <div class="thumb" style="{{o.fItem.thumbSt}}"></div>
+      <div style="flex: 1; min-width: 0"><div class="rt">{{o.fItem.name}}</div><div class="rs">{{o.locateSub}}</div></div>
+      <span style="font-size: 22px; font-weight: 700; color: var(--acc)">{{o.fItem.zone}}</span>
+    </div>
+    <button class="btn pri" onClick="{{o.openPhoto}}">{{o.locateBtn}}</button>
+  </div>
+  </sc-if>
+  <sc-if value="{{o.panelNone}}" hint-placeholder-val="{{ true }}">
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{o.roomRows}}" as="r" hint-placeholder-count="3">
+    <button class="lrow" style="min-height: 56px" onClick="{{r.pick}}">
+      <span style="{{r.dotSt}}"></span>
+      <div style="flex: 1; min-width: 0"><div class="rt">{{r.name}}</div><div class="rs">{{r.sub}}</div></div>
+      <svg class="ic ics muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+    </sc-for>
+  </div>
+  </sc-if>
+  </sc-if>
+
+  <sc-if value="{{o.isPhoto}}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Plana dön" onClick="{{o.toPlan}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div style="text-align: center"><div style="font-size: 18px; font-weight: 700">Ünite {{o.unitCode}}</div><div class="muted" style="font-size: 12px">{{o.unitSub}}</div></div>
+    <button class="iconbtn" aria-label="Alanları düzenle" onClick="{{o.toggleEdit}}" style="{{o.editBtnSt}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button>
+  </div>
+  <sc-if value="{{o.isReturn}}" hint-placeholder-val="{{ false }}">
+  <div class="card row" style="padding: 10px 12px; border-color: var(--acc-line); background: var(--acc-bg)">
+    <div class="thumb" style="{{o.fItem.thumbSt}}"></div>
+    <div style="flex: 1; min-width: 0"><div class="rt">{{o.fItem.name}}</div><div class="rs" style="color: var(--acc); font-weight: 600">Bunu {{o.fItem.zone}} bölmesine koy</div></div>
+  </div>
+  </sc-if>
+  <div style="{{o.photoSt}}" onMouseLeave="{{o.onLeave}}">
+    <img src="/_blob/1b9d655cf9924d3ccaeda90a3bde37f5" alt="Ünite fotoğrafı" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+    <sc-for list="{{o.comps}}" as="c" hint-placeholder-count="18">
+    <button class="cz" aria-label="{{c.aria}}" style="{{c.st}}" onClick="{{c.pick}}" onMouseEnter="{{c.enter}}" onMouseLeave="{{c.leave}}">
+      <sc-if value="{{c.edit}}" hint-placeholder-val="{{ false }}">
+      <span class="dot" style="left: -4px; top: -4px"></span><span class="dot" style="right: -4px; top: -4px"></span><span class="dot" style="left: -4px; bottom: -4px"></span><span class="dot" style="right: -4px; bottom: -4px"></span>
+      </sc-if>
+    </button>
+    </sc-for>
+    <div class="{{o.spotCls}}" style="{{o.spotSt}}"></div>
+    <sc-for list="{{o.comps}}" as="c" hint-placeholder-count="18">
+    <span class="pill" style="{{c.pillSt}}">{{c.pill}}</span>
+    </sc-for>
+  </div>
+  <sc-if value="{{o.editMode}}" hint-placeholder-val="{{ false }}">
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px; border-color: var(--acc-line); background: var(--acc-bg)">
+    <div style="font-size: 14px; line-height: 1.5">Ünite ve bölme çizimi masaüstünde yapılır: Ayarlar › Ofis planı ve raflar. Telefonda ünitenin fotoğrafını çekip yükleyebilirsin; bölmeler numaralanır ({{o.unitCode}}.1, {{o.unitCode}}.2 …).</div>
+    <div class="wrap">
+      <button class="chip sm" onClick="{{editAction}}">+ Alan çiz</button>
+      <button class="chip sm" onClick="{{editAction}}">Fotoğrafı değiştir</button>
+      <button class="chip sm" onClick="{{editAction}}">Yeniden numarala</button>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{o.hasComp}}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="justify-content: space-between; padding: 4px 4px 0">
+    <div><span style="font-size: 22px; font-weight: 700; color: var(--acc)">{{o.compCode}}</span><span class="muted" style="margin-left: 8px; font-size: 14px">{{o.compKind}}</span></div>
+    <span class="muted small">{{o.compCount}}</span>
+  </div>
+  <div style="{{o.fanAreaSt}}">
+    <sc-for list="{{o.fan}}" as="c" hint-placeholder-count="3">
+    <button class="fcard" aria-label="{{c.name}}" style="{{c.st}}" onClick="{{c.open}}"><span class="fin" style="{{c.inSt}}"><span style="{{c.imgSt}}"></span><span class="fn">{{c.name}}</span><span class="fc">{{c.code}}</span></span></button>
+    </sc-for>
+    <sc-if value="{{o.fanEmpty}}" hint-placeholder-val="{{ false }}">
+    <div class="card pad muted small" style="text-align: center">Bu bölme boş.</div>
+    </sc-if>
+  </div>
+  </sc-if>
+  <sc-if value="{{o.noComp}}" hint-placeholder-val="{{ true }}">
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px">
+    <div class="muted small">Bir bölmeye dokun. Dolu bölmeler:</div>
+    <div class="wrap">
+      <sc-for list="{{o.filled}}" as="c" hint-placeholder-count="4"><button class="chip sm" onClick="{{c.pick}}">{{c.label}}</button></sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{o.isReturn}}" hint-placeholder-val="{{ false }}">
+  <button class="btn pri" onClick="{{o.confirmReturn}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg>{{o.returnLabel}}</button>
+  </sc-if>
+  <sc-if value="{{o.isShelf}}" hint-placeholder-val="{{ false }}">
+  <button class="btn ghost" onClick="{{o.bulkPlace}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg>Bu bölmeye ürün yerleştir</button>
+  </sc-if>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- KOLEKSİYONLAR -->
+<sc-if value="{{isCols}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 20px 16px 110px; display: flex; flex-direction: column; gap: 14px">
+  <div class="row" style="justify-content: space-between; align-items: flex-end">
+    <div><h1 class="h1">Koleksiyonlar</h1><p class="muted small" style="margin: 4px 0 0">Proje malzeme listeleri ve moodboard'lar</p></div>
+    <button class="iconbtn" aria-label="Yeni koleksiyon" onClick="{{newCol}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <sc-for list="{{colCards}}" as="c" hint-placeholder-count="3">
+  <button class="card" style="padding: 12px; display: flex; gap: 14px; align-items: center; width: 100%" onClick="{{c.open}}">
+    <div style="display: grid; grid-template-columns: repeat(2, 36px); grid-template-rows: repeat(2, 36px); gap: 3px; flex: none; border-radius: 12px; overflow: hidden">
+      <sc-for list="{{c.thumbs}}" as="t" hint-placeholder-count="4"><span style="{{t.st}}"></span></sc-for>
+    </div>
+    <div style="flex: 1; min-width: 0">
+      <div class="rt">{{c.name}}</div>
+      <div class="rs">{{c.sub}}</div>
+      <div style="font-size: 14px; font-weight: 600; margin-top: 4px">{{c.total}}</div>
+    </div>
+    <svg class="ic ics muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+  </button>
+  </sc-for>
+</div>
+</sc-if>
+
+<!-- KOLEKSİYON DETAYI -->
+<sc-if value="{{isColDetail}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 14px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span style="font-weight: 600; font-size: 15px">Koleksiyon</span>
+    <button class="iconbtn" aria-label="Ürün ekle" onClick="{{cd.addItems}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <sc-if value="{{cd.busy}}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--use-bg); color: var(--use-tx); align-items: flex-start">
+    <svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    <div style="font-size: 13px; line-height: 1.45"><b>Kullanımda</b> · {{cd.busyText}}</div>
+  </div>
+  </sc-if>
+  <div style="{{cd.lockSt}}">
+    <input aria-label="Koleksiyon adı" value="{{cd.name}}" onChange="{{cd.onName}}" style="font-size: 26px; font-weight: 700; letter-spacing: -0.02em; border: 0; background: transparent; outline: 0; width: 100%; padding: 0">
+    <p class="muted small" style="margin: 4px 0 0">{{cd.sub}}</p>
+  </div>
+  <div class="card list" style="overflow: hidden; {{cd.lockSt}}">
+    <sc-for list="{{cd.rows}}" as="r" hint-placeholder-count="4">
+    <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+      <div class="row">
+        <button class="thumb" style="{{r.thumbSt}}" aria-label="{{r.name}}" onClick="{{r.open}}"></button>
+        <div style="flex: 1; min-width: 0"><div class="rt">{{r.name}}</div><div class="rs">{{r.priceLine}}</div></div>
+        <button class="mini" aria-label="Koleksiyondan çıkar" onClick="{{r.remove}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="row" style="gap: 8px">
+        <input class="inp sm" style="width: 92px; text-align: right" inputmode="decimal" aria-label="Miktar" value="{{r.q}}" onChange="{{r.onQ}}">
+        <span class="muted" style="font-size: 14px; width: 44px">{{r.unit}}</span>
+        <span style="flex: 1; text-align: right; font-weight: 600">{{r.line}}</span>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 8px; {{cd.lockSt}}">
+    <div class="row" style="justify-content: space-between"><span class="muted">Ara toplam (net)</span><span style="font-weight: 600">{{cd.net}}</span></div>
+    <div class="row" style="justify-content: space-between; min-height: 34px">
+      <button class="row" style="gap: 10px" onClick="{{cd.toggleVat}}"><span class="{{cd.vatCheck}}"><sc-if value="{{cd.vatOn}}" hint-placeholder-val="{{ false }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></sc-if></span><span class="muted">KDV ekle</span></button>
+      <sc-if value="{{cd.vatOn}}" hint-placeholder-val="{{ false }}"><span class="row" style="gap: 6px"><input class="inp sm" style="width: 56px; height: 34px; text-align: right; padding: 0 8px" inputmode="decimal" aria-label="KDV oranı" value="{{cd.vatRate}}" onChange="{{cd.onVatRate}}"><span class="muted">%</span><span style="min-width: 76px; text-align: right">{{cd.vat}}</span></span></sc-if>
+    </div>
+    <div class="row" style="justify-content: space-between; border-top: 1px solid var(--sep); padding-top: 8px"><span style="font-weight: 600">{{cd.totalLabel}}</span><span style="font-size: 20px; font-weight: 700">{{cd.gross}}</span></div>
+    <sc-if value="{{cd.hasMissing}}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; color: var(--out-tx)">{{cd.missing}}</div></sc-if>
+  </div>
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px">
+    <span class="lab">Dışa aktar</span>
+    <div class="seg"><button class="{{cd.expPriced}}" onClick="{{cd.setPriced}}">Fiyatlı</button><button class="{{cd.expQty}}" onClick="{{cd.setQty}}">Fiyatsız</button></div>
+    <span class="muted" style="font-size: 12px; line-height: 1.45">{{cd.expNote}}</span>
+    <div class="row" style="gap: 8px">
+      <button class="btn ghost half" onClick="{{cd.exportPdf}}">PDF</button>
+      <button class="btn ghost half" onClick="{{cd.exportXls}}">Excel</button>
+    </div>
+  </div>
+  <p class="muted" style="font-size: 12px; margin: 0 4px; line-height: 1.45">Fiyatlar ürün kartındaki son girilen fiyattır; tarihi her satırda yazar. Sipariş listesi özelliği önizleme olarak gösteriliyor.</p>
+</div>
+</sc-if>
+
+<!-- DAHA -->
+<sc-if value="{{isMore}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 20px 16px 110px; display: flex; flex-direction: column; gap: 18px">
+  <h1 class="h1">Daha</h1>
+  <div class="card list" style="overflow: hidden">
+    <button class="irow" onClick="{{goStats}}"><span>İstatistik</span><span class="muted small">{{stats.total}} kayıt</span></button>
+    <button class="irow" onClick="{{goLabels}}"><span>Etiket yazdır</span><span class="muted small">Ürün ve raf QR'ları</span></button>
+  </div>
+  <div>
+    <p class="sec">Ayarlar</p>
+    <div class="card list" style="overflow: hidden">
+      <button class="irow" onClick="{{goCats}}"><span>Kategoriler ve filtreler</span><span class="muted small">{{catCount}}</span></button>
+      <div class="irow" style="flex-direction: column; align-items: flex-start; gap: 10px">
+        <span>Kişiler</span>
+        <div class="wrap"><sc-for list="{{people}}" as="p" hint-placeholder-count="4"><span class="chip sm">{{p.name}}</span></sc-for><button class="chip sm" style="color: var(--acc)" onClick="{{editAction}}">+ Kişi</button></div>
+      </div>
+      <div class="irow" style="flex-direction: column; align-items: flex-start; gap: 10px">
+        <span>Yerine koyarken raf onayı</span>
+        <div class="seg" style="width: 100%"><sc-for list="{{confirmOpts}}" as="t" hint-placeholder-count="3"><button class="{{t.cls}}" onClick="{{t.pick}}">{{t.name}}</button></sc-for></div>
+        <span class="muted" style="font-size: 12px; line-height: 1.45">{{confirmNote}}</span>
+      </div>
+      <div class="irow"><span>Doküman klasörleri</span><span class="muted small">DATA/Bibliothek</span></div>
+      <div class="irow"><span>Kat planı</span><span class="muted small">masaüstünde düzenlenir</span></div>
+      <div class="irow"><span>Otomatik yedek</span><span class="muted small">02:00 · yerel + Google Drive</span></div>
+    </div>
+  </div>
+  <div>
+    <p class="sec">Bu cihaz</p>
+    <div class="card list" style="overflow: hidden">
+      <div class="irow" style="flex-direction: column; align-items: flex-start; gap: 10px">
+        <span>Bu cihazı kullanan</span>
+        <div class="wrap"><sc-for list="{{meOpts}}" as="p" hint-placeholder-count="4"><button class="{{p.cls}}" onClick="{{p.pick}}">{{p.name}}</button></sc-for></div>
+        <span class="muted" style="font-size: 12px; line-height: 1.45">"Ürünü al"da önceden seçili gelir. Bir kaydı düzenlerken başkalarına bu isim görünür.</span>
+      </div>
+      <div class="irow" style="flex-direction: column; align-items: flex-start; gap: 10px">
+        <span>Görünüm</span>
+        <div class="seg" style="width: 100%"><sc-for list="{{themeOpts}}" as="t" hint-placeholder-count="3"><button class="{{t.cls}}" onClick="{{t.pick}}">{{t.name}}</button></sc-for></div>
+        <span class="muted" style="font-size: 12px">Etiket ve PDF çıktıları her zaman açık renklidir.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- İSTATİSTİK -->
+<sc-if value="{{isStats}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 18px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span style="font-weight: 600; font-size: 16px">İstatistik</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div class="card stat"><span class="statn">{{stats.total}}</span><span class="muted small">Toplam kayıt</span></div>
+    <div class="card stat"><span class="statn">{{stats.fiziki}}</span><span class="muted small">Fiziki ürün</span></div>
+    <div class="card stat"><span class="statn" style="color: var(--dig-tx)">{{stats.dijital}}</span><span class="muted small">Sadece dijital</span></div>
+    <div class="card stat"><span class="statn" style="color: var(--out-tx)">{{stats.out}}</span><span class="muted small">Yerinde değil</span></div>
+  </div>
+  <sc-if value="{{hasOut}}" hint-placeholder-val="{{ true }}">
+  <div>
+    <p class="sec">Şu an yerinde olmayanlar</p>
+    <div class="card list" style="overflow: hidden">
+      <sc-for list="{{outRows}}" as="r" hint-placeholder-count="2">
+      <button class="lrow" onClick="{{r.open}}">
+        <div class="thumb" style="{{r.thumbSt}}"></div>
+        <div style="flex: 1; min-width: 0"><div class="rt">{{r.name}}</div><div class="rs">{{r.outText}}</div></div>
+        <span class="badge" style="{{r.badgeSt}}">{{r.badge}}</span>
+      </button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <div>
+    <p class="sec">Kategoriler</p>
+    <div class="card pad" style="display: flex; flex-direction: column; gap: 14px">
+      <sc-for list="{{catBars}}" as="c" hint-placeholder-count="6">
+      <div>
+        <div class="row" style="justify-content: space-between; font-size: 14px"><span style="font-weight: 500">{{c.name}}</span><span class="muted">{{c.count}}</span></div>
+        <div style="height: 6px; border-radius: 3px; background: var(--sep); margin-top: 6px; overflow: hidden"><div style="{{c.barSt}}"></div></div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- KATEGORİLER -->
+<sc-if value="{{isCats}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 16px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span style="font-weight: 600; font-size: 16px">Kategoriler ve filtreler</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div class="row" style="gap: 8px">
+    <button class="btn pri half" onClick="{{startWizard}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Filtre ekle</button>
+    <button class="btn ghost half" onClick="{{newCat}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Kategori ekle</button>
+  </div>
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{catRows}}" as="c" hint-placeholder-count="6">
+    <button class="lrow" style="min-height: 60px" onClick="{{c.edit}}">
+      <span style="{{c.dotSt}}"></span>
+      <div style="flex: 1; min-width: 0"><div class="rt">{{c.name}}</div><div class="rs">{{c.sub}}</div></div>
+      <svg class="ic ics muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+    </sc-for>
+  </div>
+  <p class="muted" style="font-size: 12px; margin: 0 4px; line-height: 1.5">Her kategorinin filtreleri, Kütüphane'de o kategori seçilince filtre ekranında görünür ve yeni ürün formunda alan olarak çıkar.</p>
+</div>
+</sc-if>
+
+<!-- KATEGORİ DÜZENLE -->
+<sc-if value="{{isCatEdit}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 16px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span style="font-weight: 600; font-size: 16px">Kategori düzenle</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div class="row" style="gap: 10px; align-items: flex-end">
+    <div class="field" style="flex: 1"><label class="lab" for="f-catname">Kategori adı</label><input id="f-catname" class="inp" value="{{ce.name}}" onChange="{{ce.onName}}"></div>
+    <div class="field" style="width: 96px"><label class="lab" for="f-catpre">Kod öneki</label><input id="f-catpre" class="inp" style="text-transform: uppercase; text-align: center; font-weight: 700; letter-spacing: .08em" maxlength="2" value="{{ce.prefix}}" onChange="{{ce.onPrefix}}"></div>
+  </div>
+  <p class="muted" style="font-size: 12px; margin: -8px 4px 0; line-height: 1.45">{{ce.codeNote}}</p>
+  <div class="field">
+    <span class="lab">Renk</span>
+    <div class="row" style="gap: 10px"><sc-for list="{{ce.colors}}" as="c" hint-placeholder-count="7"><button class="swatch" aria-label="{{c.hex}}" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for></div>
+  </div>
+  <div>
+    <p class="sec">Filtreler · sırası filtre ekranındaki sıradır</p>
+    <div class="card list" style="overflow: hidden">
+      <sc-for list="{{ce.filters}}" as="f" hint-placeholder-count="4">
+      <div class="row" style="padding: 10px 10px 10px 14px; gap: 8px">
+        <div style="flex: 1; min-width: 0">
+          <div class="row" style="gap: 8px"><span style="font-weight: 600; font-size: 15px">{{f.name}}</span><span class="ftype">{{f.typeName}}</span></div>
+          <div class="rl">{{f.detail}}</div>
+        </div>
+        <button class="mini" aria-label="Yukarı taşı" onClick="{{f.up}}" style="{{f.upSt}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
+        <button class="mini" aria-label="Aşağı taşı" onClick="{{f.down}}" style="{{f.downSt}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="mini" aria-label="Filtreyi sil" onClick="{{f.del}}" style="color: var(--danger)"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+      </div>
+      </sc-for>
+      <sc-if value="{{ce.noFilters}}" hint-placeholder-val="{{ false }}"><div class="pad muted small">Bu kategoride henüz filtre yok.</div></sc-if>
+      <button class="irow" style="color: var(--acc); font-weight: 600; justify-content: flex-start" onClick="{{ce.addFilter}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Bu kategoriye filtre ekle</button>
+    </div>
+  </div>
+  <sc-if value="{{ce.canDelete}}" hint-placeholder-val="{{ true }}">
+  <button class="btn danger" onClick="{{ce.del}}">Kategoriyi sil</button>
+  <p class="muted" style="font-size: 12px; margin: -6px 4px 0">İçindeki ürünler "Diğer" kategorisine taşınır.</p>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- FİLTRE EKLE -->
+<sc-if value="{{isWizard}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 16px; min-height: 844px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Kapat" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div style="text-align: center"><div style="font-weight: 600; font-size: 16px">Filtre ekle</div><div class="muted" style="font-size: 12px">{{wz.stepText}}</div></div>
+    <span style="width: 44px"></span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px"><sc-for list="{{wz.bars}}" as="b" hint-placeholder-count="3"><span style="{{b.st}}"></span></sc-for></div>
+  <sc-if value="{{wz.s1}}" hint-placeholder-val="{{ true }}">
+  <div style="font-size: 20px; font-weight: 700">Hangi kategori için?</div>
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{wz.cats}}" as="c" hint-placeholder-count="6">
+    <button class="lrow" style="min-height: 56px" onClick="{{c.pick}}"><span style="{{c.dotSt}}"></span><span class="rt" style="flex: 1">{{c.name}}</span><span class="{{c.checkCls}}"><sc-if value="{{c.on}}" hint-placeholder-val="{{ false }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></sc-if></span></button>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{wz.s2}}" hint-placeholder-val="{{ false }}">
+  <div style="font-size: 20px; font-weight: 700">Filtre tipi</div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <sc-for list="{{wz.types}}" as="t" hint-placeholder-count="5">
+    <button class="tcard {{t.cls}}" onClick="{{t.pick}}">
+      <span style="font-weight: 600; font-size: 16px">{{t.name}}</span>
+      <span class="muted" style="font-size: 13px; line-height: 1.4">{{t.desc}}</span>
+      <span style="font-size: 12px; font-weight: 600; color: var(--acc); margin-top: 2px">{{t.example}}</span>
+    </button>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{wz.s3}}" hint-placeholder-val="{{ false }}">
+  <div style="font-size: 20px; font-weight: 700">{{wz.title3}}</div>
+  <div class="field"><label class="lab" for="f-fname">Filtre adı</label><input id="f-fname" class="inp" placeholder="{{wz.namePh}}" value="{{wz.name}}" onChange="{{wz.onName}}"></div>
+  <sc-if value="{{wz.needsOpts}}" hint-placeholder-val="{{ true }}">
+  <div class="field">
+    <span class="lab">Seçenekler</span>
+    <div class="row" style="gap: 8px"><input class="inp sm" style="flex: 1" aria-label="Yeni seçenek" placeholder="{{wz.optPh}}" value="{{wz.draft}}" onChange="{{wz.onDraft}}"><button class="chip" onClick="{{wz.addOpt}}">Ekle</button></div>
+    <div class="wrap"><sc-for list="{{wz.opts}}" as="o" hint-placeholder-count="3"><button class="achip" onClick="{{o.remove}}" aria-label="{{o.aria}}">{{o.name}}<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px"><path d="M6 6l12 12M18 6 6 18"/></svg></button></sc-for></div>
+  </div>
+  </sc-if>
+  <sc-if value="{{wz.needsUnit}}" hint-placeholder-val="{{ false }}">
+  <div class="field"><span class="lab">Birim</span><div class="wrap"><sc-for list="{{wz.units}}" as="u" hint-placeholder-count="5"><button class="chip sm {{u.cls}}" onClick="{{u.pick}}">{{u.name}}</button></sc-for></div></div>
+  </sc-if>
+  <div class="card pad" style="display: flex; flex-direction: column; gap: 10px; background: var(--sunk)">
+    <span class="muted" style="font-size: 12px; font-weight: 600">Filtre ekranında böyle görünür</span>
+    <div class="flab">{{wz.previewName}} <span class="ftype">{{wz.typeName}}</span></div>
+    <div style="{{wz.previewSt}}">{{wz.preview}}</div>
+  </div>
+  </sc-if>
+  <div style="flex: 1"></div>
+  <div class="row" style="gap: 8px">
+    <sc-if value="{{wz.canBack}}" hint-placeholder-val="{{ false }}"><button class="btn ghost half" style="width: 120px; flex: none" onClick="{{wz.prev}}">Geri</button></sc-if>
+    <button class="btn pri half" onClick="{{wz.next}}">{{wz.nextLabel}}</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- ETİKETLER -->
+<sc-if value="{{isLabels}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 14px">
+  <div class="row" style="justify-content: space-between">
+    <button class="iconbtn" aria-label="Geri" onClick="{{back}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div style="text-align: center"><div style="font-weight: 600; font-size: 16px">Etiket yazdır</div><div class="muted" style="font-size: 12px">{{selText}}</div></div>
+    <span style="width: 44px"></span>
+  </div>
+  <div class="seg">
+    <button class="{{kindItemCls}}" onClick="{{setKindItem}}">Ürün etiketleri</button>
+    <button class="{{kindShelfCls}}" onClick="{{setKindShelf}}">Raf etiketleri</button>
+  </div>
+  <div class="card" style="padding: 14px; background: var(--sunk2); border-color: var(--line2)">
+    <div style="background: #fff; color: #16181D; aspect-ratio: 210 / 297; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.12); padding: 4%">
+      <div style="{{sheetSt}}">
+        <sc-for list="{{slots}}" as="s" hint-placeholder-count="20">
+        <div style="{{s.cellSt}}">
+          <sc-if value="{{s.filled}}" hint-placeholder-val="{{ false }}">
+          <div style="{{s.nameSt}}">{{s.name}}</div>
+          <div class="qr" style="{{s.qrSt}}"><sc-for list="{{s.qr}}" as="q" hint-placeholder-count="225"><i style="{{q.st}}"></i></sc-for></div>
+          <div style="{{s.codeSt}}">{{s.code}}</div>
+          </sc-if>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    <div class="row" style="justify-content: space-between; margin-top: 10px">
+      <span class="muted" style="font-size: 12px">{{sheetCaption}}</span>
+      <div class="seg" style="padding: 2px"><button class="{{size20Cls}}" style="height: 28px; padding: 0 10px; font-size: 12px" onClick="{{setSize20}}">20 / A4</button><button class="{{size40Cls}}" style="height: 28px; padding: 0 10px; font-size: 12px" onClick="{{setSize40}}">40 / A4</button></div>
+    </div>
+  </div>
+  <label class="searchbox"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Etiketlerde ara" placeholder="{{labelPh}}" value="{{labelQ}}" onChange="{{onLabelQ}}"></label>
+  <div class="hscroll">
+    <button class="chip" onClick="{{selVisible}}">{{selVisibleLabel}}</button>
+    <sc-if value="{{kindIsItem}}" hint-placeholder-val="{{ true }}"><button class="chip" onClick="{{selUnprinted}}">Basılmamışlar</button></sc-if>
+    <button class="chip" onClick="{{selNone}}">Temizle</button>
+  </div>
+  <div class="card list" style="overflow: hidden">
+    <sc-for list="{{labelRows}}" as="r" hint-placeholder-count="8">
+    <button class="lrow" onClick="{{r.toggle}}" style="min-height: 60px">
+      <span class="{{r.checkCls}}"><sc-if value="{{r.checked}}" hint-placeholder-val="{{ false }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 2.6"><path d="m5 12.5 4.5 4.5L19 7"/></svg></sc-if></span>
+      <div style="{{r.thumbSt}}">{{r.thumbText}}</div>
+      <div style="flex: 1; min-width: 0"><div class="rt">{{r.name}}</div><div class="rs">{{r.sub}}</div></div>
+      <sc-if value="{{r.unprinted}}" hint-placeholder-val="{{ false }}"><span class="badge" style="background: var(--out-bg); color: var(--out-tx)">Yeni</span></sc-if>
+    </button>
+    </sc-for>
+    <sc-if value="{{labelEmpty}}" hint-placeholder-val="{{ false }}"><div class="pad muted small" style="text-align: center">Eşleşen kayıt yok.</div></sc-if>
+  </div>
+  <button class="btn pri" onClick="{{makePdf}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></svg>{{pdfLabel}}</button>
+</div>
+</sc-if>
+
+</div>
+
+<!-- + BUTONU -->
+<sc-if value="{{showFab}}" hint-placeholder-val="{{ true }}">
+<button aria-label="Yeni ürün ekle" onClick="{{goAdd}}" style="position: absolute; right: 16px; bottom: 96px; width: 56px; height: 56px; border-radius: 18px; background: var(--inv); color: var(--on-inv); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.22)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 26px; height: 26px"><path d="M12 5v14M5 12h14"/></svg></button>
+</sc-if>
+
+<!-- ALT MENÜ -->
+<sc-if value="{{showTabs}}" hint-placeholder-val="{{ true }}">
+<nav style="height: 80px; flex: none; background: var(--nav); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 0 6px 10px">
+  <button class="{{tabLib}}" onClick="{{goLib}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Kütüphane</button>
+  <button class="{{tabOffice}}" onClick="{{goOffice}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Ofis</button>
+  <button class="tab" onClick="{{goScan}}" aria-label="QR okut"><span style="width: 56px; height: 56px; border-radius: 18px; background: var(--acc); color: #fff; display: flex; align-items: center; justify-content: center; margin-top: -22px; box-shadow: 0 6px 16px rgba(47,91,234,.35)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 26px; height: 26px"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg></span>Okut</button>
+  <button class="{{tabCols}}" onClick="{{goCols}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Koleksiyon</button>
+  <button class="{{tabMore}}" onClick="{{goMore}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>Daha</button>
+</nav>
+</sc-if>
+
+<!-- FİLTRE PANELİ -->
+<sc-if value="{{filterOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.4); display: flex; flex-direction: column; justify-content: flex-end; z-index: 50">
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; height: 800px; display: flex; flex-direction: column">
+    <div class="row" style="justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--sep)">
+      <button class="chip sm" onClick="{{clearFilters}}">Temizle</button>
+      <span style="font-weight: 700; font-size: 17px">Filtreler</span>
+      <button class="iconbtn" aria-label="Kapat" onClick="{{closeFilters}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 0 16px">
+      <div class="fsec" style="border-top: 0">
+        <div class="flab">Tür</div>
+        <div class="seg"><button class="{{segAll}}" onClick="{{setAll}}">Tümü</button><button class="{{segFiz}}" onClick="{{setFiz}}">Fiziki</button><button class="{{segDij}}" onClick="{{setDij}}">Dijital</button></div>
+      </div>
+      <div class="fsec">
+        <div class="flab">Kategori</div>
+        <div class="wrap"><sc-for list="{{catChips}}" as="c" hint-placeholder-count="7"><button class="chip sm {{c.cls}}" onClick="{{c.pick}}">{{c.name}}</button></sc-for></div>
+      </div>
+      <sc-if value="{{hasCatFilters}}" hint-placeholder-val="{{ false }}">
+      <div style="margin: 0 -16px; padding: 4px 16px 0; background: var(--sunk); border-top: 1px solid var(--sep); border-bottom: 1px solid var(--sep)">
+        <div style="font-size: 12px; font-weight: 700; color: var(--acc); padding: 12px 0 0; letter-spacing: .04em">{{catFilterTitle}}</div>
+        <sc-for list="{{catFilters}}" as="f" hint-placeholder-count="3">
+        <div class="fsec" style="{{f.secSt}}">
+          <div class="flab">{{f.name}} <span class="ftype">{{f.typeName}}</span></div>
+          <sc-if value="{{f.isOpts}}" hint-placeholder-val="{{ true }}"><div class="wrap"><sc-for list="{{f.opts}}" as="o" hint-placeholder-count="4"><button class="chip sm {{o.cls}}" onClick="{{o.pick}}">{{o.name}}</button></sc-for></div></sc-if>
+          <sc-if value="{{f.isRange}}" hint-placeholder-val="{{ false }}"><div class="row" style="gap: 8px"><input class="inp sm" style="width: 96px" inputmode="decimal" aria-label="En az" placeholder="min" value="{{f.min}}" onChange="{{f.onMin}}"><span class="muted">–</span><input class="inp sm" style="width: 96px" inputmode="decimal" aria-label="En çok" placeholder="maks" value="{{f.max}}" onChange="{{f.onMax}}"><span class="muted">{{f.unit}}</span></div></sc-if>
+          <sc-if value="{{f.isBool}}" hint-placeholder-val="{{ false }}"><div class="seg" style="width: 240px"><button class="{{f.anyCls}}" onClick="{{f.setAny}}">Fark etmez</button><button class="{{f.yesCls}}" onClick="{{f.setYes}}">Var</button><button class="{{f.noCls}}" onClick="{{f.setNo}}">Yok</button></div></sc-if>
+          <sc-if value="{{f.isText}}" hint-placeholder-val="{{ false }}"><input class="inp sm" aria-label="{{f.name}}" placeholder="içerir…" value="{{f.val}}" onChange="{{f.onVal}}"></sc-if>
+        </div>
+        </sc-for>
+      </div>
+      </sc-if>
+      <sc-if value="{{noCatPicked}}" hint-placeholder-val="{{ true }}">
+      <div class="muted" style="font-size: 13px; line-height: 1.5; padding: 0 0 14px">Bir kategori seçince ona özel filtreler (ör. fayansta R değeri, rektifiye) burada açılır.</div>
+      </sc-if>
+      <div class="fsec">
+        <div class="flab">Renk</div>
+        <div class="wrap" style="gap: 10px"><sc-for list="{{colorOpts}}" as="c" hint-placeholder-count="10"><button class="swatch" aria-label="{{c.name}}" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for></div>
+      </div>
+      <div class="fsec">
+        <div class="flab">Fiyat <span class="ftype">€ / birim</span></div>
+        <div class="row" style="gap: 8px"><input class="inp sm" style="width: 96px" inputmode="decimal" aria-label="En az fiyat" placeholder="min" value="{{fPmin}}" onChange="{{onPmin}}"><span class="muted">–</span><input class="inp sm" style="width: 96px" inputmode="decimal" aria-label="En çok fiyat" placeholder="maks" value="{{fPmax}}" onChange="{{onPmax}}"><span class="muted">€</span></div>
+      </div>
+      <div class="fsec">
+        <div class="flab">Marka</div>
+        <div class="wrap"><sc-for list="{{brandOpts}}" as="b" hint-placeholder-count="6"><button class="chip sm {{b.cls}}" onClick="{{b.pick}}">{{b.name}}</button></sc-for></div>
+      </div>
+      <div class="fsec">
+        <div class="flab">Durum</div>
+        <div class="wrap"><sc-for list="{{statusOpts}}" as="b" hint-placeholder-count="3"><button class="chip sm {{b.cls}}" onClick="{{b.pick}}">{{b.name}}</button></sc-for></div>
+      </div>
+      <div style="height: 20px"></div>
+    </div>
+    <div style="padding: 12px 16px 20px; border-top: 1px solid var(--sep)">
+      <button class="btn pri" onClick="{{closeFilters}}">{{resultsLabel}}</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- DOKÜMAN BAĞLA -->
+<sc-if value="{{docOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.4); display: flex; flex-direction: column; justify-content: flex-end; z-index: 50">
+  <button aria-label="Kapat" onClick="{{closeDoc}}" style="flex: 1; width: 100%"></button>
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 12px; max-height: 640px">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div><div style="font-size: 19px; font-weight: 700">Sunucudan doküman bağla</div><div class="muted small" style="margin-top: 2px">PDF, JPG, PNG · dosya kopyalanmaz</div></div>
+    <div class="row" style="gap: 4px; flex-wrap: wrap; font-size: 13px">
+      <sc-for list="{{fsCrumbs}}" as="c" hint-placeholder-count="2"><button style="{{c.st}}" onClick="{{c.go}}">{{c.name}}</button><span class="muted" aria-hidden="true">›</span></sc-for>
+    </div>
+    <div class="card list" style="overflow-y: auto; max-height: 420px">
+      <sc-for list="{{fsRows}}" as="r" hint-placeholder-count="5">
+      <button class="lrow" style="min-height: 54px" onClick="{{r.pick}}">
+        <span class="ext" style="{{r.extSt}}">{{r.ext}}</span>
+        <span class="rt" style="flex: 1; font-size: 14px">{{r.name}}</span>
+        <span class="muted small">{{r.hint}}</span>
+      </button>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- KOLEKSİYONA EKLE -->
+<sc-if value="{{collectOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.4); display: flex; flex-direction: column; justify-content: flex-end; z-index: 50">
+  <button aria-label="Kapat" onClick="{{closeCollect}}" style="flex: 1; width: 100%"></button>
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div style="font-size: 19px; font-weight: 700">Koleksiyona ekle</div>
+    <div class="card list" style="overflow: hidden">
+      <sc-for list="{{collectRows}}" as="c" hint-placeholder-count="3">
+      <button class="lrow" style="min-height: 56px" onClick="{{c.toggle}}">
+        <span class="{{c.checkCls}}"><sc-if value="{{c.on}}" hint-placeholder-val="{{ false }}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></sc-if></span>
+        <span style="flex: 1"><span class="rt" style="display: block">{{c.name}}</span><span class="rs" style="display: block">{{c.sub}}</span></span>
+      </button>
+      </sc-for>
+      <button class="irow" style="color: var(--acc); font-weight: 600; justify-content: flex-start" onClick="{{newColWithItem}}">+ Yeni koleksiyon</button>
+    </div>
+    <button class="btn pri" onClick="{{closeCollect}}">Tamam</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- FİYAT -->
+<sc-if value="{{priceOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.4); display: flex; flex-direction: column; justify-content: flex-end; z-index: 50">
+  <button aria-label="Kapat" onClick="{{closePrice}}" style="flex: 1; width: 100%"></button>
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div><div style="font-size: 19px; font-weight: 700">Fiyatı güncelle</div><div class="muted small" style="margin-top: 2px">{{priceOld}}</div></div>
+    <div class="row" style="gap: 8px"><input class="inp" style="width: 140px" inputmode="decimal" aria-label="Yeni fiyat" value="{{priceDraft}}" onChange="{{onPriceDraft}}"><span style="font-weight: 600">€ /</span><div class="wrap"><sc-for list="{{priceUnits}}" as="u" hint-placeholder-count="4"><button class="chip sm {{u.cls}}" onClick="{{u.pick}}">{{u.name}}</button></sc-for></div></div>
+    <button class="btn pri" onClick="{{savePrice}}">Kaydet · tarih: bugün</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- ÜRÜNÜ AL -->
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.4); display: flex; flex-direction: column; justify-content: flex-end; z-index: 50">
+  <button aria-label="Kapat" onClick="{{closeSheet}}" style="flex: 1; width: 100%"></button>
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 16px">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div>
+      <div style="font-size: 20px; font-weight: 700">Ürünü al</div>
+      <div class="muted small" style="margin-top: 2px">{{sheetItem}}</div>
+    </div>
+    <div class="field">
+      <span class="lab">Kim alıyor?</span>
+      <div class="wrap"><sc-for list="{{sheetPeople}}" as="p" hint-placeholder-count="4"><button class="chip {{p.cls}}" onClick="{{p.pick}}">{{p.name}}</button></sc-for></div>
+    </div>
+    <div class="field">
+      <span class="lab">Nereye?</span>
+      <div class="seg">
+        <button class="{{whereIn}}" onClick="{{setWhereIn}}">Büro içinde</button>
+        <button class="{{whereOut}}" onClick="{{setWhereOut}}">Büro dışına</button>
+      </div>
+    </div>
+    <div class="field"><label class="lab" for="f-note">Not</label><input id="f-note" class="inp" placeholder="ör. Müşteri sunumu – Weber Konut" value="{{sheetNote}}" onChange="{{onSheetNote}}"></div>
+    <button class="btn pri" onClick="{{confirmTake}}">Onayla</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- RAF ONAYI: raf etiketini okut -->
+<sc-if value="{{rc.open}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 60; background: #0E0F12; color: #fff; padding: 16px; display: flex; flex-direction: column; gap: 18px">
+  <div class="row" style="justify-content: space-between">
+    <button aria-label="Kapat" onClick="{{rc.close}}" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <span style="font-weight: 600">{{rc.title}}</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: 6px">
+    <div style="width: 220px; height: 220px; position: relative; border-radius: 26px; background: radial-gradient(circle at 50% 45%, #2A2D33, #15171B 70%)">
+      <div style="position: absolute; left: 0; top: 0; width: 42px; height: 42px; border-left: 4px solid #fff; border-top: 4px solid #fff; border-top-left-radius: 26px"></div>
+      <div style="position: absolute; right: 0; top: 0; width: 42px; height: 42px; border-right: 4px solid #fff; border-top: 4px solid #fff; border-top-right-radius: 26px"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 42px; height: 42px; border-left: 4px solid #fff; border-bottom: 4px solid #fff; border-bottom-left-radius: 26px"></div>
+      <div style="position: absolute; right: 0; bottom: 0; width: 42px; height: 42px; border-right: 4px solid #fff; border-bottom: 4px solid #fff; border-bottom-right-radius: 26px"></div>
+      <div class="scanfx"></div>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 17px; font-weight: 600">{{rc.prompt}}</div>
+      <div style="font-size: 30px; font-weight: 700; color: #8EA6FF; letter-spacing: -0.02em; margin-top: 2px">{{rc.zone}}</div>
+      <div style="font-size: 13px; color: rgba(255,255,255,.65); margin-top: 4px">{{rc.sub}}</div>
+    </div>
+  </div>
+  <sc-if value="{{rc.hasPlaced}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center">
+    <sc-for list="{{rc.placed}}" as="p" hint-placeholder-count="2"><span style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: rgba(134,239,172,.16); color: #86EFAC">✓ {{p.name}}</span></sc-for>
+  </div>
+  </sc-if>
+  <div style="flex: 1"></div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <p style="margin: 0 0 0 4px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.6)">DEMO – bir tarama dene</p>
+    <sc-for list="{{rc.demos}}" as="b" hint-placeholder-count="2">
+    <button onClick="{{b.pick}}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.1); color: #fff; width: 100%">
+      <div style="{{b.thumbSt}}">{{b.thumbText}}</div>
+      <div style="flex: 1; min-width: 0"><div style="font-weight: 600">{{b.title}}</div><div style="font-size: 13px; color: rgba(255,255,255,.65)">{{b.sub}}</div></div>
+    </button>
+    </sc-for>
+    <sc-if value="{{rc.showSkip}}" hint-placeholder-val="{{ true }}">
+    <button onClick="{{rc.skip}}" style="height: 48px; border-radius: 14px; border: 1px solid rgba(255,255,255,.25); color: #fff; font-weight: 600; text-align: center; width: 100%">{{rc.skipLabel}}</button>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<!-- RAF ONAYI: başka raf okundu -->
+<sc-if value="{{rc.mismatch}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.55); display: flex; flex-direction: column; justify-content: flex-end; z-index: 70">
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div class="row" style="align-items: flex-start">
+      <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--out-bg); color: var(--out-tx); display: flex; align-items: center; justify-content: center; flex: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+      <div><div style="font-size: 18px; font-weight: 700">Bu raf başka</div><div class="muted small" style="margin-top: 2px">{{rc.mmItem}}</div></div>
+    </div>
+    <div class="row" style="gap: 10px">
+      <div class="card" style="flex: 1; padding: 12px; text-align: center"><div class="muted" style="font-size: 12px">Ürünün yeri</div><div style="font-size: 24px; font-weight: 700; color: var(--acc)">{{rc.mmHome}}</div></div>
+      <div class="card" style="flex: 1; padding: 12px; text-align: center"><div class="muted" style="font-size: 12px">Okuttuğun raf</div><div style="font-size: 24px; font-weight: 700">{{rc.mmScanned}}</div></div>
+    </div>
+    <button class="btn pri" onClick="{{rc.mmGoHome}}">{{rc.mmGoHomeLabel}}</button>
+    <button class="btn ghost" onClick="{{rc.mmMove}}">{{rc.mmMoveLabel}}</button>
+    <p class="muted" style="font-size: 12px; margin: -4px 4px 0; line-height: 1.45">Ürün etiketinde konum yazmadığı için yeni yerde etiket değişmez.</p>
+  </div>
+</div>
+</sc-if>
+
+<!-- KULLANIMDA -->
+<sc-if value="{{busySheet.open}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(15,17,21,.55); display: flex; flex-direction: column; justify-content: flex-end; z-index: 70" onClick="{{busySheet.close}}">
+  <div style="background: var(--card); border-radius: 24px 24px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px" onClick="{{stopEv}}">
+    <div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line3); margin: 0 auto"></div>
+    <div class="row" style="align-items: flex-start">
+      <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--use-bg); color: var(--use-tx); display: flex; align-items: center; justify-content: center; flex: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      <div><div style="font-size: 18px; font-weight: 700">Kullanımda</div><div class="muted small" style="margin-top: 2px">{{busySheet.text}}</div></div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin: 0 2px; line-height: 1.5">Kaydedince veya kapatınca sana haber veririz. Bu arada ürünü görüntüleyebilir, alabilir ve yerine koyabilirsin.</p>
+    <button class="btn pri" onClick="{{busySheet.close}}">Tamam</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- AÇILIŞ -->
+<sc-if value="{{splash}}" hint-placeholder-val="{{ false }}">
+<div class="splash" onClick="{{skipSplash}}"><span class="wm" style="font-size: 44px"><b>miaza</b><i>finds</i></span></div>
+</sc-if>
+
+<!-- BİLDİRİM -->
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: absolute; left: 16px; right: 16px; top: 14px; padding: 12px 16px; border-radius: 14px; background: var(--toast); color: #fff; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.25); z-index: 100"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true" style="color: #86EFAC"><path d="m5 12.5 4.5 4.5L19 7"/></svg>{{toast}}</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var ACC = 'var(--acc)';
+var TODAY = '01.11.2026';
+var SW = {
+  marble: 'linear-gradient(135deg,#F5F2ED 0%,#ECE6DD 36%,#CDBFAA 38%,#EFEAE3 41%,#E4DDD2 66%,#D3C7B5 67%,#EEE9E2 70%,#E8E2D9 100%)',
+  terrazzo: 'radial-gradient(circle at 18% 28%,#8B929C 0 5%,transparent 6%),radial-gradient(circle at 68% 62%,#5F6672 0 4%,transparent 5%),radial-gradient(circle at 42% 78%,#F1F2F4 0 6%,transparent 7%),radial-gradient(circle at 84% 22%,#4B5563 0 3%,transparent 4%),radial-gradient(circle at 30% 55%,#B07A4A 0 3%,transparent 4%),#C4C7CC',
+  rosa: 'radial-gradient(circle at 22% 30%,#B4566A 0 5%,transparent 6%),radial-gradient(circle at 66% 64%,#F7EDEA 0 5%,transparent 6%),radial-gradient(circle at 80% 24%,#8E3B4E 0 3%,transparent 4%),radial-gradient(circle at 40% 76%,#D08A92 0 4%,transparent 5%),#E7C4C2',
+  zellige: 'linear-gradient(135deg,#2C6652 0%,#3F8A6F 45%,#347A61 55%,#25584A 100%)',
+  cotto: 'linear-gradient(135deg,#C2643A 0%,#A9542F 50%,#C8714A 100%)',
+  metro: 'repeating-linear-gradient(0deg,#F6F6F4 0 14px,#D6D6D2 14px 15px)',
+  nero: 'linear-gradient(135deg,#1C1C1E 0%,#2A2A2D 40%,#D9D9D9 41%,#2A2A2D 42.5%,#18181A 100%)',
+  trav: 'repeating-linear-gradient(170deg,#E3D3B8 0 5px,#D6C4A6 5px 7px,#E9DCC5 7px 12px)',
+  oak: 'repeating-linear-gradient(100deg,#C99D68 0 7px,#B88A55 7px 10px,#D2AA77 10px 18px)',
+  ash: 'repeating-linear-gradient(100deg,#E1CDAA 0 6px,#D3BC95 6px 9px,#E8D6B6 9px 15px)',
+  smoked: 'repeating-linear-gradient(100deg,#5E4B3A 0 6px,#4E3D2F 6px 9px,#6B5644 9px 15px)',
+  walnut: 'repeating-linear-gradient(95deg,#6B4429 0 6px,#5A3820 6px 9px,#7A5133 9px 15px)',
+  brass: 'linear-gradient(120deg,#8C6B2E 0%,#D9B76A 42%,#A9883F 60%,#E3C77F 100%)',
+  anodized: 'linear-gradient(120deg,#1F2125 0%,#3B3E44 50%,#1B1D21 100%)',
+  steel: 'linear-gradient(120deg,#9EA3A8 0%,#D8DCDF 45%,#A7ACB1 60%,#CDD1D4 100%)',
+  corten: 'radial-gradient(circle at 30% 40%,#8E3B16 0 15%,transparent 35%),linear-gradient(140deg,#A6511F,#7E3A14 60%,#9C4A1C)',
+  boucle: 'radial-gradient(circle,#F2ECE2 32%,transparent 34%) 0 0/7px 7px,#D8CEBE',
+  linen: 'repeating-linear-gradient(0deg,#E9E3D8 0 2px,#DCD4C6 2px 4px)',
+  felt: 'radial-gradient(circle,#7B8876 30%,transparent 32%) 0 0/5px 5px,#5E6B59',
+  cement: 'radial-gradient(circle at 30% 40%,#C9C5BE 0 20%,transparent 40%),linear-gradient(160deg,#B6B2AB,#A29E97 50%,#C1BDB6)',
+  stone: 'radial-gradient(circle at 40% 40%,#DDD8D0 0 30%,transparent 60%),linear-gradient(150deg,#B9B3A9,#CFC9BF)',
+  rattan: 'repeating-linear-gradient(45deg,#D7B98A 0 4px,#B8955F 4px 6px),repeating-linear-gradient(-45deg,#D7B98A 0 4px,#B8955F 4px 6px)',
+  acoustic: 'repeating-linear-gradient(90deg,#BE9160 0 12px,#232323 12px 16px)',
+  mosaic: 'conic-gradient(#E9EDF2 25%,#8FA3BC 0 50%,#E9EDF2 0 75%,#8FA3BC 0) 0 0/18px 18px',
+  tierras: 'radial-gradient(circle at 30% 30%,#D58A62 0 20%,transparent 50%),linear-gradient(135deg,#B9653F,#9E4F2E 55%,#C27650)',
+  ochre: 'radial-gradient(circle,#E2B455 32%,transparent 34%) 0 0/7px 7px,#C9932F',
+  mesh: 'repeating-linear-gradient(0deg,#B48C3E 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,#B48C3E 0 2px,transparent 2px 6px),#E8D9AE',
+  lino: 'linear-gradient(135deg,#4E6E99,#3F5C84 60%,#5A7BA6)'
+};
+var CAT_COLORS = ['#2F5BEA', '#B7791F', '#4B5563', '#BE185D', '#0F766E', '#7C3AED', '#9CA3AF'];
+var COLORS = [
+  { id: 'beyaz', name: 'Beyaz', hex: '#F1EEE8' }, { id: 'bej', name: 'Bej', hex: '#D9C7A8' }, { id: 'kahve', name: 'Kahve', hex: '#7A5133' },
+  { id: 'terracotta', name: 'Terracotta', hex: '#C2643A' }, { id: 'altin', name: 'Altın', hex: '#C9A45A' }, { id: 'pembe', name: 'Pembe', hex: '#D9A0A6' },
+  { id: 'yesil', name: 'Yeşil', hex: '#3F7A62' }, { id: 'mavi', name: 'Mavi', hex: '#4E6E99' }, { id: 'gri', name: 'Gri', hex: '#9EA3A8' }, { id: 'siyah', name: 'Siyah', hex: '#222326' }
+];
+var FTYPES = [
+  { id: 'olcu', name: 'Ölçü / aralık', desc: 'Sayısal değer; filtrede en az – en çok ile aranır. Kalınlık, format, ağırlık gibi.', example: 'Kalınlık: 8 – 12 mm', ph: 'ör. Kalınlık' },
+  { id: 'tekli', name: 'Tekli özellik', desc: 'Listeden tek bir değer alır. R değeri, ağaç türü gibi.', example: 'R değeri: R10', ph: 'ör. R değeri' },
+  { id: 'coklu', name: 'Çoklu özellik', desc: 'Ürün birden fazla değere sahip olabilir. Yüzey, kullanım alanı gibi.', example: 'Yüzey: Mat, Yapılı', ph: 'ör. Yüzey' },
+  { id: 'varyok', name: 'Var / yok', desc: 'Evet – hayır özelliği. Rektifiye, dış mekana uygun gibi.', example: 'Rektifiye: Var', ph: 'ör. Rektifiye' },
+  { id: 'metin', name: 'Serbest metin', desc: 'Yazı alanı; içinde arama yapılır. Seri adı, renk kodu gibi.', example: 'Seri: Tierras', ph: 'ör. Seri adı' }
+];
+var UNITS_M = ['mm', 'cm', 'm', 'kg', 'adet'];
+var PRICE_UNITS = ['m²', 'm', 'adet', 'paket'];
+function ftype(id) { for (var i = 0; i < FTYPES.length; i++) if (FTYPES[i].id === id) return FTYPES[i]; return FTYPES[0]; }
+var INITIAL_CATS = [
+  { id: 'fayans', name: 'Fayans & Seramik', color: '#2F5BEA', prefix: 'FL', filters: [
+    { id: 'r', name: 'R değeri', type: 'tekli', options: ['R9', 'R10', 'R11', 'R12', 'R13'] },
+    { id: 'yuzey', name: 'Yüzey', type: 'coklu', options: ['Mat', 'Parlak', 'Saten', 'Yapılı'] },
+    { id: 'format', name: 'Format (uzun kenar)', type: 'olcu', unit: 'cm' },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' },
+    { id: 'rekt', name: 'Rektifiye', type: 'varyok' },
+    { id: 'dis', name: 'Dış mekana uygun', type: 'varyok' },
+    { id: 'seri', name: 'Seri', type: 'metin' } ] },
+  { id: 'ahsap', name: 'Ahşap', color: '#B7791F', prefix: 'HO', filters: [
+    { id: 'tur', name: 'Malzeme tipi', type: 'tekli', options: ['Masif', 'MDF-Lam', 'Doğal kaplama', 'Kontrplak', 'Parke'] },
+    { id: 'agac', name: 'Ağaç türü', type: 'tekli', options: ['Meşe', 'Ceviz', 'Dişbudak', 'Huş'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' },
+    { id: 'yag', name: 'Yağlı / cilalı', type: 'varyok' } ] },
+  { id: 'metal', name: 'Metal', color: '#4B5563', prefix: 'ME', filters: [
+    { id: 'tip', name: 'Yüzey işlemi', type: 'tekli', options: ['Boyalı', 'Kaplama', 'Fırçalı', 'Eloksal', 'Ham'] },
+    { id: 'malz', name: 'Malzeme', type: 'tekli', options: ['Çelik', 'Paslanmaz', 'Alüminyum', 'Pirinç', 'Corten'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' } ] },
+  { id: 'tekstil', name: 'Tekstil', color: '#BE185D', prefix: 'ST', filters: [
+    { id: 'kul', name: 'Kullanım', type: 'coklu', options: ['Döşemelik', 'Perde', 'Akustik'] },
+    { id: 'yangin', name: 'Yanmaz (B1)', type: 'varyok' } ] },
+  { id: 'tas', name: 'Taş & Beton', color: '#0F766E', prefix: 'SN', filters: [
+    { id: 'tur', name: 'Tür', type: 'tekli', options: ['Doğal taş', 'Terrazzo', 'Mikrobeton', 'Kompozit'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' } ] },
+  { id: 'diger', name: 'Diğer', color: '#9CA3AF', prefix: 'XX', locked: true, filters: [] }
+];
+var PEOPLE = ['Cankat', 'Ayşe', 'Mert', 'Elif'];
+// Demo: başka cihazlarda düzenlenmekte olan kayıtlar (SPEC 4.9)
+var BUSY_ITEMS = { 'FL-005-151': { who: 'Mert', where: 'masaüstünde', min: 4 } };
+var BUSY_COLS = { c2: { who: 'Ayşe', where: 'telefonunda', min: 2 } };
+var FS = { name: 'Bibliothek', children: [
+  { name: 'Florim', children: [{ name: 'Calacatta_Oro_Datenblatt.pdf' }, { name: 'Calacatta_Oro_Verlegemuster.jpg' }, { name: 'Nero_Marquina_Datenblatt.pdf' }, { name: 'Florim_Preisliste_2026.pdf' }] },
+  { name: 'Egger', children: [{ name: 'Egger_Kollektion_2026.pdf' }, { name: 'Eiche_Lamelle_Detail.png' }] },
+  { name: 'Kvadrat', children: [{ name: 'Boucle_Farbkarte.pdf' }, { name: 'Boucle_Textur.jpg' }] },
+  { name: 'Woodupp', children: [{ name: 'Woodupp_Akupanel_Specs.pdf' }] },
+  { name: 'Muster-Fotos', children: [{ name: 'IMG_2041.jpg' }, { name: 'IMG_2042.png' }, { name: 'IMG_2043.jpg' }] }
+] };
+var FS_ROOT = '\\\\MINIPC\\Bibliothek';
+
+// ---- Kat planı ----
+var PX0 = 80, PY0 = 60, PW = 1040, PH = 640;
+var ROOMS = [
+  { no: 1, name: 'Workspace', color: '#E7B9E0', cx: 381, cy: 445, zoom: 1.6, lab: [470, 560] },
+  { no: 2, name: 'Lager', color: '#B9B5E3', cx: 762, cy: 240, zoom: 2.1, lab: [745, 252] },
+  { no: 3, name: 'Meeting', color: '#AFD6A9', cx: 883, cy: 534, zoom: 1.9, lab: [840, 560] }
+];
+var UNITS = [
+  { code: '1.1', pts: [[250, 320], [96, 449], [119, 476], [273, 347]], lab: [185, 392] },
+  { code: '1.2', pts: [[667, 405], [667, 444], [558, 444], [518, 395], [547, 370], [576, 405]], lab: [603, 421] },
+  { code: '1.3', pts: [[495, 506], [450, 451], [478, 428], [523, 483]], lab: [483, 464] },
+  { code: '1.4', pts: [[244, 631], [320, 567], [288, 530], [213, 594]], lab: [263, 578] },
+  { code: '2.1', pts: [[837, 369], [780, 369], [780, 345], [837, 345]], lab: [804, 357] },
+  { code: '2.2', pts: [[859, 368], [859, 300], [837, 300], [837, 368]], lab: [848, 334] },
+  { code: '2.3', pts: [[859, 300], [859, 232], [837, 232], [837, 300]], lab: [848, 266] },
+  { code: '2.4', pts: [[859, 231], [859, 163], [837, 163], [837, 231]], lab: [848, 197] },
+  { code: '2.5', pts: [[859, 163], [859, 95], [837, 95], [837, 163]], lab: [848, 129] },
+  { code: '2.6', pts: [[779, 77], [779, 94], [827, 94], [827, 77]], lab: [803, 86] },
+  { code: '2.7', pts: [[730, 77], [730, 94], [778, 94], [778, 77]], lab: [754, 86] },
+  { code: '2.8', pts: [[667, 299], [692, 299], [692, 230], [667, 230]], lab: [680, 265] },
+  { code: '2.9', pts: [[667, 368], [692, 368], [692, 299], [667, 299]], lab: [680, 334] },
+  { code: '3.1', pts: [[774, 404], [844, 404], [844, 429], [774, 429]], lab: [809, 417] },
+  { code: '3.2', pts: [[844, 404], [913, 404], [913, 429], [844, 429]], lab: [879, 417] },
+  { code: '3.3', pts: [[913, 383], [1009, 383], [1009, 429], [913, 429]], lab: [961, 406] },
+  { code: '3.4', pts: [[1009, 428], [1099, 428], [1099, 383], [1009, 383]], lab: [1054, 406] },
+  { code: '3.5', pts: [[1099, 429], [1064, 429], [1064, 512], [1099, 512]], lab: [1082, 470] },
+  { code: '3.6', pts: [[1063, 512], [1079, 512], [1079, 555], [1063, 555]], lab: [1046, 533] },
+  { code: '3.7', pts: [[1063, 555], [1100, 555], [1100, 670], [1063, 670]], lab: [1082, 612] }
+];
+function pct(v) { return Math.round(v * 10000) / 100; }
+UNITS.forEach(function (u) {
+  var xs = u.pts.map(function (p) { return p[0]; }), ys = u.pts.map(function (p) { return p[1]; });
+  var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+  u.room = +u.code.charAt(0); u.cx = (x0 + x1) / 2; u.cy = (y0 + y1) / 2;
+  u.box = 'left:' + pct((x0 - PX0) / PW) + '%;top:' + pct((y0 - PY0) / PH) + '%;width:' + pct((x1 - x0) / PW) + '%;height:' + pct((y1 - y0) / PH) + '%;clip-path:polygon(' +
+    u.pts.map(function (p) { return pct((p[0] - x0) / (x1 - x0)) + '% ' + pct((p[1] - y0) / (y1 - y0)) + '%'; }).join(',') + ')';
+  u.labPos = 'left:' + pct((u.lab[0] - PX0) / PW) + '%;top:' + pct((u.lab[1] - PY0) / PH) + '%;';
+});
+function unitBy(code) { for (var i = 0; i < UNITS.length; i++) if (UNITS[i].code === code) return UNITS[i]; return UNITS[5]; }
+function roomBy(no) { return ROOMS[no - 1]; }
+var COMPS = [];
+(function () {
+  var cols = [[103, 370], [381, 645], [657, 922]], rows = [[97, 352], [366, 560], [573, 752], [766, 944]], low = [[103, 376], [381, 643], [650, 921]];
+  rows.forEach(function (r) { cols.forEach(function (c) { COMPS.push({ kind: 'Açık raf', x0: c[0], x1: c[1], y0: r[0], y1: r[1] }); }); });
+  low.forEach(function (c) { COMPS.push({ kind: 'Çekmece', x0: c[0], x1: c[1], y0: 962, y1: 1040 }); });
+  low.forEach(function (c) { COMPS.push({ kind: 'Dolap', x0: c[0], x1: c[1], y0: 1056, y1: 1420 }); });
+  COMPS.forEach(function (c) {
+    c.l = pct(c.x0 / 1024); c.t = pct(c.y0 / 1536); c.w = pct((c.x1 - c.x0) / 1024); c.h = pct((c.y1 - c.y0) / 1536);
+    c.box = 'left:' + c.l + '%;top:' + c.t + '%;width:' + c.w + '%;height:' + c.h + '%;';
+  });
+})();
+function parseZone(z) { var p = z.split('.'); return { unit: p[0] + '.' + p[1], idx: +p[2] - 1 }; }
+function zoneSub(z) { var p = parseZone(z); return roomBy(unitBy(p.unit).room).name + ' · Ünite ' + p.unit + ' · ' + COMPS[p.idx].kind; }
+
+function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) || 1; }
+function makeQr(seed) {
+  var n = 15, h = hash(seed), out = [], r, c, v;
+  function rnd() { h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; }
+  function fd(r, c, R, C) { var a = r - R, b = c - C; if (a < 0 || b < 0 || a > 4 || b > 4) return null; return a === 0 || a === 4 || b === 0 || b === 4 || (a === 2 && b === 2); }
+  for (r = 0; r < n; r++) for (c = 0; c < n; c++) {
+    v = fd(r, c, 0, 0); if (v === null) v = fd(r, c, 0, 10); if (v === null) v = fd(r, c, 10, 0);
+    if (v === null) v = ((r === 5 && (c <= 5 || c >= 9)) || (c === 5 && (r <= 5 || r >= 9)) || (c === 9 && r <= 5) || (r === 9 && c <= 5)) ? false : rnd() > 0.5;
+    out.push({ st: v ? 'background:#111' : '' });
+  }
+  return out;
+}
+var QR_CACHE = {};
+function qrFor(id) { return QR_CACHE[id] || (QR_CACHE[id] = makeQr(id)); }
+function findBy(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
+function eur(v) { return v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function num(s) { var v = parseFloat(String(s).replace(',', '.')); return isNaN(v) ? null : v; }
+function P(v, u, d) { return { v: v, u: u, d: d }; }
+function D(n, folder) { return { n: n, p: FS_ROOT + '\\' + folder }; }
+function mk(o) { return Object.assign({ type: 'fiziki', qty: 1, link: '', printed: true, out: null, added: '12 Eki', attrs: {}, price: null, colors: [], docs: [] }, o); }
+var INITIAL = [
+  mk({ id: 'FL-004-142', name: 'Calacatta Oro Porselen', brand: 'Florim', cat: 'fayans', size: '60 × 120 cm', zone: '2.2.5', qty: 3, sw: SW.marble, link: 'florim.com/calacatta', added: '29 Eki', attrs: { r: 'R9', yuzey: ['Parlak'], format: 120, kal: 9, rekt: true, dis: false, seri: 'Magnum Oversize' }, price: P(64.5, 'm²', '12.10.2026'), colors: ['beyaz', 'bej'], docs: [D('Calacatta_Oro_Datenblatt.pdf', 'Florim'), D('Calacatta_Oro_Verlegemuster.jpg', 'Florim')] }),
+  mk({ id: 'FL-003-087', name: 'Terrazzo Grigio', brand: 'Agrob Buchtal', cat: 'fayans', size: '30 × 30 cm', zone: '2.2.2', qty: 2, sw: SW.terrazzo, attrs: { r: 'R10', yuzey: ['Mat'], format: 30, kal: 10, rekt: true, dis: true, seri: 'Terrazzo' }, price: P(89, 'm²', '03.09.2026'), colors: ['gri'], out: { person: 'Cankat', where: 'disari', date: '28 Eki', note: 'Müşteri sunumu – Weber Konut' } }),
+  mk({ id: 'FL-005-151', name: 'Zellige Yeşil', brand: 'Equipe', cat: 'fayans', size: '10 × 10 cm', zone: '2.2.5', qty: 6, sw: SW.zellige, printed: false, added: '30 Eki', attrs: { r: 'R9', yuzey: ['Parlak', 'Yapılı'], format: 10, kal: 12, rekt: false, dis: false, seri: 'Artisan' }, price: P(129, 'm²', '30.10.2026'), colors: ['yesil'] }),
+  mk({ id: 'FL-006-160', name: 'Cotto Pişmiş Toprak', brand: 'Marazzi', cat: 'fayans', size: '20 × 20 cm', zone: '2.2.1', sw: SW.cotto, attrs: { r: 'R11', yuzey: ['Mat'], format: 20, kal: 14, rekt: false, dis: true }, price: P(48, 'm²', '18.06.2026'), colors: ['terracotta'] }),
+  mk({ id: 'FL-007-163', name: 'Beyaz Metro Seramik', brand: 'Kale', cat: 'fayans', size: '7,5 × 15 cm', zone: '2.2.6', sw: SW.metro, attrs: { r: 'R9', yuzey: ['Parlak'], format: 15, kal: 8, rekt: false, dis: false }, price: P(32, 'm²', '02.05.2026'), colors: ['beyaz'] }),
+  mk({ id: 'FL-008-170', name: 'Nero Marquina', brand: 'Florim', cat: 'fayans', size: '60 × 60 cm', zone: '2.2.9', sw: SW.nero, attrs: { r: 'R10', yuzey: ['Saten'], format: 60, kal: 9, rekt: true, dis: false }, price: P(72, 'm²', '12.10.2026'), colors: ['siyah', 'beyaz'], docs: [D('Nero_Marquina_Datenblatt.pdf', 'Florim')] }),
+  mk({ id: 'FL-009-172', name: 'Travertino Classico', brand: 'Mirage', cat: 'fayans', size: '40 × 80 cm', zone: '2.2.8', sw: SW.trav, attrs: { r: 'R11', yuzey: ['Yapılı'], format: 80, kal: 10, rekt: true, dis: true }, price: P(58, 'm²', '21.08.2026'), colors: ['bej'] }),
+  mk({ id: 'SN-003-012', name: 'Terrazzo Rosa', brand: 'Mipa', cat: 'tas', size: '30 × 30 cm', zone: '2.2.2', sw: SW.rosa, attrs: { tur: 'Terrazzo', kal: 15 }, price: P(95, 'm²', '14.07.2026'), colors: ['pembe'] }),
+  mk({ id: 'HO-002-031', name: 'Meşe Masif Lamel', brand: 'Egger', cat: 'ahsap', size: '20 × 100 cm · 18 mm', zone: '2.3.1', sw: SW.oak, attrs: { tur: 'Masif', agac: 'Meşe', kal: 18, yag: true }, price: P(110, 'm²', '05.09.2026'), colors: ['kahve', 'bej'], docs: [D('Eiche_Lamelle_Detail.png', 'Egger')] }),
+  mk({ id: 'HO-004-050', name: 'Dişbudak Kaplama', brand: 'Alpi', cat: 'ahsap', size: '30 × 60 cm', zone: '2.3.2', sw: SW.ash, attrs: { tur: 'Doğal kaplama', agac: 'Dişbudak', kal: 0.6, yag: false }, price: P(42, 'm²', '05.09.2026'), colors: ['bej'] }),
+  mk({ id: 'HO-005-052', name: 'Füme Meşe Parke', brand: 'Bauwerk', cat: 'ahsap', size: '14 × 120 cm', zone: '2.3.4', sw: SW.smoked, attrs: { tur: 'Parke', agac: 'Meşe', kal: 15, yag: true }, price: P(96, 'm²', '22.10.2026'), colors: ['kahve'] }),
+  mk({ id: 'HO-003-044', name: 'Ceviz Kaplama MDF', brand: 'Egger', cat: 'ahsap', size: '30 × 40 cm', zone: '3.3.13', sw: SW.walnut, attrs: { tur: 'MDF-Lam', agac: 'Ceviz', kal: 19, yag: false }, price: P(54, 'm²', '11.03.2026'), colors: ['kahve'] }),
+  mk({ id: 'ME-001-013', name: 'Fırçalanmış Pirinç Profil', brand: 'Schlüter', cat: 'metal', size: 'L 25 cm', zone: '3.3.1', sw: SW.brass, attrs: { tip: 'Fırçalı', malz: 'Pirinç', kal: 1.5 }, price: P(18, 'm', '09.10.2026'), colors: ['altin'] }),
+  mk({ id: 'ME-002-019', name: 'Siyah Eloksal Alüminyum', brand: 'Hydro', cat: 'metal', size: '15 × 15 cm', zone: '2.2.3', sw: SW.anodized, attrs: { tip: 'Eloksal', malz: 'Alüminyum', kal: 2 }, price: P(36, 'm²', '01.07.2026'), colors: ['siyah'], out: { person: 'Elif', where: 'ici', date: 'Bugün', note: 'Toplantı odasında' } }),
+  mk({ id: 'ME-003-025', name: 'Paslanmaz Çelik Fırçalı', brand: 'Outokumpu', cat: 'metal', size: '20 × 20 cm', zone: '2.2.3', sw: SW.steel, attrs: { tip: 'Fırçalı', malz: 'Paslanmaz', kal: 1.2 }, price: P(52, 'm²', '01.07.2026'), colors: ['gri'] }),
+  mk({ id: 'ME-005-027', name: 'Corten Levha', brand: 'Thyssenkrupp', cat: 'metal', size: '20 × 30 cm', zone: '2.4.7', sw: SW.corten, attrs: { tip: 'Ham', malz: 'Corten', kal: 3 }, price: P(64, 'm²', '28.02.2026'), colors: ['terracotta', 'kahve'] }),
+  mk({ id: 'ST-001-008', name: 'Bouclé Kumaş Kartelası', brand: 'Kvadrat', cat: 'tekstil', size: 'A4 kartela', zone: '1.2.4', sw: SW.boucle, attrs: { kul: ['Döşemelik'], yangin: true }, price: P(79, 'm', '17.09.2026'), colors: ['beyaz', 'bej'], docs: [D('Boucle_Farbkarte.pdf', 'Kvadrat')] }),
+  mk({ id: 'ST-002-011', name: 'Keten Perde Numunesi', brand: 'Création Baumann', cat: 'tekstil', size: '50 × 50 cm', zone: '1.2.5', sw: SW.linen, printed: false, added: '27 Eki', attrs: { kul: ['Perde'], yangin: false }, price: P(39, 'm', '17.09.2026'), colors: ['bej'], out: { person: 'Mert', where: 'disari', date: '24 Eki', note: 'Şantiye – Kaya Ofis' } }),
+  mk({ id: 'ST-003-014', name: 'Yün Keçe Panel', brand: 'Filzfelt', cat: 'tekstil', size: '30 × 30 cm', zone: '1.2.6', sw: SW.felt, attrs: { kul: ['Akustik'], yangin: true }, price: P(85, 'm²', '04.04.2026'), colors: ['yesil'] }),
+  mk({ id: 'SN-001-005', name: 'Mikrobeton Numune', brand: 'Topciment', cat: 'tas', size: '20 × 20 cm', zone: '2.4.2', sw: SW.cement, printed: false, added: '30 Eki', attrs: { tur: 'Mikrobeton', kal: 3 }, price: P(38, 'm²', '30.10.2026'), colors: ['gri'] }),
+  mk({ id: 'SN-002-009', name: 'Sileks Taş', brand: 'Dekton', cat: 'tas', size: '30 × 30 cm', zone: '2.4.3', sw: SW.stone, attrs: { tur: 'Kompozit', kal: 12 }, price: P(140, 'm²', '19.05.2026'), colors: ['gri', 'beyaz'] }),
+  mk({ id: 'XX-001-003', name: 'Rattan Örgü Panel', brand: 'Atelier Ruhe', cat: 'diger', size: '40 × 40 cm', zone: '2.4.8', sw: SW.rattan, colors: ['bej'] }),
+  mk({ id: 'HO-001-021', name: 'Akustik Lamel Panel Meşe', brand: 'Woodupp', cat: 'ahsap', type: 'dijital', size: '60 × 240 cm', link: 'woodupp.com/akupanel', sw: SW.acoustic, added: '25 Eki', attrs: { tur: 'Doğal kaplama', agac: 'Meşe', kal: 21 }, price: P(119, 'm²', '25.10.2026'), colors: ['kahve', 'siyah'], docs: [D('Woodupp_Akupanel_Specs.pdf', 'Woodupp')] }),
+  mk({ id: 'FL-001-022', name: 'Mozaik Seri Nordic', brand: 'Bisazza', cat: 'fayans', type: 'dijital', size: '30 × 30 cm', link: 'bisazza.com', sw: SW.mosaic, added: '22 Eki', attrs: { r: 'R9', yuzey: ['Parlak'], format: 30, kal: 6, rekt: false, dis: false, seri: 'Nordic' }, price: P(210, 'm²', '22.10.2026'), colors: ['mavi', 'beyaz'] }),
+  mk({ id: 'FL-002-023', name: 'Tierras Terracotta', brand: 'Mutina', cat: 'fayans', type: 'dijital', size: '20 × 20 cm', link: 'mutina.it/tierras', sw: SW.tierras, added: '20 Eki', attrs: { r: 'R10', yuzey: ['Mat'], format: 20, kal: 10, rekt: false, dis: true, seri: 'Tierras' }, price: P(89, 'm²', '20.10.2026'), colors: ['terracotta'] }),
+  mk({ id: 'ST-004-024', name: 'Bouclé Ochre', brand: 'Dedar', cat: 'tekstil', type: 'dijital', size: 'en 140 cm', link: 'dedar.com', sw: SW.ochre, added: '18 Eki', attrs: { kul: ['Döşemelik'], yangin: true }, price: P(95, 'm', '18.10.2026'), colors: ['altin'] }),
+  mk({ id: 'ME-004-026', name: 'Pirinç Mesh Panel', brand: 'GKD', cat: 'metal', type: 'dijital', size: '100 × 200 cm', link: 'gkd.de', sw: SW.mesh, added: '11 Eki', attrs: { tip: 'Kaplama', malz: 'Pirinç', kal: 1 }, price: P(230, 'm²', '11.10.2026'), colors: ['altin'] }),
+  mk({ id: 'XX-002-028', name: 'Linoleum Mavi', brand: 'Forbo', cat: 'diger', type: 'dijital', size: 'rulo 200 cm', link: 'forbo.com', sw: SW.lino, added: '02 Eki', price: P(45, 'm²', '02.10.2026'), colors: ['mavi'] })
+];
+var INITIAL_COLS = [
+  { id: 'c1', name: 'Weber Konut', note: 'Banyo, mutfak, salon', items: [{ id: 'FL-003-087', q: '24' }, { id: 'FL-009-172', q: '38' }, { id: 'HO-005-052', q: '65' }, { id: 'ME-001-013', q: '12' }, { id: 'FL-002-023', q: '18' }] },
+  { id: 'c2', name: 'Kaya Ofis', note: 'Toplantı odaları', items: [{ id: 'ST-003-014', q: '40' }, { id: 'HO-001-021', q: '22' }, { id: 'SN-001-005', q: '120' }, { id: 'ME-002-019', q: '8' }] },
+  { id: 'c3', name: 'Moodboard · sıcak tonlar', note: '', items: [{ id: 'FL-006-160', q: '' }, { id: 'HO-002-031', q: '' }, { id: 'ST-001-008', q: '' }, { id: 'ST-004-024', q: '' }] }
+];
+var B_IN = 'background:var(--in-bg);color:var(--in-tx)', B_OUT = 'background:var(--out-bg);color:var(--out-tx)', B_USE = 'background:var(--use-bg);color:var(--use-tx)', B_DIG = 'background:var(--dig-bg);color:var(--dig-tx)';
+function status(it) {
+  if (it.type === 'dijital') return { short: 'Dijital', long: 'Sadece dijital', st: B_DIG };
+  if (it.out && it.out.where === 'disari') return { short: 'Dışarıda', long: 'Büro dışında', st: B_OUT };
+  if (it.out) return { short: 'Kullanımda', long: it.out.person + ' kullanıyor', st: B_USE };
+  return { short: 'Yerinde', long: 'Yerinde', st: B_IN };
+}
+function shuffleRot(id, k) { return ((hash(id + k) % 21) - 10); }
+function extOf(n) { var e = n.split('.').pop().toUpperCase(); return { ext: e, st: 'background:' + (e === 'PDF' ? '#C2410C' : e === 'PNG' ? '#0F766E' : '#2F5BEA') }; }
+function attrText(f, v) {
+  if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) return null;
+  if (f.type === 'coklu') return v.join(', ');
+  if (f.type === 'olcu') return String(v).replace('.', ',') + ' ' + (f.unit || '');
+  if (f.type === 'varyok') return v ? 'Var' : 'Yok';
+  return String(v);
+}
+
+var CFG = { W: 358, VH: 420, ZS: 2.7, labFs: 7, roomFs: 7, orbit: { rx: 128, ry: 150, cw: 62, ch: 80 }, fan: { cw: 104, ch: 140, area: 196, maxSp: 84, span: 250 } };
+var BLANK_F = function () { return { type: 'all', cat: 'all', colors: {}, brands: {}, status: 'all', pmin: '', pmax: '', attr: {} }; };
+// Ürün kodu KK-KKK-EEE: kategori öneki, kategorideki sıra, envanterde benzersiz numara
+function codeParts(id) { var m = /^([A-Z]{2})-(\d+)-(\d+)$/.exec(id || ''); return m ? { pre: m[1], cat: +m[2], inv: +m[3] } : null; }
+function pad3(n) { return String(n).padStart(3, '0'); }
+function nextCode(items, cat) {
+  var inv = 0, cn = 0;
+  items.forEach(function (x) { var p = codeParts(x.id); if (!p) return; inv = Math.max(inv, p.inv); if (x.cat === cat.id) cn = Math.max(cn, p.cat); });
+  return cat.prefix + '-' + pad3(cn + 1) + '-' + pad3(inv + 1);
+}
+function storeGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+function storeSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+function systemDark() { try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; } }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sel = {};
+    INITIAL.forEach(function (it) { if (it.type === 'fiziki' && !it.printed) sel[it.id] = true; });
+    this._timers = [];
+    this.state = {
+      items: INITIAL, cats: INITIAL_CATS, cols: INITIAL_COLS,
+      screen: 'lib', stack: [], id: 'FL-004-142', colId: 'c1', editCatId: 'fayans',
+      q: '', f: BLANK_F(), filterOpen: false, libView: 'grid',
+      oUnit: null, oComp: null, oView: 'plan', oMode: 'browse', oFocus: null, roomZoom: null,
+      spread: false, focusOut: false, fanSpread: false, hoverUnit: null, hoverComp: null, edit: false,
+      sel: sel, selUnits: { '2.2': true }, labelKind: 'urun', labelQ: '', labelSize: '20',
+      sheet: false, sheetPerson: 'Cankat', sheetWhere: 'disari', sheetNote: '',
+      docOpen: false, docPath: [], collectOpen: false, priceOpen: false, priceDraft: '', priceUnit: 'm²',
+      wz: null, add: this.blankAdd(), toast: '',
+      theme: storeGet('finds-theme') || 'system', me: storeGet('finds-me') || '', busyItems: BUSY_ITEMS, busyCols: BUSY_COLS, busyAsk: null, confirmMode: 'optional', splash: true, rc: null, expMode: 'priced'
+    };
+    this.later(700, { splash: false });
+  }
+  componentWillUnmount() { this._timers.forEach(clearTimeout); }
+  later(ms, f) { var self = this; this._timers.push(setTimeout(function () { if (typeof f === 'function') f(); else self.setState(f); }, ms)); }
+  blankAdd() { return { type: 'fiziki', name: '', brand: '', size: '', link: '', cat: 'fayans', attrs: {}, price: '', priceUnit: 'm²', unit: '2.2', comp: 0, qty: 1, sw: null, colors: [], fetching: false }; }
+  item(id) { return findBy(this.state.items, id); }
+  cat(id) { return findBy(this.state.cats, id) || findBy(this.state.cats, 'diger'); }
+  patch(id, p) { this.setState({ items: this.state.items.map(function (x) { return x.id === id ? Object.assign({}, x, p) : x; }) }); }
+  patchCat(id, p) { this.setState({ cats: this.state.cats.map(function (x) { return x.id === id ? Object.assign({}, x, p) : x; }) }); }
+  notify(msg) { var self = this; clearTimeout(this._tt); this.setState({ toast: msg }); this._tt = setTimeout(function () { self.setState({ toast: '' }); }, 2600); }
+  go(screen, extra) { var s = this.state; this.setState(Object.assign({ screen: screen, stack: s.stack.concat([s.screen]), sheet: false, filterOpen: false }, extra || {})); }
+  tabGo(screen, extra) { this.setState(Object.assign({ screen: screen, stack: [], sheet: false, filterOpen: false }, extra || {})); }
+  back() { var st = this.state.stack.slice(), prev = st.pop() || 'lib'; this.setState({ screen: prev, stack: st, sheet: false }); }
+  openDetail(id) { this.go('detail', { id: id }); }
+  // Demo: başka cihazdaki düzenleme bir süre sonra biter, bekleyene haber verilir (SPEC 4.9)
+  freeLater(kind, id, name, ms) {
+    var self = this;
+    this.later(ms, function () {
+      var key = kind === 'col' ? 'busyCols' : 'busyItems', m = Object.assign({}, self.state[key]);
+      if (!m[id]) return;
+      delete m[id]; var p = {}; p[key] = m; self.setState(p);
+      self.notify('Artık düzenleyebilirsin · ' + name);
+    });
+  }
+  setF(p) { this.setState({ f: Object.assign({}, this.state.f, p) }); }
+  setAttr(fid, v) { var a = Object.assign({}, this.state.f.attr); if (v === undefined) delete a[fid]; else a[fid] = v; this.setF({ attr: a }); }
+
+  // ---- Ofis ----
+  selectUnit(code, mode, focusId) {
+    this.setState({ oUnit: code, oComp: null, oView: 'plan', oMode: mode || 'browse', oFocus: focusId || null, spread: false, focusOut: false, roomZoom: null, edit: false });
+    this.later(60, { spread: true });
+    if (focusId) this.later(850, { focusOut: true });
+  }
+  openPhoto(idx) { this.setState({ oView: 'photo', oComp: idx, fanSpread: false, hoverComp: null }); this.later(90, { fanSpread: true }); }
+  pickComp(i) { if (this.state.edit) { this.notify('Alan ' + this.state.oUnit + '.' + (i + 1) + ': köşeleri sürükle, adını değiştir veya sil (demo)'); return; } this.setState({ oComp: this.state.oComp === i ? null : i, fanSpread: false }); this.later(90, { fanSpread: true }); }
+  locate(id, mode) {
+    var self = this, it = this.item(id), p = parseZone(it.zone);
+    this.go('office', {});
+    this.selectUnit(p.unit, mode, id);
+    if (mode === 'return') this.later(2000, function () { if (self.state.screen === 'office' && self.state.oMode === 'return' && self.state.oView === 'plan') self.openPhoto(p.idx); });
+  }
+  // ---- Yerine koy: raf QR'ıyla onay ----
+  startReturn(id) {
+    var it = this.item(id);
+    if (this.state.confirmMode === 'off') { this.finishReturn(id, false); return; }
+    this.setState({ rc: { mode: 'return', id: id, zone: it.zone, placed: [], mm: null } });
+  }
+  finishReturn(id, verified) {
+    var it = this.item(id);
+    this.patch(id, { out: null });
+    this.setState({ rc: null, oMode: 'browse' });
+    this.notify('Yerine konuldu · ' + it.zone + (verified ? ' · raf onaylı' : ''));
+  }
+  rcScanShelf(zone) {
+    var rc = this.state.rc, it = this.item(rc.id);
+    if (zone === it.zone) { this.finishReturn(rc.id, true); return; }
+    this.setState({ rc: Object.assign({}, rc, { mm: { id: rc.id, scanned: zone } }) });
+  }
+  rcScanItem(id) {
+    var rc = this.state.rc, it = this.item(id);
+    if (it.zone === rc.zone) {
+      this.patch(id, { out: null });
+      this.setState({ rc: Object.assign({}, rc, { placed: rc.placed.concat([id]) }) });
+      return;
+    }
+    this.setState({ rc: Object.assign({}, rc, { mm: { id: id, scanned: rc.zone } }) });
+  }
+  rcVM() {
+    var self = this, rc = this.state.rc;
+    if (!rc) return { open: false, mismatch: false };
+    var isRet = rc.mode === 'return', it = isRet ? this.item(rc.id) : null, demos = [];
+    var shelfThumb = function (z) { return { thumbSt: 'width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:none;font-weight:700;font-size:13px', thumbText: z }; };
+    if (isRet) {
+      var wrong = it.zone === '2.3.1' ? '2.2.5' : '2.3.1';
+      demos.push(Object.assign(shelfThumb(it.zone), { title: 'Raf etiketi · doğru raf', sub: 'Bölme ' + it.zone, pick: function () { self.rcScanShelf(it.zone); } }));
+      demos.push(Object.assign(shelfThumb(wrong), { title: 'Raf etiketi · başka raf', sub: 'Bölme ' + wrong, pick: function () { self.rcScanShelf(wrong); } }));
+    } else {
+      this.state.items.filter(function (x) { return x.type === 'fiziki' && rc.placed.indexOf(x.id) === -1 && (x.out || x.zone === rc.zone); }).slice(0, 4).forEach(function (x) {
+        demos.push({ thumbSt: 'width:48px;height:48px;border-radius:12px;flex:none;background:' + x.sw, thumbText: '', title: x.name, sub: x.id + ' · yeri ' + x.zone + (x.out ? ' · ' + status(x).short.toLocaleLowerCase('tr') : ''), pick: function () { self.rcScanItem(x.id); } });
+      });
+    }
+    var mm = rc.mm, mmIt = mm ? this.item(mm.id) : null;
+    return {
+      open: !mm, mismatch: !!mm,
+      title: isRet ? 'Yerine koy' : 'Toplu yerleştir',
+      prompt: isRet ? 'Rafın etiketini okut' : 'Bu bölmeye koyduğun ürünleri okut',
+      zone: rc.zone, sub: isRet ? it.name : 'Okuttukların bu bölmeye konmuş sayılır',
+      placed: rc.placed.map(function (id) { return { name: self.item(id).name }; }), hasPlaced: rc.placed.length > 0,
+      demos: demos,
+      showSkip: true,
+      skipLabel: isRet ? (this.state.confirmMode === 'required' ? 'Kamera açılmıyor · okutmadan onayla' : 'Okutmadan onayla') : (rc.placed.length ? 'Bitti · ' + rc.placed.length + ' ürün yerleşti' : 'Kapat'),
+      skip: function () {
+        if (isRet) { self.finishReturn(rc.id, false); return; }
+        self.setState({ rc: null });
+        if (rc.placed.length) self.notify(rc.placed.length + ' ürün ' + rc.zone + ' bölmesine yerleşti');
+      },
+      close: function () { self.setState({ rc: null }); },
+      mmItem: mmIt ? mmIt.name + ' · ' + mmIt.id : '', mmHome: mmIt ? mmIt.zone : '', mmScanned: mm ? mm.scanned : '',
+      mmGoHomeLabel: mmIt ? mmIt.zone + ' bölmesine götüreceğim' : '',
+      mmGoHome: function () {
+        self.setState({ rc: Object.assign({}, rc, { mm: null }) });
+        if (!isRet) self.notify(mmIt.name + ' → ' + mmIt.zone + ' bölmesine götür');
+      },
+      mmMoveLabel: mm ? 'Yeni yeri ' + mm.scanned + ' olsun' : '',
+      mmMove: function () {
+        self.patch(mm.id, { zone: mm.scanned, out: null });
+        if (isRet) { self.setState({ rc: null, oMode: 'browse' }); self.notify('Yeni yer ' + mm.scanned + ' · etiket değişmez'); }
+        else self.setState({ rc: Object.assign({}, rc, { mm: null, placed: rc.placed.concat([mm.id]) }) });
+      }
+    };
+  }
+  onPhotoFile(e) {
+    var self = this, f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () { self.setState({ add: Object.assign({}, self.state.add, { sw: 'center / cover no-repeat url(' + rd.result + ')', colors: self.state.add.colors.length ? self.state.add.colors : ['bej', 'gri'] }) }); self.notify('Görsel eklendi · renkler çıkarıldı (demo)'); };
+    rd.readAsDataURL(f);
+  }
+  scanShelf(zone) {
+    var p = parseZone(zone);
+    this.go('office', { oUnit: p.unit, oMode: 'shelf', oFocus: null, edit: false, roomZoom: null });
+    this.openPhoto(p.idx);
+    this.notify('Raf etiketi okundu · ' + zone);
+  }
+
+  rowVM(it) {
+    var self = this, st = status(it), c = this.cat(it.cat);
+    var showBadge = it.type === 'dijital' || !!it.out;
+    return {
+      id: it.id, name: it.name, code: it.id, brand: it.brand, catShort: c.name.split(' ')[0], sub: it.brand + ' · ' + (it.size || '—'),
+      price: it.price ? eur(it.price.v) + ' / ' + it.price.u : '—',
+      loc: it.type === 'dijital' ? 'Dijital kayıt' : it.zone + ' · ' + roomBy(unitBy(parseZone(it.zone).unit).room).name,
+      zone: it.zone || '', badge: st.short, badgeSt: st.st, thumbSt: 'background:' + it.sw,
+      imgSt: 'position:relative;aspect-ratio:1;border-radius:16px;border:1px solid rgba(0,0,0,.06);background:' + it.sw,
+      hasBadge: showBadge, gBadgeSt: 'position:absolute;left:8px;top:8px;' + st.st,
+      outText: it.out ? it.out.person + ' · ' + (it.out.where === 'disari' ? 'Büro dışında' : 'Büro içinde') + ' · ' + it.out.date : '',
+      open: function () { self.openDetail(it.id); }
+    };
+  }
+
+  officeVM(phys) {
+    var self = this, s = this.state, C = CFG, W = C.W, H = W * PH / PW, VH = C.VH;
+    var unit = s.oUnit ? unitBy(s.oUnit) : null;
+    var inUnit = unit ? phys.filter(function (i) { return parseZone(i.zone).unit === unit.code; }) : [];
+    var focus = s.oFocus ? this.item(s.oFocus) : null;
+    var tx, ty, sc;
+    if (unit) { sc = C.ZS; tx = W / 2 - (unit.cx - PX0) / PW * W * sc; ty = VH / 2 - (unit.cy - PY0) / PH * H * sc; }
+    else if (s.roomZoom) { var r = roomBy(s.roomZoom); sc = r.zoom; tx = W / 2 - (r.cx - PX0) / PW * W * sc; ty = VH / 2 - (r.cy - PY0) / PH * H * sc; }
+    else { sc = 1; tx = 0; ty = (VH - H) / 2; }
+    var counts = {}; phys.forEach(function (i) { var u = parseZone(i.zone).unit; counts[u] = (counts[u] || 0) + 1; });
+    var units = UNITS.map(function (u) {
+      var sel = unit && unit.code === u.code, hov = s.hoverUnit === u.code, n = counts[u.code] || 0;
+      var bg = sel ? ACC : hov ? '#E05A5E' : unit ? 'rgba(232,96,100,.28)' : n ? 'rgba(232,96,100,.62)' : 'rgba(232,96,100,.34)';
+      return {
+        code: u.code, aria: 'Ünite ' + u.code + ', ' + n + ' ürün', st: u.box + ';background:' + bg,
+        labSt: u.labPos + 'font-size:' + C.labFs + 'px;color:' + (sel ? '#fff' : 'var(--unit-tx)'),
+        pick: function () { if (unit && unit.code === u.code) self.openPhoto(null); else self.selectUnit(u.code, 'browse'); },
+        enter: function () { self.setState({ hoverUnit: u.code }); }, leave: function () { self.setState({ hoverUnit: null }); }
+      };
+    });
+    var rl = function (r) { return 'left:' + pct((r.lab[0] - PX0) / PW) + '%;top:' + pct((r.lab[1] - PY0) / PH) + '%;font-size:' + C.roomFs + 'px'; };
+    var orbit = [];
+    if (unit && s.oView === 'plan') {
+      var list = inUnit.slice(0, 10), extra = inUnit.length - list.length, n = list.length, cx = W / 2, cy = VH / 2, O = C.orbit;
+      list.forEach(function (it, i) {
+        var a = -Math.PI / 2 + (i / Math.max(n, 1)) * Math.PI * 2, dx = Math.cos(a) * O.rx, dy = Math.sin(a) * O.ry, rot = shuffleRot(it.id, 'o');
+        var isF = focus && it.id === focus.id, dim = s.focusOut && focus && !isF;
+        var tr = s.spread ? 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) rotate(' + (isF && s.focusOut ? 0 : rot) + 'deg) scale(' + (isF && s.focusOut ? 1.5 : dim ? 0.88 : 1) + ')' : 'translate(0,0) rotate(' + rot * 2 + 'deg) scale(.2)';
+        orbit.push({
+          name: it.name,
+          st: 'left:' + (cx - O.cw / 2) + 'px;top:' + (cy - O.ch / 2) + 'px;width:' + O.cw + 'px;height:' + O.ch + 'px;transform:' + tr + ';opacity:' + (s.spread ? (dim ? 0.45 : 1) : 0) + ';transition-delay:' + (s.spread ? i * 40 : 0) + 'ms,' + (s.spread ? i * 40 : 0) + 'ms,0ms;z-index:' + (isF ? 30 : 10 + i) + (isF && s.focusOut ? ';box-shadow:0 0 0 2px ' + ACC + ',0 10px 26px rgba(47,91,234,.35)' : ''),
+          imgSt: 'display:block;flex:1;border-radius:7px;background:' + it.sw,
+          open: function () { self.openDetail(it.id); }
+        });
+      });
+      if (extra > 0) orbit.push({ name: '+' + extra + ' ürün daha', st: 'left:' + (cx - 30) + 'px;top:' + (cy + O.ry - 20) + 'px;width:60px;height:40px;opacity:' + (s.spread ? 1 : 0), imgSt: 'display:none', open: function () { self.openPhoto(null); } });
+    }
+    var compCounts = {}; inUnit.forEach(function (i) { var k = parseZone(i.zone).idx; compCounts[k] = (compCounts[k] || 0) + 1; });
+    var active = s.oComp !== null ? s.oComp : null, preview = active === null && s.hoverComp !== null ? s.hoverComp : null, spotIdx = active !== null ? active : preview;
+    var comps = COMPS.map(function (c, i) {
+      var n = compCounts[i] || 0, on = active === i;
+      return {
+        aria: (unit ? unit.code : '') + '.' + (i + 1) + ' ' + c.kind + ', ' + n + ' ürün', edit: s.edit,
+        st: c.box + (s.edit ? 'background:rgba(47,91,234,.12);outline:1.5px dashed ' + ACC + ';' : 'background:transparent;'),
+        pill: (unit ? unit.code : '') + '.' + (i + 1) + (n ? ' · ' + n : ''),
+        pillSt: 'left:calc(' + c.l + '% + 4px);top:calc(' + c.t + '% + 4px);background:' + (on ? ACC : n ? 'rgba(17,19,23,.74)' : 'rgba(17,19,23,.4)') + ';opacity:' + (spotIdx !== null && spotIdx !== i ? 0.3 : 1),
+        pick: function () { self.pickComp(i); },
+        enter: function () { self.setState({ hoverComp: i }); }, leave: function () { self.setState({ hoverComp: null }); }
+      };
+    });
+    var spotSt = spotIdx !== null
+      ? COMPS[spotIdx].box + 'box-shadow:0 0 0 2000px rgba(12,14,18,' + (active !== null ? 0.58 : 0.32) + '),inset 0 0 0 2px ' + (active !== null ? ACC : 'rgba(255,255,255,.8)')
+      : 'left:0;top:0;width:100%;height:100%;box-shadow:0 0 0 2000px rgba(12,14,18,0),inset 0 0 0 0 transparent';
+    var fan = [], compItems = active !== null ? inUnit.filter(function (i) { return parseZone(i.zone).idx === active; }) : [];
+    var F = C.fan, nF = compItems.length, sp = nF > 1 ? Math.min(F.maxSp, F.span / (nF - 1)) : 0;
+    compItems.forEach(function (it, i) {
+      var k = i - (nF - 1) / 2, isF = focus && it.id === focus.id;
+      var tr = s.fanSpread ? 'translate(' + (k * sp).toFixed(1) + 'px,' + (Math.abs(k) * 8 - (isF ? 16 : 0)) + 'px) rotate(' + (k * 7) + 'deg) scale(' + (isF ? 1.08 : 1) + ')' : 'translate(0,' + (12 + i * 2) + 'px) rotate(' + shuffleRot(it.id, 'f') / 2 + 'deg)';
+      fan.push({
+        name: it.name, code: it.id + (it.out ? ' · ' + status(it).short : ''),
+        st: 'left:calc(50% - ' + F.cw / 2 + 'px);top:14px;width:' + F.cw + 'px;height:' + F.ch + 'px;transform:' + tr + ';z-index:' + (isF ? 30 : 10 + i) + ';transition-delay:' + (s.fanSpread ? i * 50 : 0) + 'ms',
+        inSt: isF ? 'box-shadow:0 0 0 2px ' + ACC + ',0 12px 26px rgba(47,91,234,.3)' : (it.out ? 'opacity:.6' : ''),
+        imgSt: 'display:block;flex:1;border-radius:9px;background:' + it.sw,
+        open: function () { self.openDetail(it.id); }
+      });
+    });
+    var filled = Object.keys(compCounts).map(Number).sort(function (a, b) { return a - b; }).map(function (k) {
+      return { label: unit.code + '.' + (k + 1) + ' · ' + compCounts[k], pick: function () { self.pickComp(k); } };
+    });
+    var fItem = focus ? { name: focus.name, zone: focus.zone, thumbSt: 'background:' + focus.sw } : { name: '', zone: '', thumbSt: '' };
+    var roomRows = ROOMS.map(function (r) {
+      var us = UNITS.filter(function (u) { return u.room === r.no; }), n = phys.filter(function (i) { return unitBy(parseZone(i.zone).unit).room === r.no; }).length;
+      return { name: r.name, sub: us.length + ' ünite · ' + n + ' ürün', dotSt: 'width:12px;height:12px;border-radius:4px;flex:none;background:' + r.color, pick: function () { self.setState({ roomZoom: r.no, oUnit: null }); } };
+    });
+    var roomChips = [{ no: null, name: 'Tüm plan' }].concat(ROOMS).map(function (r) {
+      return { name: r.name, cls: !unit && s.roomZoom === r.no ? 'on' : '', pick: function () { self.setState({ roomZoom: r.no, oUnit: null, oView: 'plan' }); } };
+    });
+    var isPlan = s.oView === 'plan';
+    return {
+      isPlan: isPlan, isPhoto: !isPlan, roomChips: roomChips, roomRows: roomRows,
+      vpSt: 'position:relative;width:100%;height:' + VH + 'px;border-radius:18px;overflow:hidden;background:var(--plan-bg);border:1px solid var(--line)',
+      layerSt: 'position:absolute;left:0;top:0;width:' + W + 'px;height:' + H.toFixed(1) + 'px;transform-origin:0 0;transform:translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + sc + ');transition:transform .8s cubic-bezier(.2,.8,.2,1)',
+      rl1: rl(ROOMS[0]), rl2: rl(ROOMS[1]), rl3: rl(ROOMS[2]),
+      units: units, orbit: orbit, showHint: !unit,
+      onLeave: function () { self.setState({ hoverComp: null, hoverUnit: null }); },
+      panelBrowse: isPlan && !!unit && !focus, panelLocate: isPlan && !!unit && !!focus, panelNone: isPlan && !unit,
+      unitCode: unit ? unit.code : '', unitSub: unit ? roomBy(unit.room).name + ' · ' + inUnit.length + ' ürün · 18 bölme' : '',
+      fItem: fItem, locateSub: focus ? zoneSub(focus.zone) : '', locateBtn: s.oMode === 'return' ? 'Bölmeyi göster' : 'Rafta göster',
+      close: function () { self.setState({ oUnit: null, oFocus: null }); },
+      openPhoto: function () { self.openPhoto(focus ? parseZone(focus.zone).idx : null); },
+      toPlan: function () { self.setState({ oView: 'plan', oComp: null, edit: false }); if (!self.state.spread) self.later(60, { spread: true }); },
+      photoSt: 'position:relative;width:100%;aspect-ratio:2 / 3;border-radius:18px;overflow:hidden;background:#D9D9D6;box-shadow:0 10px 30px rgba(0,0,0,.12)',
+      comps: comps, spotSt: spotSt, spotCls: active !== null ? 'spot pulse' : 'spot',
+      editMode: s.edit, toggleEdit: function () { self.setState({ edit: !s.edit, oComp: null }); }, editBtnSt: s.edit ? 'background:var(--inv) !important;color:var(--on-inv);border-color:var(--inv) !important' : '',
+      hasComp: active !== null && !s.edit, noComp: active === null && !s.edit,
+      compCode: active !== null && unit ? unit.code + '.' + (active + 1) : '', compKind: active !== null ? COMPS[active].kind : '', compCount: nF + ' ürün',
+      fan: fan, fanEmpty: nF === 0, fanAreaSt: 'position:relative;height:' + (nF ? F.area : 70) + 'px',
+      filled: unit ? filled : [],
+      isReturn: s.oMode === 'return' && !!focus && !!focus.out,
+      returnLabel: s.confirmMode === 'off' ? 'Yerine koydum' : 'Yerine koy · rafı okut',
+      confirmReturn: function () { self.startReturn(focus.id); },
+      isShelf: s.oMode === 'shelf' && active !== null && !s.edit,
+      bulkPlace: function () { self.setState({ rc: { mode: 'bulk', zone: unit.code + '.' + (active + 1), placed: [], mm: null } }); }
+    };
+  }
+
+  libVM(items) {
+    var self = this, s = this.state, f = s.f, cats = s.cats;
+    var cat = f.cat !== 'all' ? this.cat(f.cat) : null;
+    var q = s.q.trim().toLocaleLowerCase('tr');
+    var pmin = num(f.pmin), pmax = num(f.pmax);
+    var colorSel = Object.keys(f.colors), brandSel = Object.keys(f.brands);
+    function matchAttr(it, fl) {
+      var v = (it.attrs || {})[fl.id], want = f.attr[fl.id];
+      if (want === undefined) return true;
+      if (fl.type === 'tekli' || fl.type === 'coklu') { var keys = Object.keys(want); if (!keys.length) return true; var have = Array.isArray(v) ? v : [v]; return keys.some(function (k) { return have.indexOf(k) !== -1; }); }
+      if (fl.type === 'olcu') { var mn = num(want.min), mx = num(want.max); if (mn === null && mx === null) return true; if (typeof v !== 'number') return false; return (mn === null || v >= mn) && (mx === null || v <= mx); }
+      if (fl.type === 'varyok') return !!v === (want === 'var');
+      if (fl.type === 'metin') return !want || String(v || '').toLocaleLowerCase('tr').indexOf(String(want).toLocaleLowerCase('tr')) !== -1;
+      return true;
+    }
+    var filtered = items.filter(function (it) {
+      if (f.type !== 'all' && it.type !== f.type) return false;
+      if (cat && it.cat !== cat.id) return false;
+      if (colorSel.length && !it.colors.some(function (c) { return f.colors[c]; })) return false;
+      if (brandSel.length && !f.brands[it.brand]) return false;
+      if (f.status === 'yerinde' && (it.type !== 'fiziki' || it.out)) return false;
+      if (f.status === 'disarida' && !(it.type === 'fiziki' && it.out)) return false;
+      if ((pmin !== null || pmax !== null) && (!it.price || (pmin !== null && it.price.v < pmin) || (pmax !== null && it.price.v > pmax))) return false;
+      if (cat && !cat.filters.every(function (fl) { return matchAttr(it, fl); })) return false;
+      if (q) {
+        var c = self.cat(it.cat), at = c.filters.map(function (fl) { return attrText(fl, (it.attrs || {})[fl.id]) || ''; }).join(' ');
+        var hay = [it.name, it.brand, it.id, it.size, c.name, at, it.type === 'fiziki' ? it.zone : 'dijital'].join(' ').toLocaleLowerCase('tr');
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+    // aktif filtre etiketleri
+    var chips = [];
+    if (cat) chips.push({ label: cat.name, remove: function () { self.setF({ cat: 'all', attr: {} }); } });
+    if (cat) cat.filters.forEach(function (fl) {
+      var w = f.attr[fl.id]; if (w === undefined) return;
+      var label = null;
+      if (fl.type === 'tekli' || fl.type === 'coklu') { var k = Object.keys(w); if (k.length) label = fl.name + ': ' + k.join(', '); }
+      else if (fl.type === 'olcu') { if (w.min || w.max) label = fl.name + ': ' + (w.min || '…') + '–' + (w.max || '…') + ' ' + fl.unit; }
+      else if (fl.type === 'varyok') label = fl.name + ': ' + (w === 'var' ? 'Var' : 'Yok');
+      else if (fl.type === 'metin' && w) label = fl.name + ': ' + w;
+      if (label) chips.push({ label: label, remove: function () { self.setAttr(fl.id, undefined); } });
+    });
+    colorSel.forEach(function (c) { var co = findBy(COLORS, c); chips.push({ label: co.name, remove: function () { var n = Object.assign({}, f.colors); delete n[c]; self.setF({ colors: n }); } }); });
+    brandSel.forEach(function (b) { chips.push({ label: b, remove: function () { var n = Object.assign({}, f.brands); delete n[b]; self.setF({ brands: n }); } }); });
+    if (f.status !== 'all') chips.push({ label: f.status === 'yerinde' ? 'Yerinde' : 'Dışarıda', remove: function () { self.setF({ status: 'all' }); } });
+    if (f.pmin || f.pmax) chips.push({ label: 'Fiyat ' + (f.pmin || '…') + '–' + (f.pmax || '…') + ' €', remove: function () { self.setF({ pmin: '', pmax: '' }); } });
+    chips.forEach(function (c) { c.aria = c.label + ' filtresini kaldır'; });
+    var activeCount = chips.length + (f.type !== 'all' ? 1 : 0);
+
+    // filtre paneli: kategoriye özel alanlar
+    var catFilters = cat ? cat.filters.map(function (fl, i) {
+      var w = f.attr[fl.id], t = ftype(fl.type);
+      var vm = { name: fl.name, typeName: t.name, secSt: i === 0 ? 'border-top:0' : '', isOpts: false, isRange: false, isBool: false, isText: false };
+      if (fl.type === 'tekli' || fl.type === 'coklu') {
+        vm.isOpts = true;
+        vm.opts = fl.options.map(function (o) { var on = w && w[o]; return { name: o, cls: on ? 'on' : '', pick: function () { var n = Object.assign({}, w || {}); if (n[o]) delete n[o]; else n[o] = true; self.setAttr(fl.id, Object.keys(n).length ? n : undefined); } }; });
+      } else if (fl.type === 'olcu') {
+        vm.isRange = true; vm.unit = fl.unit; vm.min = w ? w.min : ''; vm.max = w ? w.max : '';
+        vm.onMin = function (e) { self.setAttr(fl.id, { min: e.target.value, max: (self.state.f.attr[fl.id] || {}).max || '' }); };
+        vm.onMax = function (e) { self.setAttr(fl.id, { min: (self.state.f.attr[fl.id] || {}).min || '', max: e.target.value }); };
+      } else if (fl.type === 'varyok') {
+        vm.isBool = true; vm.anyCls = w === undefined ? 'on' : ''; vm.yesCls = w === 'var' ? 'on' : ''; vm.noCls = w === 'yok' ? 'on' : '';
+        vm.setAny = function () { self.setAttr(fl.id, undefined); }; vm.setYes = function () { self.setAttr(fl.id, 'var'); }; vm.setNo = function () { self.setAttr(fl.id, 'yok'); };
+      } else {
+        vm.isText = true; vm.val = w || ''; vm.onVal = function (e) { self.setAttr(fl.id, e.target.value || undefined); };
+      }
+      return vm;
+    }) : [];
+    var brands = []; items.forEach(function (i) { if (brands.indexOf(i.brand) === -1) brands.push(i.brand); }); brands.sort();
+    return {
+      rows: filtered.map(function (i) { return self.rowVM(i); }), count: filtered.length,
+      activeChips: chips, activeCount: activeCount, catFilters: catFilters, cat: cat,
+      catChips: [{ id: 'all', name: 'Tümü' }].concat(cats).map(function (c) { return { name: c.name, cls: f.cat === c.id ? 'on' : '', pick: function () { self.setF({ cat: c.id, attr: {} }); } }; }),
+      colorOpts: COLORS.map(function (c) { var on = !!f.colors[c.id]; return { name: c.name, st: 'background:' + c.hex + (on ? ';box-shadow:0 0 0 3px var(--card),0 0 0 5px ' + ACC : ''), pick: function () { var n = Object.assign({}, f.colors); if (n[c.id]) delete n[c.id]; else n[c.id] = true; self.setF({ colors: n }); } }; }),
+      brandOpts: brands.map(function (b) { return { name: b, cls: f.brands[b] ? 'on' : '', pick: function () { var n = Object.assign({}, f.brands); if (n[b]) delete n[b]; else n[b] = true; self.setF({ brands: n }); } }; }),
+      statusOpts: [['all', 'Tümü'], ['yerinde', 'Yerinde'], ['disarida', 'Dışarıda / kullanımda']].map(function (p) { return { name: p[1], cls: f.status === p[0] ? 'on' : '', pick: function () { self.setF({ status: p[0] }); } }; })
+    };
+  }
+
+  wizardVM() {
+    var self = this, s = this.state, w = s.wz || { step: 1 }, cats = s.cats;
+    var setW = function (p) { self.setState({ wz: Object.assign({}, self.state.wz, p) }); };
+    var t = w.type ? ftype(w.type) : null, cat = w.cat ? this.cat(w.cat) : null;
+    var needsOpts = w.type === 'tekli' || w.type === 'coklu', needsUnit = w.type === 'olcu';
+    var preview = '', previewSt = 'display:flex;flex-wrap:wrap;gap:6px;font-size:13px';
+    if (t) {
+      if (needsOpts) preview = (w.opts.length ? w.opts.join('  ·  ') : 'Seçenek ekle');
+      else if (needsUnit) preview = 'min  –  maks  ' + w.unit;
+      else if (w.type === 'varyok') preview = 'Fark etmez  ·  Var  ·  Yok';
+      else preview = 'içerir…';
+      previewSt += ';padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line2);color:var(--tx3)';
+    }
+    var addOpt = function () { var d = (self.state.wz.draft || '').trim(); if (!d) return; if (self.state.wz.opts.indexOf(d) === -1) setW({ opts: self.state.wz.opts.concat([d]), draft: '' }); else setW({ draft: '' }); };
+    var canNext = w.step === 1 ? !!w.cat : w.step === 2 ? !!w.type : (w.name || '').trim() && (!needsOpts || w.opts.length > 0);
+    return {
+      stepText: 'Adım ' + w.step + ' / 3' + (cat ? ' · ' + cat.name : ''),
+      bars: [1, 2, 3].map(function (n) { return { st: 'height:4px;border-radius:2px;background:' + (n <= w.step ? ACC : 'var(--line2)') }; }),
+      s1: w.step === 1, s2: w.step === 2, s3: w.step === 3,
+      cats: cats.map(function (c) { var on = w.cat === c.id; return { name: c.name, on: on, checkCls: on ? 'check on' : 'check', dotSt: 'width:12px;height:12px;border-radius:4px;flex:none;background:' + c.color, pick: function () { setW({ cat: c.id }); } }; }),
+      types: FTYPES.map(function (ft) { return { name: ft.name, desc: ft.desc, example: ft.example, cls: w.type === ft.id ? 'on' : '', pick: function () { setW({ type: ft.id }); } }; }),
+      title3: t ? t.name + ' filtresi' : '', namePh: t ? t.ph : '', name: w.name || '', onName: function (e) { setW({ name: e.target.value }); },
+      needsOpts: needsOpts, needsUnit: needsUnit, optPh: w.type === 'tekli' ? 'ör. R10' : 'ör. Mat',
+      draft: w.draft || '', onDraft: function (e) { setW({ draft: e.target.value }); }, addOpt: addOpt,
+      opts: (w.opts || []).map(function (o) { return { name: o, aria: o + ' seçeneğini kaldır', remove: function () { setW({ opts: self.state.wz.opts.filter(function (x) { return x !== o; }) }); } }; }),
+      units: UNITS_M.map(function (u) { return { name: u, cls: w.unit === u ? 'on' : '', pick: function () { setW({ unit: u }); } }; }),
+      previewName: (w.name || '').trim() || (t ? t.ph.replace('ör. ', '') : ''), typeName: t ? t.name : '', preview: preview, previewSt: previewSt,
+      canBack: w.step > 1 && !(w.fromCat && w.step === 2),
+      prev: function () { setW({ step: w.step - 1 }); },
+      nextLabel: w.step === 3 ? 'Filtreyi kaydet' : 'İleri',
+      next: function () {
+        if (!canNext) { self.notify(w.step === 1 ? 'Bir kategori seç' : w.step === 2 ? 'Bir filtre tipi seç' : (needsOpts && !w.opts.length ? 'En az bir seçenek ekle' : 'Filtreye bir ad ver')); return; }
+        if (w.step < 3) { setW({ step: w.step + 1 }); return; }
+        var c = self.cat(w.cat), nf = { id: 'f' + Date.now(), name: w.name.trim(), type: w.type };
+        if (needsOpts) nf.options = w.opts.slice(); if (needsUnit) nf.unit = w.unit;
+        self.patchCat(c.id, { filters: c.filters.concat([nf]) });
+        self.back();
+        if (!w.fromCat) self.later(10, function () { self.go('catEdit', { editCatId: c.id }); });
+        self.notify('"' + nf.name + '" filtresi ' + c.name + ' kategorisine eklendi');
+      }
+    };
+  }
+
+  renderVals() {
+    var self = this, s = this.state, items = s.items, scr = s.screen, cats = s.cats;
+    var phys = items.filter(function (i) { return i.type === 'fiziki'; });
+    var outs = phys.filter(function (i) { return i.out; });
+    var L = this.libVM(items);
+
+    // İstatistik
+    var counts = {}; items.forEach(function (i) { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    var maxC = Math.max.apply(null, cats.map(function (c) { return counts[c.id] || 0; }).concat([1]));
+    var catBars = cats.map(function (c) {
+      var n = counts[c.id] || 0;
+      return { name: c.name, count: n, barSt: 'height:100%;border-radius:3px;width:' + Math.round(n / maxC * 100) + '%;background:' + c.color };
+    });
+
+    // Detay
+    var it = this.item(s.id) || items[0], st = status(it), isPhys = it.type === 'fiziki', cat = this.cat(it.cat);
+    var info = [{ k: 'Kod', v: it.id }, { k: 'Ebat', v: it.size || '—' }];
+    if (isPhys) info.push({ k: 'Adet', v: it.qty + ' adet' });
+    info.push({ k: 'Ürün linki', v: it.link || '—', st: it.link ? 'color:' + ACC + ';font-weight:600' : '' });
+    info.push({ k: 'Eklenme', v: it.added });
+    info.forEach(function (f) { f.st = (f.st || '') + ';text-align:right;font-weight:500'; });
+    var attrs = []; cat.filters.forEach(function (fl) { var tx = attrText(fl, (it.attrs || {})[fl.id]); if (tx) attrs.push({ k: fl.name, v: tx }); });
+    var inSel = !!s.sel[it.id], dz = isPhys ? parseZone(it.zone) : null;
+    var inCols = s.cols.filter(function (c) { return c.items.some(function (x) { return x.id === it.id; }); });
+    var d = {
+      code: it.id, name: it.name, brand: it.brand, catName: cat.name,
+      heroSt: 'height:240px;border-radius:20px;border:1px solid rgba(0,0,0,.06);background:' + it.sw,
+      typeLabel: isPhys ? 'Fiziki' : 'Dijital', typeSt: isPhys ? 'background:var(--line);color:var(--tx)' : B_DIG,
+      badge: st.long, badgeSt: st.st,
+      isPhysical: isPhys, isDigital: !isPhys, isOut: isPhys && !!it.out, isIn: isPhys && !it.out,
+      hasLink: !!it.link, openLink: function () { self.notify('Yeni sekmede açılır: ' + it.link); },
+      collectLabel: inCols.length ? inCols.length + ' koleksiyonda' : 'Koleksiyona ekle',
+      openCollect: function () { self.setState({ collectOpen: true }); },
+      outTitle: it.out ? (it.out.where === 'disari' ? 'Büro dışında · ' + it.out.person : it.out.person + ' kullanıyor · büro içinde') : '',
+      outSub: it.out ? it.out.date + (it.out.note ? ' · ' + it.out.note : '') : '',
+      zone: isPhys ? it.zone : '', zoneSub: isPhys ? zoneSub(it.zone) : '',
+      miniBoxSt: isPhys ? 'position:absolute;' + COMPS[dz.idx].box + 'box-shadow:0 0 0 200px rgba(12,14,18,.45),inset 0 0 0 1.5px ' + ACC + ';border-radius:2px' : '',
+      price: it.price ? eur(it.price.v) + ' / ' + it.price.u : 'Fiyat yok', priceDate: it.price ? 'Girildi: ' + it.price.d : 'Henüz fiyat girilmedi', priceBtn: it.price ? 'Güncelle' : 'Fiyat ekle',
+      editPrice: function () { self.setState({ priceOpen: true, priceDraft: it.price ? String(it.price.v).replace('.', ',') : '', priceUnit: it.price ? it.price.u : 'm²' }); },
+      hasAttrs: attrs.length > 0, attrs: attrs,
+      colors: it.colors.map(function (c) { var co = findBy(COLORS, c); return { name: co.name, st: 'background:' + co.hex + ';width:28px;height:28px', search: function () { var n = {}; n[c] = true; self.setState({ f: Object.assign(BLANK_F(), { colors: n }), q: '' }); self.tabGo('lib'); self.notify(co.name + ' tonundaki ürünler'); } }; }),
+      docs: it.docs.map(function (doc) {
+        var e = extOf(doc.n);
+        return {
+          name: doc.n, path: doc.p, ext: e.ext, extSt: e.st,
+          open: function () { self.notify('Önizleme açılır: ' + doc.n); },
+          reveal: function () { self.notify('Gezginde açılır: ' + doc.p); },
+          unlink: function () { self.patch(it.id, { docs: it.docs.filter(function (x) { return x !== doc; }) }); self.notify('Bağlantı kaldırıldı · dosya sunucuda duruyor'); }
+        };
+      }),
+      linkDoc: function () { self.setState({ docOpen: true, docPath: [] }); },
+      info: info, qr: qrFor(it.id),
+      labelBtn: inSel ? 'Baskı listesinde' : 'Baskı listesine ekle', labelCls: inSel ? 'on' : '',
+      locate: function () { self.locate(it.id, 'locate'); },
+      edit: function () {
+        var b = self.state.busyItems[it.id];
+        if (!b) { self.notify('Düzenleme formu yeni ürün formuyla aynı (demo)'); return; }
+        self.setState({ busyAsk: { id: it.id, name: it.name, text: b.who + ' bu ürünü ' + b.where + ' düzenliyor (' + b.min + ' dk).' } });
+      },
+      take: function () { self.setState({ sheet: true, sheetPerson: self.state.me || 'Cankat', sheetWhere: 'disari', sheetNote: '' }); },
+      returnIt: function () { self.locate(it.id, 'return'); },
+      addLabel: function () { var n = Object.assign({}, s.sel); if (n[it.id]) delete n[it.id]; else n[it.id] = true; self.setState({ sel: n }); },
+      toPhysical: function () { self.patch(it.id, { type: 'fiziki', zone: '2.4.8', printed: false }); var n = Object.assign({}, s.sel); n[it.id] = true; self.setState({ sel: n }); self.notify('Fiziki kayda çevrildi · bölme 2.4.8'); }
+    };
+
+    // Sunucu dosya gezgini
+    var node = FS; s.docPath.forEach(function (p) { node = node.children.filter(function (c) { return c.name === p; })[0]; });
+    var fsCrumbs = [{ name: '\\\\MINIPC\\Bibliothek', path: [] }].concat(s.docPath.map(function (p, i) { return { name: p, path: s.docPath.slice(0, i + 1) }; })).map(function (c, i, arr) {
+      return { name: c.name, st: 'font-weight:600;color:' + (i === arr.length - 1 ? 'var(--tx)' : ACC), go: function () { self.setState({ docPath: c.path }); } };
+    });
+    var linked = {}; it.docs.forEach(function (x) { linked[x.n] = true; });
+    var fsRows = node.children.map(function (c) {
+      if (c.children) return { name: c.name, ext: '', extSt: 'background:var(--sunk);color:var(--tx2)', hint: c.children.length + ' öğe', pick: function () { self.setState({ docPath: s.docPath.concat([c.name]) }); } };
+      var e = extOf(c.name), on = linked[c.name];
+      return { name: c.name, ext: e.ext, extSt: e.st, hint: on ? 'Bağlı' : 'Bağla', pick: function () { if (on) return; self.patch(it.id, { docs: it.docs.concat([{ n: c.name, p: FS_ROOT + '\\' + s.docPath.join('\\') }]) }); self.setState({ docOpen: false }); self.notify(c.name + ' bağlandı'); } };
+    });
+    fsRows.forEach(function (r) { if (!r.ext) { r.ext = 'KLS'; r.extSt = 'background:var(--line);color:var(--tx3)'; } });
+
+    // Koleksiyonlar
+    function colTotals(c) {
+      var net = 0, missing = 0;
+      c.items.forEach(function (x) { var i = self.item(x.id), q = num(x.q); if (!i) return; if (i.price && q) net += i.price.v * q; else if (q) missing++; });
+      return { net: net, missing: missing };
+    }
+    var colCards = s.cols.map(function (c) {
+      var tt = colTotals(c), th = c.items.slice(0, 4).map(function (x) { var i = self.item(x.id); return { st: 'display:block;width:36px;height:36px;background:' + (i ? i.sw : '#eee') }; });
+      while (th.length < 4) th.push({ st: 'display:block;width:36px;height:36px;background:var(--sep)' });
+      return { name: c.name, sub: c.items.length + ' ürün' + (c.note ? ' · ' + c.note : ''), total: tt.net ? eur(tt.net) + ' net' : 'Miktar girilmedi', thumbs: th, open: function () { self.go('colDetail', { colId: c.id }); if (self.state.busyCols[c.id]) self.freeLater('col', c.id, c.name, 7000); } };
+    });
+    var col = findBy(s.cols, s.colId) || s.cols[0];
+    var setCol = function (p) { self.setState({ cols: self.state.cols.map(function (c) { return c.id === col.id ? Object.assign({}, c, p) : c; }) }); };
+    var ct = col ? colTotals(col) : { net: 0, missing: 0 };
+    var vatOn = !!(col && col.vat), vatR = col ? (num(col.vatRate === undefined ? '20' : col.vatRate) || 0) : 20;
+    var colBusy = col && s.busyCols[col.id];
+    var cd = col ? {
+      busy: !!colBusy, busyText: colBusy ? colBusy.who + ' bu koleksiyonu ' + colBusy.where + ' düzenliyor (' + colBusy.min + ' dk). Şu an sadece görüntülüyorsun; dışa aktarma çalışır.' : '',
+      lockSt: colBusy ? 'pointer-events:none;opacity:.55' : '',
+      name: col.name, onName: function (e) { setCol({ name: e.target.value }); },
+      sub: col.items.length + ' ürün' + (col.note ? ' · ' + col.note : ''),
+      rows: col.items.map(function (x, k) {
+        var i = self.item(x.id), q = num(x.q);
+        return {
+          name: i.name, thumbSt: 'background:' + i.sw, open: function () { self.openDetail(i.id); },
+          priceLine: (i.price ? eur(i.price.v) + ' / ' + i.price.u + ' · ' + i.price.d : 'Fiyat yok') + (i.type === 'dijital' ? ' · dijital' : ''),
+          q: x.q, unit: i.price ? i.price.u : 'adet', line: i.price && q ? eur(i.price.v * q) : '—',
+          onQ: function (e) { var arr = self.state.cols.filter(function (c) { return c.id === col.id; })[0].items.slice(); arr[k] = Object.assign({}, arr[k], { q: e.target.value }); setCol({ items: arr }); },
+          remove: function () { setCol({ items: col.items.filter(function (y) { return y.id !== x.id; }) }); }
+        };
+      }),
+      net: eur(ct.net), vat: eur(ct.net * vatR / 100), gross: eur(vatOn ? ct.net * (1 + vatR / 100) : ct.net),
+      vatOn: vatOn, vatCheck: vatOn ? 'check on' : 'check', vatRate: col.vatRate === undefined ? '20' : col.vatRate,
+      toggleVat: function () { setCol({ vat: !vatOn }); },
+      onVatRate: function (e) { setCol({ vatRate: e.target.value }); },
+      totalLabel: vatOn ? 'Toplam (brüt)' : 'Toplam (net)',
+      expPriced: s.expMode === 'priced' ? 'on' : '', expQty: s.expMode === 'qty' ? 'on' : '',
+      setPriced: function () { self.setState({ expMode: 'priced' }); }, setQty: function () { self.setState({ expMode: 'qty' }); },
+      expNote: s.expMode === 'priced' ? 'Birim fiyat, fiyat tarihi, satır toplamları' + (vatOn ? ', KDV ve brüt toplam.' : ' ve net toplam.') : 'Sadece kod, ad, marka, miktar ve birim. Tedarikçiye veya ekibe gönderilecek liste.',
+      hasMissing: ct.missing > 0, missing: ct.missing + ' üründe fiyat eksik; toplama dahil değil.',
+      addItems: function () { if (colBusy) { self.notify('Kullanımda · ' + colBusy.who + ' düzenliyor'); return; } self.tabGo('lib'); self.notify('Ürün detayında "Koleksiyona ekle" ile eklenir'); },
+      exportPdf: function () { self.notify(col.name + (s.expMode === 'priced' ? ' · siparis-listesi.pdf' : ' · miktar-listesi.pdf') + ' hazır (demo)'); },
+      exportXls: function () { self.notify(col.name + (s.expMode === 'priced' ? ' · siparis-listesi.xlsx' : ' · miktar-listesi.xlsx') + ' hazır (demo)'); }
+    } : {};
+    var collectRows = s.cols.map(function (c) {
+      var on = c.items.some(function (x) { return x.id === it.id; });
+      return { name: c.name, sub: c.items.length + ' ürün', on: on, checkCls: on ? 'check on' : 'check', toggle: function () { self.setState({ cols: self.state.cols.map(function (cc) { if (cc.id !== c.id) return cc; return Object.assign({}, cc, { items: on ? cc.items.filter(function (x) { return x.id !== it.id; }) : cc.items.concat([{ id: it.id, q: '' }]) }); }) }); } };
+    });
+
+    // Kategoriler
+    var catRows = cats.map(function (c) { return { name: c.name, sub: c.filters.length + ' filtre · ' + (counts[c.id] || 0) + ' ürün' + (c.locked ? ' · sabit' : ''), dotSt: 'width:12px;height:12px;border-radius:4px;flex:none;background:' + c.color, edit: function () { self.go('catEdit', { editCatId: c.id }); } }; });
+    var ec = this.cat(s.editCatId);
+    var ce = {
+      name: ec.name, onName: function (e) { self.patchCat(ec.id, { name: e.target.value }); },
+      prefix: ec.prefix, codeNote: 'Kodlar ' + ec.prefix + '-001-265 biçiminde: önek, kategorideki sıra, envanter numarası. Önek benzersiz olmalı.',
+      onPrefix: function (e) {
+        var v = e.target.value.toLocaleUpperCase('tr').replace(/[^A-Z]/g, '').slice(0, 2);
+        if (v.length === 2 && self.state.cats.some(function (c) { return c.id !== ec.id && c.prefix === v; })) { self.notify(v + ' öneki başka bir kategoride kullanılıyor'); return; }
+        self.patchCat(ec.id, { prefix: v });
+        if (v.length === 2 && v !== ec.prefix && (counts[ec.id] || 0) > 0) self.notify((counts[ec.id] || 0) + ' ürünün kodu değişecek; etiketleri yeniden basılacaklar listesine eklenir (demo)');
+      },
+      colors: CAT_COLORS.map(function (h) { return { hex: h, st: 'background:' + h + (ec.color === h ? ';box-shadow:0 0 0 3px var(--card),0 0 0 5px ' + h : ''), pick: function () { self.patchCat(ec.id, { color: h }); } }; }),
+      filters: ec.filters.map(function (fl, i) {
+        var t = ftype(fl.type), n = ec.filters.length;
+        var mv = function (dir) { var arr = ec.filters.slice(), j = i + dir; if (j < 0 || j >= n) return; var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp; self.patchCat(ec.id, { filters: arr }); };
+        return {
+          name: fl.name, typeName: t.name,
+          detail: fl.options ? fl.options.join(' · ') : fl.unit ? 'Birim: ' + fl.unit : fl.type === 'varyok' ? 'Var / Yok' : 'Serbest metin',
+          up: function () { mv(-1); }, down: function () { mv(1); },
+          upSt: i === 0 ? 'opacity:.35' : '', downSt: i === n - 1 ? 'opacity:.35' : '',
+          del: function () { self.patchCat(ec.id, { filters: ec.filters.filter(function (x) { return x !== fl; }) }); self.notify('"' + fl.name + '" filtresi silindi'); }
+        };
+      }),
+      noFilters: ec.filters.length === 0,
+      addFilter: function () { self.go('wizard', { wz: { step: 2, cat: ec.id, fromCat: true, type: null, name: '', opts: [], draft: '', unit: 'mm' } }); },
+      canDelete: !ec.locked,
+      del: function () {
+        self.setState({ cats: self.state.cats.filter(function (c) { return c.id !== ec.id; }), items: self.state.items.map(function (x) { return x.cat === ec.id ? Object.assign({}, x, { cat: 'diger' }) : x; }) });
+        self.back(); self.notify(ec.name + ' silindi · ürünleri Diğer\'e taşındı');
+      }
+    };
+
+    // Etiketler
+    var cap = s.labelSize === '20' ? 20 : 40, cols = cap === 20 ? 4 : 5, lq = s.labelQ.trim().toLocaleLowerCase('tr'), isItemKind = s.labelKind === 'urun';
+    var labelSrc, selLabels;
+    if (isItemKind) {
+      labelSrc = phys.filter(function (i) { return !lq || [i.name, i.brand, i.id, i.zone, self.cat(i.cat).name].join(' ').toLocaleLowerCase('tr').indexOf(lq) !== -1; });
+      selLabels = phys.filter(function (i) { return s.sel[i.id]; }).map(function (i) { return { name: i.name, code: i.id, qrKey: i.id }; });
+    } else {
+      labelSrc = UNITS.filter(function (u) { return !lq || (u.code + ' ' + roomBy(u.room).name).toLocaleLowerCase('tr').indexOf(lq) !== -1; });
+      selLabels = [];
+      UNITS.forEach(function (u) { if (s.selUnits[u.code]) COMPS.forEach(function (c, i) { selLabels.push({ name: u.code + '.' + (i + 1), code: '', qrKey: 'R' + u.code + '.' + (i + 1), big: true }); }); });
+    }
+    var slots = [];
+    for (var si = 0; si < cap; si++) {
+      var li = selLabels[si], small = cap === 40;
+      slots.push({
+        filled: !!li, name: li ? li.name : '', code: li ? li.code : '', qr: li ? qrFor(li.qrKey) : [],
+        cellSt: 'aspect-ratio:' + (small ? '42 / 37' : '52 / 59') + ';border:1px dashed ' + (li ? '#C5CAD3' : '#E7E9EE') + ';border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px;overflow:hidden;min-width:0',
+        nameSt: 'font-size:' + (li && li.big ? (small ? 8 : 11) : (small ? 5.5 : 7)) + 'px;font-weight:700;text-align:center;line-height:1.15;max-height:2.3em;overflow:hidden',
+        qrSt: 'width:' + (small ? '50%' : '62%'),
+        codeSt: 'font-size:' + (small ? 4.5 : 5.5) + 'px;font-weight:600;letter-spacing:.03em;text-align:center'
+      });
+    }
+    var pages = Math.max(1, Math.ceil(selLabels.length / cap));
+    var labelRows = isItemKind ? labelSrc.map(function (i) {
+      var on = !!s.sel[i.id];
+      return { name: i.name, sub: i.id + ' · ' + i.zone, thumbSt: 'width:44px;height:44px;border-radius:10px;flex:none;background:' + i.sw, thumbText: '', checked: on, checkCls: on ? 'check on' : 'check', unprinted: !i.printed,
+        toggle: function () { var n = Object.assign({}, self.state.sel); if (n[i.id]) delete n[i.id]; else n[i.id] = true; self.setState({ sel: n }); } };
+    }) : labelSrc.map(function (u) {
+      var on = !!s.selUnits[u.code];
+      return { name: 'Ünite ' + u.code, sub: roomBy(u.room).name + ' · 18 bölme etiketi', thumbSt: 'width:44px;height:44px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;background:var(--acc-bg2);color:' + ACC, thumbText: u.code, checked: on, checkCls: on ? 'check on' : 'check', unprinted: false,
+        toggle: function () { var n = Object.assign({}, self.state.selUnits); if (n[u.code]) delete n[u.code]; else n[u.code] = true; self.setState({ selUnits: n }); } };
+    });
+    var selVisible = function () {
+      if (isItemKind) { var n = Object.assign({}, self.state.sel); labelSrc.forEach(function (i) { n[i.id] = true; }); self.setState({ sel: n }); }
+      else { var m = Object.assign({}, self.state.selUnits); labelSrc.forEach(function (u) { m[u.code] = true; }); self.setState({ selUnits: m }); }
+    };
+
+    // Yeni ürün
+    var a = s.add, acat = this.cat(a.cat);
+    var setAdd = function (p) { self.setState({ add: Object.assign({}, self.state.add, p) }); };
+    var setAddAttr = function (k, v) { var at = Object.assign({}, self.state.add.attrs); at[k] = v; setAdd({ attrs: at }); };
+    var field = function (k) { return function (e) { var p = {}; p[k] = e.target.value; setAdd(p); }; };
+    var addFields = acat.filters.map(function (fl, i) {
+      var v = a.attrs[fl.id], t = ftype(fl.type);
+      var vm = { name: fl.name, typeName: t.name, secSt: i === 0 ? 'border-top:0' : '', isOpts: false, isRange: false, isBool: false, isText: false, unit: fl.unit || '', val: v === undefined ? '' : v };
+      if (fl.type === 'tekli') { vm.isOpts = true; vm.opts = fl.options.map(function (o) { return { name: o, cls: v === o ? 'on' : '', pick: function () { setAddAttr(fl.id, v === o ? undefined : o); } }; }); }
+      else if (fl.type === 'coklu') { var arr = v || []; vm.isOpts = true; vm.opts = fl.options.map(function (o) { var on = arr.indexOf(o) !== -1; return { name: o, cls: on ? 'on' : '', pick: function () { setAddAttr(fl.id, on ? arr.filter(function (x) { return x !== o; }) : arr.concat([o])); } }; }); }
+      else if (fl.type === 'olcu') { vm.isRange = true; vm.onVal = function (e) { setAddAttr(fl.id, e.target.value); }; }
+      else if (fl.type === 'varyok') { vm.isBool = true; vm.yesCls = v === true ? 'on' : ''; vm.noCls = v === false ? 'on' : ''; vm.setYes = function () { setAddAttr(fl.id, true); }; vm.setNo = function () { setAddAttr(fl.id, false); }; }
+      else { vm.isText = true; vm.onVal = function (e) { setAddAttr(fl.id, e.target.value); }; }
+      return vm;
+    });
+    var swKeys = Object.keys(SW);
+    var fetchLink = function () {
+      var link = (self.state.add.link || '').trim();
+      if (!link) { self.notify('Önce bir link yapıştır'); return; }
+      setAdd({ fetching: true });
+      self.later(1100, function () {
+        var u; try { u = new URL(link.indexOf('http') === 0 ? link : 'https://' + link); } catch (e) { u = null; }
+        var host = u ? u.hostname.replace(/^www\./, '').split('.')[0] : 'Marka';
+        var seg = u ? u.pathname.split('/').filter(Boolean).pop() || '' : '';
+        var name = seg.replace(/\.[a-z]+$/i, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, function (m) { return m.toUpperCase(); }) || 'Ürün adı';
+        var sw = SW[swKeys[hash(link) % swKeys.length]], cols2 = [COLORS[hash(link + 'c') % COLORS.length].id];
+        setAdd({ fetching: false, name: name, brand: host.charAt(0).toUpperCase() + host.slice(1), sw: sw, colors: cols2, price: self.state.add.price || '64,00' });
+        self.notify('Linkten alındı: ad, marka, görsel, fiyat · kontrol et');
+      });
+    };
+
+    var mainTabs = { lib: 1, office: 1, cols: 1, colDetail: 1, more: 1, detail: 1, stats: 1, cats: 1, catEdit: 1, labels: 1 };
+    var tabOf = { lib: 'lib', detail: 'lib', office: 'office', cols: 'cols', colDetail: 'cols', more: 'more', stats: 'more', cats: 'more', catEdit: 'more', labels: 'more' };
+    function tab(name) { return tabOf[scr] === name ? 'tab on' : 'tab'; }
+    var noOverlay = !s.busyAsk && !s.sheet && !s.filterOpen && !s.docOpen && !s.collectOpen && !s.priceOpen && !s.rc;
+
+    return {
+      isLib: scr === 'lib', isDetail: scr === 'detail', isAdd: scr === 'add', isScan: scr === 'scan', isOffice: scr === 'office',
+      isCols: scr === 'cols', isColDetail: scr === 'colDetail', isMore: scr === 'more', isStats: scr === 'stats', isLabels: scr === 'labels',
+      isCats: scr === 'cats', isCatEdit: scr === 'catEdit', isWizard: scr === 'wizard',
+      showTabs: !!mainTabs[scr], showFab: scr === 'lib' && noOverlay,
+      tabLib: tab('lib'), tabOffice: tab('office'), tabCols: tab('cols'), tabMore: tab('more'),
+      goLib: function () { self.tabGo('lib'); },
+      goOffice: function () { self.tabGo('office', { oUnit: null, oComp: null, oView: 'plan', oMode: 'browse', oFocus: null, roomZoom: null, edit: false }); },
+      goCols: function () { self.tabGo('cols'); }, goMore: function () { self.tabGo('more'); },
+      goScan: function () { self.go('scan'); }, goStats: function () { self.go('stats'); }, goLabels: function () { self.go('labels'); }, goCats: function () { self.go('cats'); },
+      goAdd: function () { self.go('add', { add: self.blankAdd() }); },
+      back: function () { self.back(); },
+      editDemo: function () { self.notify('Düzenleme formu yeni ürün formuyla aynı (demo)'); },
+      editAction: function () { self.notify('Bu demoda henüz çalışmıyor'); },
+      onPhotoFile: function (e) { self.onPhotoFile(e); },
+      appCls: 'app' + (s.theme === 'dark' || (s.theme === 'system' && systemDark()) ? ' dark' : ''),
+      splash: s.splash, skipSplash: function () { self.setState({ splash: false }); },
+      themeOpts: [['system', 'Sistem'], ['light', 'Açık'], ['dark', 'Koyu']].map(function (p) { return { name: p[1], cls: s.theme === p[0] ? 'on' : '', pick: function () { storeSet('finds-theme', p[0]); self.setState({ theme: p[0] }); } }; }),
+      confirmOpts: [['off', 'Kapalı'], ['optional', 'İsteğe bağlı'], ['required', 'Zorunlu']].map(function (p) { return { name: p[1], cls: s.confirmMode === p[0] ? 'on' : '', pick: function () { self.setState({ confirmMode: p[0] }); } }; }),
+      confirmNote: s.confirmMode === 'off' ? '"Yerine koydum" tek dokunuşla onaylar.' : s.confirmMode === 'optional' ? 'Kamera açılır; istersen "Okutmadan onayla" ile geçersin. Yanlış raf okutulursa uyarır.' : 'Raf etiketi okutulmalı. Kamera açılamazsa yine de onaylanabilir.',
+      rc: this.rcVM(),
+
+      stats: { total: items.length, fiziki: phys.length, dijital: items.length - phys.length, out: outs.length },
+      hasOut: outs.length > 0, outRows: outs.map(function (i) { return self.rowVM(i); }), catBars: catBars,
+      catCount: cats.length + ' kategori',
+      people: PEOPLE.map(function (p) { return { name: p }; }),
+
+      // kütüphane
+      q: s.q, onQ: function (e) { self.setState({ q: e.target.value }); },
+      libCount: L.count + ' sonuç · ' + phys.length + ' fiziki, ' + (items.length - phys.length) + ' dijital',
+      isGrid: s.libView === 'grid', isList: s.libView !== 'grid', showGrid: s.libView === 'grid' && L.count > 0, showList: s.libView !== 'grid' && L.count > 0,
+      viewToggleLabel: s.libView === 'grid' ? 'Liste görünümü' : 'Izgara görünümü',
+      toggleView: function () { self.setState({ libView: s.libView === 'grid' ? 'list' : 'grid' }); },
+      segAll: s.f.type === 'all' ? 'on' : '', segFiz: s.f.type === 'fiziki' ? 'on' : '', segDij: s.f.type === 'dijital' ? 'on' : '',
+      setAll: function () { self.setF({ type: 'all' }); }, setFiz: function () { self.setF({ type: 'fiziki' }); }, setDij: function () { self.setF({ type: 'dijital' }); },
+      catChips: L.catChips, rows: L.rows, noRows: L.count === 0,
+      activeChips: L.activeChips, hasActiveChips: L.activeChips.length > 0, hasActive: L.activeCount > 0, activeCount: L.activeCount,
+      clearFilters: function () { self.setState({ f: BLANK_F() }); },
+      openFilters: function () { self.setState({ filterOpen: true }); }, closeFilters: function () { self.setState({ filterOpen: false }); },
+      filterOpen: s.filterOpen, hasCatFilters: !!L.cat && L.catFilters.length > 0, noCatPicked: !L.cat,
+      catFilterTitle: L.cat ? L.cat.name.toLocaleUpperCase('tr') + ' FİLTRELERİ' : '', catFilters: L.catFilters,
+      colorOpts: L.colorOpts, brandOpts: L.brandOpts, statusOpts: L.statusOpts,
+      fPmin: s.f.pmin, fPmax: s.f.pmax, onPmin: function (e) { self.setF({ pmin: e.target.value }); }, onPmax: function (e) { self.setF({ pmax: e.target.value }); },
+      resultsLabel: L.count + ' sonucu göster',
+
+      busySheet: s.busyAsk ? { open: true, text: s.busyAsk.text, close: function () { var a = self.state.busyAsk; self.setState({ busyAsk: null }); self.freeLater('item', a.id, a.name, 5000); } } : { open: false },
+      meOpts: PEOPLE.map(function (p) { return { name: p, cls: s.me === p ? 'chip sm on' : 'chip sm', pick: function () { var v = self.state.me === p ? '' : p; storeSet('finds-me', v); self.setState({ me: v }); } }; }),
+      stopEv: function (e) { e.stopPropagation(); },
+      d: d, o: this.officeVM(phys), scanThumb: 'background:' + SW.terrazzo,
+      scanProduct: function () { self.locate('FL-003-087', 'return'); },
+      scanShelf: function () { self.scanShelf('2.2.5'); },
+
+      // doküman
+      docOpen: s.docOpen, closeDoc: function () { self.setState({ docOpen: false }); }, fsCrumbs: fsCrumbs, fsRows: fsRows,
+      // koleksiyon
+      colCards: colCards, cd: cd,
+      newCol: function () { var id = 'c' + Date.now(); self.setState({ cols: self.state.cols.concat([{ id: id, name: 'Yeni koleksiyon', note: '', items: [] }]) }); self.go('colDetail', { colId: id }); },
+      collectOpen: s.collectOpen, collectRows: collectRows, closeCollect: function () { self.setState({ collectOpen: false }); },
+      newColWithItem: function () { var id = 'c' + Date.now(); self.setState({ cols: self.state.cols.concat([{ id: id, name: 'Yeni koleksiyon ' + (self.state.cols.length + 1), note: '', items: [{ id: it.id, q: '' }] }]) }); self.notify('Yeni koleksiyon oluşturuldu'); },
+      // fiyat
+      priceOpen: s.priceOpen, closePrice: function () { self.setState({ priceOpen: false }); },
+      priceOld: it.price ? 'Şu an ' + eur(it.price.v) + ' / ' + it.price.u + ' · ' + it.price.d : 'Bu ürünün fiyatı yok',
+      priceDraft: s.priceDraft, onPriceDraft: function (e) { self.setState({ priceDraft: e.target.value }); },
+      priceUnits: PRICE_UNITS.map(function (u) { return { name: u, cls: s.priceUnit === u ? 'on' : '', pick: function () { self.setState({ priceUnit: u }); } }; }),
+      savePrice: function () { var v = num(s.priceDraft); if (v === null) { self.notify('Geçerli bir fiyat gir'); return; } self.patch(it.id, { price: P(v, s.priceUnit, TODAY) }); self.setState({ priceOpen: false }); self.notify('Fiyat güncellendi · ' + TODAY); },
+
+      // kategoriler
+      catRows: catRows, ce: ce,
+      newCat: function () { var id = 'k' + Date.now(); self.setState({ cats: self.state.cats.slice(0, -1).concat([{ id: id, name: 'Yeni kategori', color: '#7C3AED', prefix: 'YK', filters: [] }], self.state.cats.slice(-1)) }); self.go('catEdit', { editCatId: id }); },
+      startWizard: function () { self.go('wizard', { wz: { step: 1, cat: null, fromCat: false, type: null, name: '', opts: [], draft: '', unit: 'mm' } }); },
+      wz: this.wizardVM(),
+
+      // etiketler
+      kindIsItem: isItemKind, kindItemCls: isItemKind ? 'on' : '', kindShelfCls: isItemKind ? '' : 'on',
+      setKindItem: function () { self.setState({ labelKind: 'urun', labelQ: '' }); }, setKindShelf: function () { self.setState({ labelKind: 'raf', labelQ: '' }); },
+      labelQ: s.labelQ, onLabelQ: function (e) { self.setState({ labelQ: e.target.value }); },
+      labelPh: isItemKind ? 'Ara: isim, marka, kod, bölme…' : 'Ara: ünite kodu veya oda…',
+      size20Cls: cap === 20 ? 'on' : '', size40Cls: cap === 40 ? 'on' : '',
+      setSize20: function () { self.setState({ labelSize: '20' }); }, setSize40: function () { self.setState({ labelSize: '40' }); },
+      sheetSt: 'display:grid;grid-template-columns:repeat(' + cols + ',minmax(0,1fr));gap:3px',
+      slots: slots, selText: selLabels.length + ' etiket seçili · ' + pages + ' sayfa A4', sheetCaption: 'Sayfa 1 / ' + pages,
+      labelRows: labelRows, labelEmpty: labelRows.length === 0,
+      selVisible: selVisible, selVisibleLabel: lq ? 'Bulunanları seç (' + labelSrc.length + ')' : 'Tümünü seç',
+      selNone: function () { if (isItemKind) self.setState({ sel: {} }); else self.setState({ selUnits: {} }); },
+      selUnprinted: function () { var n = {}; phys.forEach(function (i) { if (!i.printed) n[i.id] = true; }); self.setState({ sel: n }); },
+      pdfLabel: selLabels.length ? 'PDF oluştur · ' + selLabels.length + ' etiket' : 'Etiket seç',
+      makePdf: function () {
+        if (!selLabels.length) { self.notify('Önce yazdırılacak etiketleri seç'); return; }
+        if (isItemKind) { var ids = {}; phys.forEach(function (i) { if (s.sel[i.id]) ids[i.id] = true; }); self.setState({ items: self.state.items.map(function (x) { return ids[x.id] ? Object.assign({}, x, { printed: true }) : x; }) }); }
+        self.notify('etiketler.pdf hazır · ' + selLabels.length + ' etiket (demo)');
+      },
+
+      // ürünü al
+      sheetOpen: s.sheet, sheetItem: it.name + ' · ' + it.id,
+      sheetPeople: PEOPLE.map(function (p) { return { name: p, cls: s.sheetPerson === p ? 'on' : '', pick: function () { self.setState({ sheetPerson: p }); } }; }),
+      whereIn: s.sheetWhere === 'ici' ? 'on' : '', whereOut: s.sheetWhere === 'disari' ? 'on' : '',
+      setWhereIn: function () { self.setState({ sheetWhere: 'ici' }); }, setWhereOut: function () { self.setState({ sheetWhere: 'disari' }); },
+      sheetNote: s.sheetNote, onSheetNote: function (e) { self.setState({ sheetNote: e.target.value }); },
+      closeSheet: function () { self.setState({ sheet: false }); },
+      confirmTake: function () {
+        self.patch(it.id, { out: { person: s.sheetPerson, where: s.sheetWhere, date: 'Bugün', note: s.sheetNote } });
+        self.setState({ sheet: false });
+        self.notify(s.sheetPerson + ' aldı · ' + (s.sheetWhere === 'disari' ? 'büro dışında' : 'büro içinde'));
+      },
+
+      // yeni ürün
+      add: a, addIsFiz: a.type === 'fiziki', addFizCls: a.type === 'fiziki' ? 'on' : '', addDijCls: a.type === 'dijital' ? 'on' : '',
+      addSetFiz: function () { setAdd({ type: 'fiziki' }); }, addSetDij: function () { setAdd({ type: 'dijital' }); },
+      onAddName: field('name'), onAddBrand: field('brand'), onAddSize: field('size'), onAddLink: field('link'), onAddPrice: field('price'),
+      fetchLink: fetchLink,
+      addImgSt: 'width:120px;height:120px;border-radius:16px;flex:none;' + (a.sw ? 'background:' + a.sw : 'background:var(--card);border:1.5px dashed var(--line3)'),
+      addColors: a.colors.map(function (c) { return { st: 'background:' + findBy(COLORS, c).hex }; }), addColorsNote: a.colors.length ? 'otomatik' : 'fotoğraftan çıkarılır',
+      addCats: cats.map(function (c) { return { name: c.name, cls: a.cat === c.id ? 'on' : '', pick: function () { setAdd({ cat: c.id, attrs: {} }); } }; }),
+      addFields: addFields, hasAddFields: addFields.length > 0,
+      addUnits: PRICE_UNITS.map(function (u) { return { name: u, cls: a.priceUnit === u ? 'on' : '', pick: function () { setAdd({ priceUnit: u }); } }; }),
+      addUnitsLoc: UNITS.map(function (u) { return { name: u.code, cls: a.unit === u.code ? 'on' : '', pick: function () { setAdd({ unit: u.code, comp: 0 }); } }; }),
+      addComps: COMPS.map(function (c, i) { var on = a.comp === i; return { code: a.unit + '.' + (i + 1), st: c.box + (on ? 'background:rgba(47,91,234,.45);outline:2px solid ' + ACC + ';' : 'background:rgba(255,255,255,.08);outline:1px solid rgba(255,255,255,.5);'), pick: function () { setAdd({ comp: i }); } }; }),
+      addZone: a.unit + '.' + (a.comp + 1), addZoneSub: roomBy(unitBy(a.unit).room).name + ' · ' + COMPS[a.comp].kind,
+      saveLabel: a.type === 'fiziki' ? 'Kaydet ve QR oluştur' : 'Kütüphaneye kaydet',
+      saveAdd: function () {
+        if (!a.name.trim()) { self.notify('Ürün adı gerekli'); return; }
+        var c = acat, id = nextCode(self.state.items, c), attrsOut = {};
+        c.filters.forEach(function (fl) { var v = a.attrs[fl.id]; if (v === undefined || v === '') return; attrsOut[fl.id] = fl.type === 'olcu' ? num(v) : v; });
+        var pv = num(a.price);
+        var nit = mk({ id: id, name: a.name.trim(), brand: a.brand.trim() || '—', cat: c.id, size: a.size.trim(), link: a.link.trim(), type: a.type, qty: a.qty, zone: a.type === 'fiziki' ? a.unit + '.' + (a.comp + 1) : null, sw: a.sw || SW.cement, colors: a.colors.length ? a.colors : ['gri'], attrs: attrsOut, price: pv !== null ? P(pv, a.priceUnit, TODAY) : null, printed: a.type === 'dijital', added: 'Bugün' });
+        var n = Object.assign({}, self.state.sel); if (a.type === 'fiziki') n[id] = true;
+        var stack = self.state.stack.slice(); stack.pop();
+        self.setState({ items: self.state.items.concat([nit]), sel: n, screen: 'detail', id: id, stack: stack.concat(['lib']) });
+        self.notify(a.type === 'fiziki' ? 'Kaydedildi · QR etiketi baskı listesine eklendi' : 'Dijital kütüphaneye eklendi');
+      },
+
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

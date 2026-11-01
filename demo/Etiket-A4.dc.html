@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>A4 etiket sayfası</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.qr{display:grid;grid-template-columns:repeat(15,minmax(0,1fr))}
+.qr i{display:block;aspect-ratio:1}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; background: #fff; color: #111; font-family: Inter, system-ui, sans-serif; padding: 30px 30px 0; display: flex; flex-direction: column">
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(5, 206px)">
+    <sc-for list="{{labels}}" as="l" hint-placeholder-count="20">
+    <div style="border: 1px dashed #D5D9E0; margin: -0.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px 12px; box-sizing: border-box">
+      <div style="font-size: 13px; font-weight: 700; text-align: center; line-height: 1.2; height: 32px; display: flex; align-items: center">{{l.name}}</div>
+      <div class="qr" style="width: 112px"><sc-for list="{{l.qr}}" as="q" hint-placeholder-count="225"><i style="{{q.st}}"></i></sc-for></div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em">{{l.code}}</div>
+    </div>
+    </sc-for>
+  </div>
+  <div style="margin-top: auto; padding: 0 0 18px; display: flex; justify-content: space-between; font-size: 9px; color: #777">
+    <span>miaza finds · ürün etiketleri · 01.11.2026</span>
+    <span>Sayfa 1 / 1 · 20 etiket · 48 × 52 mm</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) || 1; }
+function makeQr(seed) {
+  var n = 15, h = hash(seed), out = [], r, c, v;
+  function rnd() { h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; }
+  function fd(r, c, R, C) { var a = r - R, b = c - C; if (a < 0 || b < 0 || a > 4 || b > 4) return null; return a === 0 || a === 4 || b === 0 || b === 4 || (a === 2 && b === 2); }
+  for (r = 0; r < n; r++) for (c = 0; c < n; c++) {
+    v = fd(r, c, 0, 0); if (v === null) v = fd(r, c, 0, 10); if (v === null) v = fd(r, c, 10, 0);
+    if (v === null) v = ((r === 5 && (c <= 5 || c >= 9)) || (c === 5 && (r <= 5 || r >= 9)) || (c === 9 && r <= 5) || (r === 9 && c <= 5)) ? false : rnd() > 0.5;
+    out.push({ st: v ? 'background:#111' : '' });
+  }
+  return out;
+}
+// Etikette sadece ad, QR ve kod var; konum uygulamadan gelir (SPEC 6.6)
+var ITEMS = [
+  ['FL-004-142', 'Calacatta Oro Porselen'], ['FL-003-087', 'Terrazzo Grigio'], ['FL-005-151', 'Zellige Yeşil'],
+  ['HO-002-031', 'Meşe Masif Lamel'], ['HO-003-044', 'Ceviz Kaplama MDF'], ['ME-001-013', 'Fırçalanmış Pirinç Profil'],
+  ['ME-002-019', 'Siyah Eloksal Alüminyum'], ['ST-001-008', 'Bouclé Kumaş Kartelası'], ['ST-002-011', 'Keten Perde Numunesi'],
+  ['SN-001-005', 'Mikrobeton Numune'], ['FL-010-231', 'Cementine Grigio'], ['FL-011-232', 'Encaustic Blu'],
+  ['HO-006-233', 'Kontrplak Huş'], ['HO-007-234', 'Meşe Yağlı Parke'], ['ME-006-235', 'Delikli Alüminyum Levha'],
+  ['ME-007-236', 'Bronz Patina Profil'], ['ST-005-237', 'Velur Döşemelik'], ['ST-006-238', 'Akustik Keçe Gri'],
+  ['SN-004-239', 'Bianco Carrara Numune'], ['XX-003-240', 'Mantar Panel']
+];
+class Component extends DCLogic {
+  renderVals() {
+    return { labels: ITEMS.map(function (it) { return { code: it[0], name: it[1], qr: makeQr(it[0]) }; }) };
+  }
+}
+</script>
+</body>
+</html>

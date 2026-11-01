@@ -1,0 +1,1698 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>miaza finds – masaüstü</title>
+<script src="./support.js"></script>
+<script src="/_blob/824a7cb1dabe4121bdad8ab4e18b5e3d"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.dk{--bg:#F3F4F6;--card:#FFFFFF;--tx:#16181D;--tx2:#5F6672;--tx3:#3A3F47;--line:#E7E9EE;--line2:#E2E5EA;--line3:#C5CAD3;--sep:#EEF0F3;--sunk:#F3F4F6;--sunk2:#E9EBEF;--inv:#16181D;--on-inv:#FFFFFF;--acc:#2F5BEA;--acc-tx:#1E3FB0;--acc-bg:#F5F8FF;--acc-bg2:#E3EAFF;--acc-line:#C7D4FF;--toast:#16181D;--in-bg:#DCFCE7;--in-tx:#166534;--out-bg:#FEF3C7;--out-tx:#92400E;--use-bg:#DBEAFE;--use-tx:#1E40AF;--dig-bg:#EDE9FE;--dig-tx:#5B21B6;--danger:#B42318;--danger-line:#F3C3C3;--plan-bg:#FAFAF8;--pvoid:#FFFFFF;--pstroke:#2A2A2A;--unit-tx:#5E1F22;--room-mix:100%;color-scheme:light}
+.dk.dark{--bg:#0F1115;--card:#181B21;--tx:#ECEEF2;--tx2:#A0A7B4;--tx3:#C9CED6;--line:#2A2F38;--line2:#323844;--line3:#4A5160;--sep:#23272F;--sunk:#1F232A;--sunk2:#262A32;--inv:#ECEEF2;--on-inv:#0F1115;--acc:#6E8BFF;--acc-tx:#AFC0FF;--acc-bg:#1A2140;--acc-bg2:#1F2A52;--acc-line:#33427A;--toast:#2A2F38;--in-bg:#14351F;--in-tx:#86EFAC;--out-bg:#3A2A0B;--out-tx:#FCD34D;--use-bg:#172A4D;--use-tx:#93C5FD;--dig-bg:#2A1F4A;--dig-tx:#C4B5FD;--danger:#FF8A80;--danger-line:#5A2A2A;--plan-bg:#14171C;--pvoid:#0F1115;--pstroke:#7D8590;--unit-tx:#FFD9DB;--room-mix:26%;color-scheme:dark}
+.dk{transition:background .25s,color .25s}
+.wm{display:inline-flex;align-items:baseline;gap:.28em;line-height:1;white-space:nowrap}
+.wm b{font-family:Comfortaa,Inter,sans-serif;font-weight:600;color:var(--tx)}
+.wm i{font-style:normal;font-family:Inter,sans-serif;font-weight:500;font-size:.6em;color:var(--acc);letter-spacing:.01em}
+.splash{position:absolute;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;justify-content:center;animation:splashOut .7s ease forwards;cursor:pointer}
+.splash .wm{animation:splashIn .7s ease forwards}
+@keyframes splashOut{0%,72%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes splashIn{0%{opacity:0;transform:translateY(6px)}30%,100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.splash,.splash .wm{animation:none}}
+.dk.dark .ulay.inv{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.9)}
+.zbar{position:absolute;right:10px;bottom:10px;display:flex;align-items:center;gap:2px;padding:3px;border-radius:10px;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:40}
+.zbar button{height:28px;min-width:28px;padding:0 7px;border-radius:7px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;color:var(--tx3)}
+.zbar button:hover{background:var(--sunk)}
+.tgl{width:36px;height:22px;border-radius:11px;background:var(--line3);position:relative;flex:none;transition:background .15s}
+.tgl::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.tgl.on{background:var(--acc)}
+.tgl.on::after{transform:translateX(14px)}
+.trow{display:flex !important;align-items:center;justify-content:space-between;gap:10px;width:100%;font-size:13px;min-height:30px}
+.ebar{display:flex;align-items:center;gap:6px;padding:4px;border-radius:12px;background:var(--acc-bg);border:1px solid var(--acc-line)}
+.modal{position:absolute;inset:0;z-index:200;background:rgba(10,12,16,.45);display:flex;align-items:center;justify-content:center}
+.mbox{width:440px;background:var(--card);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.dk *{box-sizing:border-box}
+.dk button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
+.dk input{font:inherit;color:var(--tx)}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ics{width:16px;height:16px}
+.card{background: var(--card);border-radius:18px;border:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px}
+.wrap{display:flex;flex-wrap:wrap;gap:6px}
+.muted{color:var(--tx2)}
+.chip{display:inline-flex !important;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:0 12px !important;border-radius:999px;background: var(--card) !important;border:1px solid var(--line2) !important;font-size:13px;font-weight:500;white-space:nowrap;flex:none;transition:background .15s}
+.chip:hover{background:var(--sunk) !important}
+.chip.on{background: var(--inv) !important;color:var(--on-inv) !important;border-color: var(--inv) !important}
+.chip.xs{min-height:28px;font-size:12.5px;padding:0 10px !important}
+.achip{display:inline-flex !important;align-items:center;gap:6px;min-height:28px;padding:0 8px 0 11px !important;border-radius:999px;background:var(--acc-bg2) !important;color:var(--acc-tx) !important;font-size:12.5px;font-weight:600;white-space:nowrap}
+.btn{display:flex !important;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px !important;border-radius:11px;font-weight:600;font-size:14px;text-align:center !important;cursor:pointer}
+.btn.pri{background:var(--acc) !important;color:#fff !important}
+.btn.pri:hover{filter:brightness(.92)}
+.btn.ghost{background: var(--card) !important;border:1px solid var(--line2) !important}
+.btn.ghost:hover{background:var(--sunk) !important}
+.btn.danger{background: var(--card) !important;border:1px solid var(--danger-line) !important;color:var(--danger) !important}
+.mini{width:30px;height:30px;border-radius:8px;display:flex !important;align-items:center;justify-content:center;background:var(--sunk) !important;flex:none;color:var(--tx3)}
+.mini:hover{background:var(--line) !important}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.nav{display:flex !important;align-items:center;gap:12px;height:42px;padding:0 12px !important;border-radius:10px;width:100%;font-size:14px;font-weight:500;color:var(--tx3) !important;transition:background .15s}
+.nav:hover{background:var(--sunk) !important}
+.nav.on{background:var(--acc-bg2) !important;color:var(--acc) !important;font-weight:600}
+.search{display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;border-radius:12px;background:var(--sunk);border:1px solid var(--line);color:var(--tx2)}
+.search input{border:0;outline:0;flex:1;font-size:14px;background:transparent;min-width:0}
+.seg{display:flex;background:var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:600;text-align:center !important;color:var(--tx2) !important;flex:1;white-space:nowrap}
+.seg button.on{background: var(--card) !important;color:var(--tx) !important;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.fhead{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.04em;margin:0 0 8px}
+.fsec{padding:14px 0;border-top:1px solid var(--sep);display:flex;flex-direction:column;gap:8px}
+.flab{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.ftype{font-size:10.5px;font-weight:600;color:var(--tx2);background:var(--sunk);padding:1px 6px;border-radius:5px;white-space:nowrap}
+.catrow{display:flex !important;align-items:center;gap:10px;height:34px;padding:0 10px !important;border-radius:8px;width:100%;font-size:13.5px;transition:background .15s}
+.catrow:hover{background:var(--sunk) !important}
+.catrow.on{background: var(--inv) !important;color:var(--on-inv) !important}
+.inp{height:34px;border-radius:9px;border:1px solid var(--line2);background: var(--card);padding:0 10px;font-size:13px;width:78px;outline:0}
+.inp:focus{border-color:var(--acc)}
+.inp.lg{height:40px;font-size:14px;width:100%}
+.sw{width:26px;height:26px;border-radius:50%;border:1px solid rgba(0,0,0,.12);flex:none}
+.dcard{position:relative;min-width:0}
+.cmain{display:flex !important;flex-direction:column;gap:2px;width:100%}
+.cimg{position:relative;aspect-ratio:1;border-radius:14px;border:1px solid rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s}
+.dcard:hover .cimg{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.14)}
+.qa{position:absolute;right:8px;top:8px;height:30px;padding:0 10px !important;border-radius:9px;background:var(--card) !important;font-size:12px;font-weight:600;display:flex !important;align-items:center;gap:5px;opacity:0;transform:translateY(-3px);transition:opacity .15s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.dcard:hover .qa{opacity:1}
+.qa:focus-visible{opacity:1}
+.gname{font-size:13.5px;font-weight:600;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsub{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.irow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:13.5px;border-top:1px solid var(--sep)}
+.ext{width:34px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:#fff;flex:none}
+.tcard{display:flex !important;flex-direction:column;gap:3px;padding:10px 12px !important;border-radius:12px;background: var(--card) !important;border:1.5px solid var(--line2) !important;width:100%}
+.tcard.on{border-color:var(--acc) !important;background:var(--acc-bg) !important}
+.pr1{fill:#F3E6F1;stroke:#2A2A2A;stroke-width:.8}
+.pr2{fill:#E6E5F4;stroke:#2A2A2A;stroke-width:.8}
+.pr3{fill:#E4F1E2;stroke:#2A2A2A;stroke-width:.8}
+.pvoid{fill:var(--pvoid);stroke:var(--pstroke);stroke-width:.8}
+.pstair{fill:none;stroke:#A3A8B0;stroke-width:.6}
+.pbar{fill:var(--pstroke)}
+.unit{position:absolute;transition:background .25s}
+.ulab{position:absolute;transform:translate(-50%,-50%);pointer-events:none;font-weight:600;white-space:nowrap;transition:color .25s}
+.rlab{position:absolute;pointer-events:none;font-weight:600;letter-spacing:.08em;color:var(--tx3)}
+.oc{position:absolute;display:flex !important;flex-direction:column;gap:4px;padding:5px !important;background: var(--card) !important;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .6s cubic-bezier(.2,.9,.25,1.12),opacity .35s,box-shadow .3s}
+.oc:hover{box-shadow:0 12px 28px rgba(0,0,0,.3)}
+.ocn{font-size:10px;font-weight:600;line-height:1.15;max-height:2.3em;overflow:hidden}
+.cz{position:absolute;transition:background .2s}
+.cz:hover{background:rgba(255,255,255,.2) !important}
+.spot{position:absolute;border-radius:6px;pointer-events:none;transition:left .45s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.pulse::after{content:'';position:absolute;inset:-2px;border-radius:8px;border:2px solid var(--acc);animation:pl 1.6s ease-out infinite}
+@keyframes pl{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
+.pill{position:absolute;pointer-events:none;font-size:8.5px;font-weight:700;color:#fff;padding:2px 4px;border-radius:5px;transition:opacity .3s,background .3s;white-space:nowrap}
+.fcard{position:absolute;transition:transform .55s cubic-bezier(.2,.9,.25,1.1),opacity .3s}
+.fin{display:flex;flex-direction:column;gap:5px;padding:6px;background: var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.14);transition:transform .2s;width:100%;height:100%}
+.fcard:hover .fin{transform:translateY(-12px)}
+.fn{font-size:11px;font-weight:600;line-height:1.2;max-height:2.4em;overflow:hidden}
+.fc{font-size:10px;color:var(--tx2);font-weight:500}
+.tip{position:absolute;pointer-events:none;background: var(--inv);color:var(--on-inv);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 26px rgba(0,0,0,.25);transform:translate(-50%,calc(-100% - 14px));white-space:nowrap;z-index:60}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:420px;background: var(--card);border-left:1px solid var(--line);box-shadow:-16px 0 40px rgba(0,0,0,.10);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;z-index:70}
+.ecanvas{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;border-radius:14px;border:1px solid var(--line2);background:var(--plan-bg)}
+.ecanvas img{pointer-events:none}
+.gfx{position:absolute;pointer-events:none}
+.hd{position:absolute;width:12px;height:12px;border-radius:50%;background: var(--card);border:2px solid var(--acc);cursor:move;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.elab{position:absolute;transform:translate(-50%,-50%);pointer-events:none;font-size:10px;font-weight:700;white-space:nowrap}
+</style>
+</helmet>
+<div class="{{appCls}}" style="width: 1280px; height: 800px; background: var(--bg); color: var(--tx); font-family: Inter, system-ui, sans-serif; display: flex; overflow: hidden; position: relative">
+
+  <aside style="width: 220px; flex: none; background: var(--card); border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 20px 14px; gap: 4px">
+    <div style="padding: 2px 10px 22px"><span class="wm" style="font-size: 24px"><b>miaza</b><i>finds</i></span></div>
+    <button class="{{navLib}}" onClick="{{goLib}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Kütüphane<span class="muted" style="margin-left: auto; font-size: 12px">{{totalCount}}</span></button>
+    <button class="{{navOffice}}" onClick="{{goOffice}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Ofis</button>
+    <button class="nav" onClick="{{phoneOnly}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Koleksiyonlar</button>
+    <button class="nav" onClick="{{phoneOnly}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2z"/></svg>Etiketler</button>
+    <button class="{{navSettings}}" onClick="{{goSettings}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Ayarlar</button>
+    <div style="flex: 1"></div>
+    <button class="btn pri" onClick="{{phoneOnly}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Yeni ürün</button>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative">
+
+  <!-- KÜTÜPHANE -->
+  <sc-if value="{{isLib}}" hint-placeholder-val="{{ true }}">
+    <header style="height: 68px; flex: none; display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--card); border-bottom: 1px solid var(--line)">
+      <label class="search" style="width: 420px"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input aria-label="Kütüphanede ara" placeholder="Ara: isim, marka, seri, kod, R11…" value="{{q}}" onChange="{{onQ}}"></label>
+      <button class="chip" style="width: 40px; height: 40px; padding: 0 !important; margin-left: -6px" aria-label="QR okut" title="QR okut (kamera)" onClick="{{openScan}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM18 14h2M14 18v2"/></svg></button>
+      <div class="seg"><button class="{{segAll}}" onClick="{{setAll}}">Tümü</button><button class="{{segFiz}}" onClick="{{setFiz}}">Fiziki</button><button class="{{segDij}}" onClick="{{setDij}}">Dijital</button></div>
+      <div style="flex: 1"></div>
+      <span class="muted" style="font-size: 13px">{{countText}}</span>
+    </header>
+    <div style="flex: 1; display: flex; min-height: 0">
+      <div style="width: 268px; flex: none; overflow-y: auto; padding: 18px 18px 30px; background: var(--card); border-right: 1px solid var(--line)">
+        <div class="row" style="justify-content: space-between; margin-bottom: 8px"><p class="fhead" style="margin: 0">KATEGORİ</p><sc-if value="{{hasActive}}" hint-placeholder-val="{{ false }}"><button style="font-size: 12px; font-weight: 600; color: var(--acc)" onClick="{{clearFilters}}">Temizle</button></sc-if></div>
+        <div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
+          <sc-for list="{{catRows}}" as="c" hint-placeholder-count="7">
+          <button class="{{c.cls}}" onClick="{{c.pick}}"><span style="{{c.dotSt}}"></span><span style="flex: 1">{{c.name}}</span><span style="font-size: 12px; opacity: .7">{{c.count}}</span></button>
+          </sc-for>
+        </div>
+        <sc-if value="{{hasCatFilters}}" hint-placeholder-val="{{ false }}">
+        <div style="margin: 0 -18px; padding: 2px 18px 4px; background: var(--sunk); border-top: 1px solid var(--sep); border-bottom: 1px solid var(--sep)">
+          <p class="fhead" style="color: var(--acc); margin: 12px 0 0">{{catFilterTitle}}</p>
+          <sc-for list="{{catFilters}}" as="f" hint-placeholder-count="3">
+          <div class="fsec" style="{{f.secSt}}">
+            <div class="flab">{{f.name}} <span class="ftype">{{f.typeName}}</span></div>
+            <sc-if value="{{f.isOpts}}" hint-placeholder-val="{{ true }}"><div class="wrap"><sc-for list="{{f.opts}}" as="o" hint-placeholder-count="4"><button class="chip xs {{o.cls}}" onClick="{{o.pick}}">{{o.name}}</button></sc-for></div></sc-if>
+            <sc-if value="{{f.isRange}}" hint-placeholder-val="{{ false }}"><div class="row" style="gap: 6px"><input class="inp" inputmode="decimal" aria-label="En az" placeholder="min" value="{{f.min}}" onChange="{{f.onMin}}"><span class="muted">–</span><input class="inp" inputmode="decimal" aria-label="En çok" placeholder="maks" value="{{f.max}}" onChange="{{f.onMax}}"><span class="muted" style="font-size: 13px">{{f.unit}}</span></div></sc-if>
+            <sc-if value="{{f.isBool}}" hint-placeholder-val="{{ false }}"><div class="seg" style="align-self: flex-start"><button class="{{f.anyCls}}" onClick="{{f.setAny}}">Fark etmez</button><button class="{{f.yesCls}}" onClick="{{f.setYes}}">Var</button><button class="{{f.noCls}}" onClick="{{f.setNo}}">Yok</button></div></sc-if>
+            <sc-if value="{{f.isText}}" hint-placeholder-val="{{ false }}"><input class="inp" style="width: 100%" aria-label="{{f.name}}" placeholder="içerir…" value="{{f.val}}" onChange="{{f.onVal}}"></sc-if>
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
+        <div class="fsec">
+          <div class="flab">Renk</div>
+          <div class="wrap" style="gap: 8px"><sc-for list="{{colorOpts}}" as="c" hint-placeholder-count="10"><button class="sw" aria-label="{{c.name}}" title="{{c.name}}" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for></div>
+        </div>
+        <div class="fsec">
+          <div class="flab">Fiyat <span class="ftype">€ / birim</span></div>
+          <div class="row" style="gap: 6px"><input class="inp" inputmode="decimal" aria-label="En az fiyat" placeholder="min" value="{{fPmin}}" onChange="{{onPmin}}"><span class="muted">–</span><input class="inp" inputmode="decimal" aria-label="En çok fiyat" placeholder="maks" value="{{fPmax}}" onChange="{{onPmax}}"><span class="muted" style="font-size: 13px">€</span></div>
+        </div>
+        <div class="fsec">
+          <div class="flab">Marka</div>
+          <div class="wrap"><sc-for list="{{brandOpts}}" as="b" hint-placeholder-count="6"><button class="chip xs {{b.cls}}" onClick="{{b.pick}}">{{b.name}}</button></sc-for></div>
+        </div>
+        <div class="fsec">
+          <div class="flab">Durum</div>
+          <div class="wrap"><sc-for list="{{statusOpts}}" as="b" hint-placeholder-count="3"><button class="chip xs {{b.cls}}" onClick="{{b.pick}}">{{b.name}}</button></sc-for></div>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 0; overflow-y: auto; padding: 18px 24px 30px">
+        <sc-if value="{{hasChips}}" hint-placeholder-val="{{ false }}">
+        <div class="wrap" style="margin-bottom: 16px">
+          <sc-for list="{{activeChips}}" as="c" hint-placeholder-count="2"><button class="achip" aria-label="{{c.aria}}" onClick="{{c.remove}}">{{c.label}}<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 13px; height: 13px"><path d="M6 6l12 12M18 6 6 18"/></svg></button></sc-for>
+        </div>
+        </sc-if>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 16px">
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+          <div class="dcard">
+            <button class="cmain" onClick="{{r.open}}">
+              <div class="cimg" style="{{r.imgSt}}"><sc-if value="{{r.hasBadge}}" hint-placeholder-val="{{ false }}"><span class="badge" style="{{r.gBadgeSt}}">{{r.badge}}</span></sc-if></div>
+              <span class="gname">{{r.name}}</span>
+              <span class="gsub">{{r.brand}} · {{r.catShort}}</span>
+              <span class="gsub" style="color: var(--tx); font-weight: 500">{{r.price}}</span>
+            </button>
+            <sc-if value="{{r.canLocate}}" hint-placeholder-val="{{ false }}"><button class="qa" onClick="{{r.locate}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>{{r.zone}}</button></sc-if>
+          </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div class="card muted" style="padding: 40px; text-align: center">Sonuç yok. Filtreleri değiştir.</div></sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- OFİS -->
+  <sc-if value="{{isOffice}}" hint-placeholder-val="{{ false }}">
+    <header style="height: 68px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 24px; background: var(--card); border-bottom: 1px solid var(--line)">
+      <div style="font-size: 18px; font-weight: 700; margin-right: 10px">Ofis</div>
+      <sc-for list="{{roomChips}}" as="c" hint-placeholder-count="4"><button class="chip {{c.cls}}" onClick="{{c.pick}}">{{c.name}}</button></sc-for>
+      <div style="flex: 1"></div>
+      <button class="btn ghost" onClick="{{openPlanEditor}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>Planı düzenle</button>
+      <button class="chip" style="width: 40px; height: 40px; padding: 0 !important" aria-label="QR okut" title="QR okut (kamera)" onClick="{{openScan}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM18 14h2M14 18v2"/></svg></button>
+    </header>
+    <div style="flex: 1; display: flex; gap: 20px; padding: 20px; min-height: 0">
+      <div style="{{vpSt}}" onMouseDown="{{ovDown}}" onMouseMove="{{ovMove}}" onMouseUp="{{ovUp}}" onMouseLeave="{{onPlanLeave}}" onWheel="{{ovWheel}}">
+        <div style="{{ovSt}}">
+        <div style="{{layerSt}}">
+          <sc-for list="{{oRooms.fills}}" as="g" hint-placeholder-count="0"><div class="gfx" style="{{g.st}}"></div></sc-for>
+          <sc-if value="{{oUlay.on}}" hint-placeholder-val="{{ true }}">
+          <div class="{{oUlay.cls}}" style="{{oUlay.st}}">
+          <sc-if value="{{hasPlanImg}}" hint-placeholder-val="{{ false }}"><img src="{{planImg}}" alt="" draggable="false" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; background: #fff"></sc-if>
+          <sc-if value="{{noPlanImg}}" hint-placeholder-val="{{ true }}">
+          <svg viewBox="80 60 1040 640" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%" aria-hidden="true">
+                                                <polygon class="pvoid" points="409,485 451,450 496,505 454,540"/>
+            <polygon class="pstair" points="195,413 227,451 320,374 290,336"/>
+            <line class="pstair" x1="211" y1="432" x2="305" y2="355"/>
+            <polygon class="pbar" points="230,456 329,375 325,371 227,451"/>
+          </svg>
+          </sc-if>
+          </div>
+          </sc-if>
+          <sc-for list="{{oRooms.segs}}" as="g" hint-placeholder-count="0"><div class="gfx" style="{{g.st}}"></div></sc-for>
+          <sc-for list="{{oRooms.labels}}" as="l" hint-placeholder-count="0"><span class="rlab" style="{{l.st}}">{{l.text}}</span></sc-for>
+          <sc-for list="{{units}}" as="u" hint-placeholder-count="20">
+          <button class="unit" aria-label="{{u.aria}}" style="{{u.st}}" onClick="{{u.pick}}" onMouseEnter="{{u.enter}}" onMouseLeave="{{u.leave}}"></button>
+          </sc-for>
+          <sc-for list="{{units}}" as="u" hint-placeholder-count="20">
+          <span class="ulab" style="{{u.labSt}}">{{u.code}}</span>
+          </sc-for>
+        </div>
+        </div>
+        <sc-if value="{{noUnit}}" hint-placeholder-val="{{ true }}">
+        <div class="zbar" onMouseDown="{{stopEv}}"><button aria-label="Uzaklaştır" onClick="{{ovZoomOut}}">−</button><span style="font-size: 12px; font-weight: 600; min-width: 40px; text-align: center; color: var(--tx2)">{{ovZoomText}}</span><button aria-label="Yakınlaştır" onClick="{{ovZoomIn}}">+</button><button onClick="{{ovFit}}">Sığdır</button></div>
+        </sc-if>
+        <sc-for list="{{orbit}}" as="c" hint-placeholder-count="0">
+        <button class="oc" aria-label="{{c.name}}" style="{{c.st}}" onClick="{{c.pick}}"><span style="{{c.imgSt}}"></span><span class="ocn">{{c.name}}</span></button>
+        </sc-for>
+        <sc-if value="{{tip.show}}" hint-placeholder-val="{{ false }}">
+        <div class="tip" style="{{tip.st}}">
+          <div style="font-size: 13px; font-weight: 600">Ünite {{tip.code}} <span style="font-weight: 400; color: rgba(255,255,255,.7)">· {{tip.sub}}</span></div>
+          <div style="display: flex; gap: 4px"><sc-for list="{{tip.thumbs}}" as="t" hint-placeholder-count="4"><span style="{{t.st}}"></span></sc-for></div>
+        </div>
+        </sc-if>
+        <sc-if value="{{showHint}}" hint-placeholder-val="{{ true }}">
+        <span style="position: absolute; left: 18px; bottom: 16px; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; background: rgba(22,24,29,.82); color: #fff; pointer-events: none">Üzerine gel · tıkla · sürükleyerek kaydır</span>
+        </sc-if>
+      </div>
+      <div style="width: 400px; flex: none; display: flex; flex-direction: column; gap: 14px; min-height: 0">
+        <sc-if value="{{noUnit}}" hint-placeholder-val="{{ true }}">
+        <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 6px">
+          <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em">Zemin kat</div>
+          <div class="muted" style="font-size: 14px">{{summary}}</div>
+        </div>
+        <div class="card" style="padding: 8px; display: flex; flex-direction: column; gap: 2px">
+          <sc-for list="{{roomRows}}" as="r" hint-placeholder-count="3">
+          <button class="nav" style="height: 56px" onClick="{{r.pick}}">
+            <span style="{{r.dotSt}}"></span>
+            <span style="flex: 1"><span style="display: block; font-size: 15px; font-weight: 600; color: var(--tx)">{{r.name}}</span><span class="muted" style="display: block; font-size: 13px">{{r.sub}}</span></span>
+          </button>
+          </sc-for>
+        </div>
+        </sc-if>
+        <sc-if value="{{hasUnit}}" hint-placeholder-val="{{ false }}">
+        <div class="row" style="justify-content: space-between">
+          <div><div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em">Ünite {{unitCode}}</div><div class="muted" style="font-size: 13px">{{unitSub}}</div></div>
+          <button class="chip" onClick="{{close}}">Kapat</button>
+        </div>
+        <sc-if value="{{unitHasPhoto}}" hint-placeholder-val="{{ true }}">
+        <div class="row" style="align-items: flex-start; gap: 16px">
+          <div style="{{photoSt}}" onMouseLeave="{{onPhotoLeave}}">
+            <img src="{{unitPhoto}}" alt="Ünite fotoğrafı" draggable="false" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block">
+            <sc-for list="{{comps}}" as="c" hint-placeholder-count="18">
+            <button class="cz" aria-label="{{c.aria}}" style="{{c.st}}" onClick="{{c.pick}}" onMouseEnter="{{c.enter}}" onMouseLeave="{{c.leave}}"></button>
+            </sc-for>
+            <div class="{{spotCls}}" style="{{spotSt}}"></div>
+            <sc-for list="{{comps}}" as="c" hint-placeholder-count="18"><span class="pill" style="{{c.pillSt}}">{{c.pill}}</span></sc-for>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; min-width: 0">
+            <span class="muted" style="font-size: 12px; font-weight: 600">{{compLabelTitle}}</span>
+            <span style="font-size: 30px; font-weight: 700; letter-spacing: -0.02em; color: var(--acc); line-height: 1">{{compCode}}</span>
+            <span class="muted" style="font-size: 13px">{{compKind}}</span>
+            <div class="wrap" style="margin-top: 8px"><sc-for list="{{filled}}" as="c" hint-placeholder-count="4"><button class="chip xs {{c.cls}}" onClick="{{c.pick}}">{{c.label}}</button></sc-for></div>
+          </div>
+        </div>
+        <div style="{{fanAreaSt}}">
+          <sc-for list="{{fan}}" as="c" hint-placeholder-count="3">
+          <button class="fcard" aria-label="{{c.name}}" style="{{c.st}}" onClick="{{c.open}}"><span class="fin" style="{{c.inSt}}"><span style="{{c.imgSt}}"></span><span class="fn">{{c.name}}</span><span class="fc">{{c.code}}</span></span></button>
+          </sc-for>
+          <sc-if value="{{fanHint}}" hint-placeholder-val="{{ false }}"><div class="muted" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; text-align: center; padding: 0 30px">{{fanHintText}}</div></sc-if>
+        </div>
+        </sc-if>
+        <sc-if value="{{unitNoPhoto}}" hint-placeholder-val="{{ false }}">
+        <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+          <div style="font-weight: 600">Bu ünitenin fotoğrafı yok</div>
+          <div class="muted" style="font-size: 13px; line-height: 1.5">Fotoğraf yükleyip üzerinde raf ve çekmeceleri çizince bölmeler burada tıklanabilir olur.</div>
+          <button class="btn pri" onClick="{{editThisUnit}}">Fotoğraf ekle ve bölmeleri çiz</button>
+        </div>
+        </sc-if>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- AYARLAR -->
+  <sc-if value="{{isSettings}}" hint-placeholder-val="{{ false }}">
+    <header style="height: 68px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 24px; background: var(--card); border-bottom: 1px solid var(--line)">
+      <div style="font-size: 18px; font-weight: 700">Ayarlar</div>
+      <div class="seg" style="width: 470px"><button class="{{tabCatsCls}}" onClick="{{setTabCats}}">Kategoriler ve filtreler</button><button class="{{tabPlanCls}}" onClick="{{setTabPlan}}">Ofis planı ve raflar</button><button class="{{tabGenCls}}" onClick="{{setTabGen}}">Genel</button></div>
+    </header>
+
+    <sc-if value="{{isCatsTab}}" hint-placeholder-val="{{ true }}">
+    <div style="flex: 1; display: flex; gap: 20px; padding: 20px; min-height: 0">
+      <div class="card" style="width: 290px; flex: none; padding: 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto">
+        <p class="fhead" style="margin: 6px 8px 8px">KATEGORİLER</p>
+        <sc-for list="{{ceList}}" as="c" hint-placeholder-count="6">
+        <button class="{{c.cls}}" style="height: 44px" onClick="{{c.pick}}"><span style="{{c.dotSt}}"></span><span style="flex: 1; font-weight: 500">{{c.name}}</span><span style="font-size: 12px; opacity: .7">{{c.sub}}</span></button>
+        </sc-for>
+        <button class="btn ghost" style="margin-top: 10px" onClick="{{newCat}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Yeni kategori</button>
+      </div>
+      <div class="card" style="flex: 1; min-width: 0; padding: 22px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px">
+        <div class="row" style="gap: 16px; align-items: flex-end">
+          <label style="flex: 1; display: flex; flex-direction: column; gap: 6px"><span class="muted" style="font-size: 12px; font-weight: 600">Kategori adı</span><input class="inp lg" style="font-size: 18px; font-weight: 600; height: 46px" value="{{ce.name}}" onChange="{{ce.onName}}"></label>
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="muted" style="font-size: 12px; font-weight: 600">Renk</span><div class="row" style="gap: 8px; height: 46px"><sc-for list="{{ce.colors}}" as="c" hint-placeholder-count="7"><button class="sw" aria-label="{{c.hex}}" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for></div></div>
+        </div>
+        <div>
+          <p class="fhead">FİLTRELER · SIRASI FİLTRE PANELİNDEKİ SIRADIR</p>
+          <div style="border: 1px solid var(--sep); border-radius: 14px; overflow: hidden">
+            <sc-for list="{{ce.filters}}" as="f" hint-placeholder-count="4">
+            <div class="row" style="padding: 10px 12px 10px 16px; gap: 10px; border-bottom: 1px solid var(--sep)">
+              <span class="muted" style="width: 18px; font-size: 12px; font-weight: 600">{{f.no}}</span>
+              <div style="flex: 1; min-width: 0"><div class="row" style="gap: 8px"><span style="font-weight: 600; font-size: 14px">{{f.name}}</span><span class="ftype">{{f.typeName}}</span></div><div class="muted" style="font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{f.detail}}</div></div>
+              <button class="mini" aria-label="Yukarı taşı" style="{{f.upSt}}" onClick="{{f.up}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
+              <button class="mini" aria-label="Aşağı taşı" style="{{f.downSt}}" onClick="{{f.down}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+              <button class="mini" aria-label="Filtreyi sil" style="color: var(--danger)" onClick="{{f.del}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+            </div>
+            </sc-for>
+            <sc-if value="{{ce.noFilters}}" hint-placeholder-val="{{ false }}"><div class="muted" style="padding: 14px 16px; font-size: 13px">Bu kategoride henüz filtre yok.</div></sc-if>
+          </div>
+        </div>
+        <div style="background: var(--sunk); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+          <div style="font-weight: 700; font-size: 15px">Yeni filtre ekle</div>
+          <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px">
+            <sc-for list="{{nf.types}}" as="t" hint-placeholder-count="5">
+            <button class="tcard {{t.cls}}" onClick="{{t.pick}}"><span style="font-weight: 600; font-size: 13px">{{t.name}}</span><span class="muted" style="font-size: 11.5px; line-height: 1.35">{{t.desc}}</span><span style="font-size: 11px; font-weight: 600; color: var(--acc)">{{t.example}}</span></button>
+            </sc-for>
+          </div>
+          <div class="row" style="gap: 12px; align-items: flex-start">
+            <label style="width: 260px; display: flex; flex-direction: column; gap: 6px"><span class="muted" style="font-size: 12px; font-weight: 600">Filtre adı</span><input class="inp lg" placeholder="{{nf.namePh}}" value="{{nf.name}}" onChange="{{nf.onName}}"></label>
+            <sc-if value="{{nf.needsOpts}}" hint-placeholder-val="{{ true }}">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+              <span class="muted" style="font-size: 12px; font-weight: 600">Seçenekler</span>
+              <div class="row" style="gap: 8px"><input class="inp lg" style="flex: 1" placeholder="{{nf.optPh}}" aria-label="Yeni seçenek" value="{{nf.draft}}" onChange="{{nf.onDraft}}"><button class="btn ghost" onClick="{{nf.addOpt}}">Ekle</button></div>
+              <div class="wrap"><sc-for list="{{nf.opts}}" as="o" hint-placeholder-count="2"><button class="achip" aria-label="{{o.aria}}" onClick="{{o.remove}}">{{o.name}}<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width: 13px; height: 13px"><path d="M6 6l12 12M18 6 6 18"/></svg></button></sc-for></div>
+            </div>
+            </sc-if>
+            <sc-if value="{{nf.needsUnit}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 6px"><span class="muted" style="font-size: 12px; font-weight: 600">Birim</span><div class="wrap"><sc-for list="{{nf.units}}" as="u" hint-placeholder-count="5"><button class="chip {{u.cls}}" onClick="{{u.pick}}">{{u.name}}</button></sc-for></div></div>
+            </sc-if>
+          </div>
+          <div class="row" style="justify-content: space-between">
+            <span class="muted" style="font-size: 12px">{{nf.hint}}</span>
+            <button class="btn pri" onClick="{{nf.save}}">Filtreyi ekle</button>
+          </div>
+        </div>
+        <sc-if value="{{ce.canDelete}}" hint-placeholder-val="{{ true }}">
+        <div class="row" style="justify-content: space-between; padding-top: 4px">
+          <span class="muted" style="font-size: 12px">Silinen kategorinin ürünleri "Diğer" kategorisine taşınır.</span>
+          <button class="btn danger" onClick="{{ce.del}}">Kategoriyi sil</button>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{isPlanTab}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; display: flex; gap: 20px; padding: 20px; min-height: 0">
+      <div style="width: 680px; flex: none; display: flex; flex-direction: column; gap: 10px">
+        <div class="row" style="justify-content: space-between; height: 44px; gap: 10px">
+          <div style="min-width: 0"><div style="font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{pe.title}}</div><div class="muted" style="font-size: 12px">{{pe.status}}</div></div>
+          <sc-if value="{{pe.notEditing}}" hint-placeholder-val="{{ true }}">
+          <button class="btn pri" onClick="{{pe.startEdit}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>Düzenle</button>
+          </sc-if>
+          <sc-if value="{{pe.editing}}" hint-placeholder-val="{{ false }}">
+          <div class="ebar">
+            <button class="mini" style="{{pe.undoSt}}" aria-label="Geri al (Ctrl+Z)" title="Geri al (Ctrl+Z)" onClick="{{pe.undo}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+            <button class="mini" style="{{pe.redoSt}}" aria-label="Yinele (Ctrl+Y)" title="Yinele (Ctrl+Y)" onClick="{{pe.redo}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+            <span style="font-size: 12px; font-weight: 600; color: var(--acc-tx); padding: 0 6px; white-space: nowrap">{{pe.changes}}</span>
+            <button class="btn ghost" style="height: 32px; font-size: 13px; padding: 0 12px !important" onClick="{{pe.discard}}">Vazgeç</button>
+            <button class="btn pri" style="height: 32px; font-size: 13px; padding: 0 14px !important" onClick="{{pe.save}}">Kaydet</button>
+          </div>
+          </sc-if>
+        </div>
+        <div class="ecanvas" style="{{pe.canvasSt}}" onMouseDown="{{pe.down}}" onMouseMove="{{pe.move}}" onMouseUp="{{pe.up}}" onMouseLeave="{{pe.up}}" onDoubleClick="{{pe.dbl}}" onWheel="{{pe.wheel}}">
+          <div style="{{pe.innerSt}}">
+          <sc-if value="{{pe.isPlan}}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{pe.rfills}}" as="g" hint-placeholder-count="0"><div class="gfx" style="{{g.st}}"></div></sc-for>
+          <sc-if value="{{pe.ulayOn}}" hint-placeholder-val="{{ true }}">
+          <div class="{{pe.ulayCls}}" style="{{pe.ulaySt}}">
+          <sc-if value="{{hasPlanImg}}" hint-placeholder-val="{{ false }}"><img src="{{planImg}}" alt="" draggable="false" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff"></sc-if>
+          <sc-if value="{{noPlanImg}}" hint-placeholder-val="{{ true }}">
+          <svg viewBox="80 60 1040 640" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none" aria-hidden="true">
+                                                <polygon class="pvoid" points="409,485 451,450 496,505 454,540"/>
+            <polygon class="pstair" points="195,413 227,451 320,374 290,336"/>
+            <line class="pstair" x1="211" y1="432" x2="305" y2="355"/>
+            <polygon class="pbar" points="230,456 329,375 325,371 227,451"/>
+          </svg>
+          </sc-if>
+          </div>
+          </sc-if>
+          </sc-if>
+          <sc-if value="{{pe.isPhoto}}" hint-placeholder-val="{{ false }}"><img src="{{pe.photo}}" alt="Ünite fotoğrafı" draggable="false" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill"></sc-if>
+          <sc-for list="{{pe.fills}}" as="g" hint-placeholder-count="0"><div class="gfx" style="{{g.st}}"></div></sc-for>
+          <sc-for list="{{pe.segs}}" as="g" hint-placeholder-count="0"><div class="gfx" style="{{g.st}}"></div></sc-for>
+          <sc-for list="{{pe.labels}}" as="l" hint-placeholder-count="0"><span class="elab" style="{{l.st}}">{{l.text}}</span></sc-for>
+          <sc-for list="{{pe.handles}}" as="h" hint-placeholder-count="0"><span class="hd" style="{{h.st}}" onMouseDown="{{h.down}}"></span></sc-for>
+          </div>
+          <div class="zbar" onMouseDown="{{stopEv}}"><button aria-label="Uzaklaştır" onClick="{{pe.zoomOut}}">−</button><span style="font-size: 12px; font-weight: 600; min-width: 40px; text-align: center; color: var(--tx2)">{{pe.zoomText}}</span><button aria-label="Yakınlaştır" onClick="{{pe.zoomIn}}">+</button><button onClick="{{pe.fit}}">Sığdır</button></div>
+        </div>
+        <p class="muted" style="font-size: 11.5px; margin: 0 2px">Kaydır: orta tuş veya Boşluk + sürükle · Yakınlaştır: tekerlek · Geri al: Ctrl+Z</p>
+      </div>
+      <div class="card" style="flex: 1; min-width: 0; padding: 18px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+        <sc-if value="{{pe.notEditing}}" hint-placeholder-val="{{ true }}">
+        <div style="border-radius: 14px; padding: 14px; background: var(--sunk); display: flex; flex-direction: column; gap: 6px">
+          <div style="font-weight: 600; font-size: 14px">Görüntüleme modu</div>
+          <div class="muted" style="font-size: 12.5px; line-height: 1.5">Değişiklik yapmak için "Düzenle"ye bas. Yaptıkların Kaydet'e kadar taslakta kalır, ofis görünümünü etkilemez; her adım geri alınabilir.</div>
+        </div>
+        </sc-if>
+        <sc-if value="{{pe.isPhoto}}" hint-placeholder-val="{{ false }}">
+        <button class="chip" style="align-self: flex-start" onClick="{{pe.toPlan}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Plana dön</button>
+        </sc-if>
+        <sc-if value="{{pe.isPlan}}" hint-placeholder-val="{{ true }}">
+        <div>
+          <p class="fhead">KATMAN</p>
+          <div class="seg"><button class="{{pe.lRooms}}" onClick="{{pe.setLRooms}}">Odalar (iç alanlar)</button><button class="{{pe.lUnits}}" onClick="{{pe.setLUnits}}">Raf üniteleri</button></div>
+        </div>
+        </sc-if>
+        <sc-if value="{{pe.editing}}" hint-placeholder-val="{{ false }}">
+        <div>
+          <p class="fhead">ARAÇ</p>
+          <div class="seg"><button class="{{pe.tSel}}" onClick="{{pe.setSel}}">Seç / taşı</button><button class="{{pe.tRect}}" onClick="{{pe.setRect}}">Dikdörtgen</button><button class="{{pe.tPoly}}" onClick="{{pe.setPoly}}">Poligon</button></div>
+          <p class="muted" style="font-size: 12px; line-height: 1.5; margin: 8px 2px 0">{{pe.toolHint}}</p>
+          <sc-if value="{{pe.drafting}}" hint-placeholder-val="{{ false }}">
+          <div class="row" style="gap: 8px; margin-top: 8px"><button class="btn pri" style="flex: 1" onClick="{{pe.finish}}">Bitir</button><button class="btn ghost" style="flex: 1" onClick="{{pe.cancel}}">İptal</button></div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{pe.isPlan}}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{pe.hasRoomSel}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1.5px solid var(--acc-line); background: var(--acc-bg); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+          <label style="display: flex; flex-direction: column; gap: 5px"><span class="muted" style="font-size: 12px; font-weight: 600">Oda adı</span><input class="inp lg" style="font-weight: 600" value="{{pe.roomName}}" onChange="{{pe.onRoomName}}"></label>
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="muted" style="font-size: 12px; font-weight: 600">Renk · oda no {{pe.roomNo}}</span><div class="row" style="gap: 8px"><sc-for list="{{pe.roomColors}}" as="c" hint-placeholder-count="7"><button class="sw" aria-label="Renk" style="{{c.st}}" onClick="{{c.pick}}"></button></sc-for></div></div>
+          <span class="muted" style="font-size: 12px">{{pe.roomInfo}}</span>
+          <button class="btn danger" style="height: 34px; font-size: 13px" onClick="{{pe.delRoom}}">Odayı sil</button>
+        </div>
+        </sc-if>
+        <sc-if value="{{pe.isRooms}}" hint-placeholder-val="{{ false }}">
+        <div>
+          <p class="fhead">ODALAR ({{pe.roomCount}})</p>
+          <div class="wrap"><sc-for list="{{pe.roomChips}}" as="u" hint-placeholder-count="3"><button class="chip xs {{u.cls}}" onClick="{{u.pick}}">{{u.name}}</button></sc-for></div>
+        </div>
+        </sc-if>
+        <sc-if value="{{pe.hasSel}}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1.5px solid var(--acc-line); background: var(--acc-bg); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+          <div class="row" style="gap: 10px; align-items: flex-end">
+            <label style="width: 110px; display: flex; flex-direction: column; gap: 5px"><span class="muted" style="font-size: 12px; font-weight: 600">Kod</span><input class="inp lg" style="font-weight: 700" value="{{pe.selCode}}" onChange="{{pe.onCode}}"></label>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 5px"><span class="muted" style="font-size: 12px; font-weight: 600">Oda (otomatik)</span><div style="height: 40px; display: flex; align-items: center; font-size: 14px; font-weight: 500">{{pe.selRoom}}</div></div>
+          </div>
+          <div class="row" style="gap: 12px">
+            <sc-if value="{{pe.selHasPhoto}}" hint-placeholder-val="{{ true }}"><img src="{{pe.selPhoto}}" alt="" style="width: 54px; height: 72px; object-fit: cover; border-radius: 8px; flex: none"></sc-if>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+              <span style="font-size: 13px; font-weight: 600">{{pe.selPhotoText}}</span>
+              <div class="row" style="gap: 6px"><label class="btn ghost" style="flex: 1; height: 34px; font-size: 12.5px; padding: 0 8px !important">Fotoğraf çek<input type="file" accept="image/*" capture="environment" style="display: none" onChange="{{pe.onPhoto}}"></label><label class="btn ghost" style="flex: 1; height: 34px; font-size: 12.5px; padding: 0 8px !important">Görsel seç<input type="file" accept="image/*" style="display: none" onChange="{{pe.onPhoto}}"></label></div>
+            </div>
+          </div>
+          <button class="btn pri" onClick="{{pe.editComps}}">{{pe.compsBtn}}</button>
+          <button class="btn danger" style="height: 34px; font-size: 13px" onClick="{{pe.delUnit}}">Üniteyi sil</button>
+        </div>
+        </sc-if>
+        <sc-if value="{{pe.isUnits}}" hint-placeholder-val="{{ true }}">
+        <div>
+          <p class="fhead">ÜNİTELER ({{pe.unitCount}})</p>
+          <div class="wrap"><sc-for list="{{pe.unitChips}}" as="u" hint-placeholder-count="20"><button class="chip xs {{u.cls}}" onClick="{{u.pick}}">{{u.code}}</button></sc-for></div>
+        </div>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <p class="fhead" style="margin: 0">ALTLIK (YÜKLENEN PLAN)</p>
+          <div class="muted" style="font-size: 12.5px; line-height: 1.5">{{planCaption}}</div>
+          <button class="trow" onClick="{{pe.toggleUlay}}"><span>Düzenleyicide göster</span><span class="{{pe.ulayTgl}}"></span></button>
+          <div class="row" style="gap: 8px; font-size: 13px"><span style="width: 70px">Saydamlık</span><div class="seg" style="flex: 1"><sc-for list="{{pe.opOpts}}" as="o" hint-placeholder-count="3"><button class="{{o.cls}}" style="height: 26px; font-size: 12px" onClick="{{o.pick}}">{{o.name}}</button></sc-for></div></div>
+          <button class="trow" onClick="{{toggleUlayOffice}}"><span>Ofis görünümünde göster</span><span class="{{ulayOfficeTgl}}"></span></button>
+          <button class="trow" onClick="{{toggleInvert}}"><span>Koyu temada altlığı ters çevir</span><span class="{{invertTgl}}"></span></button>
+          <sc-if value="{{pe.editing}}" hint-placeholder-val="{{ false }}">
+          <div class="row" style="gap: 6px; flex-wrap: wrap">
+            <button class="{{pe.alignCls}}" onClick="{{pe.setAlign}}">Altlığı hizala</button>
+            <button class="chip xs" onClick="{{pe.ulaySmaller}}">−%2</button>
+            <button class="chip xs" onClick="{{pe.ulayBigger}}">+%2</button>
+            <button class="chip xs" onClick="{{pe.ulayRotate}}">90° döndür</button>
+            <button class="chip xs" onClick="{{pe.ulayReset}}">Sıfırla</button>
+          </div>
+          <label class="btn ghost" style="height: 36px; font-size: 13px">Altlığı değiştir (PDF, PNG, JPG)<input type="file" accept="application/pdf,image/*" style="display: none" onChange="{{onPlanFile}}"></label>
+          </sc-if>
+          <p class="muted" style="font-size: 11.5px; line-height: 1.5; margin: 0">Odalar ve üniteler uygulama içi çizimden gelir. Altlık sadece yol gösterir; değiştirilse veya gizlense de çizimler yerinde kalır.</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{pe.isPhoto}}" hint-placeholder-val="{{ false }}">
+        <div>
+          <p class="fhead">BÖLMELER ({{pe.compCount}})</p>
+          <div style="border: 1px solid var(--sep); border-radius: 12px; overflow: hidden">
+            <sc-for list="{{pe.compRows}}" as="c" hint-placeholder-count="6">
+            <div class="row" style="{{c.rowSt}}">
+              <button style="flex: 1; display: flex; align-items: center; gap: 10px; font-size: 13.5px" onClick="{{c.pick}}"><span style="font-weight: 700; color: var(--acc); width: 52px">{{c.code}}</span><span class="muted">{{c.sub}}</span></button>
+              <button class="mini" aria-label="Bölmeyi sil" style="color: var(--danger)" onClick="{{c.del}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+            </div>
+            </sc-for>
+            <sc-if value="{{pe.noComps}}" hint-placeholder-val="{{ false }}"><div class="muted" style="padding: 12px; font-size: 13px">Henüz bölme yok. Dikdörtgen veya poligon ile çiz.</div></sc-if>
+          </div>
+        </div>
+        <sc-if value="{{pe.editing}}" hint-placeholder-val="{{ false }}">
+        <button class="btn ghost" onClick="{{pe.renumber}}">Yeniden numarala · soldan sağa, yukarıdan aşağı</button>
+        <p class="muted" style="font-size: 12px; line-height: 1.5; margin: -8px 2px 0">Yeni bölmeler sona eklenir; mevcut kodlar değişmez. Yeniden numaralarsan ürünler bölmeleriyle taşınır ama basılmış raf etiketlerinin yenilenmesi gerekir.</p>
+        <div class="row" style="gap: 8px">
+          <label class="btn ghost" style="flex: 1; height: 36px; font-size: 13px">Fotoğraf çek<input type="file" accept="image/*" capture="environment" style="display: none" onChange="{{pe.onPhoto}}"></label>
+          <label class="btn ghost" style="flex: 1; height: 36px; font-size: 13px">Görsel seç<input type="file" accept="image/*" style="display: none" onChange="{{pe.onPhoto}}"></label>
+        </div>
+        </sc-if>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{isGenTab}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; overflow-y: auto; padding: 20px 24px 40px">
+      <div style="max-width: 680px; display: flex; flex-direction: column; gap: 22px">
+        <div>
+          <p class="fhead">BÜRO</p>
+          <div class="card" style="padding: 0 20px">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--sep)"><div><div style="font-weight: 500">Kişiler</div><div class="muted" style="font-size: 12.5px; margin-top: 2px">"Kim aldı" için isim etiketleri; hesap değildir.</div></div><div class="row" style="gap: 6px; flex-wrap: wrap; justify-content: flex-end"><sc-for list="{{genPeople}}" as="p" hint-placeholder-count="4"><span class="chip xs">{{p.name}}</span></sc-for><button class="chip xs" style="color: var(--acc)" onClick="{{phoneOnly}}">+ Kişi</button></div></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--sep)"><div><div style="font-weight: 500">Yerine koyarken raf onayı</div><div class="muted" style="font-size: 12.5px; margin-top: 2px">Raf etiketini okutmak isteğe bağlı; "Okutmadan onayla" her zaman var.</div></div><span class="muted" style="font-size: 13px">İsteğe bağlı</span></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--sep)"><div style="font-weight: 500">Doküman klasörleri</div><span class="muted" style="font-size: 13px">DATA/Bibliothek</span></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0"><div><div style="font-weight: 500">Otomatik yedek</div><div class="muted" style="font-size: 12.5px; margin-top: 2px">Son yedek: bugün 02:00</div></div><span class="muted" style="font-size: 13px">02:00 · yerel + Google Drive</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="fhead">BU CİHAZ</p>
+          <div class="card" style="padding: 0 20px">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--sep)"><div><div style="font-weight: 500">Bu cihazı kullanan</div><div class="muted" style="font-size: 12.5px; margin-top: 2px">"Ürünü al"da önceden seçili gelir. Bir kaydı düzenlerken başkalarına bu isim görünür.</div></div><div class="row" style="gap: 6px; flex: none"><sc-for list="{{meOpts}}" as="p" hint-placeholder-count="4"><button class="{{p.cls}}" onClick="{{p.pick}}">{{p.name}}</button></sc-for></div></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0"><div><div style="font-weight: 500">Görünüm</div><div class="muted" style="font-size: 12.5px; margin-top: 2px">Etiket ve PDF çıktıları her zaman açık renklidir.</div></div><div class="seg" style="width: 260px; flex: none"><sc-for list="{{themeOpts}}" as="t" hint-placeholder-count="3"><button class="{{t.cls}}" onClick="{{t.pick}}">{{t.name}}</button></sc-for></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ÜRÜN PANELİ -->
+  <div class="drawer" style="{{drawerSt}}">
+    <div class="row" style="justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--sep)">
+      <span style="font-weight: 600; font-size: 14px">{{d.code}}</span>
+      <div class="row" style="gap: 6px"><button class="chip" onClick="{{d.edit}}">Düzenle</button>
+      <button class="chip" aria-label="Kapat" onClick="{{closeDrawer}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 16px">
+      <div style="{{d.heroSt}}"></div>
+      <div>
+        <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2">{{d.name}}</div>
+        <div class="muted" style="font-size: 14px; margin-top: 3px">{{d.brand}} · {{d.catName}} · {{d.size}}</div>
+        <div class="row" style="gap: 6px; margin-top: 10px"><span class="badge" style="{{d.typeSt}}">{{d.typeLabel}}</span><span class="badge" style="{{d.badgeSt}}">{{d.badge}}</span></div>
+      </div>
+      <div class="row" style="gap: 8px">
+        <sc-if value="{{d.canLocate}}" hint-placeholder-val="{{ true }}"><button class="btn pri" style="flex: 1" onClick="{{d.locate}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Ofiste göster · {{d.zone}}</button></sc-if>
+        <button class="btn ghost" style="flex: 1" onClick="{{phoneOnly}}">Koleksiyona ekle</button>
+      </div>
+      <div class="card" style="padding: 14px 16px; display: flex; justify-content: space-between; align-items: center">
+        <div><div class="muted" style="font-size: 12px">Fiyat</div><div style="font-size: 19px; font-weight: 700; margin-top: 2px">{{d.price}}</div><div class="muted" style="font-size: 12px; margin-top: 2px">{{d.priceDate}}</div></div>
+        <button class="chip" onClick="{{phoneOnly}}">Güncelle</button>
+      </div>
+      <sc-if value="{{d.hasAttrs}}" hint-placeholder-val="{{ true }}">
+      <div>
+        <p class="fhead">ÖZELLİKLER</p>
+        <sc-for list="{{d.attrs}}" as="f" hint-placeholder-count="4"><div class="irow"><span class="muted">{{f.k}}</span><span style="font-weight: 500; text-align: right">{{f.v}}</span></div></sc-for>
+      </div>
+      </sc-if>
+      <div>
+        <p class="fhead">RENKLER</p>
+        <div class="row" style="gap: 14px"><sc-for list="{{d.colors}}" as="c" hint-placeholder-count="2"><button class="row" style="gap: 8px; font-size: 13.5px; font-weight: 500" onClick="{{c.search}}"><span class="sw" style="{{c.st}}"></span>{{c.name}}</button></sc-for></div>
+      </div>
+      <div>
+        <p class="fhead">DOKÜMANLAR</p>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{d.docs}}" as="f" hint-placeholder-count="2">
+          <div class="row" style="gap: 10px; padding: 8px; border-radius: 12px; border: 1px solid var(--sep)">
+            <span class="ext" style="{{f.extSt}}">{{f.ext}}</span>
+            <div style="flex: 1; min-width: 0"><div style="font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{f.name}}</div><div class="muted" style="font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{f.path}}</div></div>
+            <button class="chip xs" onClick="{{f.open}}">Aç</button>
+            <button class="chip xs" onClick="{{f.reveal}}">Klasör</button>
+          </div>
+          </sc-for>
+          <sc-if value="{{d.noDocs}}" hint-placeholder-val="{{ false }}"><div class="muted" style="font-size: 13px">Bağlı doküman yok.</div></sc-if>
+        </div>
+      </div>
+      <div>
+        <p class="fhead">BİLGİ</p>
+        <sc-for list="{{d.info}}" as="f" hint-placeholder-count="3"><div class="irow"><span class="muted">{{f.k}}</span><span style="{{f.st}}">{{f.v}}</span></div></sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{scan.open}}" hint-placeholder-val="{{ false }}">
+  <div class="modal" onClick="{{scan.close}}">
+    <div class="mbox" style="width: 420px" role="dialog" aria-label="QR okut" onClick="{{stopEv}}">
+      <div class="row" style="justify-content: space-between"><div style="font-size: 18px; font-weight: 700">QR okut</div><button class="chip" aria-label="Kapat" onClick="{{scan.close}}"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div style="height: 250px; border-radius: 14px; background: #0F1115; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden">
+        <div style="width: 150px; height: 150px; border-radius: 16px; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 0 0 999px rgba(0,0,0,.35)"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; color: rgba(255,255,255,.8); font-size: 13px">Etiketi kameraya tut</div>
+      </div>
+      <div class="muted" style="font-size: 12px; font-weight: 600; letter-spacing: .04em">DEMO: OKUNAN ETİKET</div>
+      <div class="row" style="gap: 8px">
+        <button class="btn ghost" style="flex: 1" onClick="{{scan.product}}">Ürün · FL-004-142</button>
+        <button class="btn ghost" style="flex: 1" onClick="{{scan.shelf}}">Raf · 2.2.5</button>
+      </div>
+      <div class="muted" style="font-size: 12.5px; line-height: 1.45">Kamerası olmayan bilgisayarda bu ikon görünmez; ürün kodu arama kutusuna yazılabilir (ör. 142).</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{busyBox.open}}" hint-placeholder-val="{{ false }}">
+  <div class="modal" onClick="{{busyBox.close}}">
+    <div class="mbox" style="width: 420px" role="dialog" aria-label="Kullanımda" onClick="{{stopEv}}">
+      <div class="row" style="gap: 12px; align-items: flex-start">
+        <div style="width: 40px; height: 40px; border-radius: 12px; background: var(--use-bg); color: var(--use-tx); display: flex; align-items: center; justify-content: center; flex: none"><svg class="ic ics" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+        <div><div style="font-size: 18px; font-weight: 700">Kullanımda</div><div class="muted" style="font-size: 13.5px; margin-top: 2px">{{busyBox.text}}</div></div>
+      </div>
+      <div class="muted" style="font-size: 13px; line-height: 1.5">Kaydedince veya kapatınca sana haber veririz. Bu arada ürünü görüntüleyebilir ve ofiste gösterebilirsin.</div>
+      <div class="row" style="justify-content: flex-end"><button class="btn pri" onClick="{{busyBox.close}}">Tamam</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ask.open}}" hint-placeholder-val="{{ false }}">
+  <div class="modal">
+    <div class="mbox" role="dialog" aria-label="{{ask.title}}">
+      <div style="font-size: 18px; font-weight: 700">{{ask.title}}</div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <sc-for list="{{ask.lines}}" as="l" hint-placeholder-count="2"><div style="{{l.st}}">{{l.text}}</div></sc-for>
+      </div>
+      <div class="row" style="gap: 8px; justify-content: flex-end; flex-wrap: wrap">
+        <button class="btn ghost" onClick="{{ask.cancel}}">Düzenlemeye dön</button>
+        <sc-if value="{{ask.showDrop}}" hint-placeholder-val="{{ false }}"><button class="btn danger" onClick="{{ask.drop}}">Değişiklikleri at</button></sc-if>
+        <sc-if value="{{ask.showSave}}" hint-placeholder-val="{{ true }}"><button class="btn pri" onClick="{{ask.save}}">{{ask.saveLabel}}</button></sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 12px 18px; border-radius: 14px; background: var(--toast); color: #fff; font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.25); z-index: 100; white-space: nowrap">{{toast}}</div>
+  </sc-if>
+  </main>
+  <sc-if value="{{splash}}" hint-placeholder-val="{{ false }}">
+  <div class="splash" onClick="{{skipSplash}}"><span class="wm" style="font-size: 56px"><b>miaza</b><i>finds</i></span></div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+var ACC = 'var(--acc)';
+var PEOPLE = ['Cankat', 'Ayşe', 'Mert', 'Elif'];
+// Demo: başka bir cihazda düzenlenmekte olan ürün (SPEC 4.9)
+var BUSY_ITEMS = { 'FL-005-151': { who: 'Ayşe', where: 'telefonunda', min: 3 } };
+function storeGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+function storeSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+function systemDark() { try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; } }
+function roomFill(c) { return 'color-mix(in srgb, ' + c + ' var(--room-mix), var(--plan-bg))'; }
+var BLANK_UL = function () { return { show: true, op: 0.7, x: 0, y: 0, s: 1, r: 0 }; };
+function ulayStyle(u, op) { return 'position:absolute;inset:0;pointer-events:none;opacity:' + op + ';transform-origin:50% 50%;transform:translate(' + r2(u.x) + '%,' + r2(u.y) + '%) rotate(' + u.r + 'deg) scale(' + u.s + ')'; }
+var SAMPLE_PHOTO = '/_blob/1b9d655cf9924d3ccaeda90a3bde37f5';
+var SW = {
+  marble: 'linear-gradient(135deg,#F5F2ED 0%,#ECE6DD 36%,#CDBFAA 38%,#EFEAE3 41%,#E4DDD2 66%,#D3C7B5 67%,#EEE9E2 70%,#E8E2D9 100%)',
+  terrazzo: 'radial-gradient(circle at 18% 28%,#8B929C 0 5%,transparent 6%),radial-gradient(circle at 68% 62%,#5F6672 0 4%,transparent 5%),radial-gradient(circle at 42% 78%,#F1F2F4 0 6%,transparent 7%),radial-gradient(circle at 84% 22%,#4B5563 0 3%,transparent 4%),radial-gradient(circle at 30% 55%,#B07A4A 0 3%,transparent 4%),#C4C7CC',
+  rosa: 'radial-gradient(circle at 22% 30%,#B4566A 0 5%,transparent 6%),radial-gradient(circle at 66% 64%,#F7EDEA 0 5%,transparent 6%),radial-gradient(circle at 80% 24%,#8E3B4E 0 3%,transparent 4%),radial-gradient(circle at 40% 76%,#D08A92 0 4%,transparent 5%),#E7C4C2',
+  zellige: 'linear-gradient(135deg,#2C6652 0%,#3F8A6F 45%,#347A61 55%,#25584A 100%)',
+  cotto: 'linear-gradient(135deg,#C2643A 0%,#A9542F 50%,#C8714A 100%)',
+  metro: 'repeating-linear-gradient(0deg,#F6F6F4 0 14px,#D6D6D2 14px 15px)',
+  nero: 'linear-gradient(135deg,#1C1C1E 0%,#2A2A2D 40%,#D9D9D9 41%,#2A2A2D 42.5%,#18181A 100%)',
+  trav: 'repeating-linear-gradient(170deg,#E3D3B8 0 5px,#D6C4A6 5px 7px,#E9DCC5 7px 12px)',
+  oak: 'repeating-linear-gradient(100deg,#C99D68 0 7px,#B88A55 7px 10px,#D2AA77 10px 18px)',
+  ash: 'repeating-linear-gradient(100deg,#E1CDAA 0 6px,#D3BC95 6px 9px,#E8D6B6 9px 15px)',
+  smoked: 'repeating-linear-gradient(100deg,#5E4B3A 0 6px,#4E3D2F 6px 9px,#6B5644 9px 15px)',
+  walnut: 'repeating-linear-gradient(95deg,#6B4429 0 6px,#5A3820 6px 9px,#7A5133 9px 15px)',
+  brass: 'linear-gradient(120deg,#8C6B2E 0%,#D9B76A 42%,#A9883F 60%,#E3C77F 100%)',
+  anodized: 'linear-gradient(120deg,#1F2125 0%,#3B3E44 50%,#1B1D21 100%)',
+  steel: 'linear-gradient(120deg,#9EA3A8 0%,#D8DCDF 45%,#A7ACB1 60%,#CDD1D4 100%)',
+  corten: 'radial-gradient(circle at 30% 40%,#8E3B16 0 15%,transparent 35%),linear-gradient(140deg,#A6511F,#7E3A14 60%,#9C4A1C)',
+  boucle: 'radial-gradient(circle,#F2ECE2 32%,transparent 34%) 0 0/7px 7px,#D8CEBE',
+  linen: 'repeating-linear-gradient(0deg,#E9E3D8 0 2px,#DCD4C6 2px 4px)',
+  felt: 'radial-gradient(circle,#7B8876 30%,transparent 32%) 0 0/5px 5px,#5E6B59',
+  cement: 'radial-gradient(circle at 30% 40%,#C9C5BE 0 20%,transparent 40%),linear-gradient(160deg,#B6B2AB,#A29E97 50%,#C1BDB6)',
+  stone: 'radial-gradient(circle at 40% 40%,#DDD8D0 0 30%,transparent 60%),linear-gradient(150deg,#B9B3A9,#CFC9BF)',
+  rattan: 'repeating-linear-gradient(45deg,#D7B98A 0 4px,#B8955F 4px 6px),repeating-linear-gradient(-45deg,#D7B98A 0 4px,#B8955F 4px 6px)',
+  acoustic: 'repeating-linear-gradient(90deg,#BE9160 0 12px,#232323 12px 16px)',
+  mosaic: 'conic-gradient(#E9EDF2 25%,#8FA3BC 0 50%,#E9EDF2 0 75%,#8FA3BC 0) 0 0/18px 18px',
+  tierras: 'radial-gradient(circle at 30% 30%,#D58A62 0 20%,transparent 50%),linear-gradient(135deg,#B9653F,#9E4F2E 55%,#C27650)',
+  ochre: 'radial-gradient(circle,#E2B455 32%,transparent 34%) 0 0/7px 7px,#C9932F',
+  mesh: 'repeating-linear-gradient(0deg,#B48C3E 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,#B48C3E 0 2px,transparent 2px 6px),#E8D9AE',
+  lino: 'linear-gradient(135deg,#4E6E99,#3F5C84 60%,#5A7BA6)'
+};
+var COLORS = [
+  { id: 'beyaz', name: 'Beyaz', hex: '#F1EEE8' }, { id: 'bej', name: 'Bej', hex: '#D9C7A8' }, { id: 'kahve', name: 'Kahve', hex: '#7A5133' },
+  { id: 'terracotta', name: 'Terracotta', hex: '#C2643A' }, { id: 'altin', name: 'Altın', hex: '#C9A45A' }, { id: 'pembe', name: 'Pembe', hex: '#D9A0A6' },
+  { id: 'yesil', name: 'Yeşil', hex: '#3F7A62' }, { id: 'mavi', name: 'Mavi', hex: '#4E6E99' }, { id: 'gri', name: 'Gri', hex: '#9EA3A8' }, { id: 'siyah', name: 'Siyah', hex: '#222326' }
+];
+var CAT_COLORS = ['#2F5BEA', '#B7791F', '#4B5563', '#BE185D', '#0F766E', '#7C3AED', '#9CA3AF'];
+var FTYPES = [
+  { id: 'olcu', name: 'Ölçü / aralık', desc: 'Sayı; min–maks ile aranır', example: 'Kalınlık 8–12 mm', ph: 'ör. Kalınlık' },
+  { id: 'tekli', name: 'Tekli özellik', desc: 'Listeden tek değer', example: 'R değeri: R10', ph: 'ör. R değeri' },
+  { id: 'coklu', name: 'Çoklu özellik', desc: 'Birden fazla değer', example: 'Yüzey: Mat, Yapılı', ph: 'ör. Yüzey' },
+  { id: 'varyok', name: 'Var / yok', desc: 'Evet – hayır', example: 'Rektifiye: Var', ph: 'ör. Rektifiye' },
+  { id: 'metin', name: 'Serbest metin', desc: 'Yazı; içinde aranır', example: 'Seri: Tierras', ph: 'ör. Seri adı' }
+];
+function ftype(id) { for (var i = 0; i < FTYPES.length; i++) if (FTYPES[i].id === id) return FTYPES[i]; return FTYPES[0]; }
+var INITIAL_CATS = [
+  { id: 'fayans', name: 'Fayans & Seramik', color: '#2F5BEA', filters: [
+    { id: 'r', name: 'R değeri', type: 'tekli', options: ['R9', 'R10', 'R11', 'R12', 'R13'] },
+    { id: 'yuzey', name: 'Yüzey', type: 'coklu', options: ['Mat', 'Parlak', 'Saten', 'Yapılı'] },
+    { id: 'format', name: 'Format (uzun kenar)', type: 'olcu', unit: 'cm' },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' },
+    { id: 'rekt', name: 'Rektifiye', type: 'varyok' },
+    { id: 'dis', name: 'Dış mekana uygun', type: 'varyok' },
+    { id: 'seri', name: 'Seri', type: 'metin' } ] },
+  { id: 'ahsap', name: 'Ahşap', color: '#B7791F', filters: [
+    { id: 'tur', name: 'Malzeme tipi', type: 'tekli', options: ['Masif', 'MDF-Lam', 'Doğal kaplama', 'Kontrplak', 'Parke'] },
+    { id: 'agac', name: 'Ağaç türü', type: 'tekli', options: ['Meşe', 'Ceviz', 'Dişbudak', 'Huş'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' },
+    { id: 'yag', name: 'Yağlı / cilalı', type: 'varyok' } ] },
+  { id: 'metal', name: 'Metal', color: '#4B5563', filters: [
+    { id: 'tip', name: 'Yüzey işlemi', type: 'tekli', options: ['Boyalı', 'Kaplama', 'Fırçalı', 'Eloksal', 'Ham'] },
+    { id: 'malz', name: 'Malzeme', type: 'tekli', options: ['Çelik', 'Paslanmaz', 'Alüminyum', 'Pirinç', 'Corten'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' } ] },
+  { id: 'tekstil', name: 'Tekstil', color: '#BE185D', filters: [
+    { id: 'kul', name: 'Kullanım', type: 'coklu', options: ['Döşemelik', 'Perde', 'Akustik'] },
+    { id: 'yangin', name: 'Yanmaz (B1)', type: 'varyok' } ] },
+  { id: 'tas', name: 'Taş & Beton', color: '#0F766E', filters: [
+    { id: 'tur', name: 'Tür', type: 'tekli', options: ['Doğal taş', 'Terrazzo', 'Mikrobeton', 'Kompozit'] },
+    { id: 'kal', name: 'Kalınlık', type: 'olcu', unit: 'mm' } ] },
+  { id: 'diger', name: 'Diğer', color: '#9CA3AF', locked: true, filters: [] }
+];
+var FS_ROOT = '\\\\MINIPC\\Bibliothek';
+function P(v, u, d) { return { v: v, u: u, d: d }; }
+function D(n, folder) { return { n: n, p: FS_ROOT + '\\' + folder }; }
+function mk(o) { return Object.assign({ type: 'fiziki', link: '', out: null, attrs: {}, price: null, colors: [], docs: [] }, o); }
+var INITIAL_ITEMS = [
+  mk({ id: 'FL-004-142', name: 'Calacatta Oro Porselen', brand: 'Florim', cat: 'fayans', size: '60 × 120 cm', zone: '2.2.5', sw: SW.marble, link: 'florim.com/calacatta', attrs: { r: 'R9', yuzey: ['Parlak'], format: 120, kal: 9, rekt: true, dis: false, seri: 'Magnum Oversize' }, price: P(64.5, 'm²', '12.10.2026'), colors: ['beyaz', 'bej'], docs: [D('Calacatta_Oro_Datenblatt.pdf', 'Florim'), D('Calacatta_Oro_Verlegemuster.jpg', 'Florim')] }),
+  mk({ id: 'FL-003-087', name: 'Terrazzo Grigio', brand: 'Agrob Buchtal', cat: 'fayans', size: '30 × 30 cm', zone: '2.2.2', sw: SW.terrazzo, attrs: { r: 'R10', yuzey: ['Mat'], format: 30, kal: 10, rekt: true, dis: true, seri: 'Terrazzo' }, price: P(89, 'm²', '03.09.2026'), colors: ['gri'], out: { person: 'Cankat', where: 'disari' } }),
+  mk({ id: 'FL-005-151', name: 'Zellige Yeşil', brand: 'Equipe', cat: 'fayans', size: '10 × 10 cm', zone: '2.2.5', sw: SW.zellige, attrs: { r: 'R9', yuzey: ['Parlak', 'Yapılı'], format: 10, kal: 12, rekt: false, dis: false, seri: 'Artisan' }, price: P(129, 'm²', '30.10.2026'), colors: ['yesil'] }),
+  mk({ id: 'FL-006-160', name: 'Cotto Pişmiş Toprak', brand: 'Marazzi', cat: 'fayans', size: '20 × 20 cm', zone: '2.2.1', sw: SW.cotto, attrs: { r: 'R11', yuzey: ['Mat'], format: 20, kal: 14, rekt: false, dis: true }, price: P(48, 'm²', '18.06.2026'), colors: ['terracotta'] }),
+  mk({ id: 'FL-007-163', name: 'Beyaz Metro Seramik', brand: 'Kale', cat: 'fayans', size: '7,5 × 15 cm', zone: '2.2.6', sw: SW.metro, attrs: { r: 'R9', yuzey: ['Parlak'], format: 15, kal: 8, rekt: false, dis: false }, price: P(32, 'm²', '02.05.2026'), colors: ['beyaz'] }),
+  mk({ id: 'FL-008-170', name: 'Nero Marquina', brand: 'Florim', cat: 'fayans', size: '60 × 60 cm', zone: '2.2.9', sw: SW.nero, attrs: { r: 'R10', yuzey: ['Saten'], format: 60, kal: 9, rekt: true, dis: false }, price: P(72, 'm²', '12.10.2026'), colors: ['siyah', 'beyaz'], docs: [D('Nero_Marquina_Datenblatt.pdf', 'Florim')] }),
+  mk({ id: 'FL-009-172', name: 'Travertino Classico', brand: 'Mirage', cat: 'fayans', size: '40 × 80 cm', zone: '2.2.8', sw: SW.trav, attrs: { r: 'R11', yuzey: ['Yapılı'], format: 80, kal: 10, rekt: true, dis: true }, price: P(58, 'm²', '21.08.2026'), colors: ['bej'] }),
+  mk({ id: 'SN-003-012', name: 'Terrazzo Rosa', brand: 'Mipa', cat: 'tas', size: '30 × 30 cm', zone: '2.2.2', sw: SW.rosa, attrs: { tur: 'Terrazzo', kal: 15 }, price: P(95, 'm²', '14.07.2026'), colors: ['pembe'] }),
+  mk({ id: 'HO-002-031', name: 'Meşe Masif Lamel', brand: 'Egger', cat: 'ahsap', size: '20 × 100 cm · 18 mm', zone: '2.3.1', sw: SW.oak, attrs: { tur: 'Masif', agac: 'Meşe', kal: 18, yag: true }, price: P(110, 'm²', '05.09.2026'), colors: ['kahve', 'bej'], docs: [D('Eiche_Lamelle_Detail.png', 'Egger')] }),
+  mk({ id: 'HO-004-050', name: 'Dişbudak Kaplama', brand: 'Alpi', cat: 'ahsap', size: '30 × 60 cm', zone: '2.3.2', sw: SW.ash, attrs: { tur: 'Doğal kaplama', agac: 'Dişbudak', kal: 0.6, yag: false }, price: P(42, 'm²', '05.09.2026'), colors: ['bej'] }),
+  mk({ id: 'HO-005-052', name: 'Füme Meşe Parke', brand: 'Bauwerk', cat: 'ahsap', size: '14 × 120 cm', zone: '2.3.4', sw: SW.smoked, attrs: { tur: 'Parke', agac: 'Meşe', kal: 15, yag: true }, price: P(96, 'm²', '22.10.2026'), colors: ['kahve'] }),
+  mk({ id: 'HO-003-044', name: 'Ceviz Kaplama MDF', brand: 'Egger', cat: 'ahsap', size: '30 × 40 cm', zone: '3.3.13', sw: SW.walnut, attrs: { tur: 'MDF-Lam', agac: 'Ceviz', kal: 19, yag: false }, price: P(54, 'm²', '11.03.2026'), colors: ['kahve'] }),
+  mk({ id: 'ME-001-013', name: 'Fırçalanmış Pirinç Profil', brand: 'Schlüter', cat: 'metal', size: 'L 25 cm', zone: '3.3.1', sw: SW.brass, attrs: { tip: 'Fırçalı', malz: 'Pirinç', kal: 1.5 }, price: P(18, 'm', '09.10.2026'), colors: ['altin'] }),
+  mk({ id: 'ME-002-019', name: 'Siyah Eloksal Alüminyum', brand: 'Hydro', cat: 'metal', size: '15 × 15 cm', zone: '2.2.3', sw: SW.anodized, attrs: { tip: 'Eloksal', malz: 'Alüminyum', kal: 2 }, price: P(36, 'm²', '01.07.2026'), colors: ['siyah'], out: { person: 'Elif', where: 'ici' } }),
+  mk({ id: 'ME-003-025', name: 'Paslanmaz Çelik Fırçalı', brand: 'Outokumpu', cat: 'metal', size: '20 × 20 cm', zone: '2.2.3', sw: SW.steel, attrs: { tip: 'Fırçalı', malz: 'Paslanmaz', kal: 1.2 }, price: P(52, 'm²', '01.07.2026'), colors: ['gri'] }),
+  mk({ id: 'ME-005-027', name: 'Corten Levha', brand: 'Thyssenkrupp', cat: 'metal', size: '20 × 30 cm', zone: '2.4.7', sw: SW.corten, attrs: { tip: 'Ham', malz: 'Corten', kal: 3 }, price: P(64, 'm²', '28.02.2026'), colors: ['terracotta', 'kahve'] }),
+  mk({ id: 'ST-001-008', name: 'Bouclé Kumaş Kartelası', brand: 'Kvadrat', cat: 'tekstil', size: 'A4 kartela', zone: '1.2.4', sw: SW.boucle, attrs: { kul: ['Döşemelik'], yangin: true }, price: P(79, 'm', '17.09.2026'), colors: ['beyaz', 'bej'], docs: [D('Boucle_Farbkarte.pdf', 'Kvadrat')] }),
+  mk({ id: 'ST-002-011', name: 'Keten Perde Numunesi', brand: 'Création Baumann', cat: 'tekstil', size: '50 × 50 cm', zone: '1.2.5', sw: SW.linen, attrs: { kul: ['Perde'], yangin: false }, price: P(39, 'm', '17.09.2026'), colors: ['bej'], out: { person: 'Mert', where: 'disari' } }),
+  mk({ id: 'ST-003-014', name: 'Yün Keçe Panel', brand: 'Filzfelt', cat: 'tekstil', size: '30 × 30 cm', zone: '1.2.6', sw: SW.felt, attrs: { kul: ['Akustik'], yangin: true }, price: P(85, 'm²', '04.04.2026'), colors: ['yesil'] }),
+  mk({ id: 'SN-001-005', name: 'Mikrobeton Numune', brand: 'Topciment', cat: 'tas', size: '20 × 20 cm', zone: '2.4.2', sw: SW.cement, attrs: { tur: 'Mikrobeton', kal: 3 }, price: P(38, 'm²', '30.10.2026'), colors: ['gri'] }),
+  mk({ id: 'SN-002-009', name: 'Sileks Taş', brand: 'Dekton', cat: 'tas', size: '30 × 30 cm', zone: '2.4.3', sw: SW.stone, attrs: { tur: 'Kompozit', kal: 12 }, price: P(140, 'm²', '19.05.2026'), colors: ['gri', 'beyaz'] }),
+  mk({ id: 'XX-001-003', name: 'Rattan Örgü Panel', brand: 'Atelier Ruhe', cat: 'diger', size: '40 × 40 cm', zone: '2.4.8', sw: SW.rattan, colors: ['bej'] }),
+  mk({ id: 'HO-001-021', name: 'Akustik Lamel Panel Meşe', brand: 'Woodupp', cat: 'ahsap', type: 'dijital', size: '60 × 240 cm', link: 'woodupp.com/akupanel', sw: SW.acoustic, attrs: { tur: 'Doğal kaplama', agac: 'Meşe', kal: 21 }, price: P(119, 'm²', '25.10.2026'), colors: ['kahve', 'siyah'], docs: [D('Woodupp_Akupanel_Specs.pdf', 'Woodupp')] }),
+  mk({ id: 'FL-001-022', name: 'Mozaik Seri Nordic', brand: 'Bisazza', cat: 'fayans', type: 'dijital', size: '30 × 30 cm', link: 'bisazza.com', sw: SW.mosaic, attrs: { r: 'R9', yuzey: ['Parlak'], format: 30, kal: 6, rekt: false, dis: false, seri: 'Nordic' }, price: P(210, 'm²', '22.10.2026'), colors: ['mavi', 'beyaz'] }),
+  mk({ id: 'FL-002-023', name: 'Tierras Terracotta', brand: 'Mutina', cat: 'fayans', type: 'dijital', size: '20 × 20 cm', link: 'mutina.it/tierras', sw: SW.tierras, attrs: { r: 'R10', yuzey: ['Mat'], format: 20, kal: 10, rekt: false, dis: true, seri: 'Tierras' }, price: P(89, 'm²', '20.10.2026'), colors: ['terracotta'] }),
+  mk({ id: 'ST-004-024', name: 'Bouclé Ochre', brand: 'Dedar', cat: 'tekstil', type: 'dijital', size: 'en 140 cm', link: 'dedar.com', sw: SW.ochre, attrs: { kul: ['Döşemelik'], yangin: true }, price: P(95, 'm', '18.10.2026'), colors: ['altin'] }),
+  mk({ id: 'ME-004-026', name: 'Pirinç Mesh Panel', brand: 'GKD', cat: 'metal', type: 'dijital', size: '100 × 200 cm', link: 'gkd.de', sw: SW.mesh, attrs: { tip: 'Kaplama', malz: 'Pirinç', kal: 1 }, price: P(230, 'm²', '11.10.2026'), colors: ['altin'] }),
+  mk({ id: 'XX-002-028', name: 'Linoleum Mavi', brand: 'Forbo', cat: 'diger', type: 'dijital', size: 'rulo 200 cm', link: 'forbo.com', sw: SW.lino, price: P(45, 'm²', '02.10.2026'), colors: ['mavi'] })
+];
+var B_IN = 'background:var(--in-bg);color:var(--in-tx)', B_OUT = 'background:var(--out-bg);color:var(--out-tx)', B_USE = 'background:var(--use-bg);color:var(--use-tx)', B_DIG = 'background:var(--dig-bg);color:var(--dig-tx)';
+function status(it) {
+  if (it.type === 'dijital') return { short: 'Dijital', long: 'Sadece dijital', st: B_DIG };
+  if (it.out && it.out.where === 'disari') return { short: 'Dışarıda', long: 'Büro dışında · ' + it.out.person, st: B_OUT };
+  if (it.out) return { short: 'Kullanımda', long: it.out.person + ' kullanıyor', st: B_USE };
+  return { short: 'Yerinde', long: 'Yerinde', st: B_IN };
+}
+function findBy(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
+function eur(v) { return v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function num(s) { var v = parseFloat(String(s).replace(',', '.')); return isNaN(v) ? null : v; }
+function extOf(n) { var e = n.split('.').pop().toUpperCase(); return { ext: e, st: 'background:' + (e === 'PDF' ? '#C2410C' : e === 'PNG' ? '#0F766E' : '#2F5BEA') }; }
+function attrText(f, v) {
+  if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) return null;
+  if (f.type === 'coklu') return v.join(', ');
+  if (f.type === 'olcu') return String(v).replace('.', ',') + ' ' + (f.unit || '');
+  if (f.type === 'varyok') return v ? 'Var' : 'Yok';
+  return String(v);
+}
+function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) || 1; }
+function shuffleRot(id, k) { return ((hash(id + k) % 21) - 10); }
+
+// ---- Geometri ----
+var PX0 = 80, PY0 = 60, PW = 1040, PH = 640;
+function r2(v) { return Math.round(v * 100) / 100; }
+function bb(pts) { var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; }); return { x0: Math.min.apply(null, xs), x1: Math.max.apply(null, xs), y0: Math.min.apply(null, ys), y1: Math.max.apply(null, ys) }; }
+function centroid(pts) { var x = 0, y = 0; pts.forEach(function (p) { x += p[0]; y += p[1]; }); return [x / pts.length, y / pts.length]; }
+function pip(p, poly) { var inside = false; for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) { var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1]; if (((yi > p[1]) !== (yj > p[1])) && (p[0] < (xj - xi) * (p[1] - yi) / (yj - yi) + xi)) inside = !inside; } return inside; }
+function dist(a, b) { return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+// pts yüzde koordinatında (0–100); clip-path'li kutu stili
+function clipBox(pts) {
+  var b = bb(pts), w = Math.max(b.x1 - b.x0, 0.01), h = Math.max(b.y1 - b.y0, 0.01);
+  return 'left:' + r2(b.x0) + '%;top:' + r2(b.y0) + '%;width:' + r2(w) + '%;height:' + r2(h) + '%;clip-path:polygon(' + pts.map(function (p) { return r2((p[0] - b.x0) / w * 100) + '% ' + r2((p[1] - b.y0) / h * 100) + '%'; }).join(',') + ');';
+}
+function rectBox(pts) { var b = bb(pts); return { l: r2(b.x0), t: r2(b.y0), w: r2(b.x1 - b.x0), h: r2(b.y1 - b.y0), css: 'left:' + r2(b.x0) + '%;top:' + r2(b.y0) + '%;width:' + r2(b.x1 - b.x0) + '%;height:' + r2(b.y1 - b.y0) + '%;' }; }
+function planPct(pts) { return pts.map(function (p) { return [(p[0] - PX0) / PW * 100, (p[1] - PY0) / PH * 100]; }); }
+// Oda renkleri: [dolgu, işaret]
+var ROOM_COLORS = [['#F3E6F1', '#E7B9E0'], ['#E6E5F4', '#B9B5E3'], ['#E4F1E2', '#AFD6A9'], ['#FDF0DC', '#F2C98B'], ['#E0F0F5', '#9CCFDD'], ['#FBE4E4', '#EBA9A9'], ['#F1F1EF', '#C9C9C4']];
+var INITIAL_ROOMS = [
+  { id: 'r1', no: 1, name: 'Workspace', fill: '#F3E6F1', color: '#E7B9E0', poly: [[95, 449], [250, 319], [270, 343], [422, 221], [576, 405], [667, 405], [667, 670], [351, 670], [288, 596], [244, 632]] },
+  { id: 'r2', no: 2, name: 'Lager', fill: '#E6E5F4', color: '#B9B5E3', poly: [[666, 222], [729, 170], [729, 76], [859, 76], [859, 369], [781, 369], [781, 399], [755, 399], [755, 404], [691, 405], [691, 399], [684, 399], [684, 369], [667, 369]] },
+  { id: 'r3', no: 3, name: 'Meeting', fill: '#E4F1E2', color: '#AFD6A9', poly: [[667, 405], [913, 404], [913, 383], [1099, 383], [1099, 512], [1079, 512], [1079, 555], [1099, 555], [1099, 670], [820, 670], [820, 686], [667, 686]] }
+];
+// Son render'daki odalar; yardımcı fonksiyonlar buradan okur
+var LIVE = { rooms: INITIAL_ROOMS };
+var NO_ROOM = { id: '', no: 0, name: 'Odasız', fill: '#F1F1EF', color: '#C9C9C4', poly: [] };
+function roomBy(no) { for (var i = 0; i < LIVE.rooms.length; i++) if (LIVE.rooms[i].no === no) return LIVE.rooms[i]; return NO_ROOM; }
+function roomOfIn(pts, rooms) {
+  if (!rooms.length) return 0;
+  var c = centroid(pts); for (var i = rooms.length - 1; i >= 0; i--) if (pip(c, rooms[i].poly)) return rooms[i].no;
+  var best = rooms[0].no, bd = 1e9; rooms.forEach(function (r) { var b = bb(r.poly), d = dist(c, [(b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2]); if (d < bd) { bd = d; best = r.no; } }); return best;
+}
+function roomOf(pts) { return roomOfIn(pts, LIVE.rooms); }
+function polyArea(p) { var a = 0; for (var i = 0, j = p.length - 1; i < p.length; j = i++) a += (p[j][0] + p[i][0]) * (p[j][1] - p[i][1]); return Math.abs(a / 2); }
+// px cinsinden çokgen dolgusu ve kenar çizgileri (rotasyonlu ince div'ler)
+function fillPx(px, color) { var b = bb(px), w = Math.max(b.x1 - b.x0, 1), h = Math.max(b.y1 - b.y0, 1); return { st: 'left:' + b.x0 + 'px;top:' + b.y0 + 'px;width:' + w + 'px;height:' + h + 'px;background:' + color + ';clip-path:polygon(' + px.map(function (p) { return r2((p[0] - b.x0) / w * 100) + '% ' + r2((p[1] - b.y0) / h * 100) + '%'; }).join(',') + ')' }; }
+function linesPx(px, closed, color, wd, dashed) {
+  var out = [], n = px.length, m = closed ? n : n - 1;
+  for (var i = 0; i < m; i++) {
+    var a = px[i], c = px[(i + 1) % n], len = dist(a, c), ang = Math.atan2(c[1] - a[1], c[0] - a[0]) * 180 / Math.PI;
+    out.push({ st: 'left:' + a[0] + 'px;top:' + (a[1] - wd / 2) + 'px;width:' + len + 'px;height:' + wd + 'px;transform-origin:0 50%;transform:rotate(' + ang + 'deg);background:' + (dashed ? 'repeating-linear-gradient(90deg,' + color + ' 0 6px,transparent 6px 10px)' : color) });
+  }
+  return out;
+}
+var DEFAULT_COMPS = [];
+(function () {
+  var cols = [[103, 370], [381, 645], [657, 922]], rows = [[97, 352], [366, 560], [573, 752], [766, 944]], low = [[103, 376], [381, 643], [650, 921]];
+  function add(kind, x0, x1, y0, y1) { var a = x0 / 1024 * 100, b = x1 / 1024 * 100, c = y0 / 1536 * 100, d = y1 / 1536 * 100; DEFAULT_COMPS.push({ kind: kind, pts: [[a, c], [b, c], [b, d], [a, d]] }); }
+  rows.forEach(function (r) { cols.forEach(function (c) { add('Açık raf', c[0], c[1], r[0], r[1]); }); });
+  low.forEach(function (c) { add('Çekmece', c[0], c[1], 962, 1040); });
+  low.forEach(function (c) { add('Dolap', c[0], c[1], 1056, 1420); });
+})();
+var INITIAL_UNITS = [
+  ['1.1', [[250, 320], [96, 449], [119, 476], [273, 347]]], ['1.2', [[667, 405], [667, 444], [558, 444], [518, 395], [547, 370], [576, 405]]],
+  ['1.3', [[495, 506], [450, 451], [478, 428], [523, 483]]], ['1.4', [[244, 631], [320, 567], [288, 530], [213, 594]]],
+  ['2.1', [[837, 369], [780, 369], [780, 345], [837, 345]]], ['2.2', [[859, 368], [859, 300], [837, 300], [837, 368]]],
+  ['2.3', [[859, 300], [859, 232], [837, 232], [837, 300]]], ['2.4', [[859, 231], [859, 163], [837, 163], [837, 231]]],
+  ['2.5', [[859, 163], [859, 95], [837, 95], [837, 163]]], ['2.6', [[779, 77], [779, 94], [827, 94], [827, 77]]],
+  ['2.7', [[730, 77], [730, 94], [778, 94], [778, 77]]], ['2.8', [[667, 299], [692, 299], [692, 230], [667, 230]]],
+  ['2.9', [[667, 368], [692, 368], [692, 299], [667, 299]]], ['3.1', [[774, 404], [844, 404], [844, 429], [774, 429]]],
+  ['3.2', [[844, 404], [913, 404], [913, 429], [844, 429]]], ['3.3', [[913, 383], [1009, 383], [1009, 429], [913, 429]]],
+  ['3.4', [[1009, 428], [1099, 428], [1099, 383], [1009, 383]]], ['3.5', [[1099, 429], [1064, 429], [1064, 512], [1099, 512]]],
+  ['3.6', [[1063, 512], [1079, 512], [1079, 555], [1063, 555]]], ['3.7', [[1063, 555], [1100, 555], [1100, 670], [1063, 670]]]
+].map(function (u, i) { return { id: 'u' + i, code: u[0], room: +u[0].charAt(0), pts: u[1], photo: SAMPLE_PHOTO, aspect: 1.5, comps: DEFAULT_COMPS.map(function (c) { return { kind: c.kind, pts: c.pts.map(function (p) { return p.slice(); }) }; }) }; });
+function parseZone(z) { var p = z.split('.'); return { unit: p[0] + '.' + p[1], idx: +p[2] - 1 }; }
+function sortOrder(comps) {
+  var idx = comps.map(function (c, i) { var b = bb(c.pts); return { i: i, y: b.y0, x: b.x0 }; });
+  idx.sort(function (a, b) { return Math.abs(a.y - b.y) > 4 ? a.y - b.y : a.x - b.x; });
+  return idx.map(function (o) { return o.i; });
+}
+var W = 600, H = W * PH / PW, VH = 692, ZS = 2.5, EW = 680, EH = EW * PH / PW;
+var BLANK_F = function () { return { type: 'all', cat: 'all', colors: {}, brands: {}, status: 'all', pmin: '', pmax: '', attr: {} }; };
+var BLANK_NF = function () { return { type: 'tekli', name: '', opts: [], draft: '', unit: 'mm' }; };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this._timers = [];
+    this.state = {
+      view: 'lib', items: INITIAL_ITEMS, cats: INITIAL_CATS, units: INITIAL_UNITS, rooms: INITIAL_ROOMS, planImg: null, planName: 'Bestandsplan v3 (PDF)',
+      q: '', f: BLANK_F(), drawer: null,
+      oUnit: null, oComp: null, oFocus: null, roomZoom: null, spread: false, focusOut: false, fanSpread: false, hoverUnit: null, hoverComp: null,
+      setTab: 'cats', editCat: 'fayans', nf: BLANK_NF(),
+      pe: { mode: 'plan', layer: 'units', tool: 'select', sel: null, roomSel: null, draft: null, drag: null, cursor: null, compSel: null },
+      toast: '',
+      theme: storeGet('finds-theme') || 'system', splash: true, me: storeGet('finds-me') || '', scanOpen: false, busyItems: BUSY_ITEMS, busyAsk: null,
+      ul: BLANK_UL(), ulOffice: true, ulInvert: true,
+      ses: null, ask: null, planVer: 3,
+      ev: { x: 0, y: 0, z: 1 }, evPan: null, ov: { x: 0, y: 0, z: 1 }, ovPan: null
+    };
+    this.later(700, { splash: false });
+    var self = this;
+    this._key = function (e) { self.onKey(e); };
+    this._keyUp = function (e) { if (e.code === 'Space') self._space = false; };
+    try { window.addEventListener('keydown', this._key); window.addEventListener('keyup', this._keyUp); } catch (e) {}
+  }
+  componentWillUnmount() { this._timers.forEach(clearTimeout); try { window.removeEventListener('keydown', this._key); window.removeEventListener('keyup', this._keyUp); } catch (e) {} }
+
+  // ---- Düzenleme oturumu: taslak, geri al, kaydet / vazgeç ----
+  snap() { var s = this.state; return { units: s.units, rooms: s.rooms, items: s.items, planImg: s.planImg, planName: s.planName, ul: s.ul }; }
+  restore(sn) { LIVE.rooms = sn.rooms; this.setState({ units: sn.units, rooms: sn.rooms, items: sn.items, planImg: sn.planImg, planName: sn.planName, ul: sn.ul }); }
+  startEdit() { this.setState({ ses: { base: this.snap(), undo: [], redo: [], lastKey: null, reprint: {} } }); }
+  pushUndo(key) {
+    var ses = this.state.ses; if (!ses) return;
+    if (key && ses.lastKey === key) return;
+    this.setState({ ses: Object.assign({}, ses, { undo: ses.undo.concat([this.snap()]), redo: [], lastKey: key || null }) });
+  }
+  undo() {
+    var ses = this.state.ses; if (!ses || !ses.undo.length) return;
+    var u = ses.undo.slice(), prev = u.pop();
+    this.setState({ ses: Object.assign({}, ses, { undo: u, redo: ses.redo.concat([this.snap()]), lastKey: null }), pe: Object.assign({}, this.state.pe, { draft: null, drag: null }) });
+    this.restore(prev); this.fixSel();
+  }
+  redo() {
+    var ses = this.state.ses; if (!ses || !ses.redo.length) return;
+    var r = ses.redo.slice(), next = r.pop();
+    this.setState({ ses: Object.assign({}, ses, { redo: r, undo: ses.undo.concat([this.snap()]), lastKey: null }), pe: Object.assign({}, this.state.pe, { draft: null, drag: null }) });
+    this.restore(next); this.fixSel();
+  }
+  fixSel() {
+    var s = this.state, pe = s.pe, p = {};
+    if (pe.sel && !this.unitById(pe.sel)) { p.sel = null; if (pe.mode === 'photo') p.mode = 'plan'; }
+    if (pe.roomSel && !findBy(s.rooms, pe.roomSel)) p.roomSel = null;
+    if (pe.compSel !== null && pe.sel && this.unitById(pe.sel) && pe.compSel >= this.unitById(pe.sel).comps.length) p.compSel = null;
+    if (Object.keys(p).length) this.setPe(p);
+  }
+  // Kaydetmeden önce etkiler: konumsuz kalacak ürünler, yeniden basılacak etiketler
+  impact() {
+    var s = this.state, ses = s.ses, base = ses.base, lines = [];
+    var baseZone = {}; base.items.forEach(function (it) { baseZone[it.id] = it.zone; });
+    var lost = s.items.filter(function (it) { return baseZone[it.id] && !it.zone; }).length;
+    var du = s.units.length - base.units.length, dr = s.rooms.length - base.rooms.length;
+    var nComps = function (us) { return us.reduce(function (a, u) { return a + u.comps.length; }, 0); }, dc = nComps(s.units) - nComps(base.units);
+    var sign = function (n, w) { return (n > 0 ? '+' : '−') + Math.abs(n) + ' ' + w; }, parts = [];
+    if (dr) parts.push(sign(dr, 'oda')); if (du) parts.push(sign(du, 'ünite')); if (dc) parts.push(sign(dc, 'bölme'));
+    lines.push({ text: ses.undo.length + ' değişiklik' + (parts.length ? ' · ' + parts.join(' · ') : ''), st: 'font-size:14px' });
+    if (lost) lines.push({ text: lost + ' ürün konumsuz kalacak; "Konumsuz ürünler" listesinde görünür.', st: 'font-size:13.5px;color:var(--out-tx);background:var(--out-bg);padding:8px 10px;border-radius:10px' });
+    var rp = Object.keys(ses.reprint);
+    if (rp.length) lines.push({ text: 'Yeniden numaralanan ünite: ' + rp.join(', ') + ' · raf etiketleri yeniden basılacaklar listesine eklenir.', st: 'font-size:13.5px;color:var(--acc-tx);background:var(--acc-bg);padding:8px 10px;border-radius:10px' });
+    if (!lost && !rp.length) lines.push({ text: 'Ürünlerin konumu etkilenmiyor.', st: 'font-size:13px;color:var(--tx2)' });
+    return lines;
+  }
+  commit() {
+    var ses = this.state.ses, n = ses ? ses.undo.length : 0, v = this.state.planVer + (n ? 1 : 0);
+    this.setState({ ses: null, ask: null, planVer: v, pe: Object.assign({}, this.state.pe, { draft: null, drag: null, tool: 'select' }) });
+    this.notify(n ? 'Plan kaydedildi · sürüm ' + v : 'Değişiklik yoktu');
+  }
+  drop() {
+    var ses = this.state.ses; if (ses) this.restore(ses.base);
+    this.setState({ ses: null, ask: null, pe: Object.assign({}, this.state.pe, { draft: null, drag: null, tool: 'select' }) });
+    this.fixSel();
+  }
+  // Kaydedilmemiş değişiklik varken başka sayfaya geçmeyi durdurur
+  leave(next) {
+    var ses = this.state.ses;
+    if (ses && ses.undo.length) { this.setState({ ask: { kind: 'leave', next: next } }); return; }
+    if (ses) this.setState({ ses: null });
+    next();
+  }
+  onKey(e) {
+    var s = this.state, t = e.target && e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    var onPlan = s.view === 'settings' && s.setTab === 'plan';
+    if (e.code === 'Space' && onPlan) { this._space = true; e.preventDefault(); return; }
+    if (!onPlan || !s.ses || !(e.ctrlKey || e.metaKey)) return;
+    var k = (e.key || '').toLowerCase();
+    if (k === 'z' && !e.shiftKey) { e.preventDefault(); this.undo(); }
+    else if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); this.redo(); }
+  }
+  // ---- Kaydırma ve yakınlaştırma ----
+  clampView(v, w, h) { var mx = w * v.z / 2, my = h * v.z / 2; return { x: Math.max(-mx, Math.min(mx, v.x)), y: Math.max(-my, Math.min(my, v.y)), z: v.z }; }
+  zoomView(key, factor, w, h) { var v = this.state[key], z = Math.max(1, Math.min(8, v.z * factor)), k = z / v.z, p = {}; p[key] = this.clampView({ x: v.x * k, y: v.y * k, z: z }, w, h); this.setState(p); }
+  scaleOf(e) { var b = e.currentTarget.getBoundingClientRect(); return { b: b, k: b.width ? e.currentTarget.offsetWidth / b.width : 1 }; }
+  later(ms, p) { var self = this; this._timers.push(setTimeout(function () { self.setState(p); }, ms)); }
+  notify(msg) { var self = this; clearTimeout(this._tt); this.setState({ toast: msg }); this._tt = setTimeout(function () { self.setState({ toast: '' }); }, 2800); }
+  setF(p) { this.setState({ f: Object.assign({}, this.state.f, p) }); }
+  setAttr(fid, v) { var a = Object.assign({}, this.state.f.attr); if (v === undefined) delete a[fid]; else a[fid] = v; this.setF({ attr: a }); }
+  cat(id) { return findBy(this.state.cats, id) || findBy(this.state.cats, 'diger'); }
+  patchCat(id, p) { this.setState({ cats: this.state.cats.map(function (x) { return x.id === id ? Object.assign({}, x, p) : x; }) }); }
+  unitByCode(code) { var us = this.state.units; for (var i = 0; i < us.length; i++) if (us[i].code === code) return us[i]; return null; }
+  unitById(id) { return findBy(this.state.units, id); }
+  patchUnit(id, p) { this.setState({ units: this.state.units.map(function (u) { return u.id === id ? Object.assign({}, u, p) : u; }) }); }
+  setPe(p) { this.setState({ pe: Object.assign({}, this.state.pe, p) }); }
+
+  // ---- Ofis ----
+  selectUnit(code, focusId, comp) {
+    this.setState({ view: 'office', drawer: null, oUnit: code, oComp: null, oFocus: focusId || null, spread: false, focusOut: false, fanSpread: false, roomZoom: null, ov: { x: 0, y: 0, z: 1 } });
+    this.later(60, { spread: true });
+    if (focusId) this.later(850, { focusOut: true });
+    if (comp !== undefined && comp !== null) { this.later(focusId ? 1100 : 300, { oComp: comp }); this.later(focusId ? 1200 : 400, { fanSpread: true }); }
+  }
+  locate(it) { if (!it.zone) return; var p = parseZone(it.zone); if (!this.unitByCode(p.unit)) { this.notify('Bu ürünün ünitesi planda yok'); return; } this.selectUnit(p.unit, it.id, p.idx); }
+  pickComp(i) { this.setState({ oComp: this.state.oComp === i ? null : i, fanSpread: false }); this.later(90, { fanSpread: true }); }
+
+  // ---- Plan düzenleyici ----
+  peSize() {
+    var pe = this.state.pe;
+    if (pe.mode === 'plan') return { w: EW, h: EH };
+    var u = this.unitById(pe.sel), asp = u ? u.aspect : 1.5, h = 600, w = h / asp;
+    if (w > EW) { w = EW; h = w * asp; }
+    return { w: w, h: h };
+  }
+  toPt(e) {
+    var b = e.currentTarget.getBoundingClientRect(), sz = this.peSize(), ev = this.state.ev;
+    var lx = (e.clientX - b.left) / b.width * sz.w, ly = (e.clientY - b.top) / b.height * sz.h;
+    var fx = ((lx - sz.w / 2 - ev.x) / ev.z + sz.w / 2) / sz.w, fy = ((ly - sz.h / 2 - ev.y) / ev.z + sz.h / 2) / sz.h;
+    fx = Math.max(0, Math.min(1, fx)); fy = Math.max(0, Math.min(1, fy));
+    return this.state.pe.mode === 'plan' ? [PX0 + fx * PW, PY0 + fy * PH] : [fx * 100, fy * 100];
+  }
+  closeTol() { return this.state.pe.mode === 'plan' ? 10 : 2.5; }
+  peDown(e) {
+    var ses = this.state.ses;
+    // Orta tuş veya Boşluk + sol tuş: kaydır
+    if (e.button === 1 || (e.button === 0 && this._space)) {
+      e.preventDefault();
+      var sc = this.scaleOf(e);
+      this.setState({ evPan: { sx: e.clientX, sy: e.clientY, k: sc.k, ox: this.state.ev.x, oy: this.state.ev.y } });
+      return;
+    }
+    if (e.button !== 0) return;
+    var pe = this.state.pe, p = this.toPt(e);
+    if (!ses) {
+      // Görüntüleme modu: sadece seçim
+      if (pe.mode === 'plan' && pe.layer === 'units') { var h0 = null; this.state.units.forEach(function (u) { if (pip(p, u.pts)) h0 = u.id; }); this.setPe({ sel: h0 }); }
+      else if (pe.mode === 'plan') { var b0 = null; this.state.rooms.forEach(function (r) { if (pip(p, r.poly) && (!b0 || polyArea(r.poly) < polyArea(b0.poly))) b0 = r; }); this.setPe({ roomSel: b0 ? b0.id : null }); }
+      return;
+    }
+    if (pe.tool === 'align') { this.setPe({ drag: { kind: 'ulay', start: p, ox: this.state.ul.x, oy: this.state.ul.y, moved: false } }); return; }
+    if (pe.tool === 'rect') { this.setPe({ draft: { kind: 'rect', a: p, b: p } }); return; }
+    if (pe.tool === 'poly') {
+      if (!pe.draft) { this.setPe({ draft: { kind: 'poly', pts: [p] }, cursor: p }); return; }
+      var pts = pe.draft.pts;
+      if (pts.length >= 3 && dist(p, pts[0]) < this.closeTol()) { this.finishPoly(); return; }
+      if (dist(p, pts[pts.length - 1]) < this.closeTol() / 3) return;
+      this.setPe({ draft: { kind: 'poly', pts: pts.concat([p]) } }); return;
+    }
+    // Seç / taşı: şeklin içine basınca seçilir ve bütün olarak sürüklenir
+    var hit = null, orig = null;
+    if (pe.mode === 'plan' && pe.layer === 'units') {
+      this.state.units.forEach(function (u) { if (pip(p, u.pts)) { hit = u.id; orig = u.pts; } });
+      this.setPe({ sel: hit, drag: hit ? { kind: 'move', start: p, orig: orig, moved: false } : null });
+    } else if (pe.mode === 'plan') {
+      var best = null; this.state.rooms.forEach(function (r) { if (pip(p, r.poly) && (!best || polyArea(r.poly) < polyArea(best.poly))) best = r; });
+      this.setPe({ roomSel: best ? best.id : null, drag: best ? { kind: 'move', start: p, orig: best.poly, moved: false } : null });
+    } else {
+      var u = this.unitById(pe.sel); u.comps.forEach(function (c, i) { if (pip(p, c.pts)) { hit = i; orig = c.pts; } });
+      this.setPe({ compSel: hit, drag: hit !== null ? { kind: 'move', start: p, orig: orig, moved: false } : null });
+    }
+  }
+  // Sürüklenen şeklin yeni köşeleri
+  dragPts(p) {
+    var d = this.state.pe.drag;
+    if (d.kind === 'move') { var dx = p[0] - d.start[0], dy = p[1] - d.start[1]; return d.orig.map(function (q) { return [q[0] + dx, q[1] + dy]; }); }
+    var pts = d.orig.slice(); pts[d.i] = p; return pts;
+  }
+  peMove(e) {
+    var ep = this.state.evPan;
+    if (ep) { var sz0 = this.peSize(); this.setState({ ev: this.clampView({ x: ep.ox + (e.clientX - ep.sx) * ep.k, y: ep.oy + (e.clientY - ep.sy) * ep.k, z: this.state.ev.z }, sz0.w, sz0.h) }); return; }
+    var pe = this.state.pe; if (!pe.drag && !pe.draft) return;
+    var p = this.toPt(e);
+    if (pe.drag && pe.drag.kind === 'ulay') {
+      if (!pe.drag.moved) { this.pushUndo(); this.setPe({ drag: Object.assign({}, pe.drag, { moved: true }) }); }
+      this.setState({ ul: Object.assign({}, this.state.ul, { x: pe.drag.ox + (p[0] - pe.drag.start[0]) / PW * 100, y: pe.drag.oy + (p[1] - pe.drag.start[1]) / PH * 100 }) });
+      return;
+    }
+    if (pe.drag) {
+      if (!pe.drag.moved) this.pushUndo();
+      var pts = this.dragPts(p), self = this;
+      if (pe.mode === 'plan' && pe.layer === 'units') this.patchUnit(pe.sel, { pts: pts, room: roomOf(pts) });
+      else if (pe.mode === 'plan') this.setState({ rooms: this.state.rooms.map(function (r) { return r.id === pe.roomSel ? Object.assign({}, r, { poly: pts }) : r; }) });
+      else { var uu = this.unitById(pe.sel), comps = uu.comps.slice(); comps[pe.compSel] = Object.assign({}, comps[pe.compSel], { pts: pts }); this.patchUnit(uu.id, { comps: comps }); }
+      if (!pe.drag.moved) this.setPe({ drag: Object.assign({}, pe.drag, { moved: true }) });
+      return;
+    }
+    if (pe.draft.kind === 'rect') this.setPe({ draft: { kind: 'rect', a: pe.draft.a, b: p } });
+    else this.setPe({ cursor: p });
+  }
+  reassignRooms(rooms) { var self = this; this.setState({ units: this.state.units.map(function (u) { return Object.assign({}, u, { room: roomOfIn(u.pts, rooms) }); }) }); }
+  peUp() {
+    if (this.state.evPan) { this.setState({ evPan: null }); return; }
+    var pe = this.state.pe;
+    if (pe.drag) { this.setPe({ drag: null }); if (pe.drag.moved && pe.mode === 'plan' && pe.layer === 'rooms') this.reassignRooms(this.state.rooms); return; }
+    if (pe.draft && pe.draft.kind === 'rect') {
+      var a = pe.draft.a, b = pe.draft.b;
+      this.setPe({ draft: null });
+      if (Math.abs(a[0] - b[0]) < this.closeTol() / 2 || Math.abs(a[1] - b[1]) < this.closeTol() / 2) return;
+      this.createShape([[a[0], a[1]], [b[0], a[1]], [b[0], b[1]], [a[0], b[1]]]);
+    }
+  }
+  finishPoly() {
+    var pe = this.state.pe; if (!pe.draft || pe.draft.kind !== 'poly') return;
+    var pts = []; pe.draft.pts.forEach(function (p) { if (!pts.length || dist(p, pts[pts.length - 1]) > 0.5) pts.push(p); });
+    this.setPe({ draft: null, cursor: null });
+    if (pts.length < 3) { this.notify('Poligon için en az 3 köşe gerekli'); return; }
+    this.createShape(pts);
+  }
+  createShape(pts) {
+    var self = this, pe = this.state.pe;
+    this.pushUndo();
+    if (pe.mode === 'plan' && pe.layer === 'rooms') {
+      var rs = this.state.rooms, no = 0; rs.forEach(function (r) { if (r.no > no) no = r.no; }); no += 1;
+      var col = ROOM_COLORS[(no - 1) % ROOM_COLORS.length], nr = { id: 'r' + Date.now(), no: no, name: 'Oda ' + no, fill: col[0], color: col[1], poly: pts };
+      var nrs = rs.concat([nr]);
+      this.setState({ rooms: nrs, pe: Object.assign({}, pe, { roomSel: nr.id, tool: 'select', draft: null }) });
+      this.reassignRooms(nrs);
+      this.notify('Oda ' + no + ' eklendi · sağdan adını yaz');
+      return;
+    }
+    if (pe.mode === 'plan') {
+      var room = roomOf(pts), max = 0;
+      this.state.units.forEach(function (u) { if (u.room === room) { var n = +u.code.split('.')[1]; if (n > max) max = n; } });
+      var nu = { id: 'u' + Date.now(), code: room + '.' + (max + 1), room: room, pts: pts, photo: null, aspect: 1.5, comps: [] };
+      this.setState({ units: this.state.units.concat([nu]), pe: Object.assign({}, pe, { sel: nu.id, tool: 'select', draft: null }) });
+      this.notify('Ünite ' + nu.code + ' eklendi · ' + roomBy(room).name);
+    } else {
+      var u = this.unitById(pe.sel), comps = u.comps.concat([{ kind: 'Bölme', pts: pts }]);
+      // Yeni bölme sona eklenir; mevcut numaralar (ve basılı raf etiketleri) değişmez
+      var inv = {}; inv[comps.length - 1] = comps.length - 1;
+      this.patchUnit(u.id, { comps: comps });
+      var newIdx = inv[comps.length - 1];
+      this.setPe({ compSel: newIdx, tool: 'select', draft: null });
+      self.notify('Bölme ' + u.code + '.' + (newIdx + 1) + ' eklendi');
+    }
+  }
+  remapItems(code, map) {
+    this.setState({ items: this.state.items.map(function (it) {
+      if (!it.zone) return it; var p = parseZone(it.zone); if (p.unit !== code) return it;
+      var ni = map(p.idx); return Object.assign({}, it, { zone: ni === null ? null : code + '.' + (ni + 1) });
+    }) });
+  }
+  readFile(e, cb) {
+    var file = e.target.files && e.target.files[0]; if (!file) return;
+    var rd = new FileReader();
+    rd.onload = function () { var img = new Image(); img.onload = function () { cb(rd.result, img.naturalHeight / img.naturalWidth, file); }; img.src = rd.result; };
+    rd.readAsDataURL(file);
+    e.target.value = '';
+  }
+
+  editorVM() {
+    var self = this, s = this.state, pe = s.pe, sz = this.peSize(), isPlan = pe.mode === 'plan';
+    var X, Y;
+    if (isPlan) { X = function (x) { return (x - PX0) / PW * sz.w; }; Y = function (y) { return (y - PY0) / PH * sz.h; }; }
+    else { X = function (x) { return x / 100 * sz.w; }; Y = function (y) { return y / 100 * sz.h; }; }
+    var toPx = function (pts) { return pts.map(function (p) { return [X(p[0]), Y(p[1])]; }); };
+    var fills = [], segs = [], labels = [], handles = [], rfills = [];
+    function fill(px, color) { fills.push(fillPx(px, color)); }
+    function lines(px, closed, color, wd, dashed) { linesPx(px, closed, color, wd, dashed).forEach(function (g) { segs.push(g); }); }
+    function vertexHandles(pts, px) { if (!s.ses) return; px.forEach(function (p, i) { handles.push({ st: 'left:' + (p[0] - 6) + 'px;top:' + (p[1] - 6) + 'px', down: function (ev) { ev.stopPropagation(); self.setPe({ drag: { kind: 'vertex', i: i, orig: pts, moved: false } }); } }); }); }
+    var sel = pe.sel ? this.unitById(pe.sel) : null, isRooms = isPlan && pe.layer === 'rooms', rsel = pe.roomSel ? findBy(s.rooms, pe.roomSel) : null;
+    var imgShown = !!s.planImg && s.ul.show;
+    if (isPlan) {
+      s.rooms.forEach(function (r) {
+        var px = toPx(r.poly), on = isRooms && rsel && rsel.id === r.id, c = centroid(px);
+        rfills.push(fillPx(px, imgShown ? 'rgba(47,91,234,.04)' : roomFill(r.fill)));
+        if (on) fill(px, 'rgba(47,91,234,.16)');
+        lines(px, true, on ? ACC : 'var(--pstroke)', on ? 2.5 : 1, false);
+        if (isRooms || !imgShown) labels.push({ text: r.name, st: 'left:' + c[0] + 'px;top:' + c[1] + 'px;font-size:10px;letter-spacing:.08em;color:' + (on ? 'var(--acc-tx)' : 'var(--tx3)') + ';opacity:' + (isRooms ? 1 : 0.7) + (imgShown ? ';background:var(--card);padding:1px 5px;border-radius:4px' : '') });
+        if (on && pe.tool === 'select') vertexHandles(r.poly, px);
+      });
+      s.units.forEach(function (u) {
+        var px = toPx(u.pts), on = !isRooms && sel && sel.id === u.id, b = bb(px);
+        fill(px, on ? 'rgba(47,91,234,.38)' : isRooms ? 'rgba(232,96,100,.22)' : 'rgba(232,96,100,.45)');
+        if (!isRooms) lines(px, true, on ? ACC : 'rgba(150,40,45,.7)', on ? 2 : 1, false);
+        if (!isRooms) labels.push({ text: u.code, st: 'left:' + (b.x0 + b.x1) / 2 + 'px;top:' + (b.y0 + b.y1) / 2 + 'px;color:' + (on ? 'var(--acc-tx)' : 'var(--unit-tx)') });
+        if (on && pe.tool === 'select') vertexHandles(u.pts, px);
+      });
+    } else if (sel) {
+      sel.comps.forEach(function (c, i) {
+        var px = toPx(c.pts), on = pe.compSel === i, b = bb(px);
+        fill(px, on ? 'rgba(47,91,234,.35)' : 'rgba(255,255,255,.14)');
+        lines(px, true, on ? ACC : 'rgba(255,255,255,.95)', on ? 2.5 : 1.5, false);
+        labels.push({ text: sel.code + '.' + (i + 1), st: 'left:' + (b.x0 + 26) + 'px;top:' + (b.y0 + 12) + 'px;color:#fff;background:' + (on ? ACC : 'rgba(17,19,23,.72)') + ';padding:2px 5px;border-radius:5px;transform:translate(-50%,-50%)' });
+        if (on && pe.tool === 'select') vertexHandles(c.pts, px);
+      });
+    }
+    if (pe.draft) {
+      if (pe.draft.kind === 'rect') { var a = pe.draft.a, b2 = pe.draft.b, rp = toPx([[a[0], a[1]], [b2[0], a[1]], [b2[0], b2[1]], [a[0], b2[1]]]); fill(rp, 'rgba(47,91,234,.18)'); lines(rp, true, ACC, 2, true); }
+      else {
+        var dp = toPx(pe.draft.pts); if (dp.length >= 3) fill(dp, 'rgba(47,91,234,.18)');
+        lines(dp, false, ACC, 2, false);
+        if (pe.cursor) lines([dp[dp.length - 1], [X(pe.cursor[0]), Y(pe.cursor[1])]], false, ACC, 1.5, true);
+        dp.forEach(function (p, i) { handles.push({ st: 'left:' + (p[0] - (i ? 4 : 7)) + 'px;top:' + (p[1] - (i ? 4 : 7)) + 'px;width:' + (i ? 8 : 14) + 'px;height:' + (i ? 8 : 14) + 'px;background:' + (i ? ACC : '#fff') + ';pointer-events:none', down: null }); });
+      }
+    }
+    var ses = s.ses, ul = s.ul, ev = s.ev;
+    var cursor = s.evPan ? 'grabbing' : !ses || pe.tool === 'select' ? 'default' : pe.tool === 'align' ? 'move' : 'crosshair';
+    var edit = function (fn) { return function (e) { if (!self.state.ses) { self.notify('Önce "Düzenle"ye bas'); return; } fn(e); }; };
+    var setUl = function (p, key) { self.pushUndo(key); self.setState({ ul: Object.assign({}, self.state.ul, p) }); };
+    var hints = {
+      select: isRooms ? 'Odanın içine basıp sürükleyerek taşı; köşe noktalarını sürükleyerek şeklini düzelt.' : isPlan ? 'Üniteyi içinden tutup sürükleyerek taşı; köşe noktalarını sürükleyerek şeklini düzelt.' : 'Bölmeyi içinden tutup taşı; köşelerini sürükleyerek fotoğrafa oturt.',
+      align: 'Altlığı sürükleyerek çizimlerin altına oturt. Ölçek ve dönüş için sağdaki düğmeleri kullan. Çizimler yerinden oynamaz.',
+      rect: isRooms ? 'Sürükleyerek dikdörtgen oda çiz.' : 'Sürükleyerek dikdörtgen çiz.',
+      poly: 'Köşelere tek tek tıkla. Bitirmek için ilk noktaya tıkla, çift tıkla veya "Bitir"e bas.'
+    };
+    var unitsSorted = s.units.slice().sort(function (a, b) { return a.code.localeCompare(b.code, 'tr', { numeric: true }); });
+    var itemsIn = function (code, idx) { return s.items.filter(function (it) { if (!it.zone) return false; var p = parseZone(it.zone); return p.unit === code && (idx === undefined || p.idx === idx); }).length; };
+    return {
+      editing: !!ses, notEditing: !ses,
+      startEdit: function () { self.startEdit(); },
+      undo: function () { self.undo(); }, redo: function () { self.redo(); },
+      undoSt: ses && ses.undo.length ? '' : 'opacity:.35;pointer-events:none', redoSt: ses && ses.redo.length ? '' : 'opacity:.35;pointer-events:none',
+      changes: ses ? (ses.undo.length ? ses.undo.length + ' değişiklik' : 'değişiklik yok') : '',
+      save: function () { if (!self.state.ses.undo.length) { self.commit(); return; } self.setState({ ask: { kind: 'save' } }); },
+      discard: function () { if (!self.state.ses.undo.length) { self.drop(); return; } self.setState({ ask: { kind: 'discard' } }); },
+      innerSt: 'position:absolute;left:0;top:0;width:' + sz.w.toFixed(0) + 'px;height:' + sz.h.toFixed(0) + 'px;transform-origin:50% 50%;transform:translate(' + ev.x.toFixed(1) + 'px,' + ev.y.toFixed(1) + 'px) scale(' + ev.z + ')',
+      zoomText: Math.round(ev.z * 100) + '%',
+      zoomIn: function () { self.zoomView('ev', 1.25, sz.w, sz.h); }, zoomOut: function () { self.zoomView('ev', 0.8, sz.w, sz.h); }, fit: function () { self.setState({ ev: { x: 0, y: 0, z: 1 } }); },
+      wheel: function (e) { if (e.preventDefault) e.preventDefault(); self.zoomView('ev', e.deltaY < 0 ? 1.15 : 1 / 1.15, sz.w, sz.h); },
+      ulayOn: ul.show, ulayCls: s.planImg && s.ulInvert ? 'ulay inv' : 'ulay', ulaySt: ulayStyle(ul, ul.op),
+      ulayTgl: ul.show ? 'tgl on' : 'tgl', toggleUlay: function () { self.setState({ ul: Object.assign({}, self.state.ul, { show: !self.state.ul.show }) }); },
+      opOpts: [[0.35, '%35'], [0.7, '%70'], [1, '%100']].map(function (o) { return { name: o[1], cls: ul.op === o[0] ? 'on' : '', pick: function () { self.setState({ ul: Object.assign({}, self.state.ul, { op: o[0] }) }); } }; }),
+      alignCls: pe.tool === 'align' ? 'chip xs on' : 'chip xs',
+      setAlign: edit(function () { self.setPe({ tool: self.state.pe.tool === 'align' ? 'select' : 'align', draft: null, mode: 'plan' }); }),
+      ulaySmaller: edit(function () { setUl({ s: Math.max(0.3, r2(self.state.ul.s - 0.02)) }, 'ulay-s'); }),
+      ulayBigger: edit(function () { setUl({ s: Math.min(3, r2(self.state.ul.s + 0.02)) }, 'ulay-s'); }),
+      ulayRotate: edit(function () { setUl({ r: (self.state.ul.r + 90) % 360 }); }),
+      ulayReset: edit(function () { setUl({ x: 0, y: 0, s: 1, r: 0 }); }),
+      isPlan: isPlan, isPhoto: !isPlan, isRooms: isRooms, isUnits: isPlan && !isRooms,
+      lRooms: isRooms ? 'on' : '', lUnits: isPlan && !isRooms ? 'on' : '',
+      setLRooms: function () { self.setPe({ layer: 'rooms', tool: 'select', draft: null, sel: null }); },
+      setLUnits: function () { self.setPe({ layer: 'units', tool: 'select', draft: null, roomSel: null }); },
+      hasRoomSel: !!ses && isRooms && !!rsel, roomName: rsel ? rsel.name : '', roomNo: rsel ? rsel.no : '',
+      onRoomName: function (e) { var v = e.target.value; self.pushUndo('rname' + rsel.id); self.setState({ rooms: self.state.rooms.map(function (r) { return r.id === rsel.id ? Object.assign({}, r, { name: v }) : r; }) }); },
+      roomColors: ROOM_COLORS.map(function (c) { return { st: 'background:' + c[0] + ';border-color:' + c[1] + (rsel && rsel.fill === c[0] ? ';box-shadow:0 0 0 2px var(--card),0 0 0 4px ' + c[1] : ''), pick: function () { self.pushUndo(); self.setState({ rooms: self.state.rooms.map(function (r) { return r.id === rsel.id ? Object.assign({}, r, { fill: c[0], color: c[1] }) : r; }) }); } }; }),
+      roomInfo: rsel ? s.units.filter(function (u) { return u.room === rsel.no; }).length + ' ünite bu odada · üniteler odalara konumlarına göre otomatik atanır' : '',
+      delRoom: function () { self.pushUndo(); var nrs = self.state.rooms.filter(function (r) { return r.id !== rsel.id; }); self.setState({ rooms: nrs, pe: Object.assign({}, self.state.pe, { roomSel: null }) }); self.reassignRooms(nrs); self.notify(rsel.name + ' silindi · geri almak için Ctrl+Z'); },
+      roomCount: s.rooms.length,
+      roomChips: s.rooms.map(function (r) { return { name: r.name, cls: rsel && rsel.id === r.id ? 'on' : '', pick: function () { self.setPe({ roomSel: r.id, tool: 'select' }); } }; }),
+      title: isRooms ? 'Kat planı · odaları (iç alanları) çiz ve düzenle' : isPlan ? 'Kat planı · raf ünitelerini çiz ve düzenle' : 'Ünite ' + (sel ? sel.code : '') + ' · fotoğraf üzerinde bölmeler',
+      status: (ses ? 'Taslak · ' : 'Kayıtlı sürüm ' + s.planVer + ' · ') + (pe.draft ? (pe.draft.kind === 'poly' ? pe.draft.pts.length + ' köşe' : 'çiziliyor…') : (isRooms ? s.rooms.length + ' oda' : isPlan ? s.units.length + ' ünite' : (sel ? sel.comps.length : 0) + ' bölme')),
+      canvasSt: 'width:' + sz.w.toFixed(0) + 'px;height:' + sz.h.toFixed(0) + 'px;cursor:' + cursor + (isPlan ? '' : ';background:#222'),
+      photo: sel && sel.photo ? sel.photo : '',
+      fills: fills, rfills: rfills, segs: segs, labels: labels, handles: handles,
+      down: function (e) { self.peDown(e); }, move: function (e) { self.peMove(e); }, up: function () { self.peUp(); },
+      dbl: function () { self.finishPoly(); },
+      tSel: pe.tool === 'select' || pe.tool === 'align' ? 'on' : '', tRect: pe.tool === 'rect' ? 'on' : '', tPoly: pe.tool === 'poly' ? 'on' : '',
+      setSel: function () { self.setPe({ tool: 'select', draft: null }); }, setRect: function () { self.setPe({ tool: 'rect', draft: null }); }, setPoly: function () { self.setPe({ tool: 'poly', draft: null }); },
+      toolHint: hints[pe.tool], drafting: !!pe.draft && pe.draft.kind === 'poly',
+      finish: function () { self.finishPoly(); }, cancel: function () { self.setPe({ draft: null, cursor: null }); },
+      hasSel: !!ses && !!sel && isPlan && !isRooms, selCode: sel ? sel.code : '', selRoom: sel ? roomBy(sel.room).name : '',
+      onCode: function (e) {
+        var v = e.target.value, old = sel.code;
+        self.pushUndo('ucode' + sel.id);
+        self.patchUnit(sel.id, { code: v });
+        self.setState({ items: self.state.items.map(function (it) { if (!it.zone) return it; var p = parseZone(it.zone); return p.unit === old ? Object.assign({}, it, { zone: v + '.' + (p.idx + 1) }) : it; }) });
+      },
+      selHasPhoto: !!(sel && sel.photo), selPhoto: sel && sel.photo ? sel.photo : '',
+      selPhotoText: sel && sel.photo ? 'Fotoğraf var · ' + sel.comps.length + ' bölme' : 'Fotoğraf yok',
+      photoBtn: sel && sel.photo ? 'Fotoğrafı değiştir' : 'Fotoğraf yükle',
+      onPhoto: function (e) { var id = self.state.pe.sel; self.readFile(e, function (url, asp) { self.pushUndo(); self.patchUnit(id, { photo: url, aspect: asp }); self.notify('Fotoğraf eklendi · şimdi bölmeleri çiz'); if (self.state.pe.mode === 'plan') { self.setPe({ mode: 'photo', tool: 'rect', compSel: null }); self.setState({ ev: { x: 0, y: 0, z: 1 } }); } }); },
+      compsBtn: sel ? (sel.photo ? 'Bölmeleri düzenle (' + sel.comps.length + ')' : 'Önce fotoğraf yükle') : '',
+      editComps: function () { if (!sel.photo) { self.notify('Bölme çizmek için önce fotoğraf ekle'); return; } self.setPe({ mode: 'photo', tool: sel.comps.length ? 'select' : 'rect', compSel: null, draft: null }); self.setState({ ev: { x: 0, y: 0, z: 1 } }); },
+      delUnit: function () {
+        var n = itemsIn(sel.code);
+        self.pushUndo();
+        self.setState({ units: self.state.units.filter(function (u) { return u.id !== sel.id; }), items: self.state.items.map(function (it) { return it.zone && parseZone(it.zone).unit === sel.code ? Object.assign({}, it, { zone: null }) : it; }), pe: Object.assign({}, pe, { sel: null }) });
+        self.notify('Ünite ' + sel.code + ' silindi' + (n ? ' · kaydedersen ' + n + ' ürün konumsuz kalır' : '') + ' · Ctrl+Z ile geri al');
+      },
+      unitCount: s.units.length,
+      unitChips: unitsSorted.map(function (u) { return { code: u.code, cls: sel && sel.id === u.id ? 'on' : '', pick: function () { self.setPe({ sel: u.id, tool: 'select', layer: 'units' }); } }; }),
+      toPlan: function () { self.setPe({ mode: 'plan', tool: 'select', draft: null, compSel: null }); self.setState({ ev: { x: 0, y: 0, z: 1 } }); },
+      compCount: sel ? sel.comps.length : 0, noComps: !sel || !sel.comps.length,
+      compRows: sel ? sel.comps.map(function (c, i) {
+        var n = itemsIn(sel.code, i);
+        return {
+          code: sel.code + '.' + (i + 1), sub: c.kind + (n ? ' · ' + n + ' ürün' : ''),
+          rowSt: 'padding:6px 8px 6px 12px;gap:8px;border-bottom:1px solid var(--sep);' + (pe.compSel === i ? 'background:var(--acc-bg)' : ''),
+          pick: function () { self.setPe({ compSel: i, tool: 'select' }); },
+          del: edit(function () {
+            var cur = self.unitById(sel.id);
+            self.pushUndo();
+            self.patchUnit(cur.id, { comps: cur.comps.filter(function (x, k) { return k !== i; }) });
+            self.remapItems(sel.code, function (k) { return k === i ? null : k > i ? k - 1 : k; });
+            self.setPe({ compSel: null }); self.notify(sel.code + '.' + (i + 1) + ' silindi' + (n ? ' · kaydedersen ' + n + ' ürün konumsuz kalır' : '') + ' · Ctrl+Z ile geri al');
+          })
+        };
+      }) : [],
+      renumber: function () {
+        var cur = self.unitById(sel.id), order = sortOrder(cur.comps), inv = {}; order.forEach(function (oldI, newI) { inv[oldI] = newI; });
+        self.pushUndo();
+        var rp = Object.assign({}, self.state.ses.reprint); rp[cur.code] = true;
+        self.setState({ ses: Object.assign({}, self.state.ses, { reprint: rp }) });
+        self.patchUnit(cur.id, { comps: order.map(function (i) { return cur.comps[i]; }) });
+        self.remapItems(cur.code, function (k) { return inv[k]; });
+        self.setPe({ compSel: null }); self.notify('Yeniden numaralandı · ürünler bölmeleriyle taşındı · kaydedince raf etiketleri yeniden basılacaklara eklenir');
+      }
+    };
+  }
+
+  libVM() {
+    var self = this, s = this.state, f = s.f, cats = s.cats, ITEMS = s.items;
+    var cat = f.cat !== 'all' ? findBy(cats, f.cat) : null;
+    var q = s.q.trim().toLocaleLowerCase('tr'), pmin = num(f.pmin), pmax = num(f.pmax);
+    var colorSel = Object.keys(f.colors), brandSel = Object.keys(f.brands);
+    function matchAttr(it, fl) {
+      var v = it.attrs[fl.id], want = f.attr[fl.id];
+      if (want === undefined) return true;
+      if (fl.type === 'tekli' || fl.type === 'coklu') { var keys = Object.keys(want); if (!keys.length) return true; var have = Array.isArray(v) ? v : [v]; return keys.some(function (k) { return have.indexOf(k) !== -1; }); }
+      if (fl.type === 'olcu') { var mn = num(want.min), mx = num(want.max); if (mn === null && mx === null) return true; if (typeof v !== 'number') return false; return (mn === null || v >= mn) && (mx === null || v <= mx); }
+      if (fl.type === 'varyok') return !!v === (want === 'var');
+      return !want || String(v || '').toLocaleLowerCase('tr').indexOf(String(want).toLocaleLowerCase('tr')) !== -1;
+    }
+    function base(it, skipCat) {
+      if (f.type !== 'all' && it.type !== f.type) return false;
+      if (!skipCat && cat && it.cat !== cat.id) return false;
+      if (colorSel.length && !it.colors.some(function (c) { return f.colors[c]; })) return false;
+      if (brandSel.length && !f.brands[it.brand]) return false;
+      if (f.status === 'yerinde' && (it.type !== 'fiziki' || it.out)) return false;
+      if (f.status === 'disarida' && !(it.type === 'fiziki' && it.out)) return false;
+      if ((pmin !== null || pmax !== null) && (!it.price || (pmin !== null && it.price.v < pmin) || (pmax !== null && it.price.v > pmax))) return false;
+      if (q) {
+        var c = self.cat(it.cat), at = c.filters.map(function (fl) { return attrText(fl, it.attrs[fl.id]) || ''; }).join(' ');
+        if ([it.name, it.brand, it.id, it.size, c.name, at, it.zone || 'dijital'].join(' ').toLocaleLowerCase('tr').indexOf(q) === -1) return false;
+      }
+      return true;
+    }
+    var filtered = ITEMS.filter(function (it) { return base(it) && (!cat || cat.filters.every(function (fl) { return matchAttr(it, fl); })); });
+    var chips = [];
+    if (cat) cat.filters.forEach(function (fl) {
+      var w = f.attr[fl.id], label = null; if (w === undefined) return;
+      if (fl.type === 'tekli' || fl.type === 'coklu') { var k = Object.keys(w); if (k.length) label = fl.name + ': ' + k.join(', '); }
+      else if (fl.type === 'olcu') { if (w.min || w.max) label = fl.name + ': ' + (w.min || '…') + '–' + (w.max || '…') + ' ' + fl.unit; }
+      else if (fl.type === 'varyok') label = fl.name + ': ' + (w === 'var' ? 'Var' : 'Yok');
+      else if (w) label = fl.name + ': ' + w;
+      if (label) chips.push({ label: label, remove: function () { self.setAttr(fl.id, undefined); } });
+    });
+    colorSel.forEach(function (c) { chips.push({ label: findBy(COLORS, c).name, remove: function () { var n = Object.assign({}, f.colors); delete n[c]; self.setF({ colors: n }); } }); });
+    brandSel.forEach(function (b) { chips.push({ label: b, remove: function () { var n = Object.assign({}, f.brands); delete n[b]; self.setF({ brands: n }); } }); });
+    if (f.status !== 'all') chips.push({ label: f.status === 'yerinde' ? 'Yerinde' : 'Dışarıda', remove: function () { self.setF({ status: 'all' }); } });
+    if (f.pmin || f.pmax) chips.push({ label: 'Fiyat ' + (f.pmin || '…') + '–' + (f.pmax || '…') + ' €', remove: function () { self.setF({ pmin: '', pmax: '' }); } });
+    chips.forEach(function (c) { c.aria = c.label + ' filtresini kaldır'; });
+    var catFilters = cat ? cat.filters.map(function (fl, i) {
+      var w = f.attr[fl.id], vm = { name: fl.name, typeName: ftype(fl.type).name, secSt: i === 0 ? 'border-top:0' : '', isOpts: false, isRange: false, isBool: false, isText: false };
+      if (fl.type === 'tekli' || fl.type === 'coklu') {
+        vm.isOpts = true;
+        vm.opts = (fl.options || []).map(function (o) { return { name: o, cls: w && w[o] ? 'on' : '', pick: function () { var n = Object.assign({}, w || {}); if (n[o]) delete n[o]; else n[o] = true; self.setAttr(fl.id, Object.keys(n).length ? n : undefined); } }; });
+      } else if (fl.type === 'olcu') {
+        vm.isRange = true; vm.unit = fl.unit; vm.min = w ? w.min : ''; vm.max = w ? w.max : '';
+        vm.onMin = function (e) { self.setAttr(fl.id, { min: e.target.value, max: (self.state.f.attr[fl.id] || {}).max || '' }); };
+        vm.onMax = function (e) { self.setAttr(fl.id, { min: (self.state.f.attr[fl.id] || {}).min || '', max: e.target.value }); };
+      } else if (fl.type === 'varyok') {
+        vm.isBool = true; vm.anyCls = w === undefined ? 'on' : ''; vm.yesCls = w === 'var' ? 'on' : ''; vm.noCls = w === 'yok' ? 'on' : '';
+        vm.setAny = function () { self.setAttr(fl.id, undefined); }; vm.setYes = function () { self.setAttr(fl.id, 'var'); }; vm.setNo = function () { self.setAttr(fl.id, 'yok'); };
+      } else { vm.isText = true; vm.val = w || ''; vm.onVal = function (e) { self.setAttr(fl.id, e.target.value || undefined); }; }
+      return vm;
+    }) : [];
+    var brands = []; ITEMS.forEach(function (i) { if (brands.indexOf(i.brand) === -1) brands.push(i.brand); }); brands.sort();
+    var catRows = [{ id: 'all', name: 'Tümü', color: 'var(--tx)' }].concat(cats).map(function (c) {
+      var n = ITEMS.filter(function (it) { return (c.id === 'all' || it.cat === c.id) && base(it, true); }).length, on = f.cat === c.id;
+      return { name: c.name, count: n, cls: on ? 'catrow on' : 'catrow', dotSt: 'width:10px;height:10px;border-radius:3px;flex:none;background:' + (on ? 'var(--on-inv)' : c.color), pick: function () { self.setF({ cat: c.id, attr: {} }); } };
+    });
+    var rows = filtered.map(function (it) {
+      var st = status(it), c = self.cat(it.cat);
+      return {
+        name: it.name, brand: it.brand, catShort: c.name.split(' ')[0], zone: it.zone || '',
+        price: it.price ? eur(it.price.v) + ' / ' + it.price.u : '—', badge: st.short,
+        hasBadge: it.type === 'dijital' || !!it.out, gBadgeSt: 'position:absolute;left:8px;top:8px;' + st.st,
+        imgSt: 'background:' + it.sw + (s.drawer === it.id ? ';box-shadow:0 0 0 3px ' + ACC : ''),
+        canLocate: it.type === 'fiziki' && !!it.zone,
+        open: function () { self.setState({ drawer: it.id }); },
+        locate: function () { self.locate(it); }
+      };
+    });
+    return { rows: rows, chips: chips, cat: cat, catFilters: catFilters, catRows: catRows, count: filtered.length,
+      colorOpts: COLORS.map(function (c) { var on = !!f.colors[c.id]; return { name: c.name, st: 'background:' + c.hex + (on ? ';box-shadow:0 0 0 2px var(--card),0 0 0 4px ' + ACC : ''), pick: function () { var n = Object.assign({}, f.colors); if (n[c.id]) delete n[c.id]; else n[c.id] = true; self.setF({ colors: n }); } }; }),
+      brandOpts: brands.map(function (b) { return { name: b, cls: f.brands[b] ? 'on' : '', pick: function () { var n = Object.assign({}, f.brands); if (n[b]) delete n[b]; else n[b] = true; self.setF({ brands: n }); } }; }),
+      statusOpts: [['all', 'Tümü'], ['yerinde', 'Yerinde'], ['disarida', 'Dışarıda']].map(function (p) { return { name: p[1], cls: f.status === p[0] ? 'on' : '', pick: function () { self.setF({ status: p[0] }); } }; })
+    };
+  }
+
+  officeVM() {
+    var self = this, s = this.state, phys = s.items.filter(function (i) { return i.type === 'fiziki' && i.zone; });
+    var unit = s.oUnit ? this.unitByCode(s.oUnit) : null;
+    var inUnit = unit ? phys.filter(function (i) { return parseZone(i.zone).unit === unit.code; }) : [];
+    var focus = s.oFocus ? findBy(s.items, s.oFocus) : null;
+    var geo = function (u) { var b = bb(u.pts); return { cx: (b.x0 + b.x1) / 2, cy: (b.y0 + b.y1) / 2, top: b.y0 }; };
+    var tx, ty, sc;
+    if (unit) { var g = geo(unit); sc = ZS; tx = W / 2 - (g.cx - PX0) / PW * W * sc; ty = VH / 2 - (g.cy - PY0) / PH * H * sc; }
+    else if (s.roomZoom && roomBy(s.roomZoom).poly.length) {
+      var rb = bb(roomBy(s.roomZoom).poly), bw = Math.max(rb.x1 - rb.x0, 20), bh = Math.max(rb.y1 - rb.y0, 20);
+      sc = Math.min(2.4, 0.85 * PW / bw, 0.85 * VH / (bh / PH * H));
+      tx = W / 2 - ((rb.x0 + rb.x1) / 2 - PX0) / PW * W * sc; ty = VH / 2 - ((rb.y0 + rb.y1) / 2 - PY0) / PH * H * sc;
+    }
+    else { sc = 1; tx = 0; ty = (VH - H) / 2; }
+    var counts = {}; phys.forEach(function (i) { var u = parseZone(i.zone).unit; counts[u] = (counts[u] || 0) + 1; });
+    var LX = function (x) { return (x - PX0) / PW * W; }, LY = function (y) { return (y - PY0) / PH * H; };
+    var ov = unit ? { x: 0, y: 0, z: 1 } : s.ov;
+    var oRooms = { fills: [], segs: [], labels: [] };
+    // Altlık gizliyse ofis görünümü sadece çizimden oluşur; oda adları planın üzerinde yazar
+    var imgOn = !!s.planImg && s.ulOffice;
+    s.rooms.forEach(function (r) {
+      var px = r.poly.map(function (p) { return [LX(p[0]), LY(p[1])]; }), c = centroid(px);
+      oRooms.fills.push(fillPx(px, imgOn ? 'rgba(255,255,255,0)' : roomFill(r.fill)));
+      if (!imgOn) linesPx(px, true, 'var(--pstroke)', 0.6, false).forEach(function (g) { oRooms.segs.push(g); });
+      if (!imgOn) oRooms.labels.push({ text: r.name, st: 'left:' + c[0] + 'px;top:' + (c[1] + 14) + 'px;transform:translate(-50%,-50%);font-size:9px;white-space:nowrap' });
+    });
+    var units = s.units.map(function (u) {
+      var sel = unit && unit.id === u.id, hov = s.hoverUnit === u.code, n = counts[u.code] || 0, pp = planPct(u.pts), b = bb(pp);
+      var bg = sel ? ACC : hov ? '#E05A5E' : unit ? 'rgba(232,96,100,.28)' : n ? 'rgba(232,96,100,.62)' : 'rgba(232,96,100,.34)';
+      return {
+        code: u.code, aria: 'Ünite ' + u.code + ', ' + n + ' ürün', st: clipBox(pp) + 'background:' + bg,
+        labSt: 'left:' + r2((b.x0 + b.x1) / 2) + '%;top:' + r2((b.y0 + b.y1) / 2) + '%;font-size:8px;color:' + (sel ? '#fff' : 'var(--unit-tx)'),
+        pick: function () { if (self._panMoved) return; self.selectUnit(u.code); },
+        enter: function () { self.setState({ hoverUnit: u.code }); }, leave: function () { self.setState({ hoverUnit: null }); }
+      };
+    });
+    var tip = { show: false, st: '', code: '', sub: '', thumbs: [] };
+    if (s.hoverUnit && (!unit || unit.code !== s.hoverUnit)) {
+      var hu = this.unitByCode(s.hoverUnit);
+      if (hu) {
+        var hg = geo(hu), hi = phys.filter(function (i) { return parseZone(i.zone).unit === hu.code; });
+        tip = { show: true, code: hu.code, sub: roomBy(hu.room).name + ' · ' + hi.length + ' ürün',
+          st: 'left:' + (W / 2 + (tx + (hg.cx - PX0) / PW * W * sc - W / 2) * ov.z + ov.x).toFixed(0) + 'px;top:' + (VH / 2 + (ty + (hg.top - PY0) / PH * H * sc - VH / 2) * ov.z + ov.y).toFixed(0) + 'px',
+          thumbs: hi.slice(0, 6).map(function (i) { return { st: 'width:28px;height:28px;border-radius:7px;border:1.5px solid #fff;background:' + i.sw + ';transform:rotate(' + shuffleRot(i.id, 't') / 2 + 'deg)' }; }) };
+      }
+    }
+    var orbit = [];
+    if (unit) {
+      var list = inUnit.slice(0, 12), n = list.length, cx = W / 2, cy = VH / 2, rx = 215, ry = 235, cw = 80, ch = 100;
+      list.forEach(function (it, i) {
+        var a = -Math.PI / 2 + (i / Math.max(n, 1)) * Math.PI * 2, dx = Math.cos(a) * rx, dy = Math.sin(a) * ry, rot = shuffleRot(it.id, 'o');
+        var isF = focus && it.id === focus.id, dim = s.focusOut && focus && !isF, inComp = s.oComp !== null && parseZone(it.zone).idx === s.oComp, big = (isF && s.focusOut) || inComp;
+        var tr = s.spread ? 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) rotate(' + (big ? 0 : rot) + 'deg) scale(' + (big ? 1.3 : dim ? 0.88 : 1) + ')' : 'translate(0,0) rotate(' + rot * 2 + 'deg) scale(.2)';
+        orbit.push({ name: it.name,
+          st: 'left:' + (cx - cw / 2) + 'px;top:' + (cy - ch / 2) + 'px;width:' + cw + 'px;height:' + ch + 'px;transform:' + tr + ';opacity:' + (s.spread ? (dim ? 0.45 : 1) : 0) + ';transition-delay:' + (s.spread ? i * 40 : 0) + 'ms,' + (s.spread ? i * 40 : 0) + 'ms,0ms;z-index:' + (big ? 30 : 10 + i) + (big ? ';box-shadow:0 0 0 2px ' + ACC + ',0 12px 28px rgba(47,91,234,.35)' : ''),
+          imgSt: 'display:block;flex:1;border-radius:8px;background:' + it.sw,
+          pick: function () { self.pickComp(parseZone(it.zone).idx); } });
+      });
+    }
+    var ucomps = unit ? unit.comps : [];
+    var compCounts = {}; inUnit.forEach(function (i) { var k = parseZone(i.zone).idx; compCounts[k] = (compCounts[k] || 0) + 1; });
+    var active = s.oComp !== null && s.oComp < ucomps.length ? s.oComp : null, preview = active === null && s.hoverComp !== null && s.hoverComp < ucomps.length ? s.hoverComp : null, spotIdx = active !== null ? active : preview;
+    var comps = ucomps.map(function (c, i) {
+      var n = compCounts[i] || 0, rb = rectBox(c.pts);
+      return { aria: unit.code + '.' + (i + 1) + ' ' + c.kind + ', ' + n + ' ürün', st: clipBox(c.pts) + 'background:transparent;',
+        pill: unit.code + '.' + (i + 1) + (n ? ' · ' + n : ''),
+        pillSt: 'left:calc(' + rb.l + '% + 3px);top:calc(' + rb.t + '% + 3px);background:' + (active === i ? ACC : n ? 'rgba(17,19,23,.74)' : 'rgba(17,19,23,.4)') + ';opacity:' + (spotIdx !== null && spotIdx !== i ? 0.3 : 1),
+        pick: function () { self.pickComp(i); }, enter: function () { self.setState({ hoverComp: i }); }, leave: function () { self.setState({ hoverComp: null }); } };
+    });
+    var spotSt = spotIdx !== null
+      ? rectBox(ucomps[spotIdx].pts).css + 'box-shadow:0 0 0 2000px rgba(12,14,18,' + (active !== null ? 0.58 : 0.32) + '),inset 0 0 0 2px ' + (active !== null ? ACC : 'rgba(255,255,255,.8)')
+      : 'left:0;top:0;width:100%;height:100%;box-shadow:0 0 0 2000px rgba(12,14,18,0),inset 0 0 0 0 transparent';
+    var shown = spotIdx, compItems = shown !== null ? inUnit.filter(function (i) { return parseZone(i.zone).idx === shown; }) : [];
+    var nF = compItems.length, sp = nF > 1 ? Math.min(88, 280 / (nF - 1)) : 0, fan = [], spreadNow = active !== null ? s.fanSpread : true;
+    compItems.forEach(function (it, i) {
+      var k = i - (nF - 1) / 2, isF = focus && it.id === focus.id;
+      var tr = spreadNow ? 'translate(' + (k * sp).toFixed(1) + 'px,' + (Math.abs(k) * 9 - (isF ? 16 : 0)) + 'px) rotate(' + (k * 7) + 'deg) scale(' + (isF ? 1.08 : 1) + ')' : 'translate(0,' + (12 + i * 2) + 'px) rotate(' + shuffleRot(it.id, 'f') / 2 + 'deg)';
+      fan.push({ name: it.name, code: it.id + (it.out ? ' · ' + status(it).short : ''),
+        st: 'left:calc(50% - 54px);top:18px;width:108px;height:146px;transform:' + tr + ';z-index:' + (isF ? 30 : 10 + i) + ';transition-delay:' + (spreadNow ? i * 50 : 0) + 'ms' + (active === null ? ';opacity:.85' : ''),
+        inSt: isF ? 'box-shadow:0 0 0 2px ' + ACC + ',0 12px 26px rgba(47,91,234,.3)' : (it.out ? 'opacity:.6' : ''),
+        imgSt: 'display:block;flex:1;border-radius:9px;background:' + it.sw,
+        open: function () { self.setState({ drawer: it.id }); } });
+    });
+    var filled = Object.keys(compCounts).map(Number).sort(function (a, b) { return a - b; }).map(function (k) {
+      return { label: unit.code + '.' + (k + 1) + ' · ' + compCounts[k], cls: active === k ? 'on' : '', pick: function () { self.pickComp(k); } };
+    });
+    var asp = unit ? unit.aspect : 1.5, photoW = 230, photoH = photoW * asp;
+    if (photoH > 380) { photoH = 380; photoW = photoH / asp; }
+    return {
+      oRooms: oRooms,
+      roomChips: [{ no: null, name: 'Tüm plan' }].concat(s.rooms).map(function (r) { return { name: r.name, cls: !unit && s.roomZoom === r.no ? 'on' : '', pick: function () { self.setState({ roomZoom: r.no, oUnit: null, ov: { x: 0, y: 0, z: 1 } }); } }; }),
+      openPlanEditor: function () { self.setState({ view: 'settings', setTab: 'plan', drawer: null, ev: { x: 0, y: 0, z: 1 }, pe: Object.assign({}, self.state.pe, { mode: 'plan', tool: 'select', sel: unit ? unit.id : null, draft: null }) }); },
+      editThisUnit: function () { self.setState({ view: 'settings', setTab: 'plan', pe: Object.assign({}, self.state.pe, { mode: 'plan', tool: 'select', sel: unit.id, draft: null }) }); },
+      vpSt: 'position:relative;width:' + W + 'px;height:' + VH + 'px;flex:none;border-radius:20px;overflow:hidden;background:var(--plan-bg);border:1px solid var(--line);cursor:' + (s.ovPan && self._panMoved ? 'grabbing' : 'default'),
+      ovSt: 'position:absolute;inset:0;transform-origin:50% 50%;transform:translate(' + ov.x.toFixed(1) + 'px,' + ov.y.toFixed(1) + 'px) scale(' + ov.z + ');' + (s.ovPan ? '' : 'transition:transform .25s ease'),
+      oUlay: { on: s.ulOffice, cls: s.planImg && s.ulInvert ? 'ulay inv' : 'ulay', st: ulayStyle(s.ul, 1) },
+      ovDown: function (e) {
+        if (unit || (e.button !== 0 && e.button !== 1)) return;
+        if (e.button === 1) e.preventDefault();
+        self._panMoved = false;
+        self.setState({ ovPan: { sx: e.clientX, sy: e.clientY, k: self.scaleOf(e).k, ox: self.state.ov.x, oy: self.state.ov.y } });
+      },
+      ovMove: function (e) {
+        var p = self.state.ovPan; if (!p) return;
+        var dx = (e.clientX - p.sx) * p.k, dy = (e.clientY - p.sy) * p.k;
+        if (!self._panMoved && Math.abs(dx) + Math.abs(dy) < 5) return;
+        self._panMoved = true;
+        self.setState({ ov: self.clampView({ x: p.ox + dx, y: p.oy + dy, z: self.state.ov.z }, W, VH) });
+      },
+      ovUp: function () { if (self.state.ovPan) { self.setState({ ovPan: null }); setTimeout(function () { self._panMoved = false; }, 0); } },
+      ovWheel: function (e) { if (unit) return; if (e.preventDefault) e.preventDefault(); self.zoomView('ov', e.deltaY < 0 ? 1.15 : 1 / 1.15, W, VH); },
+      ovZoomIn: function () { self.zoomView('ov', 1.25, W, VH); }, ovZoomOut: function () { self.zoomView('ov', 0.8, W, VH); },
+      ovFit: function () { self.setState({ ov: { x: 0, y: 0, z: 1 } }); }, ovZoomText: Math.round(ov.z * 100) + '%',
+      layerSt: 'position:absolute;left:0;top:0;width:' + W + 'px;height:' + H.toFixed(1) + 'px;transform-origin:0 0;transform:translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + sc + ');transition:transform .8s cubic-bezier(.2,.8,.2,1)',
+      onPlanLeave: function () { self.setState({ hoverUnit: null, ovPan: null }); },
+      units: units, orbit: orbit, tip: tip, showHint: !unit, noUnit: !unit, hasUnit: !!unit,
+      summary: phys.length + ' fiziki ürün · ' + s.units.length + ' ünite · ' + s.rooms.length + ' oda',
+      roomRows: s.rooms.map(function (r) {
+        var us = s.units.filter(function (u) { return u.room === r.no; }), n = phys.filter(function (i) { var uu = self.unitByCode(parseZone(i.zone).unit); return uu && uu.room === r.no; }).length;
+        return { name: r.name, sub: us.length + ' ünite · ' + n + ' ürün', dotSt: 'width:12px;height:12px;border-radius:4px;flex:none;background:' + r.color, pick: function () { self.setState({ roomZoom: r.no, oUnit: null, ov: { x: 0, y: 0, z: 1 } }); } };
+      }),
+      unitCode: unit ? unit.code : '', unitSub: unit ? roomBy(unit.room).name + ' · ' + inUnit.length + ' ürün · ' + ucomps.length + ' bölme' : '',
+      unitHasPhoto: !!(unit && unit.photo), unitNoPhoto: !!(unit && !unit.photo), unitPhoto: unit && unit.photo ? unit.photo : '',
+      close: function () { self.setState({ oUnit: null, oComp: null, oFocus: null }); },
+      photoSt: 'position:relative;width:' + photoW + 'px;height:' + photoH.toFixed(0) + 'px;flex:none;border-radius:16px;overflow:hidden;background:#D9D9D6;box-shadow:0 10px 30px rgba(0,0,0,.12)',
+      onPhotoLeave: function () { self.setState({ hoverComp: null }); },
+      comps: comps, spotSt: spotSt, spotCls: active !== null ? 'spot pulse' : 'spot',
+      compLabelTitle: active !== null ? 'Seçili bölme' : shown !== null ? 'Önizleme' : 'Bölme seç',
+      compCode: shown !== null && unit ? unit.code + '.' + (shown + 1) : '—',
+      compKind: shown !== null ? ucomps[shown].kind + ' · ' + nF + ' ürün' : 'Fotoğrafta bir bölmenin üzerine gel',
+      filled: unit ? filled : [], fan: fan, fanAreaSt: 'position:relative;flex:1;min-height:190px',
+      fanHint: nF === 0, fanHintText: shown !== null ? 'Bu bölme boş.' : 'Bölmelerin üzerinde gezinince içindeki ürünler burada kart olarak açılır.'
+    };
+  }
+
+  catsVM() {
+    var self = this, s = this.state, cats = s.cats, ec = this.cat(s.editCat), nf = s.nf;
+    var counts = {}; s.items.forEach(function (i) { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    var setNf = function (p) { self.setState({ nf: Object.assign({}, self.state.nf, p) }); };
+    var needsOpts = nf.type === 'tekli' || nf.type === 'coklu', needsUnit = nf.type === 'olcu', t = ftype(nf.type);
+    var addOpt = function () { var d = (self.state.nf.draft || '').trim(); if (!d) return; if (self.state.nf.opts.indexOf(d) === -1) setNf({ opts: self.state.nf.opts.concat([d]), draft: '' }); else setNf({ draft: '' }); };
+    return {
+      ceList: cats.map(function (c) { var on = c.id === ec.id; return { name: c.name, sub: c.filters.length + ' filtre · ' + (counts[c.id] || 0), cls: on ? 'catrow on' : 'catrow', dotSt: 'width:10px;height:10px;border-radius:3px;flex:none;background:' + (on ? 'var(--on-inv)' : c.color), pick: function () { self.setState({ editCat: c.id, nf: BLANK_NF() }); } }; }),
+      newCat: function () { var id = 'k' + Date.now(); self.setState({ cats: self.state.cats.slice(0, -1).concat([{ id: id, name: 'Yeni kategori', color: '#7C3AED', filters: [] }], self.state.cats.slice(-1)), editCat: id, nf: BLANK_NF() }); self.notify('Kategori eklendi · adını yaz ve filtre ekle'); },
+      ce: {
+        name: ec.name, onName: function (e) { self.patchCat(ec.id, { name: e.target.value }); },
+        colors: CAT_COLORS.map(function (h) { return { hex: h, st: 'background:' + h + (ec.color === h ? ';box-shadow:0 0 0 2px var(--card),0 0 0 4px ' + h : ''), pick: function () { self.patchCat(ec.id, { color: h }); } }; }),
+        filters: ec.filters.map(function (fl, i) {
+          var n = ec.filters.length;
+          var mv = function (dir) { var arr = ec.filters.slice(), j = i + dir; if (j < 0 || j >= n) return; var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp; self.patchCat(ec.id, { filters: arr }); };
+          return {
+            no: i + 1, name: fl.name, typeName: ftype(fl.type).name,
+            detail: fl.options ? fl.options.join(' · ') : fl.unit ? 'Birim: ' + fl.unit : fl.type === 'varyok' ? 'Var / Yok' : 'Serbest metin',
+            up: function () { mv(-1); }, down: function () { mv(1); },
+            upSt: i === 0 ? 'opacity:.35' : '', downSt: i === n - 1 ? 'opacity:.35' : '',
+            del: function () { self.patchCat(ec.id, { filters: ec.filters.filter(function (x) { return x !== fl; }) }); self.notify('"' + fl.name + '" filtresi silindi'); }
+          };
+        }),
+        noFilters: ec.filters.length === 0, canDelete: !ec.locked,
+        del: function () {
+          self.setState({ cats: self.state.cats.filter(function (c) { return c.id !== ec.id; }), items: self.state.items.map(function (x) { return x.cat === ec.id ? Object.assign({}, x, { cat: 'diger' }) : x; }), editCat: 'diger', f: BLANK_F() });
+          self.notify(ec.name + ' silindi · ürünleri Diğer\'e taşındı');
+        }
+      },
+      nf: {
+        types: FTYPES.map(function (ft) { return { name: ft.name, desc: ft.desc, example: ft.example, cls: nf.type === ft.id ? 'on' : '', pick: function () { setNf({ type: ft.id }); } }; }),
+        name: nf.name, namePh: t.ph, onName: function (e) { setNf({ name: e.target.value }); },
+        needsOpts: needsOpts, needsUnit: needsUnit, optPh: nf.type === 'tekli' ? 'ör. R10 · Enter yerine Ekle' : 'ör. Mat',
+        draft: nf.draft, onDraft: function (e) { setNf({ draft: e.target.value }); }, addOpt: addOpt,
+        opts: nf.opts.map(function (o) { return { name: o, aria: o + ' seçeneğini kaldır', remove: function () { setNf({ opts: self.state.nf.opts.filter(function (x) { return x !== o; }) }); } }; }),
+        units: ['mm', 'cm', 'm', 'kg', 'adet'].map(function (u) { return { name: u, cls: nf.unit === u ? 'on' : '', pick: function () { setNf({ unit: u }); } }; }),
+        hint: ec.name + ' kategorisine eklenir · kütüphane filtresinde ve ürün formunda hemen görünür',
+        save: function () {
+          if (!nf.name.trim()) { self.notify('Filtreye bir ad ver'); return; }
+          if (needsOpts && !nf.opts.length) { self.notify('En az bir seçenek ekle'); return; }
+          var f2 = { id: 'f' + Date.now(), name: nf.name.trim(), type: nf.type };
+          if (needsOpts) f2.options = nf.opts.slice(); if (needsUnit) f2.unit = nf.unit;
+          self.patchCat(ec.id, { filters: ec.filters.concat([f2]) });
+          self.setState({ nf: Object.assign(BLANK_NF(), { type: nf.type }) });
+          self.notify('"' + f2.name + '" filtresi ' + ec.name + ' kategorisine eklendi');
+        }
+      }
+    };
+  }
+
+  drawerVM() {
+    var self = this, s = this.state, it = findBy(s.items, s.drawer) || s.items[0], st = status(it), c = this.cat(it.cat), isPhys = it.type === 'fiziki';
+    var attrs = []; c.filters.forEach(function (fl) { var t = attrText(fl, it.attrs[fl.id]); if (t) attrs.push({ k: fl.name, v: t }); });
+    var info = [{ k: 'Kod', v: it.id }, { k: 'Ürün linki', v: it.link || '—', st: it.link ? 'color:' + ACC + ';font-weight:600' : '' }];
+    if (isPhys) { var u = it.zone ? this.unitByCode(parseZone(it.zone).unit) : null; info.push({ k: 'Konum', v: it.zone && u ? it.zone + ' · ' + roomBy(u.room).name : 'Konum atanmamış' }); }
+    info.forEach(function (f) { f.st = (f.st || '') + ';font-weight:500;text-align:right'; });
+    return {
+      code: it.id, name: it.name, brand: it.brand, catName: c.name, size: it.size, zone: it.zone || '',
+      heroSt: 'height:260px;border-radius:18px;border:1px solid rgba(0,0,0,.06);flex:none;background:' + it.sw,
+      typeLabel: isPhys ? 'Fiziki' : 'Dijital', typeSt: isPhys ? 'background:var(--line);color:var(--tx)' : B_DIG, badge: st.long, badgeSt: st.st,
+      canLocate: isPhys && !!it.zone, locate: function () { self.locate(it); },
+      edit: function () {
+        var b = self.state.busyItems[it.id];
+        if (!b) { self.notify('Düzenleme formu telefon demosundaki formla aynı'); return; }
+        self.setState({ busyAsk: { id: it.id, name: it.name, text: b.who + ' bu ürünü ' + b.where + ' düzenliyor (' + b.min + ' dk).' } });
+      },
+      price: it.price ? eur(it.price.v) + ' / ' + it.price.u : 'Fiyat yok', priceDate: it.price ? 'Girildi: ' + it.price.d : 'Henüz girilmedi',
+      hasAttrs: attrs.length > 0, attrs: attrs,
+      colors: it.colors.map(function (k) { var co = findBy(COLORS, k); return { name: co.name, st: 'background:' + co.hex, search: function () { var n = {}; n[k] = true; self.setState({ view: 'lib', drawer: null, q: '', f: Object.assign(BLANK_F(), { colors: n }) }); } }; }),
+      docs: it.docs.map(function (d) { var e = extOf(d.n); return { name: d.n, path: d.p, ext: e.ext, extSt: e.st, open: function () { self.notify('Önizleme açılır: ' + d.n); }, reveal: function () { self.notify('Gezginde açılır: ' + d.p); } }; }),
+      noDocs: it.docs.length === 0, info: info
+    };
+  }
+
+  renderVals() {
+    LIVE.rooms = this.state.rooms;
+    var self = this, s = this.state, L = this.libVM(), O = this.officeVM(), C = this.catsVM(), f = s.f;
+    var ask = { open: false };
+    if (s.ask) {
+      var k = s.ask.kind, nCh = s.ses ? s.ses.undo.length : 0;
+      ask = {
+        open: true,
+        title: k === 'save' ? 'Değişiklikleri kaydet' : k === 'discard' ? 'Değişiklikler atılsın mı?' : 'Kaydedilmemiş değişiklik var',
+        lines: k === 'discard' ? [{ text: nCh + ' değişiklik kaybolacak. Plan son kayıtlı haline döner.', st: 'font-size:14px' }] : this.impact(),
+        showSave: k !== 'discard', saveLabel: k === 'leave' ? 'Kaydet ve devam et' : 'Kaydet',
+        showDrop: k !== 'save',
+        cancel: function () { self.setState({ ask: null }); },
+        save: function () { var nx = s.ask.next; self.commit(); if (nx) nx(); },
+        drop: function () { var nx = s.ask.next; self.drop(); if (nx) nx(); }
+      };
+    }
+    return Object.assign({}, O, C, {
+      appCls: 'dk' + (s.theme === 'dark' || (s.theme === 'system' && systemDark()) ? ' dark' : ''),
+      themeOpts: [['system', 'Sistem'], ['light', 'Açık'], ['dark', 'Koyu']].map(function (p) { return { name: p[1], cls: s.theme === p[0] ? 'on' : '', pick: function () { storeSet('finds-theme', p[0]); self.setState({ theme: p[0] }); } }; }),
+      splash: s.splash, skipSplash: function () { self.setState({ splash: false }); },
+      stopEv: function (e) { e.stopPropagation(); },
+      openScan: function () { self.setState({ scanOpen: true }); },
+      scan: s.scanOpen ? {
+        open: true, close: function () { self.setState({ scanOpen: false }); },
+        product: function () { self.setState({ scanOpen: false, view: 'lib', drawer: 'FL-004-142' }); },
+        shelf: function () { self.setState({ scanOpen: false }); self.selectUnit('2.2', null, 4); self.notify('Raf etiketi okundu · 2.2.5'); }
+      } : { open: false },
+      busyBox: s.busyAsk ? { open: true, text: s.busyAsk.text, close: function () {
+        var a = self.state.busyAsk; self.setState({ busyAsk: null });
+        self.later(5000, function () { var m = Object.assign({}, self.state.busyItems); if (!m[a.id]) return; delete m[a.id]; self.setState({ busyItems: m }); self.notify('Artık düzenleyebilirsin · ' + a.name); });
+      } } : { open: false },
+      genPeople: PEOPLE.map(function (p) { return { name: p }; }),
+      meOpts: PEOPLE.map(function (p) { return { name: p, cls: s.me === p ? 'chip xs on' : 'chip xs', pick: function () { var v = self.state.me === p ? '' : p; storeSet('finds-me', v); self.setState({ me: v }); } }; }),
+      ask: ask,
+      ulayOfficeTgl: s.ulOffice ? 'tgl on' : 'tgl', toggleUlayOffice: function () { self.setState({ ulOffice: !self.state.ulOffice }); },
+      invertTgl: s.ulInvert ? 'tgl on' : 'tgl', toggleInvert: function () { self.setState({ ulInvert: !self.state.ulInvert }); },
+      isLib: s.view === 'lib', isOffice: s.view === 'office', isSettings: s.view === 'settings',
+      navLib: s.view === 'lib' ? 'nav on' : 'nav', navOffice: s.view === 'office' ? 'nav on' : 'nav', navSettings: s.view === 'settings' ? 'nav on' : 'nav',
+      goLib: function () { self.leave(function () { self.setState({ view: 'lib' }); }); }, goOffice: function () { self.leave(function () { self.setState({ view: 'office', drawer: null }); }); },
+      goSettings: function () { self.setState({ view: 'settings', drawer: null }); },
+      phoneOnly: function () { self.notify('Bu bölüm telefon demosunda; masaüstü düzeni aynı mantıkla gelecek'); },
+      totalCount: s.items.length,
+      isCatsTab: s.setTab === 'cats', isPlanTab: s.setTab === 'plan', isGenTab: s.setTab === 'gen', tabGenCls: s.setTab === 'gen' ? 'on' : '',
+      tabCatsCls: s.setTab === 'cats' ? 'on' : '', tabPlanCls: s.setTab === 'plan' ? 'on' : '',
+      setTabCats: function () { self.leave(function () { self.setState({ setTab: 'cats' }); }); }, setTabPlan: function () { self.setState({ setTab: 'plan', ev: { x: 0, y: 0, z: 1 } }); },
+      setTabGen: function () { self.leave(function () { self.setState({ setTab: 'gen' }); }); },
+      pe: s.view === 'settings' && s.setTab === 'plan' ? this.editorVM() : {},
+      hasPlanImg: !!s.planImg, noPlanImg: !s.planImg, planImg: s.planImg || '',
+      planCaption: 'Şu an: ' + s.planName + (s.planImg ? '' : ' (çizgiler)') + '.',
+      onPlanFile: function (e) {
+        var file = e.target.files && e.target.files[0]; if (!file) return;
+        self.pushUndo();
+        if (file.type === 'application/pdf') {
+          e.target.value = '';
+          var lib = window.pdfjsLib;
+          if (!lib) { self.notify('PDF okuyucu yüklenemedi · PNG veya JPG dene'); return; }
+          lib.GlobalWorkerOptions.workerSrc = '/_blob/934deac98e058c7ef689a87c7b216483';
+          self.notify('PDF okunuyor…');
+          file.arrayBuffer().then(function (buf) { return lib.getDocument({ data: buf }).promise; })
+            .then(function (pdf) { return pdf.getPage(1); })
+            .then(function (page) {
+              var k = 2, vp = page.getViewport({ scale: k }), full = document.createElement('canvas');
+              full.width = vp.width; full.height = vp.height;
+              return page.render({ canvasContext: full.getContext('2d'), viewport: vp }).promise.then(function () {
+                // Bestandsplan ile aynı sayfa ölçüsündeyse mevcut üniteler hizalı kalsın diye aynı kadrajı kes
+                var w1 = vp.width / k, h1 = vp.height / k;
+                if (Math.abs(w1 - 1191) < 3 && Math.abs(h1 - 842) < 3) {
+                  var crop = document.createElement('canvas'); crop.width = PW * k; crop.height = PH * k;
+                  crop.getContext('2d').drawImage(full, PX0 * k, PY0 * k, PW * k, PH * k, 0, 0, PW * k, PH * k);
+                  return crop.toDataURL('image/png');
+                }
+                return full.toDataURL('image/png');
+              });
+            })
+            .then(function (url) { self.setState({ planImg: url, planName: file.name }); self.notify('Kat planı yüklendi · ' + file.name); })
+            .catch(function () { self.notify('PDF okunamadı · başka bir dosya dene'); });
+          return;
+        }
+        self.readFile(e, function (url, asp, fl) { self.setState({ planImg: url, planName: fl.name }); self.notify('Kat planı yüklendi · ' + fl.name); });
+      },
+      q: s.q, onQ: function (e) { self.setState({ q: e.target.value }); },
+      segAll: f.type === 'all' ? 'on' : '', segFiz: f.type === 'fiziki' ? 'on' : '', segDij: f.type === 'dijital' ? 'on' : '',
+      setAll: function () { self.setF({ type: 'all' }); }, setFiz: function () { self.setF({ type: 'fiziki' }); }, setDij: function () { self.setF({ type: 'dijital' }); },
+      countText: L.count + ' sonuç',
+      catRows: L.catRows, hasCatFilters: !!L.cat && L.catFilters.length > 0, catFilterTitle: L.cat ? L.cat.name.toLocaleUpperCase('tr') + ' FİLTRELERİ' : '', catFilters: L.catFilters,
+      colorOpts: L.colorOpts, brandOpts: L.brandOpts, statusOpts: L.statusOpts,
+      fPmin: f.pmin, fPmax: f.pmax, onPmin: function (e) { self.setF({ pmin: e.target.value }); }, onPmax: function (e) { self.setF({ pmax: e.target.value }); },
+      activeChips: L.chips, hasChips: L.chips.length > 0, hasActive: L.chips.length > 0 || f.cat !== 'all' || f.type !== 'all',
+      clearFilters: function () { self.setState({ f: BLANK_F() }); },
+      rows: L.rows, noRows: L.count === 0,
+      d: this.drawerVM(), drawerSt: 'transform:translateX(' + (s.drawer ? '0' : '105%') + ')',
+      closeDrawer: function () { self.setState({ drawer: null }); },
+      hasToast: !!s.toast, toast: s.toast
+    });
+  }
+}
+</script>
+</body>
+</html>

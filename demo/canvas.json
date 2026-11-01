@@ -1,0 +1,47 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Desktop.dc.html": {
+      "h": 800,
+      "is_interactive": true,
+      "title": "Masaüstü – kütüphane ve ofis",
+      "w": 1280,
+      "x": 0,
+      "y": 1240
+    },
+    "Etiket-A4.dc.html": {
+      "h": 710,
+      "paper": "a4",
+      "title": "A4 etiket çıktısı (PDF)",
+      "w": 648,
+      "x": 655,
+      "y": 22
+    },
+    "Main.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 36,
+      "title": "Telefon – tıklanabilir demo",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-31T12:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {},
+  "order": [
+    "Main.dc.html",
+    "Etiket-A4.dc.html",
+    "Desktop.dc.html"
+  ],
+  "pages": [],
+  "title": "miaza finds demo"
+}
