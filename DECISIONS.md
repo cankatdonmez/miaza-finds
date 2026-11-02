@@ -207,3 +207,13 @@ Cankat'ın isteği (üşendiren ara adım olmasın: ayrıca kırpıp yeniden ekl
 Claude'un ekledikleri (onay bekliyor): çoklu seçimde kırpma ekranının açılmaması ve yüklenmemiş fotoğraftaki kırpma
 düğmesi. Kaydedilmiş bir fotoğrafı sonradan kırpmak şimdilik yok.
 → SPEC 6.2.
+
+## D-028 · 02.11.2026 · Düzenlemede her şey „Speichern“e kadar taslak; seri sonrası listede „Speichern“
+Cankat'ın denemesinden:
+- **Ürün düzenleme:** fotoğraf silmek ve eklemek artık hemen sunucuya gitmez; diğer alanlar gibi „Speichern“de
+  uygulanır, „Abbrechen“ hepsini geri alır. Fotoğraf değiştirmek: eskisinin ×'i, yenisini ekle, kaydet. Yeni fotoğraflar
+  sona eklenir; bir ürünün birden çok fotoğrafı olabilir, ilk fotoğraf ana fotoğraftır.
+- **Seri kayıttan sonraki liste** (eksik bilgili ürünler): adlar yazılırken liste altında her zaman görünen
+  **„Speichern“** çubuğu; değişen bütün adları birlikte kaydeder. Enter ile bir sonraki ada geçmek ve o adı kaydetmek
+  kalır. Kaydedilmemiş ad varken sayfadan çıkılınca tarayıcı uyarır. Diğer bilgiler sonra kütüphaneden girilir.
+→ SPEC 6.2.
