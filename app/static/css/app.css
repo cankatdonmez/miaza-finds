@@ -293,10 +293,11 @@ select.eingabe{padding-right:6px}
   text-decoration:none;color:var(--ink);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
 @media (hover:hover){.karte:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
 .karte.gewaehlt,.zeile.gewaehlt{border-color:var(--accent)}
-.karte-bild{position:relative;aspect-ratio:1;background:var(--sunk);display:block}
-.karte-img{width:100%;height:100%;object-fit:cover;display:block}
-.leer-bild{display:grid;place-items:center;color:var(--line-2)}
-.karte-bild .leer-bild{width:100%;height:100%}
+/* Bild immer quadratisch: das Foto liegt im Kasten und kann ihn nicht strecken */
+.karte-bild{position:relative;aspect-ratio:1;background:var(--sunk);display:block;overflow:hidden}
+.karte-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.leer-bild{display:grid;place-items:center;color:var(--muted)}
+.karte-bild .leer-bild{position:absolute;inset:0}
 .karte-bild .badge-digital{position:absolute;left:8px;top:8px}
 .karte-text{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
 .karte-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
