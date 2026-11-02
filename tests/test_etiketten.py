@@ -160,6 +160,20 @@ def test_langes_wort_bleibt_im_etikett(client, produkte):
     assert pdfmetrics.stringWidth(zeile, "Figtree-SemiBold", etiketten.NAME_MIN_PT) <= breite_pt + 0.5
 
 
+def test_lange_merkmale_laufen_in_die_naechste_zeile():
+    """Merkmale werden an „ | “ umgebrochen statt gekürzt; mehr als vier Zeilen enden mit „…“ (D-033)."""
+    from app.services import etiketten
+    from reportlab.pdfbase import pdfmetrics
+    etiketten._schriften()
+    breite = (etiketten.bogen()["breite_mm"] - etiketten.TEXT_LINKS - etiketten.TEXT_RAND_RECHTS) / 25.4 * 72
+    merkmale = "10 CM | 30 CM | 9 MM | KEINE | WAND"
+    zeilen = etiketten._info_zeilen(["EGE SERAMIK", "100X300VRO46", merkmale], breite)
+    assert len(zeilen) == 4 and " | ".join(zeilen[2:]) == merkmale
+    assert all(pdfmetrics.stringWidth(z, "Figtree", etiketten.INFO_PT) <= breite for z in zeilen)
+    zu_viel = etiketten._info_zeilen(["A", "B", "C", merkmale], breite)
+    assert len(zu_viel) == 4 and zu_viel[-1].endswith("…")
+
+
 def test_etikett_mittig_mit_rand(client, produkte):
     """D-034: festes Raster im Sicherheitsrand (3 mm), QR senkrecht mittig; „miaza“ steht drauf."""
     import pypdfium2 as pdfium

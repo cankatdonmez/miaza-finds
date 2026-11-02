@@ -206,6 +206,26 @@ def _passend(text: str, schrift: str, groesse: float, breite: float) -> str:
     return text.rstrip() + "…"
 
 
+def _info_zeilen(info: list[str], breite: float, max_zeilen: int = 4) -> list[str]:
+    """Angaben auf höchstens max_zeilen Zeilen. Merkmale („10 cm | 30 cm | …“) brechen an den Trennstrichen um;
+    was dann noch nicht passt, endet mit „…“."""
+    zeilen: list[str] = []
+    for text in info:
+        zeile = ""
+        for teil in text.split(" | "):
+            probe = f"{zeile} | {teil}" if zeile else teil
+            if zeile and pdfmetrics.stringWidth(probe, "Figtree", INFO_PT) > breite:
+                zeilen.append(zeile)
+                zeile = teil
+            else:
+                zeile = probe
+        zeilen.append(zeile)
+    if len(zeilen) > max_zeilen:
+        zeilen = zeilen[:max_zeilen]
+        zeilen[-1] += " …"
+    return [_passend(z, "Figtree", INFO_PT, breite) for z in zeilen]
+
+
 def _im_raster(c: canvas.Canvas, x: float, y: float, w: float, h: float, qr_inhalt: str,
                teile: list[tuple[str, float, float, str]]) -> None:
     """Zeichnet „miaza“, QR und Textzeilen im festen Raster innerhalb des Sicherheitsrands (D-034).
@@ -240,9 +260,9 @@ def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, d: dict[s
         groesse -= 0.5
     teile = [("Figtree-SemiBold", groesse, grund, _passend(zeile, "Figtree-SemiBold", groesse, breite))
              for zeile, grund in zip(_umbrechen(name, "Figtree-SemiBold", groesse, breite), NAME_GRUNDLINIEN)]
-    # Marke, Artikelnummer, Maße, Merkmale – leere Zeilen entfallen
-    teile += [("Figtree", INFO_PT, INFO_GRUNDLINIE + i * INFO_ABSTAND, _passend(zeile.upper(), "Figtree", INFO_PT, breite))
-              for i, zeile in enumerate(d["info"][:4])]
+    # Marke, Artikelnummer, Maße, Merkmale – leere Zeilen entfallen; zu lange laufen in die freien Zeilen weiter
+    teile += [("Figtree", INFO_PT, INFO_GRUNDLINIE + i * INFO_ABSTAND, zeile)
+              for i, zeile in enumerate(_info_zeilen([z.upper() for z in d["info"]], breite))]
     teile.append(("Figtree", CODE_PT, CODE_GRUNDLINIE, d["code"]))
     # nur der bleibende Link mit der Inventarnummer
     _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/p/{d['inventar_nr']}", teile)
