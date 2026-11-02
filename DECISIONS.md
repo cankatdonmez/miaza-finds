@@ -267,9 +267,9 @@ Var olan renk filtrelerine dokunulmaz.
 
 ## D-033 · 02.11.2026 · Etiket kâğıdı ve ürün etiketi düzeni
 Cankat'ın gönderdiği düzen PDF'inden („QR Code Sticker Paper.pdf“, A4).
-- **Kâğıt:** çizime göre 3 sütun × 7 satır = 21 etiket, her biri 69,5 × 42,1 mm; sol kenar 0,8 mm, üst kenar 1,1 mm
-  (`app/etikett_bogen.json`). Cankat 3 × 8 = 24 dedi; çizimde 7 satır var → soruldu, şimdilik çizim geçerli.
-- **Ürün etiketi** (ölçüler çizimden): solda 30 × 30 mm QR (4,8 mm / 6 mm içeride); sağda, 38,3 mm'den başlayan
+- **Kâğıt:** 3 sütun × 8 satır = 24 etiket, her biri 69,5 × 36,8 mm; sol kenar 0,8 mm, üst kenar 1,1 mm
+  (`app/etikett_bogen.json`; düzeltilmiş çizimden ölçüldü).
+- **Ürün etiketi** (ölçüler çizimden): solda 29,6 × 29,6 mm QR (4,9 mm / 5,2 mm içeride); sağda, 38,5 mm'den başlayan
   sütunda yukarıdan aşağı:
   1. **Ürün adı** büyük harf, kalın, en çok iki satır (sığmazsa küçülür, sonra „…“),
   2. **Marka**, 3. **Marka kodu** (yeni alan „Artikelnummer“), 4. **Ölçüler**, 5. **Diğer özellikler**: kategorinin filtre
