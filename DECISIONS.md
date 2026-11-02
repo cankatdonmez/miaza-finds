@@ -264,3 +264,21 @@ o rengin adını ve rengini taşıyan bir tonla başlar (Weiß altında „Weiß
 olduğu gibi kalır; istenen yeniden adlandırılır, rengi değiştirilir, silinir ya da yanına yeni ton eklenir.
 Var olan renk filtrelerine dokunulmaz.
 → SPEC 6.3.
+
+## D-033 · 02.11.2026 · Etiket kâğıdı ve ürün etiketi düzeni
+Cankat'ın gönderdiği düzen PDF'inden („QR Code Sticker Paper.pdf“, A4).
+- **Kâğıt:** çizime göre 3 sütun × 7 satır = 21 etiket, her biri 69,5 × 42,1 mm; sol kenar 0,8 mm, üst kenar 1,1 mm
+  (`app/etikett_bogen.json`). Cankat 3 × 8 = 24 dedi; çizimde 7 satır var → soruldu, şimdilik çizim geçerli.
+- **Ürün etiketi** (ölçüler çizimden): solda 30 × 30 mm QR (4,8 mm / 6 mm içeride); sağda, 38,3 mm'den başlayan
+  sütunda yukarıdan aşağı:
+  1. **Ürün adı** büyük harf, kalın, en çok iki satır (sığmazsa küçülür, sonra „…“),
+  2. **Marka**, 3. **Marka kodu** (yeni alan „Artikelnummer“), 4. **Ölçüler**, 5. **Diğer özellikler**: kategorinin filtre
+     değerleri, „ | “ ile ayrılmış (ör. WANDFLISE | R9); küçük, düz yazı, boş olan satır atlanır,
+  6. altta **sistem kodu** (FL-001-001), ince ve büyükçe.
+  Yazı tipi uygulamanınki (Figtree); çizimdeki Montserrat'a yakın.
+- **Yeni alan „Artikelnummer“** (üreticinin ürün kodu): ürün formunda Marka'nın yanında, aramada da bulunur (Migration 007).
+- **Bölme etiketi** aynı kâğıtta aynı düzende: solda QR, sağda büyük bölme kodu ve adı.
+- Etiketler sayfasındaki önizleme de bu düzeni gösterir.
+Claude'un ekledikleri (onay bekliyor): basılmış bir etikette görünen bilgi (ad, marka, marka kodu, ölçüler, özellikler)
+değişince etiket „yeniden bas“ listesine girer.
+→ SPEC 6.6.
