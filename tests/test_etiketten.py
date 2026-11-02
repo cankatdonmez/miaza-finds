@@ -87,3 +87,25 @@ def test_qr_adresse_im_netz_statt_localhost(client, monkeypatch):
     assert client.get("/api/etiketten", headers=lokal).json()["qr_adresse"] == "http://192.168.1.20:8090"
     monkeypatch.setenv("MF_BASIS_URL", "https://finds.example.at/")
     assert client.get("/api/etiketten", headers=lokal).json()["qr_adresse"] == "https://finds.example.at"
+
+
+def test_fach_etiketten(client):
+    from tests.test_plan import KLEIN, QUADRAT, _entwurf
+    p = client.put("/api/plan", json=_entwurf(client.get("/api/plan").json(),
+                   raeume=[{"id": None, "schluessel": "a", "nr": 2, "punkte": QUADRAT}],
+                   einheiten=[{"id": None, "raum": "a", "nr": 2, "name": "Schrank links", "punkte": KLEIN}])).json()["plan"]
+    e = p["einheiten"][0]
+    p = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": p["version"], "faecher": [
+        {"id": None, "nr": n, "punkte": [[0, 0], [10, 0], [10, 10]]} for n in (1, 2, 10)]}).json()["plan"]
+    r = client.get("/api/etiketten/faecher").json()
+    assert [f["code"] for f in r["faecher"]] == ["2.2.1", "2.2.2", "2.2.10"] and r["zahlen"]["ungedruckt"] == 3
+    assert [f["code"] for f in client.get("/api/etiketten/faecher", params={"q": "schrank 2.2.10"}).json()["faecher"]] == ["2.2.10"]
+    ids = [f["id"] for f in r["faecher"]]
+    pdf = PdfReader(io.BytesIO(client.get("/api/etiketten/faecher/pdf", params={"id": ids}).content))
+    text = pdf.pages[0].extract_text()
+    assert "2.2.10" in text and "Schrank links" in text
+    vorher = client.post("/api/etiketten/faecher/gedruckt", json={"faecher": ids}).json()["vorher"]
+    assert client.get("/api/etiketten/faecher").json()["zahlen"]["ungedruckt"] == 0
+    assert client.post("/api/etiketten/faecher/zuruecksetzen", json={"vorher": vorher}).json()["zurueck"] == 3
+    assert client.get(f"/api/etiketten/qr/fach/{ids[0]}.svg").status_code == 200
+    assert client.get(f"/f/{ids[0]}", follow_redirects=False).headers["location"] == f"/buero?fach={ids[0]}"

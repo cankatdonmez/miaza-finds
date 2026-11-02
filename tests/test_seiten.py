@@ -8,7 +8,7 @@ import pytest
 
 from app.texte import DE
 
-SEITEN = ["bibliothek", "etiketten", "einstellungen", "mehr"]
+SEITEN = ["bibliothek", "buero", "etiketten", "einstellungen", "mehr"]
 APP = Path(__file__).parent.parent / "app"
 
 
@@ -71,3 +71,8 @@ def test_keine_sichtbaren_texte_direkt_in_seitenvorlagen():
         html = re.sub(r"{#.*?#}|{%.*?%}|{{.*?}}|<script.*?</script>|<[^>]+>", " ", p.read_text(encoding="utf-8"), flags=re.S)
         woerter = {w.strip(" ·") for w in re.split(r"\s{2,}|\n", html)} - {""}
         assert woerter <= erlaubt, f"{p.name}: Text ohne Wörterbuch: {woerter - erlaubt}"
+
+
+def test_plan_seiten(client):
+    assert 'data-plan-svg' in client.get("/plan").text
+    assert client.get("/plan/einheit/999").status_code == 404

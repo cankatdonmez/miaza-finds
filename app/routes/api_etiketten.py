@@ -58,6 +58,38 @@ def pdf(request: Request, nr: list[int] = Query(...), db: sqlite3.Connection = D
                     headers={"Content-Disposition": 'inline; filename="miaza-etiketten.pdf"', "Cache-Control": "no-store"})
 
 
+@router.get("/api/etiketten/faecher")
+def fach_liste(request: Request, q: str = "", zustand: str | None = None, db: sqlite3.Connection = Depends(get_db)):
+    return {"faecher": etiketten.fach_liste(db, q, zustand), "zahlen": etiketten.fach_zahlen(db), "bogen": etiketten.bogen(),
+            "qr_adresse": _basis(request)}
+
+
+@router.get("/api/etiketten/faecher/pdf")
+def fach_pdf(request: Request, id: list[int] = Query(...), db: sqlite3.Connection = Depends(get_db)):
+    inhalt = etiketten.fach_pdf(db, id, _basis(request))
+    return Response(inhalt, media_type="application/pdf",
+                    headers={"Content-Disposition": 'inline; filename="miaza-fach-etiketten.pdf"', "Cache-Control": "no-store"})
+
+
+@router.post("/api/etiketten/faecher/gedruckt")
+def faecher_gedruckt(daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    with transaction(db):
+        return {"vorher": etiketten.faecher_als_gedruckt(db, daten.get("faecher") or [])}
+
+
+@router.post("/api/etiketten/faecher/zuruecksetzen")
+def faecher_zuruecksetzen(daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    with transaction(db):
+        return {"zurueck": etiketten.faecher_zuruecksetzen(db, daten.get("vorher") or [])}
+
+
+@router.get("/api/etiketten/qr/fach/{fach_id}.svg")
+def fach_qr(request: Request, fach_id: int):
+    puffer = io.BytesIO()
+    segno.make(f"{_basis(request)}/f/{fach_id}", error="m").save(puffer, kind="svg", border=0, light="#fff")
+    return Response(puffer.getvalue(), media_type="image/svg+xml", headers={"Cache-Control": "no-store"})
+
+
 @router.get("/api/etiketten/qr/{inventar_nr}.svg")
 def qr(request: Request, inventar_nr: int):
     # Vorschau auf der Etikettenseite: derselbe Inhalt wie im PDF

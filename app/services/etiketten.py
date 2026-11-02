@@ -72,14 +72,18 @@ def _produkte(conn: sqlite3.Connection, ids: list[int]) -> list[sqlite3.Row]:
 
 def pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
     """A4-Bögen nach der Bogendefinition, Etiketten in der gewählten Reihenfolge."""
+    return _boegen(_produkte(conn, ids), lambda c, x, y, w, h, p: _etikett(c, x, y, w, h, p, basis_url))
+
+
+def _boegen(eintraege: list, zeichnen) -> bytes:
+    """Gemeinsames Raster für Produkt- und Fach-Etiketten."""
     _schriften()
     b = bogen()
-    produkte = _produkte(conn, ids)
     puffer = io.BytesIO()
     c = canvas.Canvas(puffer, pagesize=(b["seite_breite_mm"] * mm, b["seite_hoehe_mm"] * mm))
     c.setTitle("miaza finds – Etiketten")
     je_bogen = b["spalten"] * b["zeilen"]
-    for i, p in enumerate(produkte):
+    for i, p in enumerate(eintraege):
         if i and i % je_bogen == 0:
             c.showPage()
         platz = i % je_bogen
@@ -87,18 +91,14 @@ def pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
         x = (b["rand_links_mm"] + spalte * (b["breite_mm"] + b["abstand_x_mm"])) * mm
         # PDF zählt von unten; Zeile 0 ist oben
         y = (b["seite_hoehe_mm"] - b["rand_oben_mm"] - (zeile + 1) * b["hoehe_mm"] - zeile * b["abstand_y_mm"]) * mm
-        _etikett(c, x, y, b["breite_mm"] * mm, b["hoehe_mm"] * mm, p, basis_url)
+        zeichnen(c, x, y, b["breite_mm"] * mm, b["hoehe_mm"] * mm, p)
     c.save()
     return puffer.getvalue()
 
 
-def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, p: sqlite3.Row, basis_url: str) -> None:
-    rand = 3 * mm
-    code = nummern.code(p["code_praefix"], p["kategorie_nr"], p["inventar_nr"])
-    name = p["name"] or t("produkt.unbenannt", nr=p["inventar_nr"])
-    # QR als Vektor (scharf auf jedem Drucker); nur der bleibende Link mit der Inventarnummer
-    qr = segno.make(f"{basis_url.rstrip('/')}/p/{p['inventar_nr']}", error="m")
-    matrix = list(qr.matrix_iter(border=0))
+def _qr(c: canvas.Canvas, inhalt: str, x: float, y: float, w: float, h: float, rand: float) -> float:
+    """QR als Vektor (scharf auf jedem Drucker), oben mittig; liefert die Unterkante."""
+    matrix = list(segno.make(inhalt, error="m").matrix_iter(border=0))
     seite = min(w - 2 * rand, h * 0.54)
     modul = seite / len(matrix)
     qx, qy = x + (w - seite) / 2, y + h - rand - seite
@@ -107,6 +107,15 @@ def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, p: sqlite
         for s, an in enumerate(reihe):
             if an:
                 c.rect(qx + s * modul, qy + seite - (r + 1) * modul, modul, modul, stroke=0, fill=1)
+    return qy
+
+
+def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, p: sqlite3.Row, basis_url: str) -> None:
+    rand = 3 * mm
+    code = nummern.code(p["code_praefix"], p["kategorie_nr"], p["inventar_nr"])
+    name = p["name"] or t("produkt.unbenannt", nr=p["inventar_nr"])
+    # nur der bleibende Link mit der Inventarnummer
+    qy = _qr(c, f"{basis_url.rstrip('/')}/p/{p['inventar_nr']}", x, y, w, h, rand)
     # Name: höchstens zwei Zeilen, sonst gekürzt
     groesse = 8.5
     zeilen = _umbrechen(name, "Figtree-SemiBold", groesse, w - 2 * rand)
@@ -166,3 +175,64 @@ def auf_druckliste(conn: sqlite3.Connection, inventar_nr: int) -> str:
         conn.execute("UPDATE produkt SET etikett = 'neu_drucken' WHERE inventar_nr = ?", (inventar_nr,))
         return "neu_drucken"
     return p["etikett"]
+
+
+# ---------- Fach-Etiketten (SPEC 6.6): QR mit der bleibenden Fach-Kennung, großer Code ----------
+
+def _faecher_alle(conn: sqlite3.Connection) -> list[dict[str, Any]]:
+    from . import plan        # Plan kennt die Codes
+    alle = []
+    for e in plan.laden(conn)["einheiten"]:
+        for f in e["faecher"]:
+            alle.append({"id": f["id"], "code": f["code"], "einheit_name": e["name"], "etikett": f["etikett"]})
+    return alle
+
+
+def fach_liste(conn: sqlite3.Connection, q: str = "", zustand: str | None = None) -> list[dict[str, Any]]:
+    worte = normalisieren(q).split()
+    return [f for f in _faecher_alle(conn)
+            if (zustand not in ZUSTAENDE or f["etikett"] == zustand)
+            and all(w in normalisieren(f"{f['code']} {f['einheit_name']}") for w in worte)]
+
+
+def fach_zahlen(conn: sqlite3.Connection) -> dict[str, int]:
+    return {z: conn.execute("SELECT count(*) FROM fach WHERE etikett = ?", (z,)).fetchone()[0] for z in ("ungedruckt", "neu_drucken")}
+
+
+def _faecher(conn: sqlite3.Connection, ids: list[int]) -> list[dict[str, Any]]:
+    if not ids:
+        raise Fehler(t("fehler.sammel_leer"), "faecher")
+    alle = {f["id"]: f for f in _faecher_alle(conn)}
+    if any(i not in alle for i in ids):
+        raise Fehler(t("fehler.fach_unbekannt"), "faecher", status=404)
+    return [alle[i] for i in dict.fromkeys(ids)]
+
+
+def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
+    def zeichnen(c: canvas.Canvas, x: float, y: float, w: float, h: float, f: dict[str, Any]) -> None:
+        rand = 3 * mm
+        qy = _qr(c, f"{basis_url.rstrip('/')}/f/{f['id']}", x, y, w, h, rand)
+        # Der Code ist das, was man im Regal liest: groß
+        groesse = 20
+        while groesse > 10 and pdfmetrics.stringWidth(f["code"], "PlexMono", groesse) > w - 2 * rand:
+            groesse -= 1
+        c.setFont("PlexMono", groesse)
+        c.drawCentredString(x + w / 2, qy - 5 * mm - groesse * 0.7, f["code"])
+        if f["einheit_name"]:
+            c.setFont("Figtree", 8)
+            c.drawCentredString(x + w / 2, y + rand, _umbrechen(f["einheit_name"], "Figtree", 8, w - 2 * rand, 1)[0])
+    return _boegen(_faecher(conn, ids), zeichnen)
+
+
+def faecher_als_gedruckt(conn: sqlite3.Connection, ids: list[int]) -> list[dict[str, Any]]:
+    vorher = [{"id": f["id"], "etikett": f["etikett"]} for f in _faecher(conn, ids)]
+    conn.executemany("UPDATE fach SET etikett = 'gedruckt' WHERE id = ?", [(v["id"],) for v in vorher])
+    return vorher
+
+
+def faecher_zuruecksetzen(conn: sqlite3.Connection, vorher: list[dict[str, Any]]) -> int:
+    n = 0
+    for v in vorher:
+        if v.get("etikett") in ZUSTAENDE and isinstance(v.get("id"), int):
+            n += conn.execute("UPDATE fach SET etikett = ? WHERE id = ? AND etikett = 'gedruckt'", (v["etikett"], v["id"])).rowcount
+    return n

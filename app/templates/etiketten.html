@@ -4,6 +4,10 @@
 {% block inhalt %}
 <div class="etk">
   <section class="etk-wahl stack">
+    <div class="segs" role="group" aria-label="{{ t('etiketten.art') }}">
+      <button class="segbtn" type="button" data-etk-art="produkte" aria-pressed="true">{{ t("etiketten.art_produkte") }}</button>
+      <button class="segbtn" type="button" data-etk-art="faecher" aria-pressed="false">{{ t("etiketten.art_faecher") }}</button>
+    </div>
     <label class="suchfeld">{{ icon("search", 20) }}
       <input class="sucheingabe" type="search" data-etk-suche placeholder="{{ t('etiketten.suche') }}" aria-label="{{ t('etiketten.suche') }}" autocomplete="off"></label>
     <div class="pills" data-etk-vorwahl></div>

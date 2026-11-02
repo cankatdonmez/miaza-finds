@@ -384,6 +384,7 @@ select.eingabe{padding-right:6px}
 .etk-qr img{position:absolute;inset:4% 0 0;margin:auto;height:92%;width:auto;max-width:100%;aspect-ratio:1;object-fit:contain}
 .etk-name{font-size:var(--fs-mini);font-weight:600;line-height:1.2;max-height:2.4em;overflow:hidden}
 .etk-code{font-size:var(--fs-mini)}
+.etk-fachcode{font-size:var(--fs-basis);font-weight:500}
 
 /* ---------- Systembereich (SPEC 6.13) ---------- */
 .system-link{margin:24px 4px 0;text-align:center}

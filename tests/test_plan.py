@@ -175,3 +175,22 @@ def test_einheit_foto(client, buero):
     assert client.get(f"/media/einheiten/{r.json()['foto']}-960.webp").status_code == 200
     # Fächer bleiben beim neuen Foto
     assert len(client.get("/api/plan").json()["einheiten"][0]["faecher"]) == 2
+
+
+def test_status_filter_nach_platz(client, buero):
+    z = client.get("/api/bibliothek", params={"status": "am_platz"}).json()
+    assert [p["inventar_nr"] for p in z["produkte"]] == [buero["nr"]]
+    assert client.get("/api/bibliothek", params={"status": "ohne_platz"}).json()["gesamt"] == 0
+    assert client.get(f"/api/produkte/{buero['nr']}").json()["platz"]["code"] == "2.1.1"
+
+
+def test_sammel_platz_und_rueckgaengig(client, buero):
+    nr2 = client.post("/api/produkte", json={"name": "Eiche", "kategorie_id": buero["kid"]}).json()["inventar_nr"]
+    digital = client.post("/api/produkte", json={"name": "Katalog", "kategorie_id": buero["kid"], "art": "digital"}).json()["inventar_nr"]
+    fach2 = buero["plan"]["einheiten"][0]["faecher"][1]["id"]
+    r = client.post("/api/produkte/sammel", json={"produkte": [buero["nr"], nr2, digital], "aenderung": {"platz": fach2}}).json()
+    platz = lambda n: (client.get(f"/api/produkte/{n}").json()["platz"] or {}).get("code")
+    assert (platz(buero["nr"]), platz(nr2), platz(digital)) == ("2.1.2", "2.1.2", None)
+    client.post(f"/api/produkte/sammel/rueckgaengig/{r['rueckgaengig']}")
+    assert (platz(buero["nr"]), platz(nr2)) == ("2.1.1", None)
+    assert client.post("/api/produkte/sammel", json={"produkte": [nr2], "aenderung": {"platz": 9999}}).status_code == 422

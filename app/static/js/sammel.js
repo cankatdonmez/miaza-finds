@@ -11,11 +11,17 @@
   let quelle = [];            // Kategorien der ausgewählten Produkte (aus der Vorschau)
   let a = {};                 // gewünschte Änderung
   let vorschauNr = 0;
+  let faecher = null;         // Fächer für „Platz“ (D-016), beim ersten Öffnen geladen
 
   window.addEventListener("mf:sammel", async (e) => {
     ids = e.detail.ids;
     kategorien = e.detail.kategorien;
-    a = { kategorie_id: null, code: "behalten", marke: "", art: "", farben_hinzu: [], farben_weg: [], werte: {} };
+    a = { kategorie_id: null, code: "behalten", marke: "", art: "", platz: "", farben_hinzu: [], farben_weg: [], werte: {} };
+    if (!faecher) {
+      try {
+        faecher = (await api("GET", "/api/plan")).einheiten.flatMap((x) => x.faecher.map((f) => ({ id: f.id, code: f.code, name: x.name })));
+      } catch { faecher = []; }
+    }
     const v = await vorschau();
     if (!v) return;
     quelle = v.kategorien;
@@ -28,6 +34,7 @@
     if (a.kategorie_id) { d.kategorie_id = a.kategorie_id; d.code = a.code; }
     if (a.marke.trim()) d.marke = a.marke.trim();
     if (a.art) d.art = a.art;
+    if (a.platz) d.platz = a.platz === "ohne" ? "ohne" : Number(a.platz);
     if (a.farben_hinzu.length) d.farben_hinzu = a.farben_hinzu;
     if (a.farben_weg.length) d.farben_weg = a.farben_weg;
     const werte = Object.fromEntries(Object.entries(a.werte).filter(([, w]) => w !== undefined));
@@ -64,6 +71,12 @@
       </div>` : ""}
       <label class="feld"><span>${esc(t("produkt.marke"))}</span>
         <input class="eingabe" data-s-marke value="${esc(a.marke)}" placeholder="${esc(t("sammel.unveraendert"))}" maxlength="80"></label>
+      ${faecher.length ? `<label class="feld"><span>${esc(t("produkt.platz"))}</span>
+        <select class="eingabe" data-s-platz>
+          <option value="">${esc(t("sammel.unveraendert"))}</option>
+          <option value="ohne" ${a.platz === "ohne" ? "selected" : ""}>${esc(t("status.ohne_platz"))}</option>
+          ${faecher.map((f) => `<option value="${f.id}" ${String(f.id) === a.platz ? "selected" : ""}>${esc(f.code)}${f.name ? " · " + esc(f.name) : ""}</option>`).join("")}
+        </select></label>` : ""}
       <div class="feld"><span>${esc(t("sammel.art"))}</span>
         <div class="segs" role="group">
           ${[["", t("sammel.unveraendert")], ["physisch", t("produkt.art_physisch")], ["digital", t("produkt.art_digital")]].map(([w, text]) =>
@@ -115,6 +128,7 @@
   }
 
   panel.addEventListener("change", (e) => {
+    if (e.target.matches("[data-s-platz]")) { a.platz = e.target.value; return neu(); }
     if (e.target.matches("[data-s-kategorie]")) {
       a.kategorie_id = Number(e.target.value) || null;
       a.werte = {};
