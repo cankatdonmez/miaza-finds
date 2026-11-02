@@ -260,7 +260,7 @@ Daha (telefon) ─ istatistik
 - **Kart:** görsel, ad, marka, kategori, fiyat; dijitalse veya yerinde değilse durum rozeti.
 - Masaüstünde karta gelince konum kodu belirir; tıklanınca ofis planında gösterir.
 - Ürün detayı telefonda tam ekran, masaüstünde sağdan açılan panelde açılır.
-- Fiziki ürünün detayında "Büroda göster"in yanında **"Yerini değiştir"** (yeri yoksa "Yer seç"): ünite çipleri, ünite fotoğrafında ya da listede bölme; "Konumsuz" da seçilebilir. Onay yok, geri al var (D-021).
+- Fiziki ürünün detayında "Büroda göster"in yanında **"Yerini değiştir"** (yeri yoksa "Yer seç"): Büro yer seçme modunda açılır; plan → ünite → bölme → **"Buraya koy"**. Sonra ürüne dönülür; onay yok, geri al var. Çubukta "Konumsuz" da seçilebilir (D-021, D-022).
 
 ### 6.2 Ürün kaydı
 - **Alanlar:** tür (fiziki/dijital), ad, marka, kategori, ebat, ürün linki, fotoğraf(lar), adet, renkler, not, kategoriye özel alanlar.

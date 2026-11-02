@@ -131,10 +131,20 @@ Claude'un ekledikleri (onay bekliyor): bölme etiketinde kodun altında ünite a
 → SPEC 6.4, 6.6.
 
 ## D-021 · 02.11.2026 · Ürün detayında „Platz ändern“
+**D-022 ile değişti:** seçici pencere kaldırıldı, yer Büro sayfasında seçilir.
 Cankat'ın isteği. Fiziki ürünün detayında „Im Büro zeigen“in yanında **„Platz ändern“** düğmesi (yeri yoksa
 **„Platz wählen“**). Açılan seçici demodaki konum seçicisini izler: üstte ünite çipleri, altında seçili ünitenin
 fotoğrafı; bölmeye fotoğrafta ya da altındaki listede dokunulur, seçilen kod büyük yazılır. „Übernehmen“ kaydeder;
 onay penceresi yok, bildirimde „Rückgängig“ var. Yeri olan üründe „Ohne Platz“ da seçilebilir.
 Claude'un ekledikleri (onay bekliyor): seçici açılınca ürünün bulunduğu ünite seçili gelir; fotoğrafı olmayan ünitede
 yalnız liste görünür.
+→ SPEC 6.1.
+
+## D-022 · 02.11.2026 · Yer, Büro'da seçilir (D-021'in seçici penceresinin yerine)
+Cankat'ın düzeltmesi: gerçekte odaya gidilir, ünite görülür, rafa konur; uygulama da öyle yönlendirmeli. Ürün detayındaki
+„Platz ändern“ / „Platz wählen“ Büro sayfasını **yer seçme modunda** açar. Üstte bir çubuk: „Platz für „Ürün“ wählen“.
+Plan → ünite → bölme; bölme panelinde büyük **„Hier ablegen“**. Kaydedince ürün sayfasına dönülür, bildirimde
+„Rückgängig“ vardır. Çubuktaki × vazgeçer.
+Claude'un ekledikleri (onay bekliyor): ürünün yeri varsa Büro o bölmede açılır (nerede olduğu görülür, oradan başka
+üniteye geçilir); çubukta „Ohne Platz“ da var.
 → SPEC 6.1.
