@@ -77,6 +77,14 @@
     auswahl: () => gewaehlt,
     waehlen: (s) => { if (s !== gewaehlt) { gewaehlt = s; panel(); zeichnen(); } },
     merken: () => verlauf.merken(),
+    // Rechteckige Einheiten rasten an Raumwänden und an anderen Einheiten ein und schieben sich nicht ineinander (D-019)
+    verschieben(s, punkte, d, z) {
+      const r = einheit(s) && geo.rechteckLesen(punkte);
+      if (!r) return null;
+      const andere = entwurf.einheiten.filter((e) => e.schluessel !== s).map((e) => e.punkte);
+      z.linien ??= [...entwurf.raeume.flatMap((x) => geo.kanten(x.punkte, true)), ...andere.flatMap((p) => geo.kanten(p, false))];
+      return MF.einrasten(r, d, z, { linien: z.linien, hindernisse: andere, m: ansicht.massstab() });
+    },
     aendern(s, punkte, fertig) {
       form(s).punkte = punkte;
       if (fertig) { if (einheit(s)) raumZuordnen(einheit(s)); else alleZuordnen(); panel(); }

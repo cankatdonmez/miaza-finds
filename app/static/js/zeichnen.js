@@ -77,9 +77,129 @@
       }
       return { b: 2 * Math.min(l, r), h: 2 * Math.min(o, u) };
     },
+    // Überschneiden sich zwei Flächen? Bloßes Berühren zählt nicht.
+    ueberlappen(a, b) {
+      const kanten = (f) => f.map((p, i) => [p, f[(i + 1) % f.length]]);
+      const ka = kanten(a), kb = kanten(b);
+      return ka.some(([p, q]) => kb.some(([r, s]) => kreuzen(p, q, r, s)))
+        || a.some((p) => geo.innen(p, b)) || b.some((p) => geo.innen(p, a));
+    },
+    // Rechteck aus vier Punkten lesen: Mitte, Winkel der ersten Kante, halbe Seiten (b mit Vorzeichen, damit der
+    // Umlaufsinn bleibt). null, wenn die Form kein Rechteck ist.
+    rechteckLesen(punkte) {
+      if (punkte.length !== 4) return null;
+      const [p0, p1, p2, p3] = punkte;
+      const u = [p1[0] - p0[0], p1[1] - p0[1]], v = [p2[0] - p1[0], p2[1] - p1[1]];
+      const lu = Math.hypot(...u), lv = Math.hypot(...v);
+      if (!lu || !lv || Math.abs(skalar(u, v)) / (lu * lv) > 0.02) return null;
+      if (Math.hypot(p3[0] - p0[0] - v[0], p3[1] - p0[1] - v[1]) > 0.02 * (lu + lv)) return null;
+      const w = Math.atan2(u[1], u[0]);
+      return { c: [(p0[0] + p2[0]) / 2, (p0[1] + p2[1]) / 2], w, a: lu / 2, b: skalar(v, [-Math.sin(w), Math.cos(w)]) / 2 };
+    },
+    rechteckPunkte({ c, w, a, b }) {
+      const ex = [Math.cos(w), Math.sin(w)], ey = [-Math.sin(w), Math.cos(w)];
+      return [[-a, -b], [a, -b], [a, b], [-a, b]].map(([x, y]) => [c[0] + x * ex[0] + y * ey[0], c[1] + x * ex[1] + y * ey[1]]);
+    },
+    // Kanten einer Fläche als Anlegelinien; n zeigt nach innen (Raumwände) oder nach außen (Nachbareinheiten)
+    kanten(punkte, nachInnen) {
+      return punkte.map((a, i) => {
+        const b = punkte[(i + 1) % punkte.length], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        let n = [-(b[1] - a[1]) / l, (b[0] - a[0]) / l];
+        const probe = [(a[0] + b[0]) / 2 + n[0] * 0.01 * l, (a[1] + b[1]) / 2 + n[1] * 0.01 * l];
+        if (geo.innen(probe, punkte) !== nachInnen) n = [-n[0], -n[1]];
+        return { a, b, n };
+      });
+    },
     pfad: (punkte) => "M" + punkte.map((p) => `${p[0]} ${p[1]}`).join("L") + "Z",
     runden: (punkte) => punkte.map(([x, y]) => [Math.round(x * 100) / 100, Math.round(y * 100) / 100]),
   };
+
+  function skalar(p, q) { return p[0] * q[0] + p[1] * q[1]; }
+  // Echte Kreuzung zweier Strecken (Berühren und Aufliegen zählen nicht)
+  function kreuzen(p1, p2, q1, q2) {
+    const o = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+    const d1 = o(q1, q2, p1), d2 = o(q1, q2, p2), d3 = o(p1, p2, q1), d4 = o(p1, p2, q2);
+    return d1 * d2 < 0 && d3 * d4 < 0;
+  }
+
+  // ---------- Einrasten rechteckiger Einheiten (D-019) ----------
+  // start: Rechteck beim Greifen (geo.rechteckLesen); d: Verschiebung des Zeigers; z: Zustand dieses Zugs (wird
+  // fortgeschrieben); linien: Anlegelinien (geo.kanten); hindernisse: Flächen, in die das Rechteck nicht hinein darf;
+  // m: Planeinheiten je Bildschirmpixel. Gibt die Punkte des Rechtecks zurück.
+  const ANLEGEN = 10, LOESEN = 24;   // Bildschirmpixel
+  const SPIEL = 0.05;                // Planeinheiten: gerundete Punkte dürfen sich so weit berühren
+  function einrasten(start, d, z, { linien, hindernisse, m }) {
+    const schmal = (r) => geo.rechteckPunkte({ ...r, a: r.a - SPIEL, b: Math.sign(r.b) * (Math.abs(r.b) - SPIEL) });
+    // Was beim Greifen schon überlappt, hindert nicht (sonst klemmt die Einheit fest)
+    z.hindernisse ??= hindernisse.filter((h) => !geo.ueberlappen(schmal(start), h));
+    z.w ??= start.w;
+    const roh = { ...start, w: z.w, c: [start.c[0] + d[0], start.c[1] + d[1]] };
+
+    // Anlegen: die nächste Linie in Reichweite; das Rechteck dreht sich auf kürzestem Weg parallel zu ihr,
+    // gleitet an ihr entlang und bleibt zwischen ihren Enden. Die angelegte Linie bleibt, bis der Zeiger sich löst.
+    let beste = null;
+    const reihe = z.linie ? [z.linie, ...linien.filter((l) => l !== z.linie)] : linien;
+    for (const l of reihe) {
+      if (beste?.linie === z.linie && z.linie) break;
+      const lang = Math.hypot(l.b[0] - l.a[0], l.b[1] - l.a[1]);
+      if (!lang) continue;
+      const u = [(l.b[0] - l.a[0]) / lang, (l.b[1] - l.a[1]) / lang], phi = Math.atan2(u[1], u[0]);
+      const viertel = Math.PI / 2;
+      let dreh = (((phi - roh.w) % viertel) + viertel) % viertel;
+      if (dreh > viertel / 2) dreh -= viertel;
+      let w = roh.w + dreh;
+      // Die lange Seite liegt an der Linie (Schrank mit dem Rücken zur Wand); sonst eine Vierteldrehung mehr,
+      // in die Richtung, die näher an der alten Lage ist
+      if (Math.abs(roh.b) !== roh.a && (Math.abs(Math.sin(w - phi)) < 0.5) !== (roh.a > Math.abs(roh.b))) w += dreh > 0 ? -viertel : viertel;
+      const laengs = Math.abs(Math.sin(w - phi)) < 0.5;    // erste Kante liegt an der Linie
+      const tiefe = laengs ? Math.abs(roh.b) : roh.a, halb = laengs ? roh.a : Math.abs(roh.b);
+      const rel = [roh.c[0] - l.a[0], roh.c[1] - l.a[1]];
+      // spalt < 0: das Rechteck ragt über die Linie hinaus; auch dann rastet es ein (Zeiger über die Ecke hinaus gezogen)
+      const t = skalar(rel, u), spalt = skalar(rel, l.n) - tiefe, luecke = Math.abs(spalt);
+      if (spalt > (l === z.linie ? LOESEN : ANLEGEN) * m || spalt < -LOESEN * m || t < -halb || t > lang + halb) continue;
+      if (beste && luecke >= beste.luecke) continue;
+      let tk = lang >= 2 * halb ? Math.min(Math.max(t, halb), lang - halb) : lang / 2;
+      // Stirnseite an eine quer stehende Linie in Reichweite legen (Nachbareinheit, Wandknick)
+      const quer = (tk - t) ? null : linien.filter((q) => q !== l && Math.abs(Math.abs(skalar(q.n, u)) - 1) < 0.02)
+        .map((q) => {
+          const mitte = [l.a[0] + u[0] * t + l.n[0] * tiefe, l.a[1] + u[1] * t + l.n[1] * tiefe];
+          const seite = skalar(q.n, u) > 0 ? 1 : -1;                     // Stirnseite, die zu q schaut, liegt bei -seite
+          const spalt = skalar([mitte[0] - q.a[0], mitte[1] - q.a[1]], q.n) - halb;
+          // q muss auf der Höhe des Rechtecks liegen
+          const v = [l.n[0], l.n[1]], qa = skalar([q.a[0] - l.a[0], q.a[1] - l.a[1]], v), qb = skalar([q.b[0] - l.a[0], q.b[1] - l.a[1]], v);
+          const ueber = Math.min(Math.max(qa, qb), 2 * tiefe) - Math.max(Math.min(qa, qb), 0);
+          return { spalt, seite, ueber };
+        })
+        .filter((q) => q.ueber > 0 && Math.abs(q.spalt) < ANLEGEN * m)
+        .sort((p, q) => Math.abs(p.spalt) - Math.abs(q.spalt))[0];
+      if (quer) tk -= quer.seite * quer.spalt;
+      beste = { luecke, linie: l, r: { ...roh, w, c: [l.a[0] + u[0] * tk + l.n[0] * tiefe, l.a[1] + u[1] * tk + l.n[1] * tiefe] } };
+    }
+    z.linie = beste?.linie ?? null;
+    let ziel = beste ? beste.r : roh;
+    z.w = ziel.w;
+
+    // Kein Hineinschieben: erst achsweise gleiten (frei bewegt), sonst bis an den Rand des Hindernisses heran
+    const frei = (r) => { const f = schmal(r); return !z.hindernisse.some((h) => geo.ueberlappen(f, h)); };
+    const g = z.gueltig ?? start;
+    if (!frei(ziel)) {
+      const gleiten = beste ? [] : [{ ...ziel, c: [ziel.c[0], g.c[1]] }, { ...ziel, c: [g.c[0], ziel.c[1]] }].filter(frei)
+        .sort((p, q) => Math.hypot(p.c[0] - ziel.c[0], p.c[1] - ziel.c[1]) - Math.hypot(q.c[0] - ziel.c[0], q.c[1] - ziel.c[1]));
+      ziel = gleiten[0] ?? annaehern(g, ziel, frei);
+    }
+    z.gueltig = ziel;
+    return geo.rechteckPunkte(ziel);
+  }
+  // Von einer freien Lage so weit wie möglich auf das Ziel zu (Halbierungssuche)
+  function annaehern(von, nach, frei) {
+    if (!frei(von)) return nach;
+    let dw = nach.w - von.w;
+    dw -= 2 * Math.PI * Math.round(dw / (2 * Math.PI));
+    const lage = (k) => ({ ...nach, w: von.w + dw * k, c: [von.c[0] + (nach.c[0] - von.c[0]) * k, von.c[1] + (nach.c[1] - von.c[1]) * k] });
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 18; i++) { const k = (lo + hi) / 2; if (frei(lage(k))) lo = k; else hi = k; }
+    return lage(lo);
+  }
 
   function randabstand([x, y], punkte) {
     let d = Infinity;
@@ -314,7 +434,9 @@
   // Werkzeug „zeichnen“: ziehen = Rechteck, tippen = Polygon Punkt für Punkt (schließen: erster Punkt, Doppelklick, Enter).
   // Werkzeug „auswahl“: Form antippen = wählen und verschieben, Griff ziehen = Ecke verschieben.
   // Die Formen zeichnet der Aufrufer mit data-form="schluessel"; Griffe und Vorschau zeichnet dieser Baustein in `ebene`.
-  function FormenEditor({ svg, ansicht, ebene, werkzeug, form, auswahl, waehlen, aendern, merken, neu }) {
+  // verschieben(schluessel, punkte, [dx, dy], zustand): optional, liefert die Punkte beim Verschieben (Einrasten, D-019)
+  // oder null für schlichtes Verschieben; Alt verschiebt immer schlicht.
+  function FormenEditor({ svg, ansicht, ebene, werkzeug, form, auswahl, waehlen, aendern, merken, neu, verschieben }) {
     let zug = null;          // laufendes Ziehen
     let polygon = null;      // Punkte des Polygons im Entstehen
     let zeigerPunkt = null;
@@ -403,7 +525,10 @@
         const dx = p[0] - zug.start[0], dy = p[1] - zug.start[1];
         if (!zug.bewegt && Math.hypot(dx, dy) < 4 * ansicht.massstab()) return;
         if (!zug.bewegt) { merken(); zug.bewegt = true; }
-        aendern(zug.schluessel, zug.punkte.map(([x, y]) => [x + dx, y + dy]));
+        zug.einrasten ??= {};
+        const punkte = (!e.altKey && verschieben?.(zug.schluessel, zug.punkte, [dx, dy], zug.einrasten))
+          || zug.punkte.map(([x, y]) => [x + dx, y + dy]);
+        aendern(zug.schluessel, punkte);
         zeichnen();
       }
     });
@@ -454,6 +579,7 @@
 
   MF.geo = geo;
   MF.flaechenTexte = flaechenTexte;
+  MF.einrasten = einrasten;
   MF.raumFarbe = raumFarbe;
   MF.FormenEditor = FormenEditor;
   MF.Ansicht = Ansicht;
