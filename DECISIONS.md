@@ -192,3 +192,18 @@ Cankat'ın isteği: Büro'daki ünite fotoğrafı demodaki davranışı alır.
 Claude'un ekledikleri (onay bekliyor): yok; fotoğraf üstü renkler (karartma, etiket) iki temada aynıdır, çünkü fotoğrafın
 üstündedir.
 → SPEC 4.7.
+
+## D-027 · 02.11.2026 · Fotoğrafı eklerken kırpma
+Cankat'ın isteği (üşendiren ara adım olmasın: ayrıca kırpıp yeniden eklemek gerekmesin). Çözüm Claude'un önerisi:
+- **Tek fotoğraf** eklenince (kamerayla çekilen ya da seçilen tek dosya) hemen kırpma ekranı açılır. Bu ekranın kendisi
+  „kırpayım mı?“ sorusudur; ayrı bir soru penceresi yok. Tek kayıtta da seri kayıtta da aynı.
+- Ekran: fotoğraf ve üstünde çerçeve. Köşeler ve kenarlar sürüklenir, çerçevenin içi sürüklenince çerçeve kayar;
+  dışı kararır. Düğmeler: **„Übernehmen“** (birincil) ve **„Ganzes Bild“**; × fotoğrafı eklemekten vazgeçer.
+  Çerçeve başta bütün fotoğraftır; hiç dokunmadan „Übernehmen“ fotoğrafı olduğu gibi alır.
+- Kırpma telefonda yapılır, fotoğraf kırpılmış hâliyle yüklenir (uzun kenar en çok 3000 px). Sunucu değişmez.
+- **Birden çok dosya** birlikte seçilince ekran açılmaz (çok sayıda dosyada üşendirir); yeni üründe henüz yüklenmemiş
+  her fotoğrafın üstünde bir kırpma düğmesi vardır.
+- Oran serbesttir; döndürme yok.
+Claude'un ekledikleri (onay bekliyor): çoklu seçimde kırpma ekranının açılmaması ve yüklenmemiş fotoğraftaki kırpma
+düğmesi. Kaydedilmiş bir fotoğrafı sonradan kırpmak şimdilik yok.
+→ SPEC 6.2.

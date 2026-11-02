@@ -265,7 +265,7 @@ Daha (telefon) ─ istatistik
 ### 6.2 Ürün kaydı
 - **Alanlar:** tür (fiziki/dijital), ad, marka, kategori, ebat, ürün linki, fotoğraf(lar), adet, renkler, not, kategoriye özel alanlar.
 - **Zorunlu olan sadece ad.** Kategori son kullanılan kategoriyle gelir. Gerisi sonra tamamlanır.
-- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir.
+- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Tek fotoğraf eklenince kırpma ekranı açılır ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027).
 - **Fiyat:** değer (€), birim (m², m, adet, paket) ve girildiği tarih. Fiyat güncellenince tarih bugün olur.
 - **Renkler:** sabit bir paletten elle seçilir (beyaz, bej, kahve, terracotta, altın, pembe, yeşil, mavi, gri, siyah); tek dokunuşla. Fotoğraftan otomatik çıkarma v2'dedir.
 - **Konum (fiziki ürün):** ünite seçilir, sonra fotoğrafta bölmeye dokunulur.
