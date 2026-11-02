@@ -254,5 +254,6 @@ Cankat'ın kararı (2. yöntem). Renk, malzemeyi aramanın temel yollarından bi
   („Rot“ → Weinrot'lu kumaşlar da). Kategori seçiliyken tonlar da ayrı filtre olarak görünür.
 - Teknik: „Farbe“ filtresi veritabanında çoklu seçim filtresidir (`filter.farbe = 1`); tonlar `filter_option.hex`
   ve `filter_option.grundfarbe` taşır. Böylece ürün formu, toplu düzenleme ve arama mevcut filtre yolunu kullanır.
-Claude'un ekledikleri (onay bekliyor): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi.
+Yeni ton filtresinin adı varsayılan olarak „Farbton“ (ana renk filtresi „Farbe“ ile karışmasın; tek ad kuralı).
+Claude'un ekledikleri (onay bekliyor): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi; ton tutma noktası.
 → SPEC 6.1, 6.2, 6.3.
