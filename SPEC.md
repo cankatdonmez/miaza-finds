@@ -358,7 +358,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
   - Hiçbir odanın içinde olmayan ünite uyarıyla işaretlenir.
   - **Dikdörtgen ünite sürüklenince (D-019)** oda kenarına veya başka bir ünitenin kenarına yaklaşınca yapışır, kenara paralel döner, kenar boyunca kayar; çekince ayrılır. Başka bir ünitenin içine giremez, onu itmez. Alt tuşu yapışmayı kapatır.
 - **Ünite fotoğrafı:** çekilir veya mevcut görsel seçilir.
-- **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir.
+- **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir. Ünite gibi **isteğe bağlı bir adı** olur ("Obere Schublade"); kodun yanında bilgi olarak görünür (D-020).
 - **Kod şeması:** `Oda.Ünite.Bölme`, ör. **2.2.5**.
 - **Yazılar (D-018):** oda adı ve ünite kodu şeklin içindeki en geniş noktada durur, şekle sığacak kadar büyür ama ekranda okunur sınırlar içinde kalır. Ünitenin adı sığarsa kodun altında yazılır.
 
@@ -379,7 +379,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 ### 6.6 QR kodları ve etiketler
 - **Ürün QR'ı** sadece envanter numarasına giden kalıcı linki içerir (ör. `…/p/265`).
 - **Ürün etiketi:** ad, QR ve ürün kodu. **Konum yazmaz.**
-- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
+- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında bölmenin adı, yoksa ünitenin adı (D-020). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
   - Seçilenler A4'e otomatik dizilir; sağda önizleme görünür.

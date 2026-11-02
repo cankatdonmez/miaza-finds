@@ -121,3 +121,11 @@ Cankat'ın isteği. Plan düzenleyicide dikdörtgen bir ünite sürüklenirken:
 Claude'un ekledikleri (Cankat onayladı): yalnız dikdörtgen üniteler için (poligon üniteler ve odalar serbest); Alt tuşu
 basılıyken yapışma ve çarpışma kapalı; zaten üst üste duran üniteler birbirini engellemez.
 → SPEC 6.4.
+
+## D-020 · 02.11.2026 · Bölmenin isteğe bağlı adı
+Cankat'ın isteği. Bölmenin otomatik kodunun (2.2.5) yanına, ünitedeki gibi isteğe bağlı bir **Name** gelir
+(„Obere Schublade“, „Linke Tür“). Bölme düzenleyicide yazılır; Büro'daki bölme listesinde, bölme panelinde, ürün
+detayındaki yerde ve toplu düzenlemenin „Platz“ listesinde kodun yanında görünür. Kod değişmez, ad yalnız bilgi verir.
+Claude'un ekledikleri (onay bekliyor): bölme etiketinde kodun altında ünite adı yerine bölmenin adı yazılır (ad yoksa
+ünite adı); basılmış bir etiketin adı değişirse etiket „yeniden bas“ listesine girer.
+→ SPEC 6.4, 6.6.
