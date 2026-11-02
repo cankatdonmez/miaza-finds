@@ -109,3 +109,15 @@ Cankat'ın geri bildirimi (oda adı çok küçük ve odanın dışında, ünite 
 - **Renk:** odalar 5 pastel tondan birini alır; renk oda numarasından gelir (1 → 1. ton, 6 → yine 1. ton). Seçim adımı yok.
   Üniteler odalardan ayrışan tek bir renkte; seçili ünite vurgu rengindedir. Açık ve koyu temada ayrı tonlar.
 → SPEC 6.4.
+
+## D-019 · 02.11.2026 · Dikdörtgen ünite duvara ve komşusuna yapışır
+Cankat'ın isteği. Plan düzenleyicide dikdörtgen bir ünite sürüklenirken:
+- **Duvara yapışma:** odanın bir kenarına yeterince yaklaşınca (ekranda ~10 px) ona yapışır ve o kenara paralel olacak
+  şekilde en kısa yoldan döner; elle döndürme yok. Yapışıkken kenar boyunca kayar, köşede durur (kenarın ucunu geçmez).
+  Kenardan ~24 px uzaklaşınca ayrılır ve son açısını korur. Duvarın odanın iç tarafına yapışır.
+- **Komşuya yapışma:** başka bir ünitenin kenarına da aynı şekilde, dış tarafından yapışır.
+- **Çarpışma:** dikdörtgen ünite başka bir ünitenin içine giremez; çarpınca onun kenarında durur, komşuyu itmez.
+  Komşunun yanından kayarak geçince ilerlemeye devam eder.
+Claude'un ekledikleri (onay bekliyor): yalnız dikdörtgen üniteler için (poligon üniteler ve odalar serbest); Alt tuşu
+basılıyken yapışma ve çarpışma kapalı; zaten üst üste duran üniteler birbirini engellemez.
+→ SPEC 6.4.

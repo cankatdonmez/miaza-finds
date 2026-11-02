@@ -356,6 +356,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
   - Bulunduğu odaya otomatik bağlanır ve sıradaki kodu alır (ör. 4.1); kod elle değiştirilebilir.
   - **İsteğe bağlı bir adı** olur ("Schrank links", "Rollcontainer").
   - Hiçbir odanın içinde olmayan ünite uyarıyla işaretlenir.
+  - **Dikdörtgen ünite sürüklenince (D-019)** oda kenarına veya başka bir ünitenin kenarına yaklaşınca yapışır, kenara paralel döner, kenar boyunca kayar; çekince ayrılır. Başka bir ünitenin içine giremez, onu itmez. Alt tuşu yapışmayı kapatır.
 - **Ünite fotoğrafı:** çekilir veya mevcut görsel seçilir.
 - **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir.
 - **Kod şeması:** `Oda.Ünite.Bölme`, ör. **2.2.5**.
