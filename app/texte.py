@@ -171,6 +171,20 @@ DE: dict[str, str] = {
     "plan.wirkung_ohne_platz_eins": "1 Produkt ist danach ohne Platz.",
     "plan.wirkung_etiketten": "{n} Fach-Etiketten müssen neu gedruckt werden.",
     "plan.wirkung_etiketten_eins": "1 Fach-Etikett muss neu gedruckt werden.",
+
+    # Fächer einer Einheit (SPEC 6.4)
+    "fach.titel": "Einheit {code}",
+    "fach.zum_plan": "Zum Plan",
+    "fach.w_fach": "Fach",
+    "fach.foto": "Foto der Einheit",
+    "fach.fach": "Fach",
+    "fach.anzahl": "{n} Fächer",
+    "fach.anzahl_eins": "1 Fach",
+    "fach.erst_foto": "Wähle zuerst ein Foto der Einheit; die Fächer werden darauf gezeichnet.",
+    "fach.nummerieren": "Neu nummerieren",
+    "fach.produkte": "{n} Produkte in diesem Fach",
+    "fach.produkte_eins": "1 Produkt in diesem Fach",
+    "fach.loeschen": "Fach löschen",
     # Kategorien und Filter (SPEC 6.3)
     "kat.neu": "Neue Kategorie",
     "kat.name": "Name",

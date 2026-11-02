@@ -58,6 +58,14 @@ def plan_bearbeiten(request: Request):
     return _seite(request, "einstellungen", "plan.titel", vorlage="plan")
 
 
+@router.get("/plan/einheit/{einheit_id}")
+def faecher_bearbeiten(request: Request, einheit_id: int, db: sqlite3.Connection = Depends(get_db)):
+    """Fächer einer Einheit auf ihrem Foto (SPEC 6.4): nur Desktop."""
+    if db.execute("SELECT 1 FROM einheit WHERE id = ?", (einheit_id,)).fetchone() is None:
+        raise HTTPException(404)
+    return _seite(request, "einstellungen", "plan.titel", vorlage="fach", einheit_id=einheit_id)
+
+
 @router.get("/mehr")
 def mehr(request: Request):
     return _seite(request, "mehr", "mehr.titel")

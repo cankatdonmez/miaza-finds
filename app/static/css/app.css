@@ -435,6 +435,9 @@ select.eingabe{padding-right:6px}
 .zeichnen-punkt{fill:var(--card);stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
 .griff{fill:var(--card);stroke:var(--accent);cursor:grab}
 .raum,.einheit,.fach{cursor:pointer}
+.fach{fill:var(--accent);fill-opacity:.12;stroke:var(--accent)}
+.fach-leer{fill:var(--sunk)}
+.fach-text{fill:var(--ink);stroke:var(--card);paint-order:stroke;font-family:var(--font-num);font-weight:500;pointer-events:none}
 @media (max-width:1180px){.plan-haupt{grid-template-columns:minmax(0,1fr) 260px}}
 
 @media print{.kopf,.leiste,.seitenleiste,.actions,.pruefzeile,[data-weiter]{display:none!important}.inhalt{margin:0}}

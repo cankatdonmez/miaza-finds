@@ -278,7 +278,7 @@
       ${e.id ? `<div class="plan-foto">${s?.foto ? `<img src="/media/einheiten/${esc(s.foto)}-960.webp" alt="">` : `<span class="leer-bild">${icon("image", 28)}</span>`}</div>
         <label class="btn">${icon("camera", 20)}<span>${esc(t(s?.foto ? "plan.foto_ersetzen" : "plan.foto_waehlen"))}</span>
           <input class="sr-only" type="file" accept="image/*" data-einheit-foto></label>
-        <button class="btn" type="button" data-aktion="faecher" ${s?.foto ? "" : "disabled"}>${esc(t("plan.faecher_bearbeiten", { n }))}</button>`
+        <button class="btn" type="button" data-aktion="faecher">${esc(t("plan.faecher_bearbeiten", { n }))}</button>`
              : `<p class="sub">${esc(t("plan.erst_speichern"))}</p>`}
       <button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("plan.einheit_loeschen"))}</button>
     </div>`;
