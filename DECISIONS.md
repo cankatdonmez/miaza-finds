@@ -179,3 +179,16 @@ bölmeler, ünite fotoğrafları, altlık; ürünler „Ohne Platz“ olur) · *
 1'den; yalnız Produkte ve Büroplan da seçiliyse). Üstte „Alles auswählen“. Her kutunun yanında etkisi yazar; önce
 kendiliğinden yedek alınır. „Alles löschen (Neuanfang)“ ayrı düğmesi kalkar. Dışa aktarma her zaman tümüdür.
 → SPEC 6.13.
+
+## D-026 · 02.11.2026 · Ünite fotoğrafındaki bölmeler demodaki gibi
+Cankat'ın isteği: Büro'daki ünite fotoğrafı demodaki davranışı alır.
+- Bölme alanları dolgusuz ve kenarsız; fareyle üzerine gelince hafif aydınlanır.
+- Her bölmenin sol üst köşesinde küçük koyu etiket: **kod · ürün sayısı** (boş bölmede yalnız kod, daha soluk).
+- **Spot ışığı** yuvarlak köşeli bir çerçevedir; bölmeden bölmeye kayarak geçer (0,45 sn). Seçili bölmede zemin koyu
+  karartılır, kenar vurgu renginde ve nabız gibi atar; fareyle üzerine gelinen bölmede hafif karartma ve beyaz kenar
+  (önizleme). Spot dışındaki etiketler solar.
+- Hareket azaltma tercihi varsa kayma ve nabız olmaz.
+- Spot, bölmenin dış çerçevesini (sınır kutusu) izler; bölmeler çoğunlukla dikdörtgen çizilir.
+Claude'un ekledikleri (onay bekliyor): yok; fotoğraf üstü renkler (karartma, etiket) iki temada aynıdır, çünkü fotoğrafın
+üstündedir.
+→ SPEC 4.7.

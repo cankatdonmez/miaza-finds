@@ -143,7 +143,7 @@ Efektler uygulamayı **anlaşılır ve canlı** yapar; süs olmaz, kullanımı z
 - **Plan yakınlaşması:** üniteye dokununca plan o üniteye yumuşakça yaklaşır.
 - **Ürün kartları:** ünitenin etrafında düzenli bir yay üzerinde açılır. Aranan ürün öne çıkar ve tek farklı duran kart odur.
 - **Bölme kartları:** bölme seçilince içindeki ürünler yelpaze gibi açılır.
-- **Spot ışığı:** fotoğrafta seçili bölme dışında her yer kararır.
+- **Spot ışığı:** fotoğrafta seçili bölme dışında her yer kararır. Spot bölmeden bölmeye kayar, seçili bölmenin kenarı nabız gibi atar; her bölmede "kod · ürün sayısı" etiketi (D-026).
 - **Fareyle önizleme (masaüstü):**
   - Üniteye gelince küçük önizleme: ürün sayısı ve küçük resimler.
   - Bölmeye gelince spot ışığı önizlemesi.
