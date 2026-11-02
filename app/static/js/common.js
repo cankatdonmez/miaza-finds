@@ -78,5 +78,39 @@ const MF = (() => {
   const datum = (iso) => (iso ? iso.split("-").reverse().join(".") : "");
   const euro = (cent) => (cent / 100).toLocaleString("de-AT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro };
+  // ---------- „Hier einordnen“ (D-016): dieses Gerät ordnet 30 Minuten lang in ein Fach ein ----------
+  const EINORDNEN = "mf-einordnen";
+  const DAUER_MS = 30 * 60 * 1000;
+  const einordnen = {
+    aktiv() {
+      try {
+        const m = JSON.parse(localStorage.getItem(EINORDNEN) || "null");
+        if (m && m.bis > Date.now()) return m;
+        localStorage.removeItem(EINORDNEN);
+      } catch { /* ohne Speicher kein Modus */ }
+      return null;
+    },
+    starten(fach) {
+      try { localStorage.setItem(EINORDNEN, JSON.stringify({ fach_id: fach.id, code: fach.code, bis: Date.now() + DAUER_MS })); } catch { /* egal */ }
+      einordnenLeiste();
+    },
+    // jede Einordnung verlängert den Modus
+    verlaengern() { const m = einordnen.aktiv(); if (m) einordnen.starten({ id: m.fach_id, code: m.code }); },
+    beenden() { try { localStorage.removeItem(EINORDNEN); } catch { /* egal */ } einordnenLeiste(); },
+  };
+  function einordnenLeiste() {
+    $(".einordnen-leiste")?.remove();
+    const m = einordnen.aktiv();
+    const ort = $(".inhalt");
+    if (!m || !ort) return;
+    const el = document.createElement("div");
+    el.className = "einordnen-leiste";
+    el.innerHTML = `${icon("pin", 20)}<span>${esc(t("einordnen.leiste", { code: m.code }))}</span>
+      <button class="iconbtn" type="button" aria-label="${esc(t("einordnen.beenden"))}" title="${esc(t("einordnen.beenden"))}">${icon("close", 20)}</button>`;
+    $("button", el).addEventListener("click", () => einordnen.beenden());
+    ort.prepend(el);
+  }
+  einordnenLeiste();
+
+  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen };
 })();

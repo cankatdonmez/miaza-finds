@@ -11,7 +11,7 @@ from typing import Any
 from .. import zeit
 from ..fehler import Fehler
 from ..texte import t
-from . import nummern
+from . import nummern, plan
 from .suche import normalisieren
 
 FARBEN = ("weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz")
@@ -38,6 +38,8 @@ def lesen(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
     d["merkmale"] = _merkmale(conn, inventar_nr, p["kategorie_id"])
     d["fotos"] = [dict(r) for r in conn.execute(
         "SELECT id, datei, breite, hoehe FROM foto WHERE produkt_id = ? ORDER BY sortierung, id", (inventar_nr,))]
+    # Platz im Büro (SPEC 6.4): Code wird aus dem Fach abgeleitet
+    d["platz"] = plan.fach(conn, p["fach_id"]) if p["fach_id"] else None
     return d
 
 

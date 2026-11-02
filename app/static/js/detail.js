@@ -30,6 +30,7 @@
         <span class="spacer"></span>
         <a class="btn" href="/produkt/${p.inventar_nr}/bearbeiten">${esc(t("produkt.bearbeiten"))}</a>
       </div>` : ""}
+      ${einordnenKnopf(p)}
       <div class="detail-bildrahmen">${bild}</div>
       ${kleine}
       <div class="detail-titel">
@@ -37,6 +38,7 @@
         <div class="detail-zeile"><span class="num">${esc(p.code)}</span>${p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>` : ""}</div>
       </div>
       <dl class="merkmale">
+        ${p.art === "physisch" ? zeile(t("produkt.platz"), p.platz ? platzText(p.platz) : `<span class="sub">${esc(t("status.ohne_platz"))}</span>`) : ""}
         ${zeile(t("produkt.kategorie"), esc(p.kategorie_name))}
         ${zeile(t("produkt.marke"), esc(p.marke))}
         ${zeile(t("produkt.abmessungen"), esc(p.abmessungen))}
@@ -48,9 +50,40 @@
       ${p.notiz ? `<p class="detail-notiz">${esc(p.notiz)}</p>` : ""}
       <div class="actions">
         ${p.link ? `<a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">${esc(t("produkt.link_oeffnen"))}</a>` : ""}
+        ${p.platz ? `<a class="btn" href="/buero?fach=${p.platz.id}&produkt=${p.inventar_nr}">${icon("buero", 20)}<span>${esc(t("produkt.im_buero_zeigen"))}</span></a>` : ""}
         ${p.art === "physisch" ? druckliste(p) : ""}
       </div>`;
   };
+
+  const platzText = (f) => `<span class="num">${esc(f.code)}</span>${f.einheit_name ? ` <span class="sub">· ${esc(f.einheit_name)}</span>` : ""}`;
+
+  // Im Einordnen-Modus (D-016) steht oben ein großer Knopf: ein Tippen und das Produkt liegt im Fach
+  function einordnenKnopf(p) {
+    const m = MF.einordnen.aktiv();
+    if (!m || p.art !== "physisch") return "";
+    if (p.platz?.id === m.fach_id) return `<div class="einordnen-ok">${icon("pin", 20)}<span>${esc(t("einordnen.schon", { code: m.code }))}</span></div>`;
+    return `<button class="btn primary block einordnen-knopf" type="button" data-einordnen="${p.inventar_nr}">${icon("pin", 20)}<span>${esc(t("einordnen.knopf", { code: m.code }))}</span></button>`;
+  }
+
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-einordnen]");
+    if (!b) return;
+    const m = MF.einordnen.aktiv();
+    if (!m) { b.remove(); return; }
+    const nr = Number(b.dataset.einordnen);
+    b.disabled = true;
+    try {
+      const r = await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: m.fach_id });
+      MF.einordnen.verlaengern();
+      b.outerHTML = `<div class="einordnen-ok">${icon("pin", 20)}<span>${esc(t("einordnen.erledigt", { code: m.code }))}</span></div>`;
+      MF.toast(t("einordnen.erledigt", { code: m.code }), {
+        rueckgaengig: async () => {
+          try { await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: r.vorher }); location.reload(); }
+          catch (err) { MF.toast(err.message, { fehler: true }); }
+        },
+      });
+    } catch (err) { b.disabled = false; MF.toast(err.message, { fehler: true }); }
+  });
 
   // Druckliste (SPEC 5): auch am Telefon; gedruckt wird am Desktop
   function druckliste(p) {

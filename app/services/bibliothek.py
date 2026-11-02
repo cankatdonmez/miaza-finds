@@ -24,14 +24,11 @@ STATUS = ("am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend")
 
 
 def _status_bedingung(status: str) -> str:
-    """Dilim 1 kennt noch keine Fächer und keine Entnahme: jedes physische Produkt ist „ohne Platz“.
-
-    Mit Dilim 2 (Fach) und 3 (Entnahme) ändert sich nur diese Funktion.
-    """
+    """Dilim 2: Platz über das Fach. Entnahme (in Benutzung, außer Haus) kommt mit Dilim 3; nur diese Funktion ändert sich."""
     return {
-        "ohne_platz": "p.art = 'physisch'",
+        "ohne_platz": "p.art = 'physisch' AND p.fach_id IS NULL",
         "fehlend": "p.name IS NULL",
-        "am_platz": "0",
+        "am_platz": "p.art = 'physisch' AND p.fach_id IS NOT NULL",
         "in_benutzung": "0",
         "ausser_haus": "0",
     }[status]

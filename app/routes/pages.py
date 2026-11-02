@@ -17,9 +17,9 @@ router = APIRouter()
 
 # (Ziel, Textschlüssel, Symbol). Nur, was in diesem Dilim schon funktioniert; Ofis, Scannen und Sammlungen
 # kommen mit ihren Dilims dazu (SPEC 4.5). Etiketten-Druck gibt es nur am Desktop (SPEC 5).
-MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("etiketten", "menue.etiketten", "tag"),
-                 ("einstellungen", "menue.einstellungen", "settings")]
-MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("mehr", "menue.mehr", "more")]
+MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
+                 ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
+MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"), ("mehr", "menue.mehr", "more")]
 # Seiten, die am Telefon unter „Mehr“ liegen
 MEHR_SEITEN = {"mehr", "einstellungen"}
 
@@ -50,6 +50,17 @@ def etiketten(request: Request):
 @router.get("/einstellungen")
 def einstellungen(request: Request):
     return _seite(request, "einstellungen", "einstellungen.titel")
+
+
+@router.get("/buero")
+def buero(request: Request):
+    return _seite(request, "buero", "buero.titel")
+
+
+@router.get("/f/{fach_id}")
+def fach_link(fach_id: int):
+    """Bleibender Link auf dem Fach-Etikett (SPEC 6.6): die Kennung des Fachs, nie sein Code."""
+    return RedirectResponse(f"/buero?fach={fach_id}", status_code=303)
 
 
 @router.get("/plan")
