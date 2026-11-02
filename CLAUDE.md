@@ -70,6 +70,7 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
   - Bilgisayar değiştirmeden önce Drive'ın eşitlemeyi bitirmesi beklenir.
   - Güvenlik için ileride özel bir uzak depo (ör. GitHub, private) eklenmesi önerilir.
 - Klasörün yolu uzun (Drive kısayolu). Windows'taki 260 karakter sınırına takılmamak için derin klasör yapısından kaçınılır. Gerekirse Git'te `core.longpaths true` açılır.
+- Drive, `.git` içine `desktop.ini` dosyaları koyuyor; git bunları bozuk dal sanıyor ("ignoring broken ref"). Görünce sil: `find .git -name desktop.ini -delete`, sonra `git fsck`. Kalıcı çözüm: özel bir uzak depo.
 
 ## Açık sorular (SPEC 11)
 
