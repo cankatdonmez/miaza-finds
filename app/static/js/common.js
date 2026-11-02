@@ -66,12 +66,21 @@ const MF = (() => {
   }
 
   // Meldung, die nach einem Seitenwechsel erscheint (z. B. „Gespeichert“ beim Zurück zur Bibliothek)
-  function toastNachher(text) {
-    try { sessionStorage.setItem("mf-toast", text); } catch { /* ohne Speicher keine Meldung */ }
+  // rueckgaengig: {methode, url, daten} – ein API-Aufruf, der die Änderung zurücknimmt; danach wird neu geladen
+  function toastNachher(text, rueckgaengig = null) {
+    try { sessionStorage.setItem("mf-toast", JSON.stringify({ text, rueckgaengig })); } catch { /* ohne Speicher keine Meldung */ }
   }
   try {
     const wartend = sessionStorage.getItem("mf-toast");
-    if (wartend) { sessionStorage.removeItem("mf-toast"); toast(wartend); }
+    if (wartend) {
+      sessionStorage.removeItem("mf-toast");
+      const { text, rueckgaengig: r } = JSON.parse(wartend);
+      toast(text, r ? {
+        rueckgaengig: async () => {
+          try { await api(r.methode, r.url, r.daten); location.reload(); } catch (err) { toast(err.message, { fehler: true }); }
+        },
+      } : {});
+    }
   } catch { /* ohne Speicher keine Meldung */ }
 
   // Datum 2026-11-01 → 01.11.2026, Cent → 1.234,56 (SPEC 8.1)

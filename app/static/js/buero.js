@@ -11,6 +11,8 @@
   let plan = null;
   let zustand = { einheit: null, fach: null, produkt: null };
   let fachInhalt = null;         // {code, produkte[]} des gewählten Fachs
+  // Platz wählen (D-022): aus dem Produktdetail; {nr, name, fach_id} des Produkts
+  let platzieren = null;
 
   const einheit = (id) => plan.einheiten.find((e) => e.id === id);
   const einheitVonFach = (fid) => plan.einheiten.find((e) => e.faecher.some((f) => f.id === fid));
@@ -67,7 +69,7 @@
       const gruppen = [...plan.raeume.map((r) => ({ name: r.name || String(r.nr), einheiten: plan.einheiten.filter((e) => e.raum_id === r.id) })),
                        { name: t("plan.ohne_raum"), einheiten: plan.einheiten.filter((e) => !e.raum_id) }].filter((g) => g.einheiten.length);
       panel.innerHTML = `<div class="stack">
-        <p class="sub">${esc(t(leer ? "buero.leer" : "buero.waehlen"))}</p>
+        <p class="sub">${esc(t(leer ? "buero.leer" : platzieren ? "platzieren.einheit" : "buero.waehlen"))}</p>
         ${gruppen.map((g) => `<div class="fachliste"><h2 class="abschnitt">${esc(g.name)}</h2>${g.einheiten.map((e) => `
           <button class="zeile" type="button" data-einheit="${e.id}"><span class="zeile-haupt"><span class="num">${esc(e.code)}</span>
             ${e.name ? `<span class="karte-sub">${esc(e.name)}</span>` : ""}</span><span class="sub">${esc(t("buero.produkte", { n: e.produkte }))}</span>${icon("right", 18)}</button>`).join("")}</div>`).join("")}
@@ -80,6 +82,7 @@
       <button class="iconbtn" type="button" data-aktion="schliessen" aria-label="${esc(t("produkt.schliessen"))}">${icon("close")}</button></div>`;
     if (!zustand.fach) {
       panel.innerHTML = `<div class="stack">${kopf}${MF.fotoMitFaechern(e, null)}
+        ${platzieren && e.faecher.length ? `<p class="sub">${esc(t("platzieren.fach"))}</p>` : ""}
         <label class="btn">${icon("camera", 20)}<span>${esc(t(e.foto ? "plan.foto_ersetzen" : "plan.foto_waehlen"))}</span>
           <input class="sr-only" type="file" accept="image/*" data-einheit-foto></label>
         ${e.faecher.length ? `<div class="fachliste">${e.faecher.map((f) => `
@@ -95,7 +98,9 @@
     panel.innerHTML = `<div class="stack">${kopf}${MF.fotoMitFaechern(e, zustand.fach)}
       <div class="buero-kopf"><button class="linkbtn" type="button" data-aktion="zurueck">${esc(t("buero.zurueck_einheit"))}</button>
         <span class="spacer"></span>${f.name ? `<span class="sub">${esc(f.name)}</span>` : ""}<span class="num buero-fachcode">${esc(f.code)}</span></div>
-      <button class="btn block" type="button" data-aktion="einordnen">${icon("pin", 20)}<span>${esc(t("einordnen.hier"))}</span></button>
+      ${!platzieren ? `<button class="btn block" type="button" data-aktion="einordnen">${icon("pin", 20)}<span>${esc(t("einordnen.hier"))}</span></button>`
+        : platzieren.fach_id === f.id ? `<div class="einordnen-ok">${icon("pin", 20)}<span>${esc(t("platzieren.schon"))}</span></div>`
+        : `<button class="btn primary block" type="button" data-aktion="ablegen">${icon("pin", 20)}<span>${esc(t("platzieren.hier"))}</span></button>`}
       ${produkte.length ? `<div class="fachliste">${produkte.map((p) => `
         <a class="zeile${p.inventar_nr === zustand.produkt ? " gesucht" : ""}" href="/produkt/${p.inventar_nr}">
           ${p.foto ? `<img class="zeile-img" src="/media/fotos/${esc(p.foto)}-320.webp" alt="" loading="lazy">` : `<span class="zeile-img leer-bild">${icon("image", 20)}</span>`}
@@ -112,6 +117,7 @@
     if (zustand.einheit) q.set("einheit", zustand.einheit);
     if (zustand.fach) q.set("fach", zustand.fach);
     if (zustand.produkt) q.set("produkt", zustand.produkt);
+    if (platzieren) q.set("platzieren", platzieren.nr);
     history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : ""));
     fachInhalt = null;
     if (zustand.fach) {
@@ -151,16 +157,42 @@
     if (!b) return;
     if (b.dataset.aktion === "schliessen") setzen({ einheit: null, fach: null, produkt: null });
     if (b.dataset.aktion === "zurueck") setzen({ fach: null, produkt: null });
+    if (b.dataset.aktion === "ablegen") ablegen(zustand.fach, fachInhalt?.code);
     if (b.dataset.aktion === "einordnen") {
       MF.einordnen.starten({ id: zustand.fach, code: fachInhalt?.code });
       toast(t("einordnen.gestartet", { code: fachInhalt?.code }));
     }
   });
 
+  // Ablegen: speichern, zurück zum Produkt; dort bietet die Meldung „Rückgängig“
+  async function ablegen(fachId, code) {
+    try {
+      const r = await api("PUT", `/api/produkte/${platzieren.nr}/platz`, { fach_id: fachId });
+      MF.toastNachher(fachId ? t("platz.gesetzt", { code }) : t("platz.entfernt"),
+                      { methode: "PUT", url: `/api/produkte/${platzieren.nr}/platz`, daten: { fach_id: r.vorher } });
+      location.href = "/produkt/" + platzieren.nr;
+    } catch (err) { toast(err.message, { fehler: true }); }
+  }
+
+  function platzierenLeiste() {
+    const el = document.createElement("div");
+    el.className = "einordnen-leiste";
+    el.innerHTML = `${icon("pin", 20)}<span>${esc(t("platzieren.leiste", { name: platzieren.name }))}</span>
+      ${platzieren.fach_id ? `<button class="linkbtn" type="button" data-ohne>${esc(t("status.ohne_platz"))}</button>` : ""}
+      <a class="iconbtn" href="/produkt/${platzieren.nr}" aria-label="${esc(t("platzieren.abbrechen"))}" title="${esc(t("platzieren.abbrechen"))}">${icon("close", 20)}</a>`;
+    el.querySelector("[data-ohne]")?.addEventListener("click", () => ablegen(null));
+    $(".inhalt").prepend(el);
+  }
+
   (async () => {
     try {
       plan = await api("GET", "/api/plan");
       const q = new URLSearchParams(location.search);
+      if (q.get("platzieren")) {
+        const p = await api("GET", "/api/produkte/" + Number(q.get("platzieren")));
+        platzieren = { nr: p.inventar_nr, name: p.name || t("produkt.unbenannt", { nr: p.inventar_nr }), fach_id: p.platz?.id ?? null };
+        platzierenLeiste();
+      }
       const fach = Number(q.get("fach")) || null;
       const e = fach ? einheitVonFach(fach) : einheit(Number(q.get("einheit")));
       ansicht.einpassen(false);
