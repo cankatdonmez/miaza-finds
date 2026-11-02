@@ -102,14 +102,16 @@ def _boegen(eintraege: list, zeichnen) -> bytes:
 # Aufbau nach der Vorlage „QR Code Sticker Paper.pdf“ (D-033), zentriert mit sicherem Rand (D-034); Maße in mm.
 # Waagerecht: Rand | „miaza“ | QR | Text | Rand – der Block füllt das Etikett zwischen den Rändern.
 # Senkrecht: der QR steht in der Mitte; der Text läuft von seiner Ober- bis zu seiner Unterkante.
-RAND = 3.0
-MARKE_BREITE, MARKE_ABSTAND, MARKE_PT = 3.5, 1.5, 9
-QR_SEITE = 28.0
-QR_LINKS = RAND + MARKE_BREITE + MARKE_ABSTAND
-TEXT_LINKS, TEXT_RAND_RECHTS = QR_LINKS + QR_SEITE + 3.0, RAND
+RAND = 3.0                                        # gedachter Sicherheitsrand rundum
+QR_SEITE = 26.0
+# „miaza“ so lang wie ~70 % der QR-Höhe; Comfortaa SemiBold: Schriftbild 2,98 pt breit und 0,768 pt hoch je pt Größe
+MARKE_PT = QR_SEITE * 0.70 / 25.4 * 72 / 2.98
+MARKE_BREITE = MARKE_PT * 0.768 / 72 * 25.4
+QR_LINKS = RAND + MARKE_BREITE + 2.0              # mindestens 2 mm frei neben dem QR (Ruhezone)
+TEXT_LINKS, TEXT_RAND_RECHTS = QR_LINKS + QR_SEITE + 2.5, RAND
 # Grundlinien ab der Oberkante des QR
-NAME_GRUNDLINIEN = (3.3, 8.8)                     # zwei Zeilen Produktname, die erste bündig mit der QR-Oberkante
-INFO_GRUNDLINIE, INFO_ABSTAND = 13.6, 2.35        # Marke, Artikelnummer, Maße, Merkmale
+NAME_GRUNDLINIEN = (3.3, 8.6)                     # zwei Zeilen Produktname, die erste bündig mit der QR-Oberkante
+INFO_GRUNDLINIE, INFO_ABSTAND = 12.9, 2.25        # Marke, Artikelnummer, Maße, Merkmale
 CODE_GRUNDLINIE = QR_SEITE                        # bündig mit der QR-Unterkante
 NAME_PT, NAME_MIN_PT, INFO_PT, CODE_PT = 13.5, 9, 6, 9.5
 
@@ -124,8 +126,9 @@ def _marke(c: canvas.Canvas, x: float, y: float, h: float) -> None:
     c.saveState()
     c.setFillColor(black)
     c.setFont("Comfortaa-SemiBold", MARKE_PT)
-    # Mitte des Streifens: x, Mitte der Höhe: y + h/2. Nach der Drehung läuft die Schrift nach oben.
-    c.translate(x + (RAND + MARKE_BREITE / 2) * mm + MARKE_PT * 0.35, y + h / 2)
+    # Nach der Drehung um 90° liegt die Grundlinie senkrecht, die Buchstaben ragen nach links: Grundlinie also am
+    # rechten Rand des Streifens, damit das Schriftbild genau zwischen RAND und RAND + MARKE_BREITE liegt.
+    c.translate(x + (RAND + MARKE_BREITE) * mm, y + h / 2)
     c.rotate(90)
     c.drawCentredString(0, 0, "miaza")
     c.restoreState()
@@ -203,16 +206,13 @@ def _passend(text: str, schrift: str, groesse: float, breite: float) -> str:
     return text.rstrip() + "…"
 
 
-def _zentriert(c: canvas.Canvas, x: float, y: float, w: float, h: float, qr_inhalt: str,
+def _im_raster(c: canvas.Canvas, x: float, y: float, w: float, h: float, qr_inhalt: str,
                teile: list[tuple[str, float, float, str]]) -> None:
-    """Zeichnet „miaza“, QR und Textzeilen als Block, waagerecht und senkrecht mittig im Etikett (D-034).
+    """Zeichnet „miaza“, QR und Textzeilen im festen Raster innerhalb des Sicherheitsrands (D-034).
 
-    teile: (Schrift, Größe in pt, Grundlinie in mm ab QR-Oberkante, Text). Der Block ist so breit wie die längste Zeile;
-    so bleibt auf beiden Seiten gleich viel Rand, mindestens RAND.
+    Das Raster füllt den Bereich zwischen den Rändern und ist auf jedem Etikett gleich; senkrecht steht der QR mittig.
+    teile: (Schrift, Größe in pt, Grundlinie in mm ab QR-Oberkante, Text).
     """
-    text_breite = max((pdfmetrics.stringWidth(t_, schrift, g) for schrift, g, _, t_ in teile), default=0)
-    block = (TEXT_LINKS - RAND) * mm + text_breite
-    x += (w - block) / 2 - RAND * mm
     oben = _qr_oben(y + h, h)
     _marke(c, x, y, h)
     _qr(c, qr_inhalt, x, oben)
@@ -245,7 +245,7 @@ def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, d: dict[s
               for i, zeile in enumerate(d["info"][:4])]
     teile.append(("Figtree", CODE_PT, CODE_GRUNDLINIE, d["code"]))
     # nur der bleibende Link mit der Inventarnummer
-    _zentriert(c, x, y, w, h, f"{basis_url.rstrip('/')}/p/{d['inventar_nr']}", teile)
+    _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/p/{d['inventar_nr']}", teile)
 
 
 def _umbrechen(text: str, schrift: str, groesse: float, breite: float, max_zeilen: int = 2) -> list[str]:
@@ -340,10 +340,10 @@ def _fach_zeichnen(basis_url: str):
         groesse = 22
         while groesse > 10 and pdfmetrics.stringWidth(f["code"], "PlexMono", groesse) > breite:
             groesse -= 1
-        teile = [("PlexMono", groesse, 9.5, f["code"])]
+        teile = [("PlexMono", groesse, 8.5, f["code"])]
         if f["beschreibung"]:
-            teile += [("Figtree", 9, 16 + i * 4, zeile) for i, zeile in enumerate(_umbrechen(f["beschreibung"], "Figtree", 9, breite))]
-        _zentriert(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile)
+            teile += [("Figtree", 9, 15 + i * 4, zeile) for i, zeile in enumerate(_umbrechen(f["beschreibung"], "Figtree", 9, breite))]
+        _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile)
     return zeichnen
 
 

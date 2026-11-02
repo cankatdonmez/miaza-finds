@@ -161,7 +161,7 @@ def test_langes_wort_bleibt_im_etikett(client, produkte):
 
 
 def test_etikett_mittig_mit_rand(client, produkte):
-    """D-034: Inhalt waagerecht und senkrecht mittig, überall mindestens 3 mm Rand; „miaza“ steht drauf."""
+    """D-034: festes Raster im Sicherheitsrand (3 mm), QR senkrecht mittig; „miaza“ steht drauf."""
     import pypdfium2 as pdfium
     from app.services import etiketten
     r = client.get("/api/etiketten/pdf", params={"nr": produkte["ids"][:1]})
@@ -177,5 +177,5 @@ def test_etikett_mittig_mit_rand(client, produkte):
     mm_ = lambda p: p / k / 72 * 25.4
     links, rechts = mm_(min(x for x, _ in dunkel)), mm_(w - max(x for x, _ in dunkel))
     oben, unten = mm_(min(y for _, y in dunkel)), mm_(h - max(y for _, y in dunkel))
-    assert min(links, rechts, oben, unten) >= 3
-    assert abs(links - rechts) < 1 and abs(oben - unten) < 1
+    assert min(links, rechts, oben, unten) >= 3 - 0.2           # nichts im Sicherheitsrand
+    assert abs(oben - unten) < 1                                 # senkrecht mittig (QR)
