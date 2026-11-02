@@ -43,8 +43,11 @@ def _bedingungen(auftrag: dict[str, Any], mit_kategorie: bool = True) -> tuple[l
         wo.append("p.art = ?")
         args.append(auftrag["art"])
     if auftrag.get("farben"):
-        wo.append(f"EXISTS (SELECT 1 FROM produkt_farbe pf WHERE pf.produkt_id = p.inventar_nr AND pf.farbe IN ({_platz(auftrag['farben'])}))")
-        args += auftrag["farben"]
+        # eigene Grundfarben oder Farbtöne, die zu einer der gesuchten Grundfarben gehören (D-031)
+        wo.append(f"""(EXISTS (SELECT 1 FROM produkt_farbe pf WHERE pf.produkt_id = p.inventar_nr AND pf.farbe IN ({_platz(auftrag['farben'])}))
+                    OR EXISTS (SELECT 1 FROM produkt_wert pw JOIN filter_option fo ON fo.id = pw.option_id
+                               WHERE pw.produkt_id = p.inventar_nr AND fo.grundfarbe IN ({_platz(auftrag['farben'])})))""")
+        args += auftrag["farben"] * 2
     if auftrag.get("marken"):
         wo.append(f"p.marke IN ({_platz(auftrag['marken'])})")
         args += auftrag["marken"]

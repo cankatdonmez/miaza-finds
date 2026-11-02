@@ -99,7 +99,7 @@ def test_produkt_loeschen_nimmt_abhaengiges_mit(db):
     opt = db.execute("INSERT INTO filter_option (filter_id, name) VALUES (?, 'Matt') RETURNING id", (f,)).fetchone()[0]
     inv = _produkt(db, fl)
     db.execute("INSERT INTO produkt_wert (produkt_id, filter_id, option_id) VALUES (?, ?, ?)", (inv, f, opt))
-    db.execute("INSERT INTO produkt_farbe VALUES (?, 'terracotta')", (inv,))
+    db.execute("INSERT INTO produkt_farbe VALUES (?, 'braun')", (inv,))
     db.execute("INSERT INTO preis (produkt_id, cent, einheit, datum) VALUES (?, 3650, 'm2', '2026-11-01')", (inv,))
     db.execute("INSERT INTO foto (produkt_id, datei, breite, hoehe) VALUES (?, 'a.jpg', 800, 600)", (inv,))
     db.execute("DELETE FROM produkt WHERE inventar_nr = ?", (inv,))

@@ -33,7 +33,7 @@ def bestand(client):
         return r.json()["inventar_nr"]
 
     ids = {
-        "terrazzo": neu(name="Terrazzo Rosso", kategorie_id=kid, marke="Mutina", farben=["terracotta"],
+        "terrazzo": neu(name="Terrazzo Rosso", kategorie_id=kid, marke="Mutina", farben=["orange"],
                         preis={"betrag": "48,90", "einheit": "m2"},
                         werte={str(f["Rutschhemmung"]["id"]): o["R10"], str(f["Stärke"]["id"]): 10,
                                str(f["Oberfläche"]["id"]): [o["Matt"]], str(f["Rektifiziert"]["id"]): True}),

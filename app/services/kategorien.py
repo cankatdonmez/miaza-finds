@@ -5,6 +5,7 @@ Alle schreibenden Funktionen laufen innerhalb einer Transaktion des Aufrufers.
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from typing import Any
 
@@ -12,7 +13,9 @@ from ..fehler import Fehler
 from ..texte import t
 from . import produkte
 
-FILTER_TYPEN = ("mass", "einfach", "mehrfach", "janein")
+# „farbe“ ist für die Oberfläche ein eigener Typ; gespeichert wird er als Mehrfachauswahl mit filter.farbe = 1 (D-031)
+FILTER_TYPEN = ("mass", "einfach", "mehrfach", "janein", "farbe")
+HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 MASS_EINHEITEN = ("mm", "cm", "m", "kg", "Stk")
 NAME_MAX = 60
 _UMSCHRIFT = str.maketrans({"ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss", "Ä": "Ae", "Ö": "Oe", "Ü": "Ue"})
@@ -27,16 +30,17 @@ def liste(conn: sqlite3.Connection) -> list[dict[str, Any]]:
         FROM kategorie k ORDER BY k.fest, k.name COLLATE NOCASE""")]
     filter_je_kat: dict[int, list] = {}
     for f in conn.execute("""
-            SELECT f.id, f.kategorie_id, f.name, f.typ, f.einheit,
+            SELECT f.id, f.kategorie_id, f.name, f.typ, f.einheit, f.farbe,
                    (SELECT count(DISTINCT w.produkt_id) FROM produkt_wert w WHERE w.filter_id = f.id) AS produkte
             FROM filter f ORDER BY f.sortierung, f.id"""):
-        filter_je_kat.setdefault(f["kategorie_id"], []).append({**dict(f), "optionen": []})
+        filter_je_kat.setdefault(f["kategorie_id"], []).append({**dict(f), "farbe": bool(f["farbe"]), "optionen": []})
     optionen = {}
     for o in conn.execute("""
-            SELECT o.id, o.filter_id, o.name,
+            SELECT o.id, o.filter_id, o.name, o.hex, o.grundfarbe,
                    (SELECT count(*) FROM produkt_wert w WHERE w.option_id = o.id) AS produkte
             FROM filter_option o ORDER BY o.sortierung, o.id"""):
-        optionen.setdefault(o["filter_id"], []).append({"id": o["id"], "name": o["name"], "produkte": o["produkte"]})
+        optionen.setdefault(o["filter_id"], []).append({"id": o["id"], "name": o["name"], "hex": o["hex"],
+                                                         "grundfarbe": o["grundfarbe"], "produkte": o["produkte"]})
     for k in kategorien:
         k["fest"] = bool(k["fest"])
         k["filter"] = filter_je_kat.get(k["id"], [])
@@ -120,7 +124,7 @@ def speichern(conn: sqlite3.Connection, kategorie_id: int, daten: dict[str, Any]
 
 
 def _filter_speichern(conn: sqlite3.Connection, kategorie_id: int, filter_liste: list[dict[str, Any]]) -> None:
-    bestehend = {r["id"]: dict(r) for r in conn.execute("SELECT id, typ FROM filter WHERE kategorie_id = ?", (kategorie_id,))}
+    bestehend = {r["id"]: dict(r) for r in conn.execute("SELECT id, typ, farbe FROM filter WHERE kategorie_id = ?", (kategorie_id,))}
     namen, behalten, geplant = set(), set(), []
     for pos, f in enumerate(filter_liste):
         name = _name(f.get("name"), "filter")
@@ -128,14 +132,18 @@ def _filter_speichern(conn: sqlite3.Connection, kategorie_id: int, filter_liste:
             raise Fehler(t("fehler.filter_name_doppelt", name=name), "filter")
         namen.add(name.casefold())
         typ = f.get("typ")
+        if typ == "mehrfach" and f.get("farbe"):
+            typ = "farbe"
         if typ not in FILTER_TYPEN:
             raise Fehler(t("fehler.filter_typ"), "filter")
+        farbe = typ == "farbe"
+        typ = "mehrfach" if farbe else typ
         einheit = f.get("einheit") if typ == "mass" else None
         if typ == "mass" and einheit not in MASS_EINHEITEN:
             raise Fehler(t("fehler.filter_einheit"), "filter")
         fid = f.get("id")
         if fid in bestehend:
-            if bestehend[fid]["typ"] != typ:
+            if bestehend[fid]["typ"] != typ or bool(bestehend[fid]["farbe"]) != farbe:
                 raise Fehler(t("fehler.filter_typ_fest"), "filter")
             behalten.add(fid)
         else:
@@ -146,20 +154,21 @@ def _filter_speichern(conn: sqlite3.Connection, kategorie_id: int, filter_liste:
         # Erst alle Namen vorübergehend frei machen, damit Umbenennen/Umsortieren nicht an UNIQUE scheitert
         if fid:
             conn.execute("UPDATE filter SET name = '~' || id WHERE id = ?", (fid,))
-        geplant.append((fid, name, typ, einheit, pos, optionen))
+        geplant.append((fid, name, typ, farbe, einheit, pos, optionen))
 
     for fid in set(bestehend) - behalten:
         conn.execute("DELETE FROM filter WHERE id = ?", (fid,))
-    for fid, name, typ, einheit, pos, optionen in geplant:
+    for fid, name, typ, farbe, einheit, pos, optionen in geplant:
         if fid:
             conn.execute("UPDATE filter SET name = ?, einheit = ?, sortierung = ? WHERE id = ?", (name, einheit, pos, fid))
         else:
-            fid = conn.execute("INSERT INTO filter (kategorie_id, name, typ, einheit, sortierung) VALUES (?, ?, ?, ?, ?) RETURNING id",
-                               (kategorie_id, name, typ, einheit, pos)).fetchone()[0]
-        _optionen_speichern(conn, fid, optionen if typ in ("einfach", "mehrfach") else [])
+            fid = conn.execute("INSERT INTO filter (kategorie_id, name, typ, farbe, einheit, sortierung) VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
+                               (kategorie_id, name, typ, int(farbe), einheit, pos)).fetchone()[0]
+        _optionen_speichern(conn, fid, optionen if typ in ("einfach", "mehrfach") else [], farbe)
 
 
-def _optionen_speichern(conn: sqlite3.Connection, filter_id: int, optionen: list[dict[str, Any]]) -> None:
+def _optionen_speichern(conn: sqlite3.Connection, filter_id: int, optionen: list[dict[str, Any]], farbe: bool = False) -> None:
+    """Auswahlen eines Filters; bei einem „Farbe“-Filter sind es Farbtöne mit Farbe und Grundfarbe (D-031)."""
     bestehend = {r[0] for r in conn.execute("SELECT id FROM filter_option WHERE filter_id = ?", (filter_id,))}
     sauber, namen = [], set()
     for o in optionen:
@@ -169,17 +178,27 @@ def _optionen_speichern(conn: sqlite3.Connection, filter_id: int, optionen: list
         if name.casefold() in namen:
             raise Fehler(t("fehler.option_doppelt", name=name), "filter")
         namen.add(name.casefold())
-        sauber.append((o.get("id") if o.get("id") in bestehend else None, name))
-    behalten = {oid for oid, _ in sauber if oid}
+        hex_, grund = None, None
+        if farbe:
+            grund = o.get("grundfarbe")
+            if grund not in produkte.FARBEN:
+                raise Fehler(t("fehler.ton_grundfarbe", name=name), "filter")
+            hex_ = o.get("hex") or None
+            if hex_ is not None and not HEX.match(str(hex_)):
+                raise Fehler(t("fehler.ton_farbe", name=name), "filter")
+        sauber.append((o.get("id") if o.get("id") in bestehend else None, name, hex_, grund))
+    behalten = {oid for oid, *_ in sauber if oid}
     for oid in bestehend - behalten:
         conn.execute("DELETE FROM filter_option WHERE id = ?", (oid,))
     for oid in behalten:
         conn.execute("UPDATE filter_option SET name = '~' || id WHERE id = ?", (oid,))
-    for pos, (oid, name) in enumerate(sauber):
+    for pos, (oid, name, hex_, grund) in enumerate(sauber):
         if oid:
-            conn.execute("UPDATE filter_option SET name = ?, sortierung = ? WHERE id = ?", (name, pos, oid))
+            conn.execute("UPDATE filter_option SET name = ?, hex = ?, grundfarbe = ?, sortierung = ? WHERE id = ?",
+                         (name, hex_, grund, pos, oid))
         else:
-            conn.execute("INSERT INTO filter_option (filter_id, name, sortierung) VALUES (?, ?, ?)", (filter_id, name, pos))
+            conn.execute("INSERT INTO filter_option (filter_id, name, hex, grundfarbe, sortierung) VALUES (?, ?, ?, ?, ?)",
+                         (filter_id, name, hex_, grund, pos))
 
 
 def loeschen(conn: sqlite3.Connection, kategorie_id: int) -> None:

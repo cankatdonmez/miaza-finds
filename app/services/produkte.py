@@ -14,7 +14,9 @@ from ..texte import t
 from . import nummern, plan
 from .suche import normalisieren
 
-FARBEN = ("weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz")
+# Grundfarben (D-031): gemeinsam für alle Kategorien; Farbtöne je Kategorie verweisen auf eine davon
+FARBEN = ("weiss", "beige", "braun", "rot", "orange", "gelb", "gruen", "blau", "violett", "rosa", "grau", "schwarz",
+          "metall", "mehrfarbig")
 PREIS_EINHEITEN = ("m2", "m", "stueck", "paket")
 ARTEN = ("physisch", "digital")
 TEXT_MAX = {"name": 120, "marke": 80, "abmessungen": 80, "link": 500, "notiz": 2000}
