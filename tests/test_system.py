@@ -161,7 +161,7 @@ def test_uebernahme_aus_kopiertem_ordner(client, app, tmp_path):
     quelle.close(), ziel.close()
     import shutil
     shutil.copytree(app.state.media_dir, kopie / "media")
-    client.post(f"{API}/loeschen", headers=h, json={"was": "produkte"})
+    client.post(f"{API}/loeschen", headers=h, json={"teile": ["produkte"]})
     assert client.get("/api/bibliothek").json()["gesamt"] == 0
     r = client.post(f"{API}/uebernehmen-pfad", headers=h, json={"pfad": str(kopie)})
     assert r.status_code == 200, r.text
@@ -193,17 +193,31 @@ def test_sicherung_einer_neueren_version_wird_abgelehnt(client, app, tmp_path):
     assert r.status_code == 422 and "neueren" in r.json()["fehler"]["text"]
 
 
-def test_loeschen_produkte_und_alles(client, app):
+def test_loeschen_nach_auswahl(client, app):
+    """D-025: Teile einzeln; Kategorien ziehen Produkte mit; Nummern nur mit Produkten und Büroplan."""
+    from tests.test_plan import KLEIN, QUADRAT, _entwurf
     _, h = _einrichten(client)
     client.post("/api/kategorien", json={"name": "Holz", "praefix": "HO"})
     nr = _produkt_mit_foto(client)
+    plan = client.put("/api/plan", json=_entwurf(client.get("/api/plan").json(),
+                      raeume=[{"id": None, "schluessel": "a", "nr": 1, "punkte": QUADRAT}],
+                      einheiten=[{"id": None, "raum": "a", "nr": 1, "punkte": KLEIN}])).json()["plan"]
+    e = plan["einheiten"][0]
+    client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": plan["version"], "faecher": [
+        {"id": None, "nr": 1, "punkte": [[0, 0], [10, 0], [10, 10]]}]})
     w = client.get(f"{API}/uebersicht").json()["wirkung"]
-    assert w == {"produkte": 1, "fotos": 1, "kategorien": 1}
-    r = client.post(f"{API}/loeschen", headers=h, json={"was": "produkte"}).json()
-    assert r["wirkung"] == {"produkte": 0, "fotos": 0, "kategorien": 1} and r["sicherung_vorher"].startswith("finds-vor-loeschen-")
-    # Nummern kommen nach „Produkte löschen“ nicht wieder …
-    assert _produkt_mit_foto(client) == nr + 1
-    # … nach „Alles löschen“ beginnt die Zählung neu
-    client.post(f"{API}/loeschen", headers=h, json={"was": "alles"})
+    assert w == {"produkte": 1, "fotos": 1, "kategorien": 1, "raeume": 1, "einheiten": 1, "faecher": 1}
+    assert client.post(f"{API}/loeschen", headers=h, json={"teile": ["nummern", "produkte"]}).status_code == 422
+    assert client.post(f"{API}/loeschen", headers=h, json={"teile": []}).status_code == 422
+    # nur der Büroplan
+    r = client.post(f"{API}/loeschen", headers=h, json={"teile": ["plan"]}).json()
+    assert r["wirkung"] == {**w, "raeume": 0, "einheiten": 0, "faecher": 0} and r["sicherung_vorher"].startswith("finds-vor-loeschen-")
+    assert client.get("/api/plan").json()["unterlage"] is None
+    # Kategorien nehmen die Produkte mit; Nummern laufen weiter
+    r = client.post(f"{API}/loeschen", headers=h, json={"teile": ["kategorien"]}).json()
+    assert r["wirkung"]["produkte"] == 0 and r["wirkung"]["kategorien"] == 0
     assert [k["name"] for k in client.get("/api/kategorien").json()["kategorien"]] == ["Sonstiges"]
+    assert _produkt_mit_foto(client) == nr + 1
+    # alles mit neuen Nummern
+    client.post(f"{API}/loeschen", headers=h, json={"teile": ["produkte", "kategorien", "plan", "nummern"]})
     assert _produkt_mit_foto(client) == 1
