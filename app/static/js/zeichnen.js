@@ -346,8 +346,8 @@
         return;
       }
       if (mitte || (e.button === 0 && ziehenErlaubt(e))) {
+        // Zeiger erst beim echten Ziehen einfangen: sonst ginge der Klick ans <svg> statt an die Einheit darunter
         geste = { art: "eins", start: [e.clientX, e.clientY], vb: { ...vb }, bewegt: false };
-        svg.setPointerCapture(e.pointerId);
         if (mitte) e.preventDefault();
       }
     });
@@ -358,7 +358,10 @@
       const { b } = groesse();
       if (geste.art === "eins") {
         const dx = e.clientX - geste.start[0], dy = e.clientY - geste.start[1];
-        if (Math.hypot(dx, dy) > 4) geste.bewegt = true;
+        if (!geste.bewegt && Math.hypot(dx, dy) > 4) {
+          geste.bewegt = true;
+          try { svg.setPointerCapture(e.pointerId); } catch { /* Zeiger schon fort */ }
+        }
         if (!geste.bewegt) return;
         const k = geste.vb.w / b;
         setzen(begrenzen({ ...geste.vb, x: geste.vb.x - dx * k, y: geste.vb.y - dy * k }));
