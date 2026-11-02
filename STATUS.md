@@ -14,6 +14,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - Ürün detayı: Platz, „Im Büro zeigen“; „Hier einordnen“ modu (30 dk) + ürün sayfasında „In … einordnen“.
   - Fach-Etiketten (Etiketten › Fächer, QR `/f/<id>`), toplu düzenlemede „Platz“, durum filtresi Am Platz / Ohne Platz.
   - Geri bildirim (D-018): oda ve ünite yazıları şeklin içinde, okunur boyda; odalar 5 pastel tonda (numaradan).
+  - D-019: dikdörtgen ünite sürüklenince duvara / komşuya yapışır, uzun kenarıyla döner, komşunun içine giremez (Alt: serbest).
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.

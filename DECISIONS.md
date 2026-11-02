@@ -113,7 +113,7 @@ Cankat'ın geri bildirimi (oda adı çok küçük ve odanın dışında, ünite 
 ## D-019 · 02.11.2026 · Dikdörtgen ünite duvara ve komşusuna yapışır
 Cankat'ın isteği. Plan düzenleyicide dikdörtgen bir ünite sürüklenirken:
 - **Duvara yapışma:** odanın bir kenarına yeterince yaklaşınca (ekranda ~10 px) ona yapışır ve o kenara paralel olacak
-  şekilde en kısa yoldan döner; elle döndürme yok. Yapışıkken kenar boyunca kayar, köşede durur (kenarın ucunu geçmez).
+  şekilde döner: uzun kenarı duvara gelir (dolap sırtıyla), iki yönden hangisi eski duruşa yakınsa o; elle döndürme yok. Yapışıkken kenar boyunca kayar, köşede durur (kenarın ucunu geçmez).
   Kenardan ~24 px uzaklaşınca ayrılır ve son açısını korur. Duvarın odanın iç tarafına yapışır.
 - **Komşuya yapışma:** başka bir ünitenin kenarına da aynı şekilde, dış tarafından yapışır.
 - **Çarpışma:** dikdörtgen ünite başka bir ünitenin içine giremez; çarpınca onun kenarında durur, komşuyu itmez.
