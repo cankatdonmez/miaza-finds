@@ -21,6 +21,8 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
     D-025 seçerek silme (Produkte · Kategorien · Büroplan · Nummern).
   - D-026: ünite fotoğrafında bölmeler demodaki gibi (etiket „kod · sayı“, kayan spot, nabız, önizleme).
   - D-027: tek fotoğraf eklenince kırpma ekranı (tek ve seri kayıt); yüklenmemiş fotoğrafta kırpma düğmesi.
+  - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“. UI turu: kart görselleri
+    hep kare, boş sonuçta çift çerçeve yok.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
