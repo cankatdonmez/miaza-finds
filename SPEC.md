@@ -96,19 +96,19 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 |---|---|---|
 | Arayüz yazı tipi | Figtree (400, 500, 600); sayılar ve kodlar IBM Plex Mono (400, 500) — miaza counts ile aynı (D-002) | aynı |
 | **Yazı ölçeği** | **11 · 12,5 · 13,5 · 15 · 19 · 28 · 52 px** (`--fs-mini … --fs-hero`, counts ile aynı; başka boyut kullanılmaz) | aynı |
-| Zemin | `#F3F4F6` | `#0F1115` |
-| Kart | `#FFFFFF`, kenar `#E7E9EE` | `#181B21`, kenar `#2A2F38` |
+| Zemin | `#FFFFFF` | `#18191B` (antrasit) |
+| Kart | `#FFFFFF`, kenar `#E8E8E6` | `#212224`, kenar `#303134` |
 | Kart köşesi | 14–20 px | aynı |
-| Metin / ikincil metin (≥ 4.5:1) | `#16181D` / `#5F6672` | `#ECEEF2` / `#A0A7B4` |
-| Vurgu (tek renk) | `#2F5BEA` | `#6E8BFF` |
+| Metin / ikincil metin (≥ 4.5:1) | `#1C1C1E` / `#66656A` | `#EDEDEC` / `#A1A1A0` |
+| Vurgu (tek renk, amber; D-023) | düğme `#F2A43A`, yazı `#9A5600`, zemin `#FDF0DA` | düğme `#F5AE3D`, yazı `#FFC870`, zemin `#3A2E1B` |
 | Durum: Yerinde | `#DCFCE7` / `#166534` | `#14351F` / `#86EFAC` |
 | Durum: Kullanımda | `#DBEAFE` / `#1E40AF` | `#172A4D` / `#93C5FD` |
-| Durum: Büro dışında | `#FEF3C7` / `#92400E` | `#3A2A0B` / `#FCD34D` |
+| Durum: Büro dışında | `#FBE5EE` / `#9D2F5E` | `#45263A` / `#F2A7C3` |
 | Tür: Dijital | `#EDE9FE` / `#5B21B6` | `#2A1F4A` / `#C4B5FD` |
-| Plan: odalar | nötr gri zemin, adı üzerinde | aynı, koyu tonda |
-| Plan: ünite | yarı saydam, tek ton; seçili ünite vurgu renginde | aynı |
+| Plan: odalar | 6 pastelden seçilen renk, adı üzerinde (D-024) | aynı, koyu tonlarda |
+| Plan: ünite | odasının bir ton koyusu; seçili ünitenin kenarı kalın ve en koyu tonda | odasının bir ton açığı |
 
-**Renk kuralı:** arayüzde renk sadece şu anlamları taşır: vurgu, üç durum, dijital tür. Kategori ve oda renkleri yoktur. Malzemenin kendi renkleri (fotoğraf, renk etiketleri) bu kuralın dışındadır.
+**Renk kuralı:** arayüzde renk sadece şu anlamları taşır: vurgu, üç durum, dijital tür ve planda oda renkleri (D-024). Kategori renkleri yoktur. Renk üstüne başka aileden renk gelmez: yazı, zemininin ailesinden bir tondur (D-023). Ayrıntı: `THEMA.md`. Malzemenin kendi renkleri (fotoğraf, renk etiketleri) bu kuralın dışındadır.
 
 - Renkler yalnızca tonla değil açıklıkla da ayrışır (renk körlüğü).
 - Yazı tipleri sunucudan verilir; dış servisten çekilmez.
@@ -347,11 +347,11 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Görünürlük:**
   - Düzenleyicide: göster / gizle. Görünüm sabit ve soluktur; ayrı bir saydamlık ayarı yoktur.
   - Ofis görünümünde: Ayarlar › Ofis planı › "Altlığı ofis görünümünde göster".
-  - Altlık gizliyken ofis görünümü renkli odaları (adlarıyla) ve üniteleri gösterir.
+  - Altlık gizliyken ofis görünümü renkli odaları (adlarıyla) ve üniteleri gösterir; altlık açıkken odalar %50 saydamdır (D-024).
 - Plan ölçekli değildir.
 
 **Çizim öğeleri:**
-- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi seçilmez: 5 pastel tondan biri oda numarasından gelir (D-018). Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
+- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi oda panelinde 6 pastelden seçilir; yeni oda sıradakini alır (D-024). Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
 - **Üniteler:**
   - Dikdörtgen veya poligonla çizilir.
   - Bulunduğu odaya otomatik bağlanır ve sıradaki kodu alır (ör. 4.1); kod elle değiştirilebilir.
@@ -474,9 +474,12 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
     - Yeni kurulumda: önce yönetici oluşturulur, sonra "Verileri al" ile dosya veya klasör seçilir. Mevcut veri kaldırılır, eskisi yüklenir (önce otomatik güvenlik yedeği alınır).
     - Eski bir sürümden gelen veri, açılışta güncel şemaya yükseltilir; daha yeni bir sürümden gelen veri reddedilir.
     - Yeni kurulumun yönetici şifresi ve güvenlik anahtarı geçerli kalır; eski kurulumunkiler alınmaz.
-  - Toplu silme (D-013):
-    - "Alle Produkte löschen": ürünler ve fotoğrafları; kategoriler, filtreler ve numara sayaçları kalır.
-    - "Alles löschen (Neuanfang)": ürünler, kategoriler (Sonstiges hariç) ve filtreler; numaralar yeniden 1'den başlar (deneme verisinden sonra temiz başlangıç). Basılmış etiketler geçersiz olur.
+  - Seçerek silme (D-025): onay kutuları, üstte "Alles auswählen":
+    - **Produkte:** ürünler ve fotoğrafları.
+    - **Kategorien und Filter:** Sonstiges hariç; seçilince Produkte de seçilir.
+    - **Büroplan:** odalar, üniteler, bölmeler, ünite fotoğrafları, altlık; ürünler konumsuz kalır.
+    - **Nummern zurücksetzen:** envanter ve bölme numaraları 1'den başlar; yalnız Produkte ve Büroplan da seçiliyse. Basılmış etiketler geçersiz olur.
+  - Dışa aktarma her zaman bütün veriyi kapsar.
   - Diğer güvenlik işleri (ör. şifre değiştirme, güvenlik anahtarını yenileme).
 - Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
 

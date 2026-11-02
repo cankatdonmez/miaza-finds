@@ -27,6 +27,7 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 |---|---|
 | `SPEC.md` | Ürün spesifikasyonu (0.5). Ne yapılacağının tek kaynağı. |
 | `DESIGN-PRINCIPLES.md` | Tasarım ilkeleri, kontrol listesi ve karar tablosu. |
+| `THEMA.md` | Renk teması (D-023, D-024): tokenlar, kurallar, oda renkleri; counts için yol. |
 | `DEGERLENDIRME-0.3.md` | SPEC 0.4'ü doğuran dört aşamalı değerlendirme. |
 | `demo/` | Tıklanabilir demonun kaynakları (`*.dc.html`) ve ofis planı PDF'i. Demo SPEC 0.3 düzeyindedir, 0.4'e güncellenmedi. |
 

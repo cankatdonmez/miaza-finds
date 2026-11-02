@@ -126,7 +126,7 @@ basılıyken yapışma ve çarpışma kapalı; zaten üst üste duran üniteler 
 Cankat'ın isteği. Bölmenin otomatik kodunun (2.2.5) yanına, ünitedeki gibi isteğe bağlı bir **Name** gelir
 („Obere Schublade“, „Linke Tür“). Bölme düzenleyicide yazılır; Büro'daki bölme listesinde, bölme panelinde, ürün
 detayındaki yerde ve toplu düzenlemenin „Platz“ listesinde kodun yanında görünür. Kod değişmez, ad yalnız bilgi verir.
-Claude'un ekledikleri (onay bekliyor): bölme etiketinde kodun altında ünite adı yerine bölmenin adı yazılır (ad yoksa
+Claude'un ekledikleri (Cankat onayladı): bölme etiketinde kodun altında ünite adı yerine bölmenin adı yazılır (ad yoksa
 ünite adı); basılmış bir etiketin adı değişirse etiket „yeniden bas“ listesine girer.
 → SPEC 6.4, 6.6.
 
@@ -145,6 +145,37 @@ Cankat'ın düzeltmesi: gerçekte odaya gidilir, ünite görülür, rafa konur; 
 „Platz ändern“ / „Platz wählen“ Büro sayfasını **yer seçme modunda** açar. Üstte bir çubuk: „Platz für „Ürün“ wählen“.
 Plan → ünite → bölme; bölme panelinde büyük **„Hier ablegen“**. Kaydedince ürün sayfasına dönülür, bildirimde
 „Rückgängig“ vardır. Çubuktaki × vazgeçer.
-Claude'un ekledikleri (onay bekliyor): ürünün yeri varsa Büro o bölmede açılır (nerede olduğu görülür, oradan başka
+Claude'un ekledikleri (Cankat onayladı): ürünün yeri varsa Büro o bölmede açılır (nerede olduğu görülür, oradan başka
 üniteye geçilir); çubukta „Ohne Platz“ da var.
 → SPEC 6.1.
+
+## D-023 · 02.11.2026 · Tema: beyaz ve antrasit, amber vurgu
+Cankat'ın kararı, değerler Claude'un önerisi. Mavi vurgu ve mavimsi koyu tema bırakıldı.
+- **Açık tema:** zemin beyaz (`#FFFFFF`), kartlar beyaz ve ince kenarlı, metin `#1C1C1E` / `#66656A`.
+- **Koyu tema:** nötr antrasit, mavi alt ton yok: zemin `#18191B`, kart `#212224`, metin `#EDEDEC` / `#A1A1A0`.
+- **Vurgu: amber.** Düğme zemini açıkta `#F2A43A`, koyuda `#F5AE3D`; düğme yazısı koyu kahve `#2A1A05`.
+  Beyaz üstünde okunacak vurgu yazısı (bağlantı, seçili satır) koyu amber `#9A5600`, koyuda `#FFC870`. Açık zemin
+  tonu `#FDF0DA` / `#3A2E1B`.
+- **Renk üstüne renk yok:** bir zemin hangi renk ailesindense üstündeki yazı ve ikon aynı ailenin koyu (açıkta) ya da
+  açık (koyuda) tonudur. Amber düğmede mor yazı olmaz.
+- **Durum renkleri:** Yerinde yeşil, Kullanımda mavi, Dijital mor kalır. „Büro dışında“ ambere çok yakındı: gül rengine
+  geçer (`#FBE5EE` / `#9D2F5E`, koyuda `#45263A` / `#F2A7C3`).
+- Tema `THEMA.md`'de anlatılır; miaza counts ileride aynı yoldan kendi temasını kurabilir. counts şimdilik değişmez.
+→ SPEC 4.4.
+
+## D-024 · 02.11.2026 · Oda rengi seçilir, üniteler odanın tonunda (D-018'in renk kısmının yerine)
+Cankat'ın kararı. Altı pastel: **Salbei, Himmel, Lavendel, Pfirsich, Vanille, Rosé**; iki temada ayrı tonlar.
+- Plan düzenleyicide oda panelinde altı renk düğmesi; yeni oda sıradaki rengi alır, sonra değiştirilir (Migration 005).
+- **Üniteler odalarının renginde, bir ton koyusu** (koyu temada bir ton açığı); ünite yazısı aynı ailenin koyu tonu.
+  Hiçbir odada olmayan ünite nötr gri. Tek renk ünite yok.
+- **Seçili ünite:** kenar çizgisi kalınlaşır ve aynı ailenin en koyu tonuna döner; başka renk eklenmez.
+- **Altlık açıkken** odalar %50 saydam.
+→ SPEC 4.4, 6.4.
+
+## D-025 · 02.11.2026 · Seçerek silme (D-013'ün iki düğmesinin yerine)
+Cankat'ın isteği, maddeler Claude'un önerisi. Systembereich'te „Löschen“ onay kutularıyla:
+**Produkte** (fotoğraflarla) · **Kategorien und Filter** (seçilince Produkte de seçilir) · **Büroplan** (odalar, üniteler,
+bölmeler, ünite fotoğrafları, altlık; ürünler „Ohne Platz“ olur) · **Nummern zurücksetzen** (envanter ve bölme numaraları
+1'den; yalnız Produkte ve Büroplan da seçiliyse). Üstte „Alles auswählen“. Her kutunun yanında etkisi yazar; önce
+kendiliğinden yedek alınır. „Alles löschen (Neuanfang)“ ayrı düğmesi kalkar. Dışa aktarma her zaman tümüdür.
+→ SPEC 6.13.
