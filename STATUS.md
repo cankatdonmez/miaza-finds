@@ -5,7 +5,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** dalda, 180 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** dalda, 179 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -23,6 +23,8 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-027: tek fotoğraf eklenince kırpma ekranı (tek ve seri kayıt); yüklenmemiş fotoğrafta kırpma düğmesi.
   - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“. UI turu: kart görselleri
     hep kare, boş sonuçta çift çerçeve yok.
+  - D-029 (tasarım denetimi): kısa ürün formu („Weitere Angaben“), çipler 44 px, onay penceresi yerine geri al /
+    „Wirklich verwerfen?“, her yerde „Verwerfen“, telefonda „Mehr“ yerine Einstellungen.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
