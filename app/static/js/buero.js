@@ -78,8 +78,13 @@
     const e = zustand.einheit && einheit(zustand.einheit);
     if (!e) {
       const leer = !plan.einheiten.length;
+      const gruppen = [...plan.raeume.map((r) => ({ name: r.name || String(r.nr), einheiten: plan.einheiten.filter((e) => e.raum_id === r.id) })),
+                       { name: t("plan.ohne_raum"), einheiten: plan.einheiten.filter((e) => !e.raum_id) }].filter((g) => g.einheiten.length);
       panel.innerHTML = `<div class="stack">
         <p class="sub">${esc(t(leer ? "buero.leer" : "buero.waehlen"))}</p>
+        ${gruppen.map((g) => `<div class="fachliste"><h2 class="abschnitt">${esc(g.name)}</h2>${g.einheiten.map((e) => `
+          <button class="zeile" type="button" data-einheit="${e.id}"><span class="zeile-haupt"><span class="num">${esc(e.code)}</span>
+            ${e.name ? `<span class="karte-sub">${esc(e.name)}</span>` : ""}</span><span class="sub">${esc(t("buero.produkte", { n: e.produkte }))}</span>${icon("right", 18)}</button>`).join("")}</div>`).join("")}
         ${plan.ohne_platz ? `<a class="linkbtn" href="/bibliothek?status=ohne_platz">${esc(t("buero.ohne_platz", { n: plan.ohne_platz }))}</a>` : ""}
         <a class="linkbtn nur-desktop" href="/plan">${esc(t("buero.plan_bearbeiten"))}</a>
       </div>`;
@@ -89,6 +94,8 @@
       <button class="iconbtn" type="button" data-aktion="schliessen" aria-label="${esc(t("produkt.schliessen"))}">${icon("close")}</button></div>`;
     if (!zustand.fach) {
       panel.innerHTML = `<div class="stack">${kopf}${fotoMitFaechern(e, null)}
+        <label class="btn">${icon("camera", 20)}<span>${esc(t(e.foto ? "plan.foto_ersetzen" : "plan.foto_waehlen"))}</span>
+          <input class="sr-only" type="file" accept="image/*" data-einheit-foto></label>
         ${e.faecher.length ? `<div class="fachliste">${e.faecher.map((f) => `
           <button class="zeile" type="button" data-fach="${f.id}"><span class="zeile-haupt"><span class="num">${esc(f.code)}</span></span>
             <span class="sub">${esc(t("buero.produkte", { n: f.produkte }))}</span>${icon("right", 18)}</button>`).join("")}</div>`
@@ -134,7 +141,23 @@
     const z = e.target.closest("[data-einheit]");
     if (z) setzen({ einheit: Number(z.dataset.einheit), fach: null, produkt: null });
   });
+  panel.addEventListener("change", async (e) => {
+    if (!e.target.matches("[data-einheit-foto]") || !e.target.files[0]) return;
+    const fd = new FormData();
+    fd.append("foto", e.target.files[0]);
+    toast(t("produkt.fotos_laden"));
+    try {
+      const res = await fetch(`/api/einheiten/${zustand.einheit}/foto`, { method: "POST", body: fd, credentials: "same-origin" });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.fehler?.text || t("allg.fehler"));
+      Object.assign(einheit(zustand.einheit), d);
+      zeichnePanel();
+    } catch (err) { toast(err.message, { fehler: true }); }
+  });
+
   panel.addEventListener("click", (e) => {
+    const z = e.target.closest("button[data-einheit]");
+    if (z) return setzen({ einheit: Number(z.dataset.einheit), fach: null, produkt: null });
     const f = e.target.closest("[data-fach]");
     if (f) return setzen({ fach: Number(f.dataset.fach) });
     const b = e.target.closest("[data-aktion]");
