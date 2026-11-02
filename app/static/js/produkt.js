@@ -14,7 +14,9 @@
   let kategorien = [];
   let original = null;       // gespeicherter Stand (null = neu)
   let p = null;              // Formularzustand
-  let neueFotos = [];        // bei neuen Produkten: Dateien, die nach dem Anlegen hochgeladen werden
+  // Fotos sind bis „Speichern“ Entwurf (D-028): neue werden danach hochgeladen, entfernte danach gelöscht
+  let neueFotos = [];        // {datei, url}
+  let wegFotos = new Set();  // Kennungen gespeicherter Fotos, die beim Speichern gelöscht werden
   let speichert = false;
 
   // Telefon: Kamera-App über „capture“. Desktop ignoriert „capture“ → eigene Kamera, nur wenn es eine gibt (D-014)
@@ -32,7 +34,7 @@
       preis: p.preis.betrag.trim() ? p.preis : null, werte: p.werte, code: p.code, version: p.version,
     };
   }
-  const geaendert = () => neueFotos.length > 0 || JSON.stringify(daten()) !== JSON.stringify(original);
+  const geaendert = () => neueFotos.length > 0 || wegFotos.size > 0 || JSON.stringify(daten()) !== JSON.stringify(original);
 
   // ---------- Laden ----------
   async function laden() {
@@ -124,7 +126,7 @@
   }
 
   function zeichneFotos() {
-    const gespeichert = (p.fotos || []).map((f) => `
+    const gespeichert = (p.fotos || []).filter((f) => !wegFotos.has(f.id)).map((f) => `
       <figure class="foto"><img src="/media/fotos/${esc(f.datei)}-320.webp" alt="" loading="lazy">
         <button class="foto-x" type="button" data-foto-weg="${f.id}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button></figure>`);
     const wartend = neueFotos.map((f, i) => `
@@ -225,13 +227,18 @@
       $("[data-fotos]", form).innerHTML = zeichneFotos();
       return;
     }
-    if (b.dataset.fotoWeg) { await fotoLoeschen(Number(b.dataset.fotoWeg)); return; }
+    if (b.dataset.fotoWeg) {
+      wegFotos.add(Number(b.dataset.fotoWeg));
+      $("[data-fotos]", form).innerHTML = zeichneFotos();
+      return;
+    }
     if (b.dataset.aktion === "kamera") { kameraOeffnen(); return; }
     if (b.dataset.aktion === "loeschen") { await loeschen(); return; }
     if (b.dataset.aktion === "abbrechen" && geaendert()) {
       if (!window.confirm(t("allg.ungespeichert"))) { e.preventDefault(); return; }
       original = daten();      // bewusst verworfen: kein zweiter Hinweis beim Verlassen
       neueFotos = [];
+      wegFotos.clear();
     }
   });
 
@@ -256,16 +263,7 @@
       if (!z) return;
       bilder = [z];
     }
-    if (!inventarNr) {
-      neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
-      $("[data-fotos]", form).innerHTML = zeichneFotos();
-      return;
-    }
-    for (const f of bilder) {
-      try {
-        p.fotos.push(await hochladen(inventarNr, f));
-      } catch (err) { toast(err.message, { fehler: true }); }
-    }
+    neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
     $("[data-fotos]", form).innerHTML = zeichneFotos();
   }
 
@@ -276,14 +274,6 @@
     const d = await res.json().catch(() => ({}));
     if (!res.ok) throw new MF.ApiError(d.fehler?.text || t("allg.fehler"), null, res.status);
     return d;
-  }
-
-  async function fotoLoeschen(id) {
-    try {
-      await api("DELETE", `/api/produkte/${inventarNr}/fotos/${id}`);
-      p.fotos = p.fotos.filter((f) => f.id !== id);
-      $("[data-fotos]", form).innerHTML = zeichneFotos();
-    } catch (err) { toast(err.message, { fehler: true }); }
   }
 
   // ---------- Kamera am Desktop (nur sichere Verbindung: localhost oder HTTPS, SPEC 8.2) ----------
@@ -379,6 +369,10 @@
       const r = inventarNr ? await api("PUT", "/api/produkte/" + inventarNr, daten())
                            : await api("POST", "/api/produkte", daten());
       try { localStorage.setItem(LETZTE, String(p.kategorie_id)); } catch { /* egal */ }
+      for (const id of wegFotos) {
+        try { await api("DELETE", `/api/produkte/${r.inventar_nr}/fotos/${id}`); } catch (err) { toast(err.message, { fehler: true }); }
+      }
+      wegFotos.clear();
       if (neueFotos.length) {
         toast(t("produkt.fotos_laden"));
         for (const f of neueFotos) {

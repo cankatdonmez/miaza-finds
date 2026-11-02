@@ -56,6 +56,11 @@ DE: dict[str, str] = {
     "serie.ungeladen": "Es werden noch Fotos hochgeladen.",
     "serie.name": "Name für {code}",
     "serie.name_gespeichert": "Gespeichert",
+    "serie.namen_offen": "{n} Namen noch nicht gespeichert",
+    "serie.namen_offen_eins": "1 Name noch nicht gespeichert",
+    "serie.namen_gespeichert": "{n} Namen gespeichert",
+    "serie.namen_gespeichert_eins": "1 Name gespeichert",
+    "serie.namen_keine": "Alle Namen sind gespeichert.",
     "menue.neu_waehlen": "Neu",
     # Sammelbearbeitung (D-012)
     "sammel.auswaehlen": "Auswählen",
