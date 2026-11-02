@@ -1,6 +1,6 @@
 # miaza finds — Ürün Spesifikasyonu (SPEC)
 
-Sürüm: 0.4 · 01.11.2026 · Durum: tasarıma hazır
+Sürüm: 0.5 · 01.11.2026 · Durum: uygulamada (dilim 1)
 Kaynak: tıklanabilir demo (telefon, masaüstü, A4 etiket), demo üzerinde verilen kararlar ve [DEGERLENDIRME-0.3.md](DEGERLENDIRME-0.3.md).
 
 **Yol gösterici:**
@@ -9,6 +9,7 @@ Kaynak: tıklanabilir demo (telefon, masaüstü, A4 etiket), demo üzerinde veri
 - Bu SPEC'teki her parçanın bir sahibi ve gerekçesi vardır. Yeni bir parça ancak 6.12'deki ölçüte uyarsa girer.
 
 **Sürüm geçmişi:**
+- **0.5:** uygulamaya başlarken verilen kararlar (DECISIONS.md D-001–D-008): aile port düzeni, counts'un yazı sistemi, Docker ve start.bat birlikte, dokümanlar dilim 4'te, şifreli Systembereich (6.13), istek koruması.
 - **0.4:** dört aşamalı değerlendirmenin sonucu.
   - **Çıkarılanlar:** "zorunlu" bölme onayı; telefonda kategori düzenleme; serbest metin filtresi; kategori ve oda renkleri; altlığın saydamlık ve ters çevirme ayarları; kategori ayarlarındaki geri al çubuğu; taslağı kaza sonrası geri getirme; 40'lı etiket; birden fazla doküman klasörü.
   - **v2'ye taşınanlar:** linkten doldurma, otomatik renk.
@@ -67,8 +68,8 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 - **miaza counts:** Zeiterfassung
 
 **Logo yazısı:**
-- **"miaza":** Comfortaa SemiBold (600), metin renginde. Her uygulamada aynıdır.
-- **Fiil ("finds"):** "miaza"nın yaklaşık %60'ı boyutunda, Inter Medium (500), uygulamanın vurgu renginde.
+- **"miaza":** Figtree SemiBold (600), metin renginde. Her uygulamada aynıdır (D-002).
+- **Fiil ("finds"):** "miaza"nın yaklaşık %60'ı boyutunda, Figtree Medium (500), uygulamanın vurgu renginde.
 - İki kelime aynı taban çizgisinde durur. Dar yerlerde sadece "m" harfi ve vurgu renginde bir nokta kullanılır.
 
 **Açılış ekranı:**
@@ -93,8 +94,8 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 
 | Öğe | Açık | Koyu |
 |---|---|---|
-| Arayüz yazı tipi | Inter (400, 500, 600, 700) | aynı |
-| **Yazı ölçeği** | **12 · 13 · 15 · 18 · 24 · 34 px** (başka boyut kullanılmaz) | aynı |
+| Arayüz yazı tipi | Figtree (400, 500, 600); sayılar ve kodlar IBM Plex Mono (400, 500) — miaza counts ile aynı (D-002) | aynı |
+| **Yazı ölçeği** | **11 · 12,5 · 13,5 · 15 · 19 · 28 · 52 px** (`--fs-mini … --fs-hero`, counts ile aynı; başka boyut kullanılmaz) | aynı |
 | Zemin | `#F3F4F6` | `#0F1115` |
 | Kart | `#FFFFFF`, kenar `#E7E9EE` | `#181B21`, kenar `#2A2F38` |
 | Kart köşesi | 14–20 px | aynı |
@@ -235,6 +236,7 @@ Daha (telefon) ─ istatistik
 - Kategoriler ve filtreler
 - Ofis planı ve üniteler
 - Genel: kişiler, bölme onayı, doküman klasörü, yedek, bu cihaz, görünüm
+- En altta küçük bir bağlantı: **Systembereich** (şifreli, 6.13)
 
 **Telefon ve masaüstü iş bölümü:**
 - Kategori, filtre, plan ve etiket baskısı sadece masaüstündedir.
@@ -289,6 +291,16 @@ Seri kayıt yeni bir ekran açmaz. Mevcut kamera, mevcut bölme seçimi ve mevcu
 - Ürünün çıkış kayıtları ve dokümanlarla bağları birlikte silinir. Doküman dosyalarının kendisine dokunulmaz.
 - Etiketi baskı listesindeyse listeden düşer.
 
+#### Toplu düzenleme (masaüstü, D-012)
+Amaç: onlarca ürünün kategorisini veya ortak bir özelliğini tek seferde değiştirmek (ör. "Diğer"deki ürünler kendi kategorisine taşınınca).
+
+- **Yeri:** kütüphanenin liste görünümü › "Auswählen". Ürünler tek tek işaretlenir veya filtre sonucunun tamamı seçilir ("alle 24 auswählen"). Telefonda yoktur.
+- **Değişebilen alanlar:** kategori, marka, tür (fiziki/dijital), renk ekle / renk kaldır. Seçilenlerin hepsi aynı kategorideyse kategoriye özel filtre değerleri de. Ad, link, not ve fiyat toplu değişmez.
+- **Kategori değişince** iki sonuç panelde, uygulamadan önce yazar:
+  - Kod sorusu (6.2) bir kez sorulur, hepsine uygulanır; yenilenen kodların etiketleri baskı listesine girer. Envanter numarası değişmez.
+  - Eski kategorinin filtre değerleri kaldırılır. Örnek: *"24 Produkte nach Fliese verschieben · 24 Codes neu · 18 Filterwerte entfallen"*.
+- **Onay penceresi yok:** etki panelde görünür, "Anwenden" ile uygulanır; ardından birkaç saniye "Rückgängig". Geri alma kaldırılan değerleri ve eski kodları da geri getirir; harcanan numaralar geri dönmez.
+
 #### Ürün kodu
 Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
@@ -301,13 +313,13 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Önek:** kategori ayarlarında girilir; zorunlu ve benzersizdir. Uygulama addan bir öneri getirir. "Diğer" kategorisi için `XX` önerilir.
 - **Basamak:** numaralar 3 haneyle başlar, 999'dan sonra 4 haneye geçer.
 - **Dijital ürünler** de aynı şemayla kod alır; fizikiye çevrilince kod değişmez.
-- **Numaralar asla yeniden kullanılmaz.**
+- **Numaralar asla yeniden kullanılmaz.** Tek istisna: Systembereich › "Alles löschen (Neuanfang)" sayaçları 1'e döndürür (D-013); öncesinde basılmış etiketlerin geçersiz olacağı yazılır.
 - **Envanter numarası ürünün kalıcı kimliğidir.** QR sadece bu numarayı taşır.
 - **Kategori değişirse:** kod aynı mı kalsın, yeni önekle mi yenilensin diye sorulur. Envanter numarası her durumda aynı kalır; yenilenirse etiket baskı listesine eklenir.
 - **Önek sonradan değişirse:** kaç kodun değişeceği ve kaç etiketin yeniden basılacağı söylenir.
 
 ### 6.3 Kategoriler ve filtreler (masaüstü › Ayarlar)
-- **Kategori:** eklenir, adlandırılır, öneki girilir, silinir. Silinen kategorinin ürünleri **"Diğer"**e taşınır. "Diğer" her zaman vardır ve silinemez.
+- **Kategori:** eklenir, adlandırılır, öneki girilir. **Sadece boş bir kategori silinebilir** (D-011). İçinde ürün olan kategori yalnız düzenlenir; silme yerine kaç ürün içerdiği gösterilir ("24 Produkte"), ürünler gerekirse önce toplu düzenlemeyle başka kategoriye taşınır. "Diğer" (Sonstiges) her zaman vardır ve silinemez.
 - **Filtreler:** her kategorinin kendi filtre listesi vardır. Filtreler eklenir, silinir, sıralanır; bu sıra filtre panelindeki sıradır.
 - **Kaydetme:** basit form, **Kaydet / Vazgeç**. Geri al çubuğu yoktur (4.6).
 - **Filtre tipleri:**
@@ -425,6 +437,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
 | Bölme onayı (Açık/Kapalı) | Masaüstü › Genel | büro |
 | Doküman kök klasörü | Masaüstü › Genel | büro |
 | Yedek durumu | Masaüstü › Genel | büro |
+| Yedek alma ve geri yükleme, toplu silme, veri kümesi değiştirme | Systembereich (şifreli, 6.13) | yönetici |
 | Bu cihazı kullanan | Her cihazda | cihaz |
 | Görünüm (tema) | Her cihazda | cihaz |
 
@@ -440,6 +453,25 @@ Bir özellik ancak şu soruların cevabı somutsa eklenir:
 - Dışarıdaki ürün için dönüş tarihi ve hatırlatma.
 - Bir ürünün birden fazla yerde durması.
 - Kurulum sihirbazı (yerine kurulum belgesi yazılır).
+
+### 6.13 Systembereich (şifreli yönetim alanı, D-006)
+Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin tek yeri. Uygulamanın geri kalanı girişsiz kalır.
+
+- **Yeri:** Ayarlar sayfasının en altında küçük bir bağlantı. Menüde, kenar çubuğunda veya ana ekranda görünmez.
+- **Giriş:** tek yönetici, kullanıcı adı ve şifreyle. İlk açılışta oluşturulur. Oturum sadece bu alan için geçerlidir ve kısa sürer.
+- **Güvenlik anahtarı (D-010):** ilk kurulumda bir kez gösterilir. Yazdırılır veya indirilir ve güvenli bir yerde saklanır (ör. kasadaki çıktı, şifre yöneticisi). Şifre unutulursa bu anahtarla yeni şifre belirlenir. Anahtar bir kez kullanılınca geçersiz olur ve yenisi gösterilir. Sunucu anahtarın kendisini değil, yalnız özetini (hash) saklar.
+- **İçindekiler:**
+  - Yedek: şimdi yedek al, yedeği indir, yedekten geri yükle, son yedeğin zamanı.
+  - **Veri taşıma (D-009):** sistem başka bir sunucuya taşınınca eski kurulumun verisi yenisine alınır.
+    - Eski sunucuda: "Dışa aktar" tek bir dosya üretir (veritabanı + bütün fotoğraflar). Eski sunucu artık açılmıyorsa kopyalanmış veri klasörü de kabul edilir (`data/finds.db` + `media/`).
+    - Yeni kurulumda: önce yönetici oluşturulur, sonra "Verileri al" ile dosya veya klasör seçilir. Mevcut veri kaldırılır, eskisi yüklenir (önce otomatik güvenlik yedeği alınır).
+    - Eski bir sürümden gelen veri, açılışta güncel şemaya yükseltilir; daha yeni bir sürümden gelen veri reddedilir.
+    - Yeni kurulumun yönetici şifresi ve güvenlik anahtarı geçerli kalır; eski kurulumunkiler alınmaz.
+  - Toplu silme (D-013):
+    - "Alle Produkte löschen": ürünler ve fotoğrafları; kategoriler, filtreler ve numara sayaçları kalır.
+    - "Alles löschen (Neuanfang)": ürünler, kategoriler (Sonstiges hariç) ve filtreler; numaralar yeniden 1'den başlar (deneme verisinden sonra temiz başlangıç). Basılmış etiketler geçersiz olur.
+  - Diğer güvenlik işleri (ör. şifre değiştirme, güvenlik anahtarını yenileme).
+- Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
 
 ## 7. Veri modeli (özet)
 
@@ -470,7 +502,9 @@ Bir özellik ancak şu soruların cevabı somutsa eklenir:
 ## 8. Teknik yaklaşım
 
 ### 8.1 Altyapı (miaza counts ile aynı)
-- **Sunucu:** Python 3.12+, FastAPI, uvicorn, Jinja2. Mini PC'de Docker ile çalışır.
+- **Sunucu:** Python 3.12+, FastAPI, uvicorn, Jinja2. İki çalıştırma yolu da hazır tutulur (D-003): Docker (`Dockerfile`, `docker-compose.yml`) ve Windows için `start.bat` + `.venv`. Mini PC kurulunca kullanılmayan yol kaldırılır.
+- **Portlar (D-001):** ailenin her uygulaması kendi port çiftini kullanır, asla paylaşmaz: counts 8080/8081, **finds 8090/8091** (beta/geliştirme), sonraki uygulamalar 8100/8101, 8110/8111 …
+- **İstek koruması (D-007):** veri değiştiren her istekte tarayıcının gönderdiği köken (Origin) uygulamanın kendi adresi olmalıdır; Systembereich'te ayrıca counts'taki gibi oturum ve CSRF anahtarı.
 - **Veritabanı:** SQLite, tek dosya (`data/finds.db`), WAL modunda.
 - **Arayüz:** düz JavaScript, framework ve build adımı yok. Tek CSS dosyası, açık/koyu tema değişkenleri.
 - **Kütüphaneler:**
@@ -629,7 +663,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 
 ## 12. Hayır listesi: bilerek yapılmayanlar
 
-- Kullanıcı hesabı, şifre, rol ve yetki.
+- Kullanıcı hesabı, şifre, rol ve yetki. Tek istisna: Systembereich'in yönetici şifresi (6.13); uygulamanın geri kalanı girişsizdir.
 - Stok yönetimi, sipariş takibi, muhasebe.
 - "Numune istendi" gibi ara durumlar.
 - Kilit yönetimi ekranı.

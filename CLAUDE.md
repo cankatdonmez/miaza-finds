@@ -4,14 +4,28 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 
 ## Durum (01.11.2026)
 
-- Tasarım aşaması bitti. **SPEC 0.4** hazır ve onaylı; sıradaki iş gerçek uygulamaya başlamak.
-- Proje, Zeiterfassung'un (miaza counts) geliştirildiği dizüstünde sürdürülecek. Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni oradan alınacak; iki uygulama aynı ailenin üyesi gibi görünmeli.
+- **SPEC 0.5** onaylı; dilim 1 bitti (dal `dilim-1/grundgeruest`). Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
+- Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni miaza counts'tan (`C:\Users\canka\Documents\Zeiterfassung`) alınır; iki uygulama aynı ailenin üyesi gibi görünmeli.
+
+## Belge düzeni (counts ile aynı)
+- Oturum başında CLAUDE.md ve STATUS.md okunur. SPEC.md'nin yalnız ilgili bölümü okunur.
+- Her yeni karar: (1) DECISIONS.md sonuna yeni D-numarası, (2) SPEC.md / DESIGN-PRINCIPLES.md güncellenir, (3) ayrı belge commit'i, sonra kod.
+- Her biten adımdan sonra STATUS.md güncellenir (< 40 satır).
+- Commit: küçük, Almanca başlık; yazar `Cankat Dönmez <cankatdonmez@gmail.com>`; push yalnız istenince.
+
+## Komutlar
+```bash
+%USERPROFILE%\miaza-local\finds\.venv\Scripts\python -m pytest -q
+start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\data\finds.db)
+```
+- Geliştirme sunucusu: `.claude/launch.json` "dev" → 127.0.0.1:8091, `dev.db`. CSS/JS değişince sunucu yeniden başlatılır.
+- Portlar ailede sabittir (D-001): counts 8080/8081, finds 8090/8091.
 
 ## Dosyalar
 
 | Dosya | Ne |
 |---|---|
-| `SPEC.md` | Ürün spesifikasyonu (0.4). Ne yapılacağının tek kaynağı. |
+| `SPEC.md` | Ürün spesifikasyonu (0.5). Ne yapılacağının tek kaynağı. |
 | `DESIGN-PRINCIPLES.md` | Tasarım ilkeleri, kontrol listesi ve karar tablosu. |
 | `DEGERLENDIRME-0.3.md` | SPEC 0.4'ü doğuran dört aşamalı değerlendirme. |
 | `demo/` | Tıklanabilir demonun kaynakları (`*.dc.html`) ve ofis planı PDF'i. Demo SPEC 0.3 düzeyindedir, 0.4'e güncellenmedi. |
@@ -41,16 +55,16 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 **Altyapı** (SPEC 8.1): Python 3.12+, FastAPI, uvicorn, Jinja2, SQLite (WAL), düz JS (build adımı yok), tek CSS dosyası, pytest. Miaza counts ile aynı.
 
 **Dilimler** (Gall: küçük ve çalışır başla):
-1. **Kütüphane ve kayıt:** arama, filtreler, tek ve seri kayıt, kategori ve filtre ayarları, ürün etiketi PDF'i. Büro bu dilimle ürün girmeye başlar; ürünler önce konumsuz kalır.
+1. **Kütüphane ve kayıt:** arama, filtreler, tek ve seri kayıt, kategori ve filtre ayarları, ürün etiketi PDF'i, Systembereich (yedek, geri yükleme, toplu silme). Büro bu dilimle ürün girmeye başlar; ürünler önce konumsuz kalır.
 2. **Ofis:** plan düzenleyici, üniteler, bölmeler, bölme etiketleri, ofis görünümü. Konumsuz ürünler bölme QR'ıyla toplu yerleştirilir.
 3. **Hareket:** ürünü alma, yerine koyma, bölme onayı, "Düzenleniyor" uyarısı.
-4. **Kalanlar:** koleksiyonlar, istatistik, yedek, Almanca son okuma.
+4. **Kalanlar:** koleksiyonlar, dokümanlar (D-004), istatistik, gece yedeği, Almanca son okuma.
 
 **Kamera:** uygulama önce HTTPS olmadan çalışacak şekilde yazılır ("Fotoğrafla okut"). Canlı kamera, HTTPS varsa kendiliğinden devreye girer (SPEC 8.2). HTTPS yolu (A: alan adı + Let's Encrypt, B: kendi kök sertifikası) henüz açık bir soru.
 
 ## Bu klasör Google Drive'da: dikkat edilecekler
 
-- **Sanal ortam (`.venv`) ve geliştirme veritabanı bu klasörün dışında tutulur**, ör. `%LOCALAPPDATA%\miaza-finds\`. Binlerce küçük dosya ve açık bir SQLite dosyası Drive eşitlemesini bozar.
+- **Sanal ortam (`.venv`), veritabanları ve `media/` bu klasörün dışında tutulur: `%USERPROFILE%\miaza-local\finds\`** (D-008). Binlerce küçük dosya ve açık bir SQLite dosyası Drive eşitlemesini bozar. `%LOCALAPPDATA%` kullanılmaz: Claude masaüstü uygulaması o yolu kendi sanal klasörüne yönlendiriyor.
 - **Git deposu burada durabilir ama:**
   - Aynı anda tek bilgisayarda çalışılır.
   - Bilgisayar değiştirmeden önce Drive'ın eşitlemeyi bitirmesi beklenir.

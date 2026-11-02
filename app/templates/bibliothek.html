@@ -1,0 +1,65 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Bibliothek (SPEC 6.1). Desktop: Filterspalte links, Detail im Panel rechts. Telefon: Filter im Blatt von unten, Detail als Seite. #}
+{# „+“ am Telefon: einzelnes Produkt oder Serienerfassung (SPEC 6.2) #}
+{% block seitenaktion %}<button class="iconbtn nur-telefon" type="button" data-plus aria-label="{{ t('menue.neu_waehlen') }}">{{ icon("plus") }}</button>{% endblock %}
+{% block inhalt %}
+<div class="bib">
+  <aside class="bib-filter nur-desktop" data-filterspalte aria-label="{{ t('bibliothek.filter') }}"></aside>
+  <div class="bib-haupt">
+    <div class="suchzeile">
+      <label class="suchfeld">{{ icon("search", 20) }}
+        <input class="sucheingabe" type="search" data-suche placeholder="{{ t('bibliothek.suche') }}" aria-label="{{ t('bibliothek.suche') }}" autocomplete="off" enterkeyhint="search"></label>
+      <button class="iconbtn filterknopf nur-telefon" type="button" data-filter-oeffnen aria-label="{{ t('bibliothek.filter') }}">{{ icon("settings") }}<span class="filterzahl num" data-filterzahl hidden></span></button>
+      <button class="btn nur-desktop" type="button" data-auswahl-start>{{ t("sammel.auswaehlen") }}</button>
+      <div class="segs ansicht" role="group">
+        <button class="segbtn" type="button" data-ansicht="raster" aria-label="{{ t('bibliothek.raster') }}">{{ icon("grid", 20) }}</button>
+        <button class="segbtn" type="button" data-ansicht="liste" aria-label="{{ t('bibliothek.liste') }}">{{ icon("list", 20) }}</button>
+      </div>
+    </div>
+    <div class="segs art-wahl" role="group">
+      <button class="segbtn" type="button" data-art="">{{ t("bibliothek.alle") }}</button>
+      <button class="segbtn" type="button" data-art="physisch">{{ t("produkt.art_physisch") }}</button>
+      <button class="segbtn" type="button" data-art="digital">{{ t("produkt.art_digital") }}</button>
+    </div>
+    <div class="chips" data-chips></div>
+    <div class="statuszeile nur-desktop" data-statuszeile></div>
+    <div class="auswahlleiste" data-auswahlleiste hidden></div>
+    <div class="ergebnis" data-ergebnis></div>
+    <div class="mehr-laden"><button class="btn" type="button" data-mehr hidden>{{ t("bibliothek.mehr_laden") }}</button></div>
+  </div>
+</div>
+<aside class="panel" data-panel hidden></aside>
+<div class="blatt-scrim" data-filterblatt hidden>
+  <div class="blatt" role="dialog" aria-modal="true" aria-label="{{ t('bibliothek.filter') }}">
+    <div class="blatt-inhalt" data-filterblatt-inhalt></div>
+    <button class="btn primary block" type="button" data-filter-schliessen></button>
+  </div>
+</div>
+<div class="blatt-scrim" data-plus-blatt hidden>
+  <div class="blatt" role="dialog" aria-modal="true" aria-label="{{ t('menue.neu_waehlen') }}">
+    <a class="btn block" href="/produkt/neu">{{ icon("plus", 20) }}<span>{{ t("menue.neues_produkt") }}</span></a>
+    <button class="btn primary block" type="button" data-serie-start>{{ icon("camera", 20) }}<span>{{ t("serie.start") }}</span></button>
+  </div>
+</div>
+
+{# Serienerfassung: Kamera bleibt der Hauptknopf; jedes Foto wird sofort ein Produkt (SPEC 6.2) #}
+<div class="serie" data-serie hidden role="dialog" aria-modal="true" aria-label="{{ t('serie.titel') }}">
+  <div class="serie-kopf"><h2 class="detail-name">{{ t("serie.titel") }}</h2></div>
+  <label class="feld"><span>{{ t("produkt.kategorie") }}</span><select class="eingabe" data-serie-kategorie></select></label>
+  <div class="serie-vorschau" data-serie-vorschau></div>
+  <div class="serie-zahl"><span class="serie-anzahl" data-serie-anzahl></span><span class="sub" data-serie-laedt></span></div>
+  <label class="btn primary serie-ausloeser">{{ icon("camera", 22) }}<span>{{ t("serie.foto") }}</span>
+    <input class="sr-only" type="file" accept="image/*" capture="environment" data-serie-eingabe></label>
+  <div class="serie-knoepfe">
+    <label class="btn">{{ icon("image", 20) }}<span>{{ t("serie.bilder") }}</span>
+      <input class="sr-only" type="file" accept="image/jpeg,image/png,image/webp" multiple data-serie-eingabe></label>
+    <button class="btn" type="button" data-serie-weg hidden>{{ t("serie.letztes_weg") }}</button>
+  </div>
+  <button class="btn block" type="button" data-serie-fertig>{{ t("serie.fertig") }}</button>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/detail.js?v={{ asset_v }}"></script>
+<script src="/static/js/bibliothek.js?v={{ asset_v }}"></script>
+<script src="/static/js/sammel.js?v={{ asset_v }}"></script>
+<script src="/static/js/serie.js?v={{ asset_v }}"></script>{% endblock %}

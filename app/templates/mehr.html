@@ -1,0 +1,7 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{% block inhalt %}
+<nav class="card stack">
+  <a class="snav-link" href="/einstellungen">{{ icon("settings") }}<span class="spacer">{{ t("menue.einstellungen") }}</span>{{ icon("right", 18) }}</a>
+</nav>
+{% endblock %}

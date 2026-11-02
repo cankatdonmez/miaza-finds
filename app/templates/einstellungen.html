@@ -1,0 +1,36 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Masaüstü: zwei Reiter (SPEC 5; „Ofis planı“ folgt mit Dilim 2). Telefon: nur Allgemein, Kategorien gibt es dort nicht. #}
+{% block inhalt %}
+<div class="segs reiter nur-desktop" role="tablist">
+  <button class="segbtn" type="button" role="tab" data-reiter="kategorien" aria-selected="true" aria-pressed="true">{{ t("einstellungen.reiter_kategorien") }}</button>
+  <button class="segbtn" type="button" role="tab" data-reiter="allgemein" aria-selected="false" aria-pressed="false">{{ t("einstellungen.reiter_allgemein") }}</button>
+</div>
+
+<section class="reiter-inhalt nur-desktop" data-reiter-inhalt="kategorien">
+  <div class="einst-raster">
+    <div class="stack">
+      <button class="btn" type="button" data-kat-neu>{{ icon("plus", 20) }}<span>{{ t("kat.neu") }}</span></button>
+      <nav class="katliste" data-katliste aria-label="{{ t('einstellungen.reiter_kategorien') }}"></nav>
+    </div>
+    <div data-kat-editor><div class="card leer">{{ t("kat.waehlen") }}</div></div>
+  </div>
+</section>
+
+<section class="reiter-inhalt" data-reiter-inhalt="allgemein">
+  <div class="card">
+    <h2 class="abschnitt">{{ t("einstellungen.dieses_geraet") }}</h2>
+    <div class="stack">
+      <div id="darstellung-titel" class="sub">{{ t("einstellungen.darstellung") }}</div>
+      <div class="segs" role="group" aria-labelledby="darstellung-titel">
+        <button class="segbtn" type="button" data-darstellung="system">{{ t("darstellung.system") }}</button>
+        <button class="segbtn" type="button" data-darstellung="light">{{ t("darstellung.hell") }}</button>
+        <button class="segbtn" type="button" data-darstellung="dark">{{ t("darstellung.dunkel") }}</button>
+      </div>
+    </div>
+  </div>
+  {# Seltenes und Folgenschweres: klein ganz unten (SPEC 6.13, D-006) #}
+  <p class="system-link"><a class="linkbtn leise" href="/system">{{ t("system.link") }}</a></p>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/js/einstellungen.js?v={{ asset_v }}"></script><script src="/static/js/kategorien.js?v={{ asset_v }}"></script>{% endblock %}
