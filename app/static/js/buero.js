@@ -22,7 +22,7 @@
     return { x: u.x + w / 2 - vw / 2, y: u.y + h / 2 - vh / 2, w: vw, h: vh };
   }
   const zeigtUnterlage = () => plan.unterlage && plan.unterlage_im_buero;
-  const grenzen = () => geo.vereinen([zeigtUnterlage() ? unterlageRahmen(plan.unterlage) : null,
+  const grenzen = () => plan && geo.vereinen([zeigtUnterlage() ? unterlageRahmen(plan.unterlage) : null,
                                       ...plan.raeume.map((r) => geo.rahmen(r.punkte)), ...plan.einheiten.map((e) => geo.rahmen(e.punkte))]);
 
   const ansicht = MF.Ansicht(svg, { grenzen: () => grenzen() || { x: 0, y: 0, w: 1000, h: 700 }, nachAenderung: () => plan && zeichnen() });
@@ -42,19 +42,20 @@
       teile.push(el("image", { href: `/media/plan/${u.datei}.png`, x: u.x, y: u.y, width: w, height: h, class: "unterlage",
                                transform: `rotate(${u.drehung} ${u.x + w / 2} ${u.y + h / 2})`, preserveAspectRatio: "none" }));
     }
-    for (const r of plan.raeume) teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum ansicht-raum", "stroke-width": 1.5 * m }));
+    for (const r of plan.raeume) teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum ansicht-raum", style: MF.raumFarbe(r.nr), "stroke-width": 1.5 * m }));
     for (const e of plan.einheiten) {
       teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (e.id === zustand.einheit ? " gewaehlt" : ""),
                               "data-einheit": e.id, "stroke-width": (e.id === zustand.einheit ? 2.5 : 1.5) * m }));
     }
-    for (const r of plan.raeume) {
-      const b = geo.rahmen(r.punkte);
-      teile.push(el("text", { x: b.x + 8 * m, y: b.y + 18 * m, class: "raum-text", "font-size": 13 * m }, r.name || String(r.nr)));
-    }
-    for (const e of plan.einheiten) {
-      const [x, y] = geo.mitte(e.punkte);
-      teile.push(el("text", { x, y, class: "einheit-text", "font-size": 12 * m, "text-anchor": "middle", "dominant-baseline": "central" }, e.code));
-    }
+    // Beschriftung (D-018): am Innenpunkt, so groß wie die Fläche erlaubt
+    teile.push(...MF.flaechenTexte(plan.raeume.map((r) => ({
+      punkte: r.punkte, zeilen: [{ text: (r.name || String(r.nr)).toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
+      hindernisse: plan.einheiten.filter((e) => e.raum_id === r.id).map((e) => e.punkte),
+    })), m, { min: 13, max: 30 }));
+    teile.push(...MF.flaechenTexte(plan.einheiten.map((e) => ({
+      punkte: e.punkte, klasse: e.id === zustand.einheit ? "gewaehlt" : null,
+      zeilen: [{ text: e.code, klasse: "einheit-text", k: 1, em: 0.62 }, { text: e.name, klasse: "einheit-name", k: 0.72, em: 0.56 }],
+    })), m, { min: 13, max: 22, auslassen: true }));
     svg.replaceChildren(...teile);
   }
 

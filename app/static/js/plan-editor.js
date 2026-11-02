@@ -119,21 +119,22 @@
                                transform: `rotate(${u.drehung} ${u.x + w / 2} ${u.y + h / 2})`, preserveAspectRatio: "none", "data-unterlage": "" }));
     }
     for (const r of entwurf.raeume) {
-      teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum" + (r.schluessel === gewaehlt ? " gewaehlt" : ""), "data-form": r.schluessel, "stroke-width": 1.5 * m }));
+      teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum" + (r.schluessel === gewaehlt ? " gewaehlt" : ""), "data-form": r.schluessel,
+                              style: MF.raumFarbe(r.nr), "stroke-width": 1.5 * m }));
     }
     for (const e of entwurf.einheiten) {
       teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (e.schluessel === gewaehlt ? " gewaehlt" : "") + (e.raum ? "" : " ohne-raum"),
                               "data-form": e.schluessel, "stroke-width": 1.5 * m }));
     }
-    // Beschriftung: Räume oben links, Einheiten in der Mitte; Schriftgröße folgt dem Zoom
-    for (const r of entwurf.raeume) {
-      const b = geo.rahmen(r.punkte);
-      teile.push(el("text", { x: b.x + 8 * m, y: b.y + 18 * m, class: "raum-text", "font-size": 13 * m }, `${r.nr}${r.name ? " · " + r.name : ""}`));
-    }
-    for (const e of entwurf.einheiten) {
-      const [x, y] = geo.mitte(e.punkte);
-      teile.push(el("text", { x, y, class: "einheit-text", "font-size": 12 * m, "text-anchor": "middle", "dominant-baseline": "central" }, code(e)));
-    }
+    // Beschriftung (D-018): am Innenpunkt, so groß wie die Fläche erlaubt
+    teile.push(...MF.flaechenTexte(entwurf.raeume.map((r) => ({
+      punkte: r.punkte, zeilen: [{ text: `${r.nr}${r.name ? " · " + r.name : ""}`.toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
+      hindernisse: entwurf.einheiten.filter((e) => e.raum === r.schluessel).map((e) => e.punkte),
+    })), m, { min: 13, max: 30 }));
+    teile.push(...MF.flaechenTexte(entwurf.einheiten.map((e) => ({
+      punkte: e.punkte,
+      zeilen: [{ text: code(e), klasse: "einheit-text", k: 1, em: 0.62 }, { text: e.name, klasse: "einheit-name", k: 0.72, em: 0.56 }],
+    })), m, { min: 13, max: 22, auslassen: true }));
     if (u && werkzeugName === "unterlage") {
       const r = unterlageRahmen();
       teile.push(el("rect", { x: r.x, y: r.y, width: r.w, height: r.h, class: "unterlage-rahmen", "stroke-width": 1.5 * m }));

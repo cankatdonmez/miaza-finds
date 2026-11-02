@@ -19,6 +19,8 @@
   --am-platz:#166534; --am-platz-soft:#DCFCE7;
   --in-benutzung:#1E40AF; --in-benutzung-soft:#DBEAFE;
   --ausser-haus:#92400E; --ausser-haus-soft:#FEF3C7;
+  --raum-1:#DDEAF6; --raum-2:#E1F0DF; --raum-3:#FBEEDA; --raum-4:#E8E4F5; --raum-5:#DCF0EC;
+  --einheit-flaeche:#F4C4C7; --einheit-rand:#C9545B; --einheit-tinte:#5E1F22;
   --digital:#5B21B6; --digital-soft:#EDE9FE;
   --scrim:rgba(15,17,21,.42);
   --shadow:0 1px 2px rgba(22,24,29,.05),0 8px 24px -12px rgba(22,24,29,.16);
@@ -41,6 +43,8 @@
   --am-platz:#86EFAC; --am-platz-soft:#14351F;
   --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
   --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
+  --raum-1:#243240; --raum-2:#2A3A2D; --raum-3:#3D3326; --raum-4:#322D45; --raum-5:#213936;
+  --einheit-flaeche:#5C2B30; --einheit-rand:#E0787D; --einheit-tinte:#FFDDE0;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
@@ -54,6 +58,8 @@
   --am-platz:#86EFAC; --am-platz-soft:#14351F;
   --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
   --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
+  --raum-1:#243240; --raum-2:#2A3A2D; --raum-3:#3D3326; --raum-4:#322D45; --raum-5:#213936;
+  --einheit-flaeche:#5C2B30; --einheit-rand:#E0787D; --einheit-tinte:#FFDDE0;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
@@ -425,13 +431,17 @@ select.eingabe{padding-right:6px}
 .unterlage{opacity:.35;pointer-events:none}
 .unterlage.aktiv{opacity:.6;pointer-events:auto;cursor:move}
 .unterlage-rahmen{fill:none;stroke:var(--accent);stroke-dasharray:6 4}
-.raum{fill:var(--sunk);fill-opacity:.55;stroke:var(--muted)}
-.raum.gewaehlt{stroke:var(--accent);fill:var(--accent-soft)}
-.einheit{fill:var(--accent-soft);stroke:var(--accent-ink)}
+.raum{fill-opacity:.8;stroke:var(--muted)}
+.raum.gewaehlt{stroke:var(--accent)}
+.einheit{fill:var(--einheit-flaeche);stroke:var(--einheit-rand)}
 .einheit.ohne-raum{stroke:var(--ausser-haus);fill:var(--ausser-haus-soft)}
 .einheit.gewaehlt,.fach.gewaehlt{fill:var(--accent);fill-opacity:.35;stroke:var(--accent)}
-.raum-text{fill:var(--muted);font-weight:500;pointer-events:none}
-.einheit-text{fill:var(--ink);font-family:var(--font-num);pointer-events:none}
+.raum-text{fill:var(--ink);fill-opacity:.62;font-weight:600;letter-spacing:.06em;pointer-events:none}
+.einheit-text{fill:var(--einheit-tinte);font-family:var(--font-num);font-weight:500;pointer-events:none}
+.einheit-name{fill:var(--einheit-tinte);fill-opacity:.8;pointer-events:none}
+text{pointer-events:none}
+.einheit.gewaehlt{fill-opacity:.9}
+text.gewaehlt .einheit-text,text.gewaehlt .einheit-name{fill:var(--on-accent)}
 .zeichnen-vorschau{fill:var(--accent);fill-opacity:.12;stroke:var(--accent);stroke-dasharray:4 3}
 .zeichnen-punkt{fill:var(--card);stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
 .griff{fill:var(--card);stroke:var(--accent);cursor:grab}
@@ -451,7 +461,7 @@ select.eingabe{padding-right:6px}
   .buero-panel{overflow:auto}
 }
 @media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}}
-.ansicht-raum{fill-opacity:.35}
+.ansicht-raum{fill-opacity:1}
 .buero-kopf{display:flex;align-items:center;gap:8px}
 .buero-kopf .abschnitt{margin:0;flex:1}
 .buero-fachcode{font-size:var(--fs-titel);font-weight:500}
