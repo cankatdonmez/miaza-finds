@@ -342,6 +342,9 @@ select.eingabe{padding-right:6px}
 .detail-seite{display:flex;flex-direction:column;gap:14px;max-width:760px}
 .detail-bildrahmen{border-radius:var(--r-card);overflow:hidden;background:var(--sunk)}
 .detail-bild{width:100%;max-height:60vh;object-fit:contain;display:block}
+.detail-bild-knopf{display:block;width:100%;cursor:zoom-in}
+.bildansicht{position:fixed;inset:0;z-index:96;background:var(--bg);display:grid;place-items:center;padding:12px;cursor:zoom-out}
+.bildansicht img{max-width:100%;max-height:100%;object-fit:contain}
 .detail-bild.leer-bild{aspect-ratio:4/3}
 .detail-fotos{display:flex;gap:8px;overflow-x:auto}
 .detail-foto{width:64px;height:64px;flex:none;border-radius:10px;overflow:hidden;border:2px solid transparent}

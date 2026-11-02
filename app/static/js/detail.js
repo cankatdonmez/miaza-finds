@@ -16,7 +16,8 @@
     const name = p.name || t("produkt.unbenannt", { nr: p.inventar_nr });
     const fotos = p.fotos || [];
     const bild = fotos.length
-      ? `<img class="detail-bild" src="/media/fotos/${esc(fotos[0].datei)}.jpg" alt="" data-detail-bild>`
+      ? `<button class="detail-bild-knopf" type="button" data-bild-voll="${esc(fotos[0].datei)}" aria-label="${esc(t("produkt.bild_voll"))}">
+          <img class="detail-bild" src="/media/fotos/${esc(fotos[0].datei)}-960.webp" alt="" data-detail-bild></button>`
       : `<div class="detail-bild leer-bild">${icon("image", 40)}</div>`;
     const kleine = fotos.length > 1 ? `<div class="detail-fotos">${fotos.map((f, i) => `
       <button class="detail-foto" type="button" data-foto-gross="${esc(f.datei)}" aria-pressed="${i === 0}">
@@ -73,7 +74,26 @@
     if (!b) return;
     const rahmen = b.closest("[data-detail], [data-panel]");
     const gross = rahmen?.querySelector("[data-detail-bild]");
-    if (gross) gross.src = `/media/fotos/${b.dataset.fotoGross}.jpg`;
+    if (gross) {
+      gross.src = `/media/fotos/${b.dataset.fotoGross}-960.webp`;
+      gross.closest("[data-bild-voll]").dataset.bildVoll = b.dataset.fotoGross;
+    }
     rahmen.querySelectorAll("[data-foto-gross]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  });
+
+  // Volle Größe (2400 px) nur auf Wunsch: Tippen aufs große Bild; Tippen oder Esc schließt (D-015)
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-bild-voll]");
+    if (!b) return;
+    const el = document.createElement("div");
+    el.className = "bildansicht";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
+    el.innerHTML = `<img src="/media/fotos/${esc(b.dataset.bildVoll)}.jpg" alt="">`;
+    const zu = () => { el.remove(); document.removeEventListener("keydown", taste); b.focus(); };
+    const taste = (ev) => { if (ev.key === "Escape") zu(); };
+    el.addEventListener("click", zu);
+    document.addEventListener("keydown", taste);
+    document.body.appendChild(el);
   });
 })();

@@ -116,8 +116,11 @@
 
   const name = (p) => p.name || t("produkt.unbenannt", { nr: p.inventar_nr });
   const preis = (p) => (p.preis ? `${euro(p.preis.cent)} € ${t("einheit." + p.preis.einheit)}` : "");
+  // Schärfe nach Bildschirm (D-015): der Browser nimmt 320 oder 960 px je nach Breite und Pixeldichte
+  const KARTE = "(min-width: 900px) 260px, 50vw";
+  const srcset = (f) => `/media/fotos/${esc(f)}-320.webp 320w, /media/fotos/${esc(f)}-960.webp 960w`;
   const bild = (p, cls) => p.foto
-    ? `<img class="${cls}" src="/media/fotos/${esc(p.foto)}-320.webp" alt="" loading="lazy">`
+    ? `<img class="${cls}" src="/media/fotos/${esc(p.foto)}-320.webp" srcset="${srcset(p.foto)}" sizes="${cls === "karte-img" ? KARTE : "48px"}" alt="" loading="lazy">`
     : `<span class="${cls} leer-bild">${icon("image", 28)}</span>`;
   const digital = (p) => (p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>` : "");
 

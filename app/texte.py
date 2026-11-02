@@ -165,6 +165,7 @@ DE: dict[str, str] = {
     "produkt.anzahl_wert": "{n} Stück",
     "produkt.foto_aufnehmen": "Foto aufnehmen",
     "produkt.bild_waehlen": "Bild wählen",
+    "produkt.bild_voll": "Bild in voller Größe",
     "produkt.kamera_ausloesen": "Auslösen",
     "produkt.kamera_fehler": "Die Kamera lässt sich nicht öffnen.",
     "produkt.kamera_wahl": "Kamera",
