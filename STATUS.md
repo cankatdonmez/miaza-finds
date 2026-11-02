@@ -9,6 +9,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `main` (dilim 1 birleştirildi, p
   etiket sayfası + A4 PDF · Systembereich (yönetici, güvenlik anahtarı, yedek, geri yükleme, veri taşıma, toplu silme).
 - Adım 11 (Tekrar bak): metinlerde tek ad („Option“ filtre seçeneği, „Auswahl“ yalnız seçim), du-hitap, tekil
   biçimler (`_eins`); dokunma alanları ≥ 44 px; kontrast açık/koyu ≥ 5,2:1; 375 px'te yana kayma yok.
+- Beta geri bildirimi 1 (D-014): masaüstü canlı kamera, Option „+“ düğmesi, gerçek QR önizlemesi, `start.bat netz` ile QR ağ adresi. 150 test.
 - Denenmedi: Docker, `start.bat` ilk kurulum (Cankat'ın bilgisayarında 8090 çalışıyor görünüyor), gerçek telefonda kamera.
 - Dev: sunucu PowerShell Start-Process ile 8091'de (preview_start eski klasörü görüyor); kapatırken portu dinleyen
   işlemi ve alt işlemini bul. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.

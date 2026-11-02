@@ -17,6 +17,10 @@
   let neueFotos = [];        // bei neuen Produkten: Dateien, die nach dem Anlegen hochgeladen werden
   let speichert = false;
 
+  // Telefon: Kamera-App über „capture“. Desktop ignoriert „capture“ → eigene Kamera, nur wenn es eine gibt (D-014)
+  const TELEFON = matchMedia("(pointer: coarse)").matches;
+  let kameraDa = false;
+
   const kopie = (o) => JSON.parse(JSON.stringify(o));
   const kategorie = (id) => kategorien.find((k) => k.id === id);
   const letzteKategorie = () => { try { return Number(localStorage.getItem(LETZTE)); } catch { return 0; } };
@@ -59,8 +63,9 @@
       <section class="card stack">
         <div class="fotos" data-fotos>${zeichneFotos()}</div>
         <div class="foto-knoepfe">
-          <label class="btn">${icon("camera", 20)}<span>${esc(t("produkt.foto_aufnehmen"))}</span>
-            <input class="sr-only" type="file" accept="image/*" capture="environment" data-foto-eingabe></label>
+          ${TELEFON ? `<label class="btn">${icon("camera", 20)}<span>${esc(t("produkt.foto_aufnehmen"))}</span>
+            <input class="sr-only" type="file" accept="image/*" capture="environment" data-foto-eingabe></label>`
+          : `<button class="btn" type="button" data-aktion="kamera" ${kameraDa ? "" : "hidden"}>${icon("camera", 20)}<span>${esc(t("produkt.foto_aufnehmen"))}</span></button>`}
           <label class="btn">${icon("image", 20)}<span>${esc(t("produkt.bild_waehlen"))}</span>
             <input class="sr-only" type="file" accept="image/jpeg,image/png,image/webp" multiple data-foto-eingabe></label>
         </div>
@@ -210,6 +215,7 @@
       return;
     }
     if (b.dataset.fotoWeg) { await fotoLoeschen(Number(b.dataset.fotoWeg)); return; }
+    if (b.dataset.aktion === "kamera") { kameraOeffnen(); return; }
     if (b.dataset.aktion === "loeschen") { await loeschen(); return; }
     if (b.dataset.aktion === "abbrechen" && geaendert()) {
       if (!window.confirm(t("allg.ungespeichert"))) { e.preventDefault(); return; }
@@ -260,6 +266,51 @@
       p.fotos = p.fotos.filter((f) => f.id !== id);
       $("[data-fotos]", form).innerHTML = zeichneFotos();
     } catch (err) { toast(err.message, { fehler: true }); }
+  }
+
+  // ---------- Kamera am Desktop (nur sichere Verbindung: localhost oder HTTPS, SPEC 8.2) ----------
+  async function kameraPruefen() {
+    if (TELEFON || !navigator.mediaDevices?.getUserMedia) return;
+    try {
+      kameraDa = (await navigator.mediaDevices.enumerateDevices()).some((d) => d.kind === "videoinput");
+    } catch { kameraDa = false; }
+    const b = $("[data-aktion=kamera]", form);
+    if (b) b.hidden = !kameraDa;
+  }
+
+  async function kameraOeffnen() {
+    let strom;
+    try {
+      strom = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1440 } } });
+    } catch { toast(t("produkt.kamera_fehler"), { fehler: true }); return; }
+    const el = document.createElement("div");
+    el.className = "kamera";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
+    el.innerHTML = `<video autoplay playsinline muted></video>
+      <div class="kamera-knoepfe">
+        <button class="btn" type="button" data-k="zu">${esc(t("produkt.abbrechen"))}</button>
+        <button class="btn primary" type="button" data-k="ausloesen">${icon("camera", 20)}<span>${esc(t("produkt.kamera_ausloesen"))}</span></button>
+      </div>`;
+    const video = $("video", el);
+    video.srcObject = strom;
+    const zu = () => { strom.getTracks().forEach((s) => s.stop()); el.remove(); document.removeEventListener("keydown", taste); };
+    const taste = (e) => { if (e.key === "Escape") zu(); };
+    document.addEventListener("keydown", taste);
+    el.addEventListener("click", (e) => {
+      const k = e.target.closest("[data-k]")?.dataset.k;
+      if (k === "zu") zu();
+      if (k === "ausloesen" && video.videoWidth) {
+        const c = document.createElement("canvas");
+        c.width = video.videoWidth;
+        c.height = video.videoHeight;
+        c.getContext("2d").drawImage(video, 0, 0);
+        c.toBlob((blob) => { if (blob) fotosHinzu([new File([blob], "kamera.jpg", { type: "image/jpeg" })]); }, "image/jpeg", 0.92);
+        zu();
+      }
+    });
+    document.body.appendChild(el);
+    $("[data-k=ausloesen]", el).focus();
   }
 
   document.addEventListener("dragover", (e) => { if (e.dataTransfer?.types.includes("Files")) e.preventDefault(); });
@@ -317,5 +368,5 @@
 
   window.addEventListener("beforeunload", (e) => { if (p && geaendert()) e.preventDefault(); });
 
-  laden().catch((err) => toast(err.message, { fehler: true }));
+  laden().then(kameraPruefen).catch((err) => toast(err.message, { fehler: true }));
 })();

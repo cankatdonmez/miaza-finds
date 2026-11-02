@@ -71,3 +71,19 @@ def test_auf_die_druckliste(client, produkte):
 
 def test_unbekannte_nummer(client, produkte):
     assert client.get("/api/etiketten/pdf", params={"nr": [9999]}).status_code == 404
+
+
+def test_qr_vorschau_ist_svg(client, produkte):
+    r = client.get(f"/api/etiketten/qr/{produkte['ids'][0]}.svg")
+    assert r.status_code == 200 and r.headers["content-type"] == "image/svg+xml" and b"<svg" in r.content
+
+
+def test_qr_adresse_im_netz_statt_localhost(client, monkeypatch):
+    from app.routes import api_etiketten
+    assert client.get("/api/etiketten").json()["qr_adresse"] == "http://testserver"
+    monkeypatch.setenv("MF_NETZ", "1")
+    monkeypatch.setattr(api_etiketten, "_netzadresse", lambda: "192.168.1.20")
+    lokal = {"host": "localhost:8090"}
+    assert client.get("/api/etiketten", headers=lokal).json()["qr_adresse"] == "http://192.168.1.20:8090"
+    monkeypatch.setenv("MF_BASIS_URL", "https://finds.example.at/")
+    assert client.get("/api/etiketten", headers=lokal).json()["qr_adresse"] == "https://finds.example.at"

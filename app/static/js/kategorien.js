@@ -21,7 +21,8 @@
     filter: k.filter.map((f) => ({ id: f.id, name: f.name.trim(), einheit: f.einheit || null,
       optionen: f.optionen.map((o) => ({ id: o.id, name: o.name.trim() })) })),
   });
-  const geaendert = () => entwurf && (!original || vergleichbar(entwurf) !== vergleichbar(original));
+  const geaendert = () => entwurf && (!original || vergleichbar(entwurf) !== vergleichbar(original)
+    || entwurf.filter.some((f) => f.neu?.trim()));
 
   // ---------- Laden und Liste ----------
   async function laden(auswahl) {
@@ -104,7 +105,10 @@
             ${o.produkte ? `<span class="option-n num">${o.produkte}</span>` : ""}
             <button class="option-x" type="button" data-aktion="option-weg" data-i="${i}" data-j="${j}" aria-label="${esc(t("kat.auswahl_entfernen", { name: o.name }))}">×</button>
           </span>`).join("")}
-        <input class="eingabe option-neu" data-feld="option-neu" data-i="${i}" placeholder="${esc(t("kat.auswahl_neu"))}">
+        <span class="option-neu-zeile">
+          <input class="eingabe option-neu" data-feld="option-neu" data-i="${i}" value="${esc(f.neu || "")}" placeholder="${esc(t("kat.auswahl_neu"))}">
+          <button class="iconbtn" type="button" data-aktion="option-neu" data-i="${i}" ${f.neu?.trim() ? "" : "disabled"} aria-label="${esc(t("kat.auswahl_neu"))}">${icon("plus", 20)}</button>
+        </span>
       </div>`;
     }
     return `<div class="filterkarte">
@@ -173,6 +177,10 @@
       case "filtername": entwurf.filter[i].name = el.value; break;
       case "einheit": entwurf.filter[i].einheit = el.value; break;
       case "option": entwurf.filter[i].optionen[Number(el.dataset.j)].name = el.value; break;
+      case "option-neu":
+        entwurf.filter[i].neu = el.value;
+        $(`[data-aktion=option-neu][data-i="${i}"]`, editor).disabled = !el.value.trim();
+        break;
     }
     zeichneLeiste();
   });
@@ -181,13 +189,22 @@
     const el = e.target;
     if (el.dataset.feld !== "option-neu" || e.key !== "Enter") return;
     e.preventDefault();
-    const name = el.value.trim();
-    if (!name) return;
-    const i = Number(el.dataset.i);
-    entwurf.filter[i].optionen.push({ id: null, name, produkte: 0 });
+    optionHinzu(Number(el.dataset.i));
+  });
+
+  // Enter oder „+“: Option übernehmen, Fokus bleibt für die nächste
+  function optionHinzu(i) {
+    const f = entwurf.filter[i];
+    if (!uebernehmen(f)) return;
     zeichneEditor();
     $(`[data-feld=option-neu][data-i="${i}"]`, editor).focus();
-  });
+  }
+  function uebernehmen(f) {
+    const name = (f.neu || "").trim();
+    delete f.neu;
+    if (name) f.optionen.push({ id: null, name, produkte: 0 });
+    return !!name;
+  }
 
   editor.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-aktion]");
@@ -208,6 +225,7 @@
       case "runter": [fl[i], fl[i + 1]] = [fl[i + 1], fl[i]]; break;
       case "filter-weg": fl.splice(i, 1); break;
       case "option-weg": fl[i].optionen.splice(Number(b.dataset.j), 1); break;
+      case "option-neu": optionHinzu(i); return;
       case "verwerfen": oeffnen(original ? original.id : null); return;
       case "speichern": await speichern(b); return;
       case "loeschen": await loeschen(); return;
@@ -218,6 +236,7 @@
 
   async function speichern(knopf) {
     knopf.disabled = true;
+    entwurf.filter.forEach(uebernehmen);     // noch nicht übernommene Eingabe geht nicht verloren
     try {
       if (!original) {
         // Erst anlegen; scheitert danach das Speichern der Filter, bleibt die Kategorie bestehen und wird bearbeitet

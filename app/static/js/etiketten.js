@@ -63,7 +63,7 @@
         const oben = ph(bogen.rand_oben_mm + z * (bogen.hoehe_mm + bogen.abstand_y_mm));
         return `<button class="etk-etikett" type="button" data-etk-weg="${p.inventar_nr}" title="${esc(t("etiketten.entfernen", { name: name(p) }))}"
           style="left:${links}%;top:${oben}%;width:${pb(bogen.breite_mm)}%;height:${ph(bogen.hoehe_mm)}%">
-          <span class="etk-qr">${icon("qr", 40)}</span>
+          <span class="etk-qr"><img src="/api/etiketten/qr/${p.inventar_nr}.svg" alt=""></span>
           <span class="etk-name">${esc(name(p))}</span>
           <span class="etk-code num">${esc(p.code)}</span></button>`;
       }).join("");

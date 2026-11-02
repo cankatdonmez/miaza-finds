@@ -57,6 +57,7 @@ rem Nur dieser Rechner (127.0.0.1). Fuer Tests mit dem Telefon im Buero
 rem start.bat netz  aufrufen; dann fragt die Windows-Firewall einmal nach.
 set "HOST=127.0.0.1"
 if /i "%~1"=="netz" set "HOST=0.0.0.0"
+if /i "%~1"=="netz" set "MF_NETZ=1"
 
 set "URL=http://localhost:%PORT%"
 set "BROWSER="

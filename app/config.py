@@ -18,7 +18,9 @@ class Settings:
     backup_dir: Path = field(default_factory=lambda: Path(os.environ.get("MF_BACKUP_DIR", LOKAL_DIR / "backups")))
     timezone: str = os.environ.get("MF_TIMEZONE", "Europe/Vienna")
     # Adresse im QR der Etiketten (SPEC 6.6), z. B. https://finds.buero.miaza.at; leer = Adresse der Anfrage
-    basis_url: str = os.environ.get("MF_BASIS_URL", "")
+    basis_url: str = field(default_factory=lambda: os.environ.get("MF_BASIS_URL", ""))
+    # start.bat netz: Server ist im Büronetz erreichbar → QR nimmt ohne MF_BASIS_URL die Netzadresse (D-014)
+    netz: bool = field(default_factory=lambda: os.environ.get("MF_NETZ", "0") == "1")
     # Cookies des Systembereichs nur über HTTPS senden. Im Büronetz ohne TLS bleibt das aus.
     secure_cookies: bool = os.environ.get("MF_SECURE_COOKIES", "0") == "1"
 
