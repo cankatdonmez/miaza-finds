@@ -5,7 +5,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** dalda, 178 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** dalda, 180 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -17,6 +17,8 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-019: dikdörtgen ünite sürüklenince duvara / komşuya yapışır, uzun kenarıyla döner, komşunun içine giremez (Alt: serbest).
   - D-020: bölmenin isteğe bağlı adı (Migration 004); Büro, ürün detayı, toplu düzenleme ve bölme etiketinde görünür.
   - D-021/D-022: ürün detayında „Platz ändern“ → Büro yer seçme modunda: plan → ünite → bölme → „Hier ablegen“, geri al.
+  - D-023 tema (beyaz / antrasit, amber; `THEMA.md`), D-024 oda rengi seçilir, üniteler odanın tonunda (Migration 005),
+    D-025 seçerek silme (Produkte · Kategorien · Büroplan · Nummern).
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
@@ -27,8 +29,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 3. Dilim 3 (Hareket): uygulama içi tarayıcı, alma / yerine koyma, „Düzenleniyor“.
 
 ## Offene Fragen
-1. „Alles löschen (Neuanfang)“ büro planını da silsin mi? Şimdilik silmiyor (plan, ürün denemesinden bağımsız).
-2. Etiket QR'ının kalıcı adresi → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
-3. Etiket kâğıdının düzen PDF'i → `app/etikett_bogen.json` (şimdilik geçici 20'li, 48 × 52 mm).
-4. HTTPS: alan adı `miaza.design`, DNS Wix'te (API yok) → yol A için alt alan API'li bir DNS servisine devredilmeli.
-5. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı), vurgu renkleri.
+1. Etiket QR'ının kalıcı adresi → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
+2. Etiket kâğıdının düzen PDF'i → `app/etikett_bogen.json` (şimdilik geçici 20'li, 48 × 52 mm).
+3. HTTPS: alan adı `miaza.design`, DNS Wix'te (API yok) → yol A için alt alan API'li bir DNS servisine devredilmeli.
+4. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı); counts'un vurgu rengi (finds: amber).
