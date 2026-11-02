@@ -118,6 +118,6 @@ Cankat'ın isteği. Plan düzenleyicide dikdörtgen bir ünite sürüklenirken:
 - **Komşuya yapışma:** başka bir ünitenin kenarına da aynı şekilde, dış tarafından yapışır.
 - **Çarpışma:** dikdörtgen ünite başka bir ünitenin içine giremez; çarpınca onun kenarında durur, komşuyu itmez.
   Komşunun yanından kayarak geçince ilerlemeye devam eder.
-Claude'un ekledikleri (onay bekliyor): yalnız dikdörtgen üniteler için (poligon üniteler ve odalar serbest); Alt tuşu
+Claude'un ekledikleri (Cankat onayladı): yalnız dikdörtgen üniteler için (poligon üniteler ve odalar serbest); Alt tuşu
 basılıyken yapışma ve çarpışma kapalı; zaten üst üste duran üniteler birbirini engellemez.
 → SPEC 6.4.
