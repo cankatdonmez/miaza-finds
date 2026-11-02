@@ -79,3 +79,9 @@ Cankat'ın ilk denemesinden. Çözümler Claude'un önerisi:
 - **QR adresi:** `MF_BASIS_URL` yoksa ve sayfa localhost'tan açıldıysa, `start.bat netz` ile çalışırken QR bu
   bilgisayarın ofis ağı adresini (ör. `http://192.168.1.20:8090`) alır. Etiket sayfasının önizlemesi gerçek QR'ı
   gösterir. Kalıcı adres yine açık soru (STATUS). → SPEC 8.2.
+
+## D-015 · 02.11.2026 · Görsel boyutları ekrana göre
+Claude'un önerisi, Cankat onayladı. Detaydaki büyük görsel 2400 px'lik jpg yerine 960'lık webp'yi gösterir; görsele
+dokununca tam boy jpg tam ekran açılır (kapatmak: dokun veya Esc). Kütüphane kartları ekranın piksel yoğunluğuna göre
+320 veya 960'lık önizlemeyi seçer (`srcset`). Dosyalar kırpılmaz; kare görünüm yalnız ekranda (`object-fit: cover`).
+→ SPEC 8.1.

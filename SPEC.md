@@ -517,7 +517,7 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
 - **Tarayıcıda QR okuma:** varsa yerleşik okuyucu (BarcodeDetector), yoksa uygulamayla gelen küçük bir JS okuyucu (jsQR). Dış CDN yok.
 - **Testler:** pytest; her değişiklikten sonra hepsi koşar. Paketler `requirements.txt` içinde sabit sürümlerle.
 - **Dil:** bütün arayüz metinleri tek bir sözlük dosyasında; terimler 4.10'a uyar. Varsayılan dil Almanca. Tarih `01.11.2026`, sayı `1.234,56`.
-- **Performans:** arama ve filtre sonuçları < 200 ms. Görseller önizleme boyutlarında sunulur. Seri kayıtta fotoğraf yüklemesi arkada sürer; kamera beklemez.
+- **Performans:** arama ve filtre sonuçları < 200 ms. Görseller önizleme boyutlarında sunulur. Kartlar ekrana göre 320 veya 960 px, detay 960 px, tam boy (2400 px) yalnız dokununca (D-015). Görseller dosyada kırpılmaz, kare görünüm yalnız ekranda. Seri kayıtta fotoğraf yüklemesi arkada sürer; kamera beklemez.
 
 ### 8.2 Kamera ve HTTPS
 Tarayıcılar, sayfa içinde canlı kamera görüntüsünü sadece güvenli bağlantıda (HTTPS) açar. Ofis ağında düz `http://192.168…` adresiyle canlı kamera çalışmaz.
