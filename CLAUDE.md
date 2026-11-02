@@ -77,7 +77,7 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 
 1. Brother yazıcı modeli (v2).
 2. HTTPS yolu: büronun alan adı ve sağlayıcısı, ofisteki modem.
-3. Etiket kâğıdının düzen PDF'i. Kullanıcı gönderecek.
+3. ~~Etiket kâğıdının düzen PDF'i~~ → geldi, uygulandı (D-033).
 4. Google Drive masaüstü uygulaması mini PC'de mi?
 5. de-AT biçimleri ve Almanca terimlerin kesinleşmesi.
 6. "finds" ve "counts" vurgu renkleri.

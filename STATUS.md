@@ -5,7 +5,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** dalda, 186 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** dalda, 188 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -24,6 +24,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“; kartlar hep kare.
   - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
   - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
+  - D-033: etiket kâğıdı A4 3 × 8 (69,5 × 36,8 mm), etiket Cankat'ın düzeninde; yeni alan Artikelnummer (Migration 007).
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
@@ -35,6 +36,5 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 
 ## Offene Fragen
 1. Etiket QR'ının kalıcı adresi → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
-2. Etiket kâğıdının düzen PDF'i → `app/etikett_bogen.json` (şimdilik geçici 20'li, 48 × 52 mm).
-3. HTTPS: alan adı `miaza.design`, DNS Wix'te (API yok) → yol A için alt alan API'li bir DNS servisine devredilmeli.
-4. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı); counts'un vurgu rengi (finds: amber).
+2. HTTPS: alan adı `miaza.design`, DNS Wix'te (API yok) → yol A için alt alan API'li bir DNS servisine devredilmeli.
+3. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı); counts'un vurgu rengi (finds: amber).
