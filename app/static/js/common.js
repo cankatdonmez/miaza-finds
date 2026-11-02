@@ -112,5 +112,19 @@ const MF = (() => {
   }
   einordnenLeiste();
 
-  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen };
+  // Foto einer Einheit mit ihren Fächern (Büro, Platz ändern). Fachpunkte in % des Fotos; gewaehltesFach bekommt
+  // das Spotlicht (SPEC 4.7): alles andere wird abgedunkelt.
+  function fotoMitFaechern(e, gewaehltesFach) {
+    if (!e.foto) return `<div class="buero-foto leer"><span class="sub">${esc(t("buero.kein_foto"))}</span></div>`;
+    const h = (100 * e.foto_hoehe) / e.foto_breite;
+    const pfad = (punkte) => "M" + punkte.map(([x, y]) => `${x} ${(y * h) / 100}`).join("L") + "Z";
+    const pfade = e.faecher.map((f) => `<path d="${pfad(f.punkte)}" class="fach${f.id === gewaehltesFach ? " gewaehlt" : ""}" data-fach="${f.id}"></path>`).join("");
+    const sf = gewaehltesFach && e.faecher.find((f) => f.id === gewaehltesFach);
+    const spot = sf ? `<path class="spot" fill-rule="evenodd" d="M0 0H100V${h}H0Z ${pfad(sf.punkte)}"></path>` : "";
+    return `<div class="buero-foto" style="aspect-ratio:${e.foto_breite}/${e.foto_hoehe}">
+      <img src="/media/einheiten/${esc(e.foto)}-960.webp" alt="">
+      <svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">${pfade}${spot}</svg></div>`;
+  }
+
+  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern };
 })();

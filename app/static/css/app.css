@@ -340,6 +340,19 @@ select.eingabe{padding-right:6px}
   padding:18px 16px calc(16px + env(safe-area-inset-bottom))}
 .blatt-inhalt{overflow-y:auto;display:flex;flex-direction:column;gap:18px}
 
+/* Platz ändern (D-021): Blatt am Telefon, mittig begrenzt am Desktop */
+.platz-blatt{max-width:560px;margin:0 auto}
+@media (min-width:900px){.blatt-scrim:has(.platz-blatt){align-items:center}.platz-blatt{border-radius:24px}}
+.wahlchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;flex:none}
+.wahlchip{display:flex;flex-direction:column;align-items:flex-start;flex:none;min-height:44px;padding:6px 14px;border-radius:14px;
+  background:var(--card);border:1px solid var(--line);text-align:left}
+.wahlchip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.wahlchip .sub{font-size:var(--fs-mini)}
+.platz-wahl{display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.platz-wahl .btn{flex:1}
+.platz-gewaehlt{display:flex;flex-direction:column;flex:1 1 100%}
+.platz-code{font-size:var(--fs-zahl);font-weight:600;color:var(--accent-ink);line-height:1.15}
+
 /* Detail: Panel rechts (Desktop) und ganze Seite (Telefon) */
 .panel{position:fixed;top:0;right:0;bottom:0;z-index:60;width:min(460px,100vw);overflow-y:auto;background:var(--card);
   border-left:1px solid var(--line);box-shadow:var(--shadow);padding:16px 20px 32px;display:flex;flex-direction:column;gap:14px}

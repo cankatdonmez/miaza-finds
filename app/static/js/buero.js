@@ -60,21 +60,6 @@
   }
 
   // ---------- Panel ----------
-  function fotoMitFaechern(e, gewaehltesFach) {
-    if (!e.foto) return `<div class="buero-foto leer"><span class="sub">${esc(t("buero.kein_foto"))}</span></div>`;
-    const h = (100 * e.foto_hoehe) / e.foto_breite;
-    const pfade = e.faecher.map((f) => {
-      const d = geo.pfad(f.punkte.map(([x, y]) => [x, (y * h) / 100]));
-      return `<path d="${d}" class="fach${f.id === gewaehltesFach ? " gewaehlt" : ""}" data-fach="${f.id}"></path>`;
-    }).join("");
-    // Spotlicht (SPEC 4.7): außer dem gewählten Fach wird alles abgedunkelt
-    const sf = gewaehltesFach && e.faecher.find((f) => f.id === gewaehltesFach);
-    const spot = sf ? `<path class="spot" fill-rule="evenodd" d="M0 0H100V${h}H0Z ${geo.pfad(sf.punkte.map(([x, y]) => [x, (y * h) / 100]))}"></path>` : "";
-    return `<div class="buero-foto" style="aspect-ratio:${e.foto_breite}/${e.foto_hoehe}">
-      <img src="/media/einheiten/${esc(e.foto)}-960.webp" alt="">
-      <svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">${pfade}${spot}</svg></div>`;
-  }
-
   function zeichnePanel() {
     const e = zustand.einheit && einheit(zustand.einheit);
     if (!e) {
@@ -94,7 +79,7 @@
     const kopf = `<div class="buero-kopf"><h2 class="abschnitt"><span class="num">${esc(e.code)}</span>${e.name ? " · " + esc(e.name) : ""}</h2>
       <button class="iconbtn" type="button" data-aktion="schliessen" aria-label="${esc(t("produkt.schliessen"))}">${icon("close")}</button></div>`;
     if (!zustand.fach) {
-      panel.innerHTML = `<div class="stack">${kopf}${fotoMitFaechern(e, null)}
+      panel.innerHTML = `<div class="stack">${kopf}${MF.fotoMitFaechern(e, null)}
         <label class="btn">${icon("camera", 20)}<span>${esc(t(e.foto ? "plan.foto_ersetzen" : "plan.foto_waehlen"))}</span>
           <input class="sr-only" type="file" accept="image/*" data-einheit-foto></label>
         ${e.faecher.length ? `<div class="fachliste">${e.faecher.map((f) => `
@@ -107,7 +92,7 @@
     }
     const f = e.faecher.find((x) => x.id === zustand.fach);
     const produkte = fachInhalt?.produkte || [];
-    panel.innerHTML = `<div class="stack">${kopf}${fotoMitFaechern(e, zustand.fach)}
+    panel.innerHTML = `<div class="stack">${kopf}${MF.fotoMitFaechern(e, zustand.fach)}
       <div class="buero-kopf"><button class="linkbtn" type="button" data-aktion="zurueck">${esc(t("buero.zurueck_einheit"))}</button>
         <span class="spacer"></span>${f.name ? `<span class="sub">${esc(f.name)}</span>` : ""}<span class="num buero-fachcode">${esc(f.code)}</span></div>
       <button class="btn block" type="button" data-aktion="einordnen">${icon("pin", 20)}<span>${esc(t("einordnen.hier"))}</span></button>
