@@ -231,3 +231,12 @@ Cankat'ın denemesinden:
 - **Telefon menüsü:** tek satırlık „Mehr“ sayfası kalkar; üçüncü sekme doğrudan „Einstellungen“. Başka şeyler gelince
   „Mehr“ geri gelir. (Çıkar)
 → SPEC 4.5, 6.2.
+
+## D-030 · 02.11.2026 · Tasarım denetimi: önem 1 bulguları
+Claude'un önerileri, Cankat onayladı.
+- Büro'nun ilk panelindeki açıklama („Tippe auf eine Einheit …“) kalkar: liste satırları ve oklar ne yapılacağını
+  gösteriyor. Yer seçme modundaki yönlendirmeler cihazdan bağımsız yazılır („Einheit wählen …“, „Fach wählen“).
+- Plan ve bölme düzenleyici dar ekranda (< 900 px) açılmaz; yerine „Am Desktop zeichnen“ kartı. (SPEC 6.4: çizim
+  masaüstünde.)
+- Etiket listesindeki durum yazısı çiplerle aynı yazılır („Ungedruckt“, „Gedruckt“, „Neu drucken“).
+→ SPEC 6.4.
