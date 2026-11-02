@@ -39,6 +39,7 @@ def _schriften() -> None:
     pdfmetrics.registerFont(TTFont("Figtree", ordner / "Figtree-Regular.ttf"))
     pdfmetrics.registerFont(TTFont("Figtree-SemiBold", ordner / "Figtree-SemiBold.ttf"))
     pdfmetrics.registerFont(TTFont("PlexMono", ordner / "IBMPlexMono-Regular.ttf"))
+    pdfmetrics.registerFont(TTFont("Comfortaa-SemiBold", ordner / "Comfortaa-SemiBold.ttf"))
 
 
 def liste(conn: sqlite3.Connection, q: str = "", zustand: str | None = None) -> list[dict[str, Any]]:
@@ -98,13 +99,36 @@ def _boegen(eintraege: list, zeichnen) -> bytes:
     return puffer.getvalue()
 
 
-# Maße aus der Vorlage „QR Code Sticker Paper.pdf“ (D-033), gemessen ab der linken oberen Ecke des Etiketts, in mm
-QR_LINKS, QR_OBEN, QR_SEITE = 4.9, 5.2, 29.6
-TEXT_LINKS, TEXT_RAND_RECHTS = 38.5, 2.5
-NAME_GRUNDLINIEN = (8.6, 14.4)                    # zwei Zeilen Produktname
-INFO_GRUNDLINIE, INFO_ABSTAND = 19.6, 2.47        # Marke, Artikelnummer, Maße, Merkmale
-CODE_GRUNDLINIE = 35.0
+# Aufbau nach der Vorlage „QR Code Sticker Paper.pdf“ (D-033), zentriert mit sicherem Rand (D-034); Maße in mm.
+# Waagerecht: Rand | „miaza“ | QR | Text | Rand – der Block füllt das Etikett zwischen den Rändern.
+# Senkrecht: der QR steht in der Mitte; der Text läuft von seiner Ober- bis zu seiner Unterkante.
+RAND = 3.0
+MARKE_BREITE, MARKE_ABSTAND, MARKE_PT = 3.5, 1.5, 9
+QR_SEITE = 28.0
+QR_LINKS = RAND + MARKE_BREITE + MARKE_ABSTAND
+TEXT_LINKS, TEXT_RAND_RECHTS = QR_LINKS + QR_SEITE + 3.0, RAND
+# Grundlinien ab der Oberkante des QR
+NAME_GRUNDLINIEN = (3.3, 8.8)                     # zwei Zeilen Produktname, die erste bündig mit der QR-Oberkante
+INFO_GRUNDLINIE, INFO_ABSTAND = 13.6, 2.35        # Marke, Artikelnummer, Maße, Merkmale
+CODE_GRUNDLINIE = QR_SEITE                        # bündig mit der QR-Unterkante
 NAME_PT, NAME_MIN_PT, INFO_PT, CODE_PT = 13.5, 9, 6, 9.5
+
+
+def _qr_oben(oben: float, h: float) -> float:
+    """Oberkante des QR: senkrecht mittig im Etikett."""
+    return oben - (h - QR_SEITE * mm) / 2
+
+
+def _marke(c: canvas.Canvas, x: float, y: float, h: float) -> None:
+    """„miaza“ hochkant am linken Rand, von unten nach oben zu lesen, senkrecht mittig (D-034)."""
+    c.saveState()
+    c.setFillColor(black)
+    c.setFont("Comfortaa-SemiBold", MARKE_PT)
+    # Mitte des Streifens: x, Mitte der Höhe: y + h/2. Nach der Drehung läuft die Schrift nach oben.
+    c.translate(x + (RAND + MARKE_BREITE / 2) * mm + MARKE_PT * 0.35, y + h / 2)
+    c.rotate(90)
+    c.drawCentredString(0, 0, "miaza")
+    c.restoreState()
 
 
 def _als_bild(zeichnen, eintrag: Any) -> bytes:
@@ -130,12 +154,12 @@ def fach_vorschau(conn: sqlite3.Connection, fach_id: int, basis_url: str) -> byt
     return _als_bild(_fach_zeichnen(basis_url), _faecher(conn, [fach_id])[0])
 
 
-def _qr(c: canvas.Canvas, inhalt: str, x: float, oben: float) -> None:
-    """QR als Vektor (scharf auf jedem Drucker) links im Etikett; oben = Oberkante des Etiketts."""
+def _qr(c: canvas.Canvas, inhalt: str, x: float, qr_oben: float) -> None:
+    """QR als Vektor (scharf auf jedem Drucker); qr_oben = seine Oberkante."""
     matrix = list(segno.make(inhalt, error="m").matrix_iter(border=0))
     seite = QR_SEITE * mm
     modul = seite / len(matrix)
-    qx, qy = x + QR_LINKS * mm, oben - QR_OBEN * mm - seite
+    qx, qy = x + QR_LINKS * mm, qr_oben - seite
     c.setFillColor(black)
     for r, reihe in enumerate(matrix):
         for s, an in enumerate(reihe):
@@ -179,12 +203,32 @@ def _passend(text: str, schrift: str, groesse: float, breite: float) -> str:
     return text.rstrip() + "…"
 
 
-def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, d: dict[str, Any], basis_url: str) -> None:
-    oben = y + h
-    # nur der bleibende Link mit der Inventarnummer
-    _qr(c, f"{basis_url.rstrip('/')}/p/{d['inventar_nr']}", x, oben)
-    tx, breite = x + TEXT_LINKS * mm, w - (TEXT_LINKS + TEXT_RAND_RECHTS) * mm
+def _zentriert(c: canvas.Canvas, x: float, y: float, w: float, h: float, qr_inhalt: str,
+               teile: list[tuple[str, float, float, str]]) -> None:
+    """Zeichnet „miaza“, QR und Textzeilen als Block, waagerecht und senkrecht mittig im Etikett (D-034).
+
+    teile: (Schrift, Größe in pt, Grundlinie in mm ab QR-Oberkante, Text). Der Block ist so breit wie die längste Zeile;
+    so bleibt auf beiden Seiten gleich viel Rand, mindestens RAND.
+    """
+    text_breite = max((pdfmetrics.stringWidth(t_, schrift, g) for schrift, g, _, t_ in teile), default=0)
+    block = (TEXT_LINKS - RAND) * mm + text_breite
+    x += (w - block) / 2 - RAND * mm
+    oben = _qr_oben(y + h, h)
+    _marke(c, x, y, h)
+    _qr(c, qr_inhalt, x, oben)
     c.setFillColor(black)
+    for schrift, g, grund, text in teile:
+        c.setFont(schrift, g)
+        c.drawString(x + TEXT_LINKS * mm, oben - grund * mm, text)
+
+
+def _spalte(w: float) -> float:
+    """Größte Breite der Textspalte (wenn der Block das Etikett zwischen den Rändern füllt)."""
+    return w - (TEXT_LINKS + TEXT_RAND_RECHTS) * mm
+
+
+def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, d: dict[str, Any], basis_url: str) -> None:
+    breite = _spalte(w)
     # Name: groß und fett in Versalien, zwei Zeilen; passt er nicht, wird er kleiner, zuletzt gekürzt
     name = d["name"].upper()
     groesse = NAME_PT
@@ -194,15 +238,14 @@ def _etikett(c: canvas.Canvas, x: float, y: float, w: float, h: float, d: dict[s
         return len(zeilen) <= 2 and all(pdfmetrics.stringWidth(z, "Figtree-SemiBold", g) <= breite for z in zeilen)
     while groesse > NAME_MIN_PT and not passt(groesse):
         groesse -= 0.5
-    c.setFont("Figtree-SemiBold", groesse)
-    for zeile, grund in zip(_umbrechen(name, "Figtree-SemiBold", groesse, breite), NAME_GRUNDLINIEN):
-        c.drawString(tx, oben - grund * mm, _passend(zeile, "Figtree-SemiBold", groesse, breite))
+    teile = [("Figtree-SemiBold", groesse, grund, _passend(zeile, "Figtree-SemiBold", groesse, breite))
+             for zeile, grund in zip(_umbrechen(name, "Figtree-SemiBold", groesse, breite), NAME_GRUNDLINIEN)]
     # Marke, Artikelnummer, Maße, Merkmale – leere Zeilen entfallen
-    c.setFont("Figtree", INFO_PT)
-    for i, zeile in enumerate(d["info"][:4]):
-        c.drawString(tx, oben - (INFO_GRUNDLINIE + i * INFO_ABSTAND) * mm, _passend(zeile.upper(), "Figtree", INFO_PT, breite))
-    c.setFont("Figtree", CODE_PT)
-    c.drawString(tx, oben - CODE_GRUNDLINIE * mm, d["code"])
+    teile += [("Figtree", INFO_PT, INFO_GRUNDLINIE + i * INFO_ABSTAND, _passend(zeile.upper(), "Figtree", INFO_PT, breite))
+              for i, zeile in enumerate(d["info"][:4])]
+    teile.append(("Figtree", CODE_PT, CODE_GRUNDLINIE, d["code"]))
+    # nur der bleibende Link mit der Inventarnummer
+    _zentriert(c, x, y, w, h, f"{basis_url.rstrip('/')}/p/{d['inventar_nr']}", teile)
 
 
 def _umbrechen(text: str, schrift: str, groesse: float, breite: float, max_zeilen: int = 2) -> list[str]:
@@ -292,20 +335,15 @@ def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
 
 def _fach_zeichnen(basis_url: str):
     def zeichnen(c: canvas.Canvas, x: float, y: float, w: float, h: float, f: dict[str, Any]) -> None:
-        oben = y + h
-        _qr(c, f"{basis_url.rstrip('/')}/f/{f['id']}", x, oben)
-        tx, breite = x + TEXT_LINKS * mm, w - (TEXT_LINKS + TEXT_RAND_RECHTS) * mm
+        breite = _spalte(w)
         # Der Code ist das, was man im Regal liest: groß
         groesse = 22
         while groesse > 10 and pdfmetrics.stringWidth(f["code"], "PlexMono", groesse) > breite:
             groesse -= 1
-        c.setFillColor(black)
-        c.setFont("PlexMono", groesse)
-        c.drawString(tx, oben - 14.4 * mm, f["code"])
+        teile = [("PlexMono", groesse, 9.5, f["code"])]
         if f["beschreibung"]:
-            c.setFont("Figtree", 9)
-            for i, zeile in enumerate(_umbrechen(f["beschreibung"], "Figtree", 9, breite)):
-                c.drawString(tx, oben - (21 + i * 4) * mm, zeile)
+            teile += [("Figtree", 9, 16 + i * 4, zeile) for i, zeile in enumerate(_umbrechen(f["beschreibung"], "Figtree", 9, breite))]
+        _zentriert(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile)
     return zeichnen
 
 

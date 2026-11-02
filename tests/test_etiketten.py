@@ -158,3 +158,24 @@ def test_langes_wort_bleibt_im_etikett(client, produkte):
     b = etiketten.bogen()
     breite_pt = (b["breite_mm"] - etiketten.TEXT_LINKS - etiketten.TEXT_RAND_RECHTS) / 25.4 * 72
     assert pdfmetrics.stringWidth(zeile, "Figtree-SemiBold", etiketten.NAME_MIN_PT) <= breite_pt + 0.5
+
+
+def test_etikett_mittig_mit_rand(client, produkte):
+    """D-034: Inhalt waagerecht und senkrecht mittig, überall mindestens 3 mm Rand; „miaza“ steht drauf."""
+    import pypdfium2 as pdfium
+    from app.services import etiketten
+    r = client.get("/api/etiketten/pdf", params={"nr": produkte["ids"][:1]})
+    assert "miaza" in PdfReader(io.BytesIO(r.content)).pages[0].extract_text()
+    k = 6
+    bild = pdfium.PdfDocument(r.content)[0].render(scale=k).to_pil().convert("L")
+    b = etiketten.bogen()
+    pt = lambda v: v / 25.4 * 72 * k
+    zelle = bild.crop((int(pt(b["rand_links_mm"])), int(pt(b["rand_oben_mm"])),
+                       int(pt(b["rand_links_mm"] + b["breite_mm"])), int(pt(b["rand_oben_mm"] + b["hoehe_mm"]))))
+    px, (w, h) = zelle.load(), zelle.size
+    dunkel = [(x, y) for x in range(w) for y in range(h) if px[x, y] < 128]
+    mm_ = lambda p: p / k / 72 * 25.4
+    links, rechts = mm_(min(x for x, _ in dunkel)), mm_(w - max(x for x, _ in dunkel))
+    oben, unten = mm_(min(y for _, y in dunkel)), mm_(h - max(y for _, y in dunkel))
+    assert min(links, rechts, oben, unten) >= 3
+    assert abs(links - rechts) < 1 and abs(oben - unten) < 1
