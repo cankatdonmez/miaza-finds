@@ -72,8 +72,9 @@ Arayüz bunu silmeden önce yazar ve otomatik yedek alır. "Alle Produkte lösch
 Cankat'ın ilk denemesinden. Çözümler Claude'un önerisi:
 - **Foto aufnehmen (masaüstü):** masaüstü tarayıcısı `capture`'ı yok sayar, iki düğme aynı dosya penceresini açıyordu.
   Masaüstünde güvenli bağlantıda (localhost veya HTTPS) düğme canlı kamera penceresi açar; kamera yoksa ya da bağlantı
-  güvenli değilse düğme gizlenir, yalnız "Bild wählen" kalır. Telefonda değişiklik yok (kamera uygulaması açılır).
-- **Option ekleme:** giriş kutusunun yanında "+" düğmesi; Enter da çalışır. Kaydederken kutuda kalan yazı da Option
+  güvenli değilse düğme gizlenir, yalnız "Bild wählen" kalır. Birden çok kamera varsa (laptop, USB, sanal) pencerede seçilir;
+  seçim bu cihazda hatırlanır (Cankat). Telefonda değişiklik yok (kamera uygulaması açılır).
+- **Option ekleme:** giriş kutusunun içinde, sağda "+" düğmesi (Cankat); Enter da çalışır. Kaydederken kutuda kalan yazı da Option
   olur, kaybolmaz. Virgülle ayırma yok: Almanca ondalık virgülüyle (ör. „0,5“) karışır.
 - **QR adresi:** `MF_BASIS_URL` yoksa ve sayfa localhost'tan açıldıysa, `start.bat netz` ile çalışırken QR bu
   bilgisayarın ofis ağı adresini (ör. `http://192.168.1.20:8090`) alır. Etiket sayfasının önizlemesi gerçek QR'ı
