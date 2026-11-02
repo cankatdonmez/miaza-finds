@@ -5,7 +5,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** dalda, 176 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** dalda, 178 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -15,6 +15,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - Fach-Etiketten (Etiketten › Fächer, QR `/f/<id>`), toplu düzenlemede „Platz“, durum filtresi Am Platz / Ohne Platz.
   - Geri bildirim (D-018): oda ve ünite yazıları şeklin içinde, okunur boyda; odalar 5 pastel tonda (numaradan).
   - D-019: dikdörtgen ünite sürüklenince duvara / komşuya yapışır, uzun kenarıyla döner, komşunun içine giremez (Alt: serbest).
+  - D-020: bölmenin isteğe bağlı adı (Migration 004); Büro, ürün detayı, toplu düzenleme ve bölme etiketinde görünür.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
