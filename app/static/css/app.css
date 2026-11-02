@@ -265,6 +265,7 @@ select.eingabe{padding-right:6px}
 .ton-griff:active{cursor:grabbing}
 .ton .option-name{flex:1;min-width:0}
 .ton-farbe{flex:none;width:30px;height:30px;padding:0;border:0;border-radius:999px;background:none;cursor:pointer}
+.ton-ohne{position:relative;width:30px;height:30px;cursor:pointer}
 .ton-farbe::-webkit-color-swatch-wrapper{padding:0}
 .ton-farbe::-webkit-color-swatch{border:1px solid var(--line-2);border-radius:999px}
 .ton-farbe::-moz-color-swatch{border:1px solid var(--line-2);border-radius:999px}

@@ -149,7 +149,10 @@
           <button class="iconbtn" type="button" data-aktion="ton-neu" data-i="${i}" data-grund="${g}" aria-label="${esc(t("kat.ton_neu", { farbe: name }))}" title="${esc(t("kat.ton_neu", { farbe: name }))}">${icon("plus", 18)}</button></div>
         ${toene.map(({ o, j }) => `<span class="ton" data-i="${i}" data-j="${j}">
           <span class="ton-griff" draggable="true" title="${esc(t("kat.ton_ziehen"))}" aria-label="${esc(t("kat.ton_ziehen"))}">${icon("griff", 18)}</span>
-          <input class="ton-farbe" type="color" data-feld="ton-hex" data-i="${i}" data-j="${j}" value="${esc(o.hex || grundHex(g))}" aria-label="${esc(t("kat.ton_farbe"))}">
+          ${o.hex
+            ? `<input class="ton-farbe" type="color" data-feld="ton-hex" data-i="${i}" data-j="${j}" value="${esc(o.hex)}" aria-label="${esc(t("kat.ton_farbe"))}">`
+            : `<label class="farbpunkt ton-ohne farbe-${g}" title="${esc(t("kat.ton_farbe"))}">
+                <input class="sr-only" type="color" data-feld="ton-hex" data-i="${i}" data-j="${j}" value="${esc(grundHex(g))}" aria-label="${esc(t("kat.ton_farbe"))}"></label>`}
           <input class="option-name" data-feld="option" data-i="${i}" data-j="${j}" value="${esc(o.name)}" placeholder="${esc(t("kat.ton_name"))}" aria-label="${esc(t("kat.ton_name"))}">
           ${o.produkte ? `<span class="option-n num">${o.produkte}</span>` : ""}
           <button class="option-x" type="button" data-aktion="option-weg" data-i="${i}" data-j="${j}" aria-label="${esc(t("kat.auswahl_entfernen", { name: o.name }))}">×</button>
@@ -220,6 +223,9 @@
     }
     zeichneLeiste();
   });
+
+  // Ton ohne eigene Farbe (z. B. Mehrfarbig) zeigt das Zeichen seiner Grundfarbe; nach der ersten Wahl die gewählte Farbe
+  editor.addEventListener("change", (e) => { if (e.target.closest(".ton-ohne")) zeichneEditor(); });
 
   editor.addEventListener("keydown", (e) => {
     const el = e.target;
