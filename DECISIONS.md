@@ -85,3 +85,16 @@ Claude'un önerisi, Cankat onayladı. Detaydaki büyük görsel 2400 px'lik jpg 
 dokununca tam boy jpg tam ekran açılır (kapatmak: dokun veya Esc). Kütüphane kartları ekranın piksel yoğunluğuna göre
 320 veya 960'lık önizlemeyi seçer (`srcset`). Dosyalar kırpılmaz; kare görünüm yalnız ekranda (`object-fit: cover`).
 → SPEC 8.1.
+
+## D-016 · 02.11.2026 · „Hier einordnen“: uygulama içi tarayıcı olmadan toplu yerleştirme
+Claude'un önerisi, Cankat onayladı. Bölme QR'ı telefonun kamera uygulamasıyla okutulur, bölme sayfası açılır;
+„Hier einordnen“ bu cihazı 30 dakika „2.2.5'e yerleştiriyorum“ moduna alır (tarayıcıda saklanır). Bu sürede okutulan
+her ürün sayfasında büyük „In 2.2.5 einordnen“ düğmesi çıkar: tek dokunuş. Mod çubuktaki ×'le veya süre dolunca biter.
+Masaüstünde toplu düzenlemeye „Platz“ alanı eklenir. Uygulama içi tarayıcı Dilim 3'te gelir. → SPEC 6.7.
+
+## D-017 · 02.11.2026 · Dilim 2'nin kapsamı
+Claude'un önerisi, Cankat onayladı. Dilim 2: veri yapısı, altlık, plan düzenleyici (oda, ünite), ünite fotoğrafı ve
+bölmeler, büro görünümü, „Im Büro zeigen“, bölme etiketleri, „Hier einordnen“, „Ohne Platz“ filtresi. Dilim 3'e kalan:
+„Düzenleniyor“, alma / yerine koyma, uygulama içi tarayıcı. Kart yayı ve yelpaze animasyonları önce sade hâlde (bölmenin
+ürünleri liste olarak); gerçek veriyle „Tekrar bak“ adımında eklenir. Çakışmaya karşı şimdilik sürüm kontrolü yeter.
+Menüdeki adı „Büro“ (SPEC 4.10'a eklendi). → SPEC 4.7, 4.10, 10.

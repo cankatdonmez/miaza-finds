@@ -155,6 +155,8 @@ Efektler uygulamayı **anlaşılır ve canlı** yapar; süs olmaz, kullanımı z
 - Hedefler fareyi takip ederek yer değiştirmez.
 - "Hareketi azalt" açıksa animasyonlar kısalır veya kapanır.
 
+> **D-017:** kart yayı ve yelpaze önce sade hâlde (liste); gerçek veriyle "Tekrar bak" adımında eklenir.
+
 **Çok ürünlü durumlar:**
 - Ünite çevresinde tek tek ürün yerine dolu bölmeler kart destesi olarak gösterilir (en fazla 18 deste).
 - Yelpaze 7 karttan sonra yana kaydırılan bir şeride dönüşür.
@@ -215,6 +217,7 @@ Her kavramın tek bir adı vardır; ekranlarda, bildirimlerde ve belgelerde ayn�
 | Başka cihazda düzenlenen kayıt | Düzenleniyor | Wird bearbeitet | |
 | Proje listesi / moodboard | Koleksiyonlar | Sammlungen | Telefon menüsünde de aynı ad. |
 | QR okutma | Okut | Scannen | |
+| Ofis görünümü (menü) | Ofis | Büro | D-017 |
 | Fiyat birimi | "/ m²" biçiminde, kelimesiz | "/ m²"; dışa aktarımda sütun adı **ME** | "Einheit" kelimesi fiyatta kullanılmaz; ünite ile karışır. |
 
 - **"Kütüphane" bölümünün Almanca adı** kesinleşirken dikkat: doküman klasörünün adı da "Bibliothek". İkisi karışmamalı (ör. bölüm "Bibliothek", klasör "Dokumente"; ya da tersi).
@@ -402,6 +405,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
    - **Başka bölme:** *"Bu ürünün yeri 2.2.5. Okuttuğun bölme 2.3.1."* → "2.2.5'e götüreceğim" veya "Yeni yeri 2.3.1 olsun".
    - **Okutmadan onayla:** durum "Yerinde" olur; kayıtta "onaysız" diye işaretlenir. Kullanıcı sorgulanmaz.
 4. **Toplu yerleştirme:** önce bölme QR'ı okutulur ("Buraya yerleştir"), sonra ürünler art arda okutulur. Yeri başka olan ürün için yukarıdaki soru sorulur.
+   - **Uygulama içi tarayıcı olmadan (D-016):** bölme sayfasındaki "Hier einordnen" cihazı 30 dakika yerleştirme moduna alır; telefonun kamerasıyla açılan her ürün sayfasında "In 2.2.5 einordnen" düğmesi çıkar. Masaüstünde toplu düzenlemede "Platz" alanı.
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter.
 
 ### 6.8 Koleksiyonlar ve sipariş listesi
