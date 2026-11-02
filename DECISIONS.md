@@ -103,8 +103,9 @@ Menüdeki adı „Büro“ (SPEC 4.10'a eklendi). → SPEC 4.7, 4.10, 10.
 Cankat'ın geri bildirimi (oda adı çok küçük ve odanın dışında, ünite kodu okunmuyor, odalar renkli olsun). Çözüm Claude'un önerisi:
 - **Yer:** oda ve ünite yazısı şeklin ağırlık merkezine değil, **içindeki en geniş noktaya** gelir (L biçimli odada da içeride kalır).
   Elle taşıma yok; gerekirse sonra.
-- **Boyut:** yazı şeklin içine sığacak kadar büyür, ekranda okunur sınırlar içinde kalır (oda 12–28 px, ünite kodu 11–20 px).
-  Ünitenin adı, sığarsa kodun altında küçük yazılır.
+- **Boyut:** yazı şeklin içine sığacak kadar büyür, ekranda okunur sınırlar içinde kalır (oda 13–30 px, ünite kodu 13–22 px).
+  Bütün üniteler aynı boyda yazılır; yalnız buna sığmayan küçük ünite daha küçük yazı alır. En küçük boyda da sığmayan
+  yazı çizilmez (ör. telefonda bütün plan), yakınlaşınca görünür. Ünitenin adı, sığarsa kodun altında küçük yazılır.
 - **Renk:** odalar 5 pastel tondan birini alır; renk oda numarasından gelir (1 → 1. ton, 6 → yine 1. ton). Seçim adımı yok.
   Üniteler odalardan ayrışan tek bir renkte; seçili ünite vurgu rengindedir. Açık ve koyu temada ayrı tonlar.
 → SPEC 6.4.
