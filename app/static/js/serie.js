@@ -37,7 +37,7 @@
   // ---------- Fotos ----------
   serie.addEventListener("change", async (e) => {
     if (!e.target.matches("[data-serie-eingabe]")) return;
-    let dateien = [...e.target.files].filter((d) => d.type.startsWith("image/"));
+    let dateien = [...e.target.files].filter((d) => !d.type || d.type.startsWith("image/"));   // manche Kameras: ohne Typ
     e.target.value = "";
     // Ein Foto: gleich zuschneiden (D-027); „Übernehmen“ ohne Änderung nimmt es, wie es ist
     if (dateien.length === 1) {

@@ -247,7 +247,8 @@
 
   // ---------- Fotos: zwei Wege, am Desktop auch Ziehen und Einfügen (SPEC 4.5) ----------
   async function fotosHinzu(dateien) {
-    let bilder = dateien.filter((f) => f.type.startsWith("image/"));
+    // Manche Kameras liefern keinen Dateityp; ob es ein Bild ist, prüft der Server
+    let bilder = dateien.filter((f) => !f.type || f.type.startsWith("image/"));
     if (!bilder.length) return;
     // Ein einzelnes Foto gleich zuschneiden (D-027); bei mehreren nicht, das hielte zu lange auf
     if (bilder.length === 1) {

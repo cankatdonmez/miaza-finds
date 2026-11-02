@@ -8,10 +8,19 @@
   const GRIFFE = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
   const klemmen = (v, a, b) => Math.min(Math.max(v, a), b);
 
+  // Geht etwas schief, kommt das Foto unbeschnitten durch: ein Foto darf nie verloren gehen
   MF.zuschneiden = async (datei) => {
-    let bild;
-    try { bild = await createImageBitmap(datei, { imageOrientation: "from-image" }); } catch { return datei; }
+    try { return await zuschneiden(datei); } catch { document.querySelector(".zuschnitt")?.remove(); return datei; }
+  };
+
+  async function zuschneiden(datei) {
+    // Das Foto nur einmal dekodieren: als <img> für die Anzeige und als Quelle des Zuschnitts. Kamerafotos haben
+    // 12–50 Megapixel; eine zweite Kopie (createImageBitmap) sprengte am Telefon den Speicher und lud die Seite neu.
     const url = URL.createObjectURL(datei);
+    const bild = new Image();
+    bild.src = url;
+    try { await bild.decode(); } catch { URL.revokeObjectURL(url); return datei; }
+    const B = bild.naturalWidth, H = bild.naturalHeight;   // schon nach EXIF gedreht (image-orientation: from-image)
     let r = { x: 0, y: 0, w: 1, h: 1 };
 
     const el = document.createElement("div");
@@ -24,7 +33,7 @@
         <button class="iconbtn" type="button" data-z="zu" aria-label="${esc(t("zuschnitt.verwerfen"))}" title="${esc(t("zuschnitt.verwerfen"))}">${icon("close")}</button>
         <span>${esc(t("zuschnitt.titel"))}</span></div>
       <div class="zuschnitt-flaeche" data-flaeche>
-        <div class="zuschnitt-bild" data-bild><img src="${url}" alt="">
+        <div class="zuschnitt-bild" data-bild>
           <div class="zuschnitt-maske"><div class="zuschnitt-loch" data-loch></div></div>
           <div class="zuschnitt-rahmen" data-g="m">${GRIFFE.map((g) => `<span class="zuschnitt-griff g-${g}" data-g="${g}"></span>`).join("")}</div>
         </div></div>
@@ -32,15 +41,17 @@
         <button class="btn" type="button" data-z="ganz">${esc(t("zuschnitt.ganz"))}</button>
         <button class="btn primary" type="button" data-z="ok">${esc(t("zuschnitt.ok"))}</button></div>`;
     const flaeche = el.querySelector("[data-flaeche]"), bildEl = el.querySelector("[data-bild]"), rahmen = el.querySelector("[data-g=m]"), loch = el.querySelector("[data-loch]");
+    bild.alt = "";
+    bildEl.prepend(bild);
 
     // Foto so groß wie möglich, im Seitenverhältnis
     const einpassen = () => {
       const st = getComputedStyle(flaeche);
       const breite = flaeche.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight);
       const hoehe = flaeche.clientHeight - parseFloat(st.paddingTop) - parseFloat(st.paddingBottom);
-      const k = Math.min(breite / bild.width, hoehe / bild.height);
-      bildEl.style.width = `${bild.width * k}px`;
-      bildEl.style.height = `${bild.height * k}px`;
+      const k = Math.min(breite / B, hoehe / H);
+      bildEl.style.width = `${B * k}px`;
+      bildEl.style.height = `${H * k}px`;
     };
     // Abdunkeln (in der Maske, auf das Foto beschnitten) und Rahmen mit Griffen (darf über den Rand ragen) liegen gleich
     const zeichnen = () => {
@@ -115,17 +126,16 @@
     URL.revokeObjectURL(url);
 
     const ganz = r.x < 0.002 && r.y < 0.002 && r.w > 0.996 && r.h > 0.996;
-    if (ergebnis === null) { bild.close(); return null; }
-    if (ergebnis === "ganz" || ganz) { bild.close(); return datei; }
-    const sx = r.x * bild.width, sy = r.y * bild.height, sw = r.w * bild.width, sh = r.h * bild.height;
+    if (ergebnis === null) return null;
+    if (ergebnis === "ganz" || ganz) return datei;
+    const sx = r.x * B, sy = r.y * H, sw = r.w * B, sh = r.h * H;
     const k = Math.min(1, MAX / Math.max(sw, sh));
     const c = document.createElement("canvas");
     c.width = Math.round(sw * k);
     c.height = Math.round(sh * k);
     c.getContext("2d").drawImage(bild, sx, sy, sw, sh, 0, 0, c.width, c.height);
-    bild.close();
     const blob = await new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.9));
     if (!blob) return datei;
     return new File([blob], (datei.name || "foto").replace(/\.\w+$/, "") + "-zuschnitt.jpg", { type: "image/jpeg" });
-  };
+  }
 })();
