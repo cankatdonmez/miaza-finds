@@ -98,3 +98,13 @@ bölmeler, büro görünümü, „Im Büro zeigen“, bölme etiketleri, „Hier
 „Düzenleniyor“, alma / yerine koyma, uygulama içi tarayıcı. Kart yayı ve yelpaze animasyonları önce sade hâlde (bölmenin
 ürünleri liste olarak); gerçek veriyle „Tekrar bak“ adımında eklenir. Çakışmaya karşı şimdilik sürüm kontrolü yeter.
 Menüdeki adı „Büro“ (SPEC 4.10'a eklendi). → SPEC 4.7, 4.10, 10.
+
+## D-018 · 02.11.2026 · Plan yazıları ve oda renkleri
+Cankat'ın geri bildirimi (oda adı çok küçük ve odanın dışında, ünite kodu okunmuyor, odalar renkli olsun). Çözüm Claude'un önerisi:
+- **Yer:** oda ve ünite yazısı şeklin ağırlık merkezine değil, **içindeki en geniş noktaya** gelir (L biçimli odada da içeride kalır).
+  Elle taşıma yok; gerekirse sonra.
+- **Boyut:** yazı şeklin içine sığacak kadar büyür, ekranda okunur sınırlar içinde kalır (oda 12–28 px, ünite kodu 11–20 px).
+  Ünitenin adı, sığarsa kodun altında küçük yazılır.
+- **Renk:** odalar 5 pastel tondan birini alır; renk oda numarasından gelir (1 → 1. ton, 6 → yine 1. ton). Seçim adımı yok.
+  Üniteler odalardan ayrışan tek bir renkte; seçili ünite vurgu rengindedir. Açık ve koyu temada ayrı tonlar.
+→ SPEC 6.4.

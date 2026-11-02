@@ -346,11 +346,11 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Görünürlük:**
   - Düzenleyicide: göster / gizle. Görünüm sabit ve soluktur; ayrı bir saydamlık ayarı yoktur.
   - Ofis görünümünde: Ayarlar › Ofis planı › "Altlığı ofis görünümünde göster".
-  - Altlık gizliyken ofis görünümü nötr odaları (adlarıyla) ve üniteleri gösterir.
+  - Altlık gizliyken ofis görünümü renkli odaları (adlarıyla) ve üniteleri gösterir.
 - Plan ölçekli değildir.
 
 **Çizim öğeleri:**
-- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi seçilmez. Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
+- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi seçilmez: 5 pastel tondan biri oda numarasından gelir (D-018). Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
 - **Üniteler:**
   - Dikdörtgen veya poligonla çizilir.
   - Bulunduğu odaya otomatik bağlanır ve sıradaki kodu alır (ör. 4.1); kod elle değiştirilebilir.
@@ -359,6 +359,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Ünite fotoğrafı:** çekilir veya mevcut görsel seçilir.
 - **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir.
 - **Kod şeması:** `Oda.Ünite.Bölme`, ör. **2.2.5**.
+- **Yazılar (D-018):** oda adı ve ünite kodu şeklin içindeki en geniş noktada durur, şekle sığacak kadar büyür ama ekranda okunur sınırlar içinde kalır. Ünitenin adı sığarsa kodun altında yazılır.
 
 **Numaralama:**
 - Yeni bölme **sona eklenir**; mevcut kodlar kendiliğinden değişmez.
