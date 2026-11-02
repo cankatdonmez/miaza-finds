@@ -285,10 +285,11 @@ değişince etiket „yeniden bas“ listesine girer.
 
 ## D-034 · 02.11.2026 · Etiket içeriği ortalı; sol kenarda „miaza“
 Cankat'ın isteği.
-- **Ortalı ve güvenli boşluklu:** etiketin içeriği hem dikeyde hem yatayda ortalanır; her kenarda en az 3 mm boşluk
-  kalır (baskıda kayma ya da ölçek farkı olsa da QR kesilmez). QR 28 mm kare, dikeyde tam ortada (üstte ve altta 4,4 mm).
-  Metin sütunu QR'ın üst ve alt kenarı arasında durur: ad QR'ın üst kenarıyla, kod alt kenarıyla hizalı.
-- **Marka işareti:** etiketin sol kenarında, yan dönmüş (aşağıdan yukarı okunan) „miaza“, Comfortaa SemiBold. Numunenin
-  büroya ait olduğu anlaşılır. Ürün ve bölme etiketinde aynı.
+- **Sabit, ortalı, güvenli alanlı düzen** (Cankat'ın düzeltmesiyle): her kenardan 3 mm hayali güvenli alan; düzen bu alanı
+  doldurur ve her etikette aynıdır (içeriğe göre kaymaz). Soldan: „miaza“ → 2 mm → QR → 2,5 mm → metin sütunu (sağ güvenli
+  alana kadar, ~28 mm; içerik çoğalırsa yer olsun diye QR sola alındı). QR 26 mm kare, dikeyde tam ortada; metin QR'ın
+  üst ve alt kenarı arasında (ad üst kenarla, kod alt kenarla hizalı). QR'ın yanında en az 2 mm boşluk: okunabilirlik.
+- **Marka işareti:** sol kenarda, yan dönmüş (aşağıdan yukarı okunan) „miaza“, Comfortaa SemiBold; QR yüksekliğinin
+  ~%70'i kadar uzun, dikeyde ortalı. Numunenin büroya ait olduğu anlaşılır. Ürün ve bölme etiketinde aynı.
 - Yazı tipi dosyası Cankat'ın bilgisayarındaki Comfortaa'dan alındı (SIL Open Font License), `app/assets/fonts`.
 → SPEC 6.6.
