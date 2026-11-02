@@ -67,3 +67,14 @@ kez; etkisi panelde, onay penceresi yerine "Rückgängig". Dilim 1'de kütüphan
 Claude'un önerisi, Cankat onayladı. Deneme verisi temizlendikten sonra gerçek ürünler temiz numaralarla başlasın.
 "Numaralar asla yeniden kullanılmaz" kuralının tek istisnası; bedeli, önceden basılmış etiketlerin geçersiz olması.
 Arayüz bunu silmeden önce yazar ve otomatik yedek alır. "Alle Produkte löschen" sayaçlara dokunmaz. → SPEC 6.2, 6.13.
+
+## D-014 · 02.11.2026 · Beta geri bildirimi 1: masaüstü kamerası, Option ekleme, QR adresi
+Cankat'ın ilk denemesinden. Çözümler Claude'un önerisi:
+- **Foto aufnehmen (masaüstü):** masaüstü tarayıcısı `capture`'ı yok sayar, iki düğme aynı dosya penceresini açıyordu.
+  Masaüstünde güvenli bağlantıda (localhost veya HTTPS) düğme canlı kamera penceresi açar; kamera yoksa ya da bağlantı
+  güvenli değilse düğme gizlenir, yalnız "Bild wählen" kalır. Telefonda değişiklik yok (kamera uygulaması açılır).
+- **Option ekleme:** giriş kutusunun yanında "+" düğmesi; Enter da çalışır. Kaydederken kutuda kalan yazı da Option
+  olur, kaybolmaz. Virgülle ayırma yok: Almanca ondalık virgülüyle (ör. „0,5“) karışır.
+- **QR adresi:** `MF_BASIS_URL` yoksa ve sayfa localhost'tan açıldıysa, `start.bat netz` ile çalışırken QR bu
+  bilgisayarın ofis ağı adresini (ör. `http://192.168.1.20:8090`) alır. Etiket sayfasının önizlemesi gerçek QR'ı
+  gösterir. Kalıcı adres yine açık soru (STATUS). → SPEC 8.2.

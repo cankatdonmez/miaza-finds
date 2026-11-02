@@ -526,6 +526,8 @@ Tarayıcılar, sayfa içinde canlı kamera görüntüsünü sadece güvenli bağ
 - Ürün QR'ı telefonun kendi kamera uygulamasıyla okunur. Link ürün sayfasını açar.
 - **"Fotoğrafla okut":** düğme telefonun kamera uygulamasını açar, fotoğraf çekilir, QR fotoğraftan okunur. Her okutmada bir deklanşör ve bir "fotoğrafı kullan" dokunuşu fazladan gerekir.
 - Fotoğraf çekme ve seçme, seri kayıt dahil. Her fotoğrafta kamera uygulaması yeniden açılır.
+- **Masaüstü (D-014):** localhost güvenli sayıldığı için "Foto aufnehmen" canlı kamera penceresi açar. Kamera yoksa veya bağlantı güvenli değilse düğme gizlenir.
+- **QR adresi (D-014):** `MF_BASIS_URL` yoksa ve sunucu ağa açıksa (`start.bat netz`), localhost yerine bilgisayarın ofis ağı adresi kullanılır.
 
 Tek ürünlük işlerde bu yeterlidir. Ama toplu yerleştirmede ve seri kayıtta, yani art arda okutmada yavaştır. Canlı kamera bu yüzden istenir.
 
