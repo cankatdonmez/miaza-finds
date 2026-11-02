@@ -204,7 +204,7 @@ select.eingabe{padding-right:6px}
 .option-name{font:inherit;font-size:var(--fs-text);color:var(--ink);background:none;border:0;padding:0;min-width:2ch}
 .option-name:focus{outline:none;text-decoration:underline}
 .option-n{font-size:var(--fs-mini);color:var(--muted);padding:0 4px}
-.option-x{width:40px;height:40px;border-radius:999px;color:var(--muted)}
+.option-x{width:44px;height:44px;border-radius:999px;color:var(--muted)}
 .option-x:hover{background:var(--sunk);color:var(--ink)}
 .option-neu-zeile{position:relative;display:inline-flex;align-items:center}
 .option-neu{width:200px;min-height:36px;border-radius:999px;font-size:var(--fs-text);padding-right:36px}
@@ -224,7 +224,7 @@ select.eingabe{padding-right:6px}
 
 /* Auswahlknöpfe (Filterwerte) */
 .pills{display:flex;flex-wrap:wrap;gap:6px}
-.pill{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);font-size:var(--fs-text);font-weight:500;
+.pill{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);font-size:var(--fs-text);font-weight:500;
   color:var(--ink);transition:background .16s ease,border-color .16s ease,color .16s ease}
 .pill[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
 
@@ -247,7 +247,7 @@ select.eingabe{padding-right:6px}
 .preis-euro{color:var(--muted)}
 .notiz{padding:10px 12px;min-height:88px;resize:vertical}
 .farben{display:flex;flex-wrap:wrap;gap:6px}
-.farbknopf{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px 0 8px;border-radius:999px;border:1px solid var(--line-2);
+.farbknopf{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px 0 8px;border-radius:999px;border:1px solid var(--line-2);
   background:var(--card);font-size:var(--fs-text);color:var(--ink)}
 .farbknopf[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
 .farbpunkt{width:22px;height:22px;border-radius:999px;border:1px solid var(--line-2);flex:none}
@@ -256,6 +256,16 @@ select.eingabe{padding-right:6px}
 .farbe-gruen{background:var(--farbe-gruen)}.farbe-blau{background:var(--farbe-blau)}.farbe-grau{background:var(--farbe-grau)}
 .farbe-schwarz{background:var(--farbe-schwarz)}
 .produkt-fuss{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4px}
+/* Weitere Angaben (D-029): zugeklappt wie eine Kartenzeile */
+.mehr-angaben{padding:0}
+.mehr-angaben > summary{display:flex;align-items:center;justify-content:space-between;min-height:56px;padding:0 20px;cursor:pointer;
+  font-weight:600;list-style:none}
+.mehr-angaben > summary::-webkit-details-marker{display:none}
+.mehr-angaben > summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+  transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.mehr-angaben[open] > summary::after{transform:rotate(225deg);margin-top:4px}
+.mehr-angaben > .stack{padding:0 20px 20px}
+.btn.warnend{color:var(--ausser-haus);background:var(--ausser-haus-soft);border-color:var(--ausser-haus-soft)}
 .formleiste{position:sticky;bottom:calc(var(--leiste-unten) + 12px + env(safe-area-inset-bottom));display:flex;justify-content:flex-end;gap:8px;
   padding:10px;border-radius:999px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(10px);
   border:1px solid var(--line);box-shadow:var(--shadow);z-index:20}
@@ -368,7 +378,7 @@ select.eingabe{padding-right:6px}
 .fgruppe{display:flex;flex-direction:column;gap:8px}
 .fgruppe .abschnitt{margin:0}
 .flinks{display:flex;flex-direction:column;gap:2px}
-.flink{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:40px;padding:0 10px;border-radius:10px;text-align:left;color:var(--ink)}
+.flink{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:0 10px;border-radius:10px;text-align:left;color:var(--ink)}
 .flink:hover{background:var(--card)}
 .flink[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
 .von-bis{display:flex;align-items:center;gap:6px}
@@ -452,7 +462,7 @@ select.eingabe{padding-right:6px}
 .plan-werkzeuge .segs{max-width:none}
 .plan-werkzeuge .segbtn{padding:0 16px}
 .plan-unterlage{display:flex;align-items:center;gap:4px}
-.btn.klein{min-height:40px;padding:0 14px;font-size:var(--fs-text)}
+.btn.klein{min-height:44px;padding:0 14px;font-size:var(--fs-text)}
 .plan-haupt{flex:1;min-height:420px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}
 .plan-svg,.fach-svg{width:100%;height:100%;display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);touch-action:none;user-select:none}
 .plan-svg[data-werkzeug="raum"],.plan-svg[data-werkzeug="einheit"],.fach-svg[data-werkzeug="fach"]{cursor:crosshair}

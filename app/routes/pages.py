@@ -19,16 +19,17 @@ router = APIRouter()
 # kommen mit ihren Dilims dazu (SPEC 4.5). Etiketten-Druck gibt es nur am Desktop (SPEC 5).
 MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
                  ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
-MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"), ("mehr", "menue.mehr", "more")]
+# „Mehr“ erst, wenn mehr als eine Seite hineingehört (D-029); bis dahin direkt die Einstellungen
+MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
+                 ("einstellungen", "menue.einstellungen", "settings")]
 # Seiten, die am Telefon unter „Mehr“ liegen
-MEHR_SEITEN = {"mehr", "einstellungen"}
 
 
 def _seite(request: Request, seite: str, titel_schluessel: str | None, vorlage: str | None = None,
            titel: str | None = None, **extra):
     return templates.TemplateResponse(request, f"{vorlage or seite}.html", {
         "seite": seite, "titel": titel or t(titel_schluessel), "menue_desktop": MENUE_DESKTOP,
-        "menue_telefon": MENUE_TELEFON, "mehr_seiten": MEHR_SEITEN, **extra,
+        "menue_telefon": MENUE_TELEFON, **extra,
     })
 
 
@@ -78,8 +79,9 @@ def faecher_bearbeiten(request: Request, einheit_id: int, db: sqlite3.Connection
 
 
 @router.get("/mehr")
-def mehr(request: Request):
-    return _seite(request, "mehr", "mehr.titel")
+def mehr():
+    """Alte Adresse: „Mehr“ enthält derzeit nur die Einstellungen (D-029)."""
+    return RedirectResponse("/einstellungen", status_code=303)
 
 
 @router.get("/system")

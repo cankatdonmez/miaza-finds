@@ -425,8 +425,12 @@
     }
   }
 
+  // Sofort verwerfen, „Rückgängig“ holt den Entwurf zurück (D-029)
   function verwerfen() {
-    if (verlauf.geaendert() && !window.confirm(t("plan.verwerfen_frage", { n: Math.max(verlauf.anzahl(), 1) }))) return;
+    const vorher = verlauf.geaendert() ? JSON.stringify(entwurf) : null;
+    if (vorher) {
+      toast(t("plan.verworfen"), { rueckgaengig: () => { entwurf = JSON.parse(vorher); gewaehlt = null; alles(); } });
+    }
     ausServer(geladen);
     gewaehlt = null;
     bestaetigen = null;

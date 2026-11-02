@@ -18,6 +18,9 @@
   let neueFotos = [];        // {datei, url}
   let wegFotos = new Set();  // Kennungen gespeicherter Fotos, die beim Speichern gelöscht werden
   let speichert = false;
+  // „Weitere Angaben“ (D-029): bei neuen Produkten zu, bis man es öffnet; bleibt über Neuzeichnen hinweg offen
+  let mehrOffen = null;
+  let verwerfenFrage = 0;     // Zeitpunkt der ersten Berührung von „Verwerfen“ (zweite Berührung bestätigt)
 
   // Telefon: Kamera-App über „capture“. Desktop ignoriert „capture“ → eigene Kamera, nur wenn es eine gibt (D-014)
   const TELEFON = matchMedia("(pointer: coarse)").matches;
@@ -92,7 +95,9 @@
         ${k.filter.map(zeichneFilter).join("")}
       </section>
 
-      <section class="card stack">
+      <details class="card mehr-angaben" data-mehr ${mehrAuf() ? "open" : ""}>
+        <summary>${esc(t("produkt.weitere_angaben"))}</summary>
+        <div class="stack">
         <div class="feld-reihe">
           <label class="feld"><span>${esc(t("produkt.marke"))}</span><input class="eingabe" data-feld="marke" value="${esc(p.marke)}" maxlength="80"></label>
           <label class="feld"><span>${esc(t("produkt.abmessungen"))}</span><input class="eingabe" data-feld="abmessungen" value="${esc(p.abmessungen)}" maxlength="80"></label>
@@ -115,14 +120,21 @@
               <span class="farbpunkt farbe-${f}"></span><span>${esc(t("farbe." + f))}</span></button>`).join("")}</div>
         </div>
         <label class="feld"><span>${esc(t("produkt.notiz"))}</span><textarea class="eingabe notiz" data-feld="notiz" rows="3" maxlength="2000">${esc(p.notiz)}</textarea></label>
-      </section>
+        </div>
+      </details>
 
       ${inventarNr ? `<div class="produkt-fuss"><span class="num sub">${esc(p.code_alt || "")}</span><button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("produkt.loeschen"))}</button></div>` : ""}
 
       <div class="formleiste">
-        <a class="btn" href="${zurueck}" data-aktion="abbrechen">${esc(t("produkt.abbrechen"))}</a>
+        <a class="btn" href="${zurueck}" data-aktion="abbrechen">${esc(t("produkt.verwerfen"))}</a>
         <button class="btn primary" type="submit">${esc(t("produkt.speichern"))}</button>
       </div>`;
+  }
+
+  // Offen: beim Bearbeiten, wenn schon etwas eingetragen ist, oder wenn man es geöffnet hat
+  function mehrAuf() {
+    if (mehrOffen !== null) return mehrOffen;
+    return !!inventarNr || !!(p.marke || p.abmessungen || p.link || p.notiz || p.anzahl || p.farben.length || p.preis.betrag);
   }
 
   function zeichneFotos() {
@@ -166,6 +178,8 @@
     else if (feld === "kategorie_id") return;    // „change“ zeichnet neu
     else p[feld] = el.value;
   });
+
+  form.addEventListener("toggle", (e) => { if (e.target.matches("[data-mehr]")) mehrOffen = e.target.open; }, true);
 
   form.addEventListener("change", (e) => {
     const el = e.target;
@@ -235,7 +249,15 @@
     if (b.dataset.aktion === "kamera") { kameraOeffnen(); return; }
     if (b.dataset.aktion === "loeschen") { await loeschen(); return; }
     if (b.dataset.aktion === "abbrechen" && geaendert()) {
-      if (!window.confirm(t("allg.ungespeichert"))) { e.preventDefault(); return; }
+      // Erste Berührung fragt im Knopf selbst, die zweite (innerhalb von 4 s) verwirft (D-029)
+      if (Date.now() - verwerfenFrage > 4000) {
+        e.preventDefault();
+        verwerfenFrage = Date.now();
+        b.textContent = t("produkt.wirklich_verwerfen");
+        b.classList.add("warnend");
+        setTimeout(() => { if (Date.now() - verwerfenFrage >= 4000) { b.textContent = t("produkt.verwerfen"); b.classList.remove("warnend"); } }, 4100);
+        return;
+      }
       original = daten();      // bewusst verworfen: kein zweiter Hinweis beim Verlassen
       neueFotos = [];
       wegFotos.clear();

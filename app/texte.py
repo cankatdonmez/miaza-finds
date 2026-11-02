@@ -13,7 +13,6 @@ DE: dict[str, str] = {
     "menue.buero": "Büro",
     "menue.etiketten": "Etiketten",
     "menue.einstellungen": "Einstellungen",
-    "menue.mehr": "Mehr",
     "menue.neues_produkt": "Neues Produkt",
     "menue.haupt": "Hauptmenü",
     # Seiten
@@ -126,7 +125,6 @@ DE: dict[str, str] = {
     "darstellung.system": "System",
     "darstellung.hell": "Hell",
     "darstellung.dunkel": "Dunkel",
-    "mehr.titel": "Mehr",
     "einstellungen.reiter_kategorien": "Kategorien & Filter",
     "einstellungen.reiter_allgemein": "Allgemein",
     "einstellungen.reiter_plan": "Büroplan",
@@ -155,8 +153,7 @@ DE: dict[str, str] = {
     "plan.gespeichert": "Plan gespeichert",
     "plan.aenderungen": "{n} Änderungen",
     "plan.aenderungen_eins": "1 Änderung",
-    "plan.verwerfen_frage": "{n} Änderungen gehen verloren.",
-    "plan.verwerfen_frage_eins": "1 Änderung geht verloren.",
+    "plan.verworfen": "Änderungen verworfen",
     "plan.hinweis_zeichnen": "Ziehen: Rechteck · Klicken: Ecke für Ecke, mit dem ersten Punkt schließen",
     "plan.hinweis_unterlage": "Ziehen verschiebt, die Ecke unten rechts ändert die Größe",
     "plan.raeume": "Räume",
@@ -314,6 +311,9 @@ DE: dict[str, str] = {
     "produkt.nein": "Nein",
     "produkt.speichern": "Speichern",
     "produkt.abbrechen": "Abbrechen",
+    "produkt.verwerfen": "Verwerfen",
+    "produkt.wirklich_verwerfen": "Wirklich verwerfen?",
+    "produkt.weitere_angaben": "Weitere Angaben",
     "produkt.loeschen": "Produkt löschen",
     "produkt.loeschen_frage": "{code} wird gelöscht. Die Inventarnummer {nr} wird nie wieder vergeben; das gedruckte Etikett wird ungültig.",
     "produkt.gespeichert": "Gespeichert · {code}",
@@ -391,7 +391,6 @@ DE: dict[str, str] = {
     "system.link": "Systembereich",
     # Allgemein
     "allg.rueckgaengig": "Rückgängig",
-    "allg.ungespeichert": "Die Änderungen sind noch nicht gespeichert. Verwerfen?",
     "allg.fehler_netz": "Keine Verbindung zum Server. Bitte erneut versuchen.",
     "allg.fehler": "Das hat nicht geklappt. Bitte erneut versuchen.",
     # Fehlerseiten

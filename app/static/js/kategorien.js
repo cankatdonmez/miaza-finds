@@ -51,8 +51,20 @@
     if (!original) $("[data-feld=name]", editor).focus();
   }
 
+  // Wechseln verwirft ungespeicherte Änderungen sofort; „Rückgängig“ holt sie zurück (D-029)
   function wechseln(ziel) {
-    if (geaendert() && !window.confirm(t("allg.ungespeichert"))) return;
+    if (geaendert()) {
+      const zurueck = { id: original ? original.id : "neu", entwurf: kopie(entwurf), praefixVonHand };
+      toast(t("plan.verworfen"), {
+        rueckgaengig: () => {
+          oeffnen(zurueck.id);
+          entwurf = zurueck.entwurf;
+          praefixVonHand = zurueck.praefixVonHand;
+          zeichneListe();
+          zeichneEditor();
+        },
+      });
+    }
     oeffnen(ziel);
   }
 
