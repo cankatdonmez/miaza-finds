@@ -121,19 +121,66 @@ const MF = (() => {
   }
   einordnenLeiste();
 
-  // Foto einer Einheit mit ihren Fächern (Büro, Platz ändern). Fachpunkte in % des Fotos; gewaehltesFach bekommt
-  // das Spotlicht (SPEC 4.7): alles andere wird abgedunkelt.
+  // ---------- Foto einer Einheit mit ihren Fächern (Büro; D-026, wie die Demo) ----------
+  // Fächer sind unsichtbare Tastflächen; jedes trägt oben links eine Marke „Code · Anzahl“. Das Spotlicht ist ein
+  // Rahmen um das Fach (Begrenzungsrechteck, Punkte in % des Fotos), der von Fach zu Fach gleitet: gewählt = dunkel und
+  // pulsierend, Zeiger darüber = Vorschau. Nach dem Einsetzen ins DOM MF.fotoBeleben(rahmen) aufrufen.
+  const kasten = (punkte) => {
+    const xs = punkte.map((p) => p[0]), ys = punkte.map((p) => p[1]);
+    return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+  };
+  const lage = (k) => `left:${k.x}%;top:${k.y}%;width:${k.w}%;height:${k.h}%`;
+  let letzterSpot = null;          // dort beginnt die Gleitbewegung beim nächsten Zeichnen
+
   function fotoMitFaechern(e, gewaehltesFach) {
     if (!e.foto) return `<div class="buero-foto leer"><span class="sub">${esc(t("buero.kein_foto"))}</span></div>`;
     const h = (100 * e.foto_hoehe) / e.foto_breite;
     const pfad = (punkte) => "M" + punkte.map(([x, y]) => `${x} ${(y * h) / 100}`).join("L") + "Z";
-    const pfade = e.faecher.map((f) => `<path d="${pfad(f.punkte)}" class="fach${f.id === gewaehltesFach ? " gewaehlt" : ""}" data-fach="${f.id}"></path>`).join("");
+    const flaechen = e.faecher.map((f) => `<path d="${pfad(f.punkte)}" class="foto-fach" data-fach="${f.id}"
+      data-kasten="${Object.values(kasten(f.punkte)).join(",")}"><title>${esc(f.code)}</title></path>`).join("");
+    const marken = e.faecher.map((f) => {
+      const k = kasten(f.punkte);
+      return `<span class="foto-marke${f.produkte ? "" : " leer"}${f.id === gewaehltesFach ? " gewaehlt" : ""}" data-marke="${f.id}"
+        style="left:calc(${k.x}% + 4px);top:calc(${k.y}% + 4px)">${esc(f.code)}${f.produkte ? " · " + f.produkte : ""}</span>`;
+    }).join("");
     const sf = gewaehltesFach && e.faecher.find((f) => f.id === gewaehltesFach);
-    const spot = sf ? `<path class="spot" fill-rule="evenodd" d="M0 0H100V${h}H0Z ${pfad(sf.punkte)}"></path>` : "";
-    return `<div class="buero-foto" style="aspect-ratio:${e.foto_breite}/${e.foto_hoehe}">
+    return `<div class="buero-foto${sf ? " mit-spot" : ""}" style="aspect-ratio:${e.foto_breite}/${e.foto_hoehe}"
+        ${sf ? `data-spot="${Object.values(kasten(sf.punkte)).join(",")}"` : ""}>
       <img src="/media/einheiten/${esc(e.foto)}-960.webp" alt="">
-      <svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">${pfade}${spot}</svg></div>`;
+      <svg viewBox="0 0 100 ${h}" preserveAspectRatio="none">${flaechen}</svg>
+      <div class="foto-spot${sf ? " gewaehlt" : ""}" ${sf ? `data-spot-fach="${sf.id}"` : ""}></div>${marken}</div>`;
   }
 
-  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern };
+  // Spotlicht setzen: von der letzten Lage zur neuen gleiten; Marken außerhalb des Spots treten zurück
+  function spotSetzen(rahmen, k, art, fachId) {
+    const spot = rahmen.querySelector(".foto-spot");
+    spot.className = "foto-spot" + (art ? " " + art : "");
+    if (k) { spot.style.cssText = lage(k); letzterSpot = k; }
+    rahmen.classList.toggle("mit-spot", !!art);
+    rahmen.querySelectorAll("[data-marke]").forEach((m) => m.classList.toggle("im-spot", !!art && Number(m.dataset.marke) === fachId));
+  }
+  const kastenAus = (s) => { const [x, y, w, h] = s.split(",").map(Number); return { x, y, w, h }; };
+
+  function fotoBeleben(bereich) {
+    const rahmen = bereich.querySelector(".buero-foto:not(.leer)");
+    if (!rahmen) return;
+    const ziel = rahmen.dataset.spot && kastenAus(rahmen.dataset.spot);
+    const gewaehlt = ziel ? Number(rahmen.querySelector(".foto-spot").dataset.spotFach) : null;
+    if (ziel && letzterSpot) {
+      // erst an der alten Stelle zeigen, im nächsten Bild an die neue gleiten
+      spotSetzen(rahmen, letzterSpot, "gewaehlt", gewaehlt);
+      requestAnimationFrame(() => requestAnimationFrame(() => spotSetzen(rahmen, ziel, "gewaehlt", gewaehlt)));
+    } else if (ziel) {
+      spotSetzen(rahmen, ziel, "gewaehlt", gewaehlt);
+    }
+    // Vorschau mit dem Zeiger (nur wo es einen Zeiger gibt), solange kein Fach gewählt ist
+    if (ziel || !matchMedia("(hover: hover)").matches) return;
+    rahmen.addEventListener("pointerover", (ev) => {
+      const f = ev.target.closest("[data-kasten]");
+      if (f) spotSetzen(rahmen, kastenAus(f.dataset.kasten), "vorschau", Number(f.dataset.fach));
+    });
+    rahmen.addEventListener("pointerleave", () => spotSetzen(rahmen, null, "", null));
+  }
+
+  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben };
 })();

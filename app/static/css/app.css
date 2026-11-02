@@ -37,6 +37,9 @@
   /* Materialfarben der Farbpalette (SPEC 6.2): eigene Farben des Materials, in beiden Themen gleich */
   --farbe-weiss:#F7F5F0; --farbe-beige:#D9C7A7; --farbe-braun:#7A5333; --farbe-terracotta:#C0643F; --farbe-gold:#C9A23E;
   --farbe-rosa:#E3A6B4; --farbe-gruen:#6E8B5A; --farbe-blau:#4F78A8; --farbe-grau:#8E9196; --farbe-schwarz:#1E1E1E;
+  /* Über dem Einheitsfoto (D-026): in beiden Themen gleich, weil sie auf dem Foto liegen */
+  --foto-schleier:rgba(12,14,18,.58); --foto-schleier-leicht:rgba(12,14,18,.32); --foto-ring:rgba(255,255,255,.8);
+  --foto-hell:rgba(255,255,255,.22); --foto-marke:rgba(17,19,23,.74); --foto-marke-leer:rgba(17,19,23,.4); --foto-text:#FFFFFF;
   /* Etiketten sind immer hell (SPEC 4.3): Papier und Druckfarbe, in beiden Themen gleich */
   --papier:#FFFFFF; --papier-tinte:#111111; --papier-rand:#D5D9E0;
   color-scheme:light;
@@ -489,12 +492,26 @@ text{pointer-events:none}
 .buero-kopf{display:flex;align-items:center;gap:8px}
 .buero-kopf .abschnitt{margin:0;flex:1}
 .buero-fachcode{font-size:var(--fs-titel);font-weight:500}
-.buero-foto{position:relative;border-radius:var(--r-ctrl);overflow:hidden;background:var(--sunk)}
+.buero-foto{position:relative;border-radius:18px;overflow:hidden;background:var(--sunk);box-shadow:var(--shadow)}
 .buero-foto.leer{aspect-ratio:4/3;display:grid;place-items:center;padding:16px;text-align:center}
 .buero-foto img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .buero-foto svg{position:absolute;inset:0;width:100%;height:100%}
-.buero-foto .fach{stroke-width:.5}
-.spot{fill:var(--scrim);pointer-events:none}
+/* Fächer auf dem Foto (D-026): unsichtbare Tastflächen, Marke oben links, gleitendes Spotlicht */
+.foto-fach{fill:transparent;cursor:pointer;transition:fill .2s}
+@media (hover:hover){.foto-fach:hover{fill:var(--foto-hell)}}
+.foto-spot{position:absolute;left:0;top:0;width:100%;height:100%;border-radius:6px;pointer-events:none;
+  box-shadow:0 0 0 2000px transparent,inset 0 0 0 0 transparent;
+  transition:left .45s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.foto-spot.vorschau{box-shadow:0 0 0 2000px var(--foto-schleier-leicht),inset 0 0 0 2px var(--foto-ring)}
+.foto-spot.gewaehlt{box-shadow:0 0 0 2000px var(--foto-schleier),inset 0 0 0 2px var(--accent)}
+.foto-spot.gewaehlt::after{content:"";position:absolute;inset:-2px;border-radius:8px;border:2px solid var(--accent);animation:puls 1.6s ease-out infinite}
+@keyframes puls{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
+.foto-marke{position:absolute;pointer-events:none;padding:2px 5px;border-radius:5px;white-space:nowrap;font-family:var(--font-num);
+  font-size:var(--fs-mini);font-weight:500;line-height:1.3;color:var(--foto-text);background:var(--foto-marke);transition:opacity .3s,background .3s}
+.foto-marke.leer{background:var(--foto-marke-leer)}
+.foto-marke.gewaehlt{background:var(--accent);color:var(--on-accent)}
+.mit-spot .foto-marke:not(.im-spot){opacity:.3}
+@media (prefers-reduced-motion:reduce){.foto-spot{transition:none}.foto-spot.gewaehlt::after{animation:none;opacity:0}}
 .fachliste{display:flex;flex-direction:column;gap:2px}
 .fachliste .zeile{width:100%;text-align:left;text-decoration:none;color:var(--ink)}
 .zeile.gesucht{background:var(--accent-soft)}

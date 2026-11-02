@@ -66,6 +66,10 @@
 
   // ---------- Panel ----------
   function zeichnePanel() {
+    panelInhalt();
+    MF.fotoBeleben(panel);
+  }
+  function panelInhalt() {
     const e = zustand.einheit && einheit(zustand.einheit);
     if (!e) {
       const leer = !plan.einheiten.length;
