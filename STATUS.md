@@ -1,6 +1,6 @@
 # STATUS
 
-Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest` (push yok, main'e birleştirilmedi)
+Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `main` (dilim 1 birleştirildi, push yok)
 
 ## Aktueller Stand
 - **Dilim 1 (Kütüphane ve kayıt) bitti**, 148 test yeşil. Kararlar D-001–D-013. Ayrıntılar: `git log`.
@@ -15,7 +15,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-1/grundgeruest` (push yok,
 
 ## Sıradaki
 1. Cankat: beta'yı (`start.bat`) dene, geri bildirimi tek liste halinde ver; Systembereich'i kendisi kursun.
-2. Dal `dilim-1/grundgeruest` → `main` birleştirme (Cankat onaylayınca).
+2. Uzak depo (ör. GitHub, private) henüz yok; istenirse eklenir.
 3. Dilim 2 (Ofis): plan düzenleyici, üniteler, bölmeler, bölme etiketleri, bölme QR'ıyla toplu yerleştirme.
 
 ## Offene Fragen
