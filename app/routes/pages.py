@@ -52,6 +52,12 @@ def einstellungen(request: Request):
     return _seite(request, "einstellungen", "einstellungen.titel")
 
 
+@router.get("/plan")
+def plan_bearbeiten(request: Request):
+    """Büroplan bearbeiten (SPEC 6.4): nur Desktop, erreichbar über Einstellungen › Büroplan."""
+    return _seite(request, "einstellungen", "plan.titel", vorlage="plan")
+
+
 @router.get("/mehr")
 def mehr(request: Request):
     return _seite(request, "mehr", "mehr.titel")

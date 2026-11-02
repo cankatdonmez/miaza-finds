@@ -1,0 +1,39 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Büroplan bearbeiten (SPEC 6.4, 4.6): nur Desktop. Oben Werkzeuge, Mitte Zeichnung + Panel, unten die Leiste. #}
+{% block inhalt %}
+<div class="plan" data-plan>
+  <div class="plan-werkzeuge">
+    <div class="segs" role="group" aria-label="{{ t('plan.werkzeug') }}">
+      <button class="segbtn" type="button" data-werkzeug="auswahl">{{ t("plan.w_auswahl") }}</button>
+      <button class="segbtn" type="button" data-werkzeug="raum">{{ t("plan.w_raum") }}</button>
+      <button class="segbtn" type="button" data-werkzeug="einheit">{{ t("plan.w_einheit") }}</button>
+      <button class="segbtn" type="button" data-werkzeug="unterlage">{{ t("plan.w_unterlage") }}</button>
+    </div>
+    <div class="plan-unterlage" data-unterlage-knoepfe hidden>
+      <label class="btn klein">{{ icon("image", 18) }}<span>{{ t("plan.unterlage_datei") }}</span>
+        <input class="sr-only" type="file" accept="application/pdf,image/png,image/jpeg" data-unterlage-datei></label>
+      <button class="iconbtn" type="button" data-aktion="drehen" aria-label="{{ t('plan.drehen') }}" title="{{ t('plan.drehen') }}">{{ icon("drehen", 20) }}</button>
+      <button class="iconbtn" type="button" data-aktion="unterlage-weg" aria-label="{{ t('plan.unterlage_weg') }}" title="{{ t('plan.unterlage_weg') }}">{{ icon("close", 20) }}</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="iconbtn" type="button" data-unterlage-zeigen aria-pressed="true" aria-label="{{ t('plan.unterlage_zeigen') }}" title="{{ t('plan.unterlage_zeigen') }}">{{ icon("image", 20) }}</button>
+    <button class="iconbtn" type="button" data-aktion="einpassen" aria-label="{{ t('plan.einpassen') }}" title="{{ t('plan.einpassen') }}">{{ icon("einpassen", 20) }}</button>
+  </div>
+  <div class="plan-haupt">
+    <svg class="plan-svg" data-plan-svg role="img" aria-label="{{ t('plan.titel') }}"><g data-plan-formen></g><g data-plan-ebene></g></svg>
+    <aside class="plan-panel card" data-plan-panel></aside>
+  </div>
+  <div class="plan-leiste">
+    <span class="sub" data-plan-hinweis></span>
+    <div class="plan-wirkung" data-plan-wirkung></div>
+    <span class="spacer"></span>
+    <button class="iconbtn" type="button" data-aktion="rueckgaengig" aria-label="{{ t('plan.rueckgaengig') }}" title="{{ t('plan.rueckgaengig') }}">{{ icon("undo", 20) }}</button>
+    <button class="iconbtn" type="button" data-aktion="wiederholen" aria-label="{{ t('plan.wiederholen') }}" title="{{ t('plan.wiederholen') }}">{{ icon("redo", 20) }}</button>
+    <span class="sub num" data-plan-anzahl></span>
+    <button class="btn" type="button" data-aktion="verwerfen">{{ t("plan.verwerfen") }}</button>
+    <button class="btn primary" type="button" data-aktion="speichern">{{ t("plan.speichern") }}</button>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/zeichnen.js?v={{ asset_v }}"></script><script src="/static/js/plan-editor.js?v={{ asset_v }}"></script>{% endblock %}

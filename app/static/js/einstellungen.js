@@ -35,6 +35,13 @@
     MF.$$("[data-reiter-inhalt]").forEach((s) => { s.hidden = s.dataset.reiterInhalt !== name; });
   }
   reiter.forEach((b) => b.addEventListener("click", () => zeigen(b.dataset.reiter)));
+
+  // Büroplan: nur die Zahlen; bearbeitet wird auf /plan (SPEC 6.4)
+  const zahlen = MF.$("[data-plan-zahlen]");
+  if (zahlen) MF.api("GET", "/api/plan").then((p) => {
+    zahlen.textContent = MF.t("einstellungen.plan_zahlen", { r: p.raeume.length, e: p.einheiten.length,
+      f: p.einheiten.reduce((s, e) => s + e.faecher.length, 0) });
+  }).catch(() => {});
   const passend = () => zeigen(schmal.matches ? "allgemein" : "kategorien");
   schmal.addEventListener("change", passend);
   passend();

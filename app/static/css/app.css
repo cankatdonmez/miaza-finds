@@ -134,6 +134,7 @@ a{color:var(--accent-ink)}
 .iconbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted);flex:none;transition:background .16s ease,color .16s ease}
 .iconbtn:hover:not(:disabled){background:var(--sunk);color:var(--ink)}
 .iconbtn:disabled{opacity:.3;cursor:default}
+.btn:disabled{opacity:.45;cursor:default}
 
 /* Eingaben */
 .feld{display:flex;flex-direction:column;gap:6px;font-size:var(--fs-text);color:var(--muted);font-weight:500}
@@ -398,6 +399,44 @@ select.eingabe{padding-right:6px}
 .rueckfrage{padding:14px;border-radius:var(--r-ctrl);background:var(--accent-soft);color:var(--accent-ink);display:flex;flex-direction:column;gap:10px}
 .rueckfrage p{margin:0}
 .datei-eingabe{padding:8px 12px}
+/* ---------- Büroplan bearbeiten (SPEC 6.4, 4.6) ---------- */
+@media (min-width:900px){body:has(.plan) .inhalt{height:100vh;display:flex;flex-direction:column;padding-bottom:20px}}
+.plan{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
+.plan-werkzeuge{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.plan-werkzeuge .segs{max-width:none}
+.plan-werkzeuge .segbtn{padding:0 16px}
+.plan-unterlage{display:flex;align-items:center;gap:4px}
+.btn.klein{min-height:40px;padding:0 14px;font-size:var(--fs-text)}
+.plan-haupt{flex:1;min-height:420px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}
+.plan-svg,.fach-svg{width:100%;height:100%;display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);touch-action:none;user-select:none}
+.plan-svg[data-werkzeug="raum"],.plan-svg[data-werkzeug="einheit"],.fach-svg[data-werkzeug="fach"]{cursor:crosshair}
+.plan-svg.greifen,.fach-svg.greifen{cursor:grab}
+.plan-panel{overflow:auto}
+.plan-zahlen{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.plan-zahlen .num{display:block;font-size:var(--fs-titel);font-weight:500}
+.plan-foto{border-radius:var(--r-ctrl);overflow:hidden;background:var(--sunk);aspect-ratio:4/3;display:grid;place-items:center}
+.plan-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.feld-reihe.eng{grid-template-columns:80px minmax(0,1fr)}
+.schalter{display:flex;align-items:center;gap:10px;min-height:44px;font-size:var(--fs-text)}
+.schalter input{width:20px;height:20px;accent-color:var(--accent)}
+.plan-leiste{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-card);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
+.plan-wirkung{display:flex;flex-direction:column;gap:2px}
+.unterlage{opacity:.35;pointer-events:none}
+.unterlage.aktiv{opacity:.6;pointer-events:auto;cursor:move}
+.unterlage-rahmen{fill:none;stroke:var(--accent);stroke-dasharray:6 4}
+.raum{fill:var(--sunk);fill-opacity:.55;stroke:var(--muted)}
+.raum.gewaehlt{stroke:var(--accent);fill:var(--accent-soft)}
+.einheit{fill:var(--accent-soft);stroke:var(--accent-ink)}
+.einheit.ohne-raum{stroke:var(--ausser-haus);fill:var(--ausser-haus-soft)}
+.einheit.gewaehlt,.fach.gewaehlt{fill:var(--accent);fill-opacity:.35;stroke:var(--accent)}
+.raum-text{fill:var(--muted);font-weight:500;pointer-events:none}
+.einheit-text{fill:var(--ink);font-family:var(--font-num);pointer-events:none}
+.zeichnen-vorschau{fill:var(--accent);fill-opacity:.12;stroke:var(--accent);stroke-dasharray:4 3}
+.zeichnen-punkt{fill:var(--card);stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+.griff{fill:var(--card);stroke:var(--accent);cursor:grab}
+.raum,.einheit,.fach{cursor:pointer}
+@media (max-width:1180px){.plan-haupt{grid-template-columns:minmax(0,1fr) 260px}}
+
 @media print{.kopf,.leiste,.seitenleiste,.actions,.pruefzeile,[data-weiter]{display:none!important}.inhalt{margin:0}}
 
 /* Programmstand unten rechts (wie counts) */
