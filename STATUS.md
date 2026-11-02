@@ -22,4 +22,6 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `main` (dilim 1 birleştirildi, p
 ## Offene Fragen
 1. Etiket QR'ının kalıcı adresi (mini PC'nin ofis adresi veya HTTPS alan adı) → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
 2. Etiket kâğıdının düzen PDF'i → `app/etikett_bogen.json` (şimdilik geçici 20'li, 48 × 52 mm).
-3. SPEC 11: HTTPS yolu, Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı), vurgu renkleri.
+3. HTTPS: büronun alan adı `miaza.design` (site HTTPS). DNS Wix'te (ns6/ns7.wixdns.net); Wix'in DNS API'si yok →
+   yol A için bir alt alan (ör. `buro.miaza.design`) API'li bir DNS servisine devredilmeli. Sonra bakılacak.
+4. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı), vurgu renkleri.
