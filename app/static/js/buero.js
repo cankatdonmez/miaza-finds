@@ -76,7 +76,7 @@
       const gruppen = [...plan.raeume.map((r) => ({ name: r.name || String(r.nr), einheiten: plan.einheiten.filter((e) => e.raum_id === r.id) })),
                        { name: t("plan.ohne_raum"), einheiten: plan.einheiten.filter((e) => !e.raum_id) }].filter((g) => g.einheiten.length);
       panel.innerHTML = `<div class="stack">
-        <p class="sub">${esc(t(leer ? "buero.leer" : platzieren ? "platzieren.einheit" : "buero.waehlen"))}</p>
+        ${leer || platzieren ? `<p class="sub">${esc(t(leer ? "buero.leer" : "platzieren.einheit"))}</p>` : ""}
         ${gruppen.map((g) => `<div class="fachliste"><h2 class="abschnitt">${esc(g.name)}</h2>${g.einheiten.map((e) => `
           <button class="zeile" type="button" data-einheit="${e.id}"><span class="zeile-haupt"><span class="num">${esc(e.code)}</span>
             ${e.name ? `<span class="karte-sub">${esc(e.name)}</span>` : ""}</span><span class="sub">${esc(t("buero.produkte", { n: e.produkte }))}</span>${icon("right", 18)}</button>`).join("")}</div>`).join("")}

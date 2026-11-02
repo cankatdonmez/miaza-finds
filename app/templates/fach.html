@@ -3,7 +3,9 @@
 {# Fächer einer Einheit auf ihrem Foto (SPEC 6.4, 4.6): nur Desktop. Gleicher Aufbau wie der Plan-Editor. #}
 {% block seitenaktion %}<a class="btn" href="/plan?einheit={{ einheit_id }}">{{ t("fach.zum_plan") }}</a>{% endblock %}
 {% block inhalt %}
-<div class="plan" data-fach>
+{# Gezeichnet wird am Desktop (SPEC 6.4, D-030) #}
+<div class="card leer nur-telefon">{{ t("plan.nur_desktop") }}</div>
+<div class="plan nur-desktop" data-fach>
   <div class="plan-werkzeuge">
     <h2 class="abschnitt" data-fach-titel></h2>
     <div class="segs" role="group" aria-label="{{ t('plan.werkzeug') }}">
