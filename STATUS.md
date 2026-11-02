@@ -23,7 +23,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-027: tek fotoğraf eklenince kırpma ekranı (tek ve seri kayıt); yüklenmemiş fotoğrafta kırpma düğmesi.
   - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“; kartlar hep kare.
   - D-029 (tasarım denetimi): kısa ürün formu („Weitere Angaben“), çipler 44 px, onay penceresi yerine geri al /
-    „Wirklich verwerfen?“, her yerde „Verwerfen“, telefonda „Mehr“ yerine Einstellungen.
+    „Wirklich verwerfen?“, her yerde „Verwerfen“, telefonda „Mehr“ yerine Einstellungen. D-030: önem 1 bulguları.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.

@@ -370,7 +370,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
 **Silme:** ünite veya bölme silinince içindeki ürünler konumsuz kalır. Bu, kaydetmeden önce söylenir (4.6); ürünler "Konumsuz" filtresinde görünür.
 
-**Düzenleme yeri:** çizim masaüstündedir. Telefonda sadece ünite fotoğrafı yüklenebilir.
+**Düzenleme yeri:** çizim masaüstündedir. Telefonda sadece ünite fotoğrafı yüklenebilir. Dar ekranda düzenleyici yerine "Am Desktop zeichnen" kartı görünür (D-030).
 
 ### 6.5 Konum bulma senaryoları
 1. **Ürünü bul:** kütüphanede ara → "Ofiste göster" → plan üniteye yaklaşır, kartlar açılır, ürün öne çıkar → "Fotoğrafta göster" → bölme spot ışığıyla vurgulanır.
