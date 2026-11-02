@@ -16,7 +16,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - Geri bildirim (D-018): oda ve ünite yazıları şeklin içinde, okunur boyda; odalar 5 pastel tonda (numaradan).
   - D-019: dikdörtgen ünite sürüklenince duvara / komşuya yapışır, uzun kenarıyla döner, komşunun içine giremez (Alt: serbest).
   - D-020: bölmenin isteğe bağlı adı (Migration 004); Büro, ürün detayı, toplu düzenleme ve bölme etiketinde görünür.
-  - D-021: ürün detayında „Platz ändern“ / „Platz wählen“: ünite çipleri, fotoğrafta veya listede bölme, geri al.
+  - D-021/D-022: ürün detayında „Platz ändern“ → Büro yer seçme modunda: plan → ünite → bölme → „Hier ablegen“, geri al.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
