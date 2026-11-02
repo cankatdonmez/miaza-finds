@@ -252,8 +252,11 @@
       case "typ": {
         const typ = b.dataset.typ;
         // „Farbe“ ist eine Mehrfachauswahl mit Farbtönen (D-031)
+        // Ein neuer Farbfilter beginnt mit einem Ton je Grundfarbe, benannt wie sie (D-032); umbenennen nach Bedarf
+        const toene = typ === "farbe"
+          ? MF.GRUNDFARBEN.map((g) => ({ id: null, name: t("farbe." + g), hex: g === "mehrfarbig" ? null : grundHex(g), grundfarbe: g, produkte: 0 })) : [];
         fl.push({ id: null, name: typ === "farbe" ? t("kat.farbton") : "", typ: typ === "farbe" ? "mehrfach" : typ, farbe: typ === "farbe",
-                  einheit: typ === "mass" ? "mm" : null, optionen: [], produkte: 0 });
+                  einheit: typ === "mass" ? "mm" : null, optionen: toene, produkte: 0 });
         typwahlOffen = false;
         zeichneEditor();
         $(`[data-feld=filtername][data-i="${fl.length - 1}"]`, editor).focus();
