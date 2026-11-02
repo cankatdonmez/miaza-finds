@@ -129,3 +129,12 @@ detayındaki yerde ve toplu düzenlemenin „Platz“ listesinde kodun yanında 
 Claude'un ekledikleri (onay bekliyor): bölme etiketinde kodun altında ünite adı yerine bölmenin adı yazılır (ad yoksa
 ünite adı); basılmış bir etiketin adı değişirse etiket „yeniden bas“ listesine girer.
 → SPEC 6.4, 6.6.
+
+## D-021 · 02.11.2026 · Ürün detayında „Platz ändern“
+Cankat'ın isteği. Fiziki ürünün detayında „Im Büro zeigen“in yanında **„Platz ändern“** düğmesi (yeri yoksa
+**„Platz wählen“**). Açılan seçici demodaki konum seçicisini izler: üstte ünite çipleri, altında seçili ünitenin
+fotoğrafı; bölmeye fotoğrafta ya da altındaki listede dokunulur, seçilen kod büyük yazılır. „Übernehmen“ kaydeder;
+onay penceresi yok, bildirimde „Rückgängig“ var. Yeri olan üründe „Ohne Platz“ da seçilebilir.
+Claude'un ekledikleri (onay bekliyor): seçici açılınca ürünün bulunduğu ünite seçili gelir; fotoğrafı olmayan ünitede
+yalnız liste görünür.
+→ SPEC 6.1.
