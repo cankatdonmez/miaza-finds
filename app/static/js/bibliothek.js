@@ -5,7 +5,7 @@
   const ergebnis = $("[data-ergebnis]");
   if (!ergebnis) return;
 
-  const FARBEN = ["weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz"];
+  const FARBEN = MF.GRUNDFARBEN;
   const STATUS = ["am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend"];
   const breit = window.matchMedia("(min-width: 900px)");
 
@@ -234,7 +234,7 @@
         `<button class="pill" type="button" data-janein="${f.id}" data-v="${v}" aria-pressed="${(w || "") === v}">${esc(text)}</button>`).join("")}</div>`;
     } else {
       inhalt = `<div class="pills">${f.optionen.map((o) =>
-        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${(w || []).includes(o.id)}">${esc(o.name)}</button>`).join("")}</div>`;
+        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${(w || []).includes(o.id)}">${f.farbe ? MF.tonPunkt(o) : ""}${esc(o.name)}</button>`).join("")}</div>`;
     }
     return `<section class="fgruppe"><h3 class="abschnitt">${esc(f.name)}</h3>${inhalt}</section>`;
   }

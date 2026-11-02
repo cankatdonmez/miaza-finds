@@ -35,8 +35,9 @@
   --r-card:20px; --r-ctrl:14px;
   --leiste-unten:64px;
   /* Materialfarben der Farbpalette (SPEC 6.2): eigene Farben des Materials, in beiden Themen gleich */
-  --farbe-weiss:#F7F5F0; --farbe-beige:#D9C7A7; --farbe-braun:#7A5333; --farbe-terracotta:#C0643F; --farbe-gold:#C9A23E;
-  --farbe-rosa:#E3A6B4; --farbe-gruen:#6E8B5A; --farbe-blau:#4F78A8; --farbe-grau:#8E9196; --farbe-schwarz:#1E1E1E;
+  --farbe-weiss:#F7F5F0; --farbe-beige:#D9C7A7; --farbe-braun:#7A5333; --farbe-rot:#B8342E; --farbe-orange:#D9772E;
+  --farbe-gelb:#E2C044; --farbe-gruen:#6E8B5A; --farbe-blau:#4F78A8; --farbe-violett:#7A5BA3; --farbe-rosa:#E3A6B4;
+  --farbe-grau:#8E9196; --farbe-schwarz:#1E1E1E; --farbe-metall:#A9ACB0;
   /* Über dem Einheitsfoto (D-026): in beiden Themen gleich, weil sie auf dem Foto liegen */
   --foto-schleier:rgba(12,14,18,.58); --foto-schleier-leicht:rgba(12,14,18,.32); --foto-ring:rgba(255,255,255,.8);
   --foto-hell:rgba(255,255,255,.22); --foto-marke:rgba(17,19,23,.74); --foto-marke-leer:rgba(17,19,23,.4); --foto-text:#FFFFFF;
@@ -250,9 +251,28 @@ select.eingabe{padding-right:6px}
 .farbknopf{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px 0 8px;border-radius:999px;border:1px solid var(--line-2);
   background:var(--card);font-size:var(--fs-text);color:var(--ink)}
 .farbknopf[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
-.farbpunkt{width:22px;height:22px;border-radius:999px;border:1px solid var(--line-2);flex:none}
+.farbpunkt{display:inline-block;vertical-align:middle;width:22px;height:22px;border-radius:999px;border:1px solid var(--line-2);flex:none}
+.farbpunkt.klein{width:14px;height:14px}
+.pill .farbpunkt{margin-right:6px}
+/* Farbkasten (D-031): je Grundfarbe ein Kasten, Töne darin; ziehen ändert die Grundfarbe */
+.farbkasten{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.farbfach{display:flex;flex-direction:column;gap:6px;padding:8px;min-height:60px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.farbfach.ueber{border-color:var(--accent);background:var(--accent-soft)}
+.farbfach-kopf{display:flex;align-items:center;gap:8px;font-size:var(--fs-text);font-weight:600}
+.farbfach-kopf .iconbtn{margin-left:auto}
+.ton{display:flex;align-items:center;gap:4px;min-height:44px;padding:0 2px 0 0;border:1px solid var(--line-2);border-radius:999px;background:var(--bg)}
+.ton-griff{display:grid;place-items:center;width:28px;height:42px;color:var(--muted);cursor:grab;flex:none}
+.ton-griff:active{cursor:grabbing}
+.ton .option-name{flex:1;min-width:0}
+.ton-farbe{flex:none;width:30px;height:30px;padding:0;border:0;border-radius:999px;background:none;cursor:pointer}
+.ton-farbe::-webkit-color-swatch-wrapper{padding:0}
+.ton-farbe::-webkit-color-swatch{border:1px solid var(--line-2);border-radius:999px}
+.ton-farbe::-moz-color-swatch{border:1px solid var(--line-2);border-radius:999px}
 .farbe-weiss{background:var(--farbe-weiss)}.farbe-beige{background:var(--farbe-beige)}.farbe-braun{background:var(--farbe-braun)}
-.farbe-terracotta{background:var(--farbe-terracotta)}.farbe-gold{background:var(--farbe-gold)}.farbe-rosa{background:var(--farbe-rosa)}
+.farbe-rot{background:var(--farbe-rot)}.farbe-orange{background:var(--farbe-orange)}.farbe-gelb{background:var(--farbe-gelb)}.farbe-rosa{background:var(--farbe-rosa)}
+.farbe-violett{background:var(--farbe-violett)}.farbe-metall{background:var(--farbe-metall)}
+/* Mehrfarbig (D-031): ein Kreis aus den Grundfarben – zeigt die Bedeutung, kein Schmuck */
+.farbe-mehrfarbig{background:conic-gradient(var(--farbe-rot),var(--farbe-gelb),var(--farbe-gruen),var(--farbe-blau),var(--farbe-violett),var(--farbe-rot))}
 .farbe-gruen{background:var(--farbe-gruen)}.farbe-blau{background:var(--farbe-blau)}.farbe-grau{background:var(--farbe-grau)}
 .farbe-schwarz{background:var(--farbe-schwarz)}
 .produkt-fuss{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4px}

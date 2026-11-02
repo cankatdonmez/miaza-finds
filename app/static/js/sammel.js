@@ -5,7 +5,7 @@
   const panel = $("[data-panel]");
   if (!panel) return;
 
-  const FARBEN = ["weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz"];
+  const FARBEN = MF.GRUNDFARBEN;
   let ids = [];
   let kategorien = [];
   let quelle = [];            // Kategorien der ausgewählten Produkte (aus der Vorschau)

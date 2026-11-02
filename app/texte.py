@@ -236,6 +236,7 @@ DE: dict[str, str] = {
     "kat.typ_mehrfach": "Mehrere Optionen",
     "kat.typ_janein": "Ja / Nein",
     "kat.typ_farbe": "Farbe",
+    "kat.farbton": "Farbton",
     "kat.beispiel_farbe": "z. B. Eiche, Weinrot – jeder Ton gehört zu einer Grundfarbe",
     "kat.ton_neu": "Neuer Ton in {farbe}",
     "kat.ton_name": "Name des Tons",

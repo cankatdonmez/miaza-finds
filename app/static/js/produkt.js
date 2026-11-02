@@ -4,7 +4,7 @@
   const form = $("[data-produktform]");
   if (!form) return;
 
-  const FARBEN = ["weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz"];
+  const FARBEN = MF.GRUNDFARBEN;
   const EINHEITEN = ["m2", "m", "stueck", "paket"];
   const LETZTE = "mf-letzte-kategorie";
   const inventarNr = Number(form.dataset.inventarNr) || null;
@@ -163,7 +163,7 @@
     } else {
       const gewaehlt = f.typ === "mehrfach" ? (wert || []) : (wert ? [wert] : []);
       knoepfe = f.optionen.map((o) =>
-        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${gewaehlt.includes(o.id)}">${esc(o.name)}</button>`).join("");
+        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${gewaehlt.includes(o.id)}">${f.farbe ? MF.tonPunkt(o) : ""}${esc(o.name)}</button>`).join("");
     }
     return `<div class="feld">${kopf}<div class="pills">${knoepfe}</div></div>`;
   }

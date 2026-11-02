@@ -182,5 +182,13 @@ const MF = (() => {
     rahmen.addEventListener("pointerleave", () => spotSetzen(rahmen, null, "", null));
   }
 
-  return { $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben };
+  // Grundfarben (D-031), gleiche Liste wie produkte.FARBEN auf dem Server
+  const GRUNDFARBEN = ["weiss", "beige", "braun", "rot", "orange", "gelb", "gruen", "blau", "violett", "rosa", "grau", "schwarz",
+                       "metall", "mehrfarbig"];
+  // Farbpunkt eines Farbtons: eigene Farbe, sonst die seiner Grundfarbe
+  const tonPunkt = (o) => (/^#[0-9A-Fa-f]{6}$/.test(o.hex || "")
+    ? `<span class="farbpunkt klein" style="background:${o.hex}"></span>`
+    : `<span class="farbpunkt klein farbe-${esc(o.grundfarbe || "grau")}"></span>`);
+
+  return { GRUNDFARBEN, tonPunkt, $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben };
 })();
