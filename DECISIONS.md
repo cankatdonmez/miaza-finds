@@ -240,3 +240,19 @@ Claude'un önerileri, Cankat onayladı.
   masaüstünde.)
 - Etiket listesindeki durum yazısı çiplerle aynı yazılır („Ungedruckt“, „Gedruckt“, „Neu drucken“).
 → SPEC 6.4.
+
+## D-031 · 02.11.2026 · Ana renkler ve kategoriye özel renk tonları (Farbkasten)
+Cankat'ın kararı (2. yöntem). Renk, malzemeyi aramanın temel yollarından biri.
+- **Ana renkler** (bütün kategoriler için ortak, sabit, kategoriler arası arama bunlarla): Weiß, Beige, Braun, Rot,
+  Orange, Gelb, Grün, Blau, Violett, Rosa, Grau, Schwarz, Metall, **Mehrfarbig**. Üründe birden çok ana renk seçilir;
+  kütüphane filtresi çoklu seçimlidir („Rot oder Rosa“). Eski Terracotta → Orange, Gold → Metall (Migration 006).
+- **Renk tonları kategoriye özeldir:** kategori ayarlarında yeni filtre tipi **„Farbe“**. Seçenekleri tonlardır: istenen
+  ad (Eiche, Weinrot, Burgund …), seçilen renk (renk seçiciyle) ve bağlı olduğu ana renk. Üründe birden çok ton seçilir.
+- **Farbkasten:** „Farbe“ filtresi ayarlarda her ana renk için bir kutu olarak görünür; tonlar kutuların içindedir.
+  Kutunun „+“sı o ana renkte yeni ton açar; ton bir kutudan diğerine sürüklenince ana rengi değişir (masaüstü).
+- **Arama:** ana renk filtresi, ürünün kendi ana renklerini ve seçili tonlarının ana renklerini birlikte arar
+  („Rot“ → Weinrot'lu kumaşlar da). Kategori seçiliyken tonlar da ayrı filtre olarak görünür.
+- Teknik: „Farbe“ filtresi veritabanında çoklu seçim filtresidir (`filter.farbe = 1`); tonlar `filter_option.hex`
+  ve `filter_option.grundfarbe` taşır. Böylece ürün formu, toplu düzenleme ve arama mevcut filtre yolunu kullanır.
+Claude'un ekledikleri (onay bekliyor): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi.
+→ SPEC 6.1, 6.2, 6.3.

@@ -268,7 +268,7 @@ Daha (telefon) ─ istatistik
 - **Kısa form (D-029):** yeni üründe fotoğraf, tür, ad, kategori ve filtreleri görünür; diğer alanlar kapalı "Weitere Angaben" altında. Taslağı atan düğmenin adı her yerde "Verwerfen".
 - **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Tek fotoğraf eklenince kırpma ekranı açılır ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027). Düzenlemede fotoğraf silme ve ekleme de "Speichern"e kadar taslaktır; "Abbrechen" geri alır. Seri sonrası ad listesinin altında "Speichern" çubuğu vardır (D-028).
 - **Fiyat:** değer (€), birim (m², m, adet, paket) ve girildiği tarih. Fiyat güncellenince tarih bugün olur.
-- **Renkler:** sabit bir paletten elle seçilir (beyaz, bej, kahve, terracotta, altın, pembe, yeşil, mavi, gri, siyah); tek dokunuşla. Fotoğraftan otomatik çıkarma v2'dedir.
+- **Renkler (D-031):** ortak ana renklerden elle, birden çok seçilir (Weiß, Beige, Braun, Rot, Orange, Gelb, Grün, Blau, Violett, Rosa, Grau, Schwarz, Metall, Mehrfarbig). Kategoriye özel **renk tonları** (Eiche, Weinrot …) kategorinin "Farbe" filtresinden seçilir; her ton bir ana renge bağlıdır ve o ana renk aramasında da bulunur. Fotoğraftan otomatik çıkarma v2'dedir.
 - **Konum (fiziki ürün):** ünite seçilir, sonra fotoğrafta bölmeye dokunulur.
 - **Dijitalden fizikiye çevirme:** tek adımda yapılır. Kod, bilgiler, fiyat ve dokümanlar korunur; konum seçilir, etiket baskı listesine eklenir.
 
@@ -335,6 +335,9 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 | Tekli seçim | değerler birbirini dışlar | listeden **bir** değer | birden fazla seçenek işaretlenebilir | R değeri: R9 *ya da* R10 |
 | Çoklu seçim | değerler birbirinden bağımsız | listeden **birden fazla** değer | seçeneklerden biri eşleşirse | Yüzey: Mat *ve* Yapılı |
 | Var / yok | tek özellik | Var / Yok | Fark etmez / Var / Yok | Rektifiye: Var |
+| Renk (D-031) | kategoriye özel tonlar; her ton bir ana renge bağlı | tonlardan **birden fazla** | seçeneklerden biri eşleşirse; ana renk filtresi de bulur | Holz: Eiche, Nussbaum · Stoff: Weinrot, Burgund |
+
+- **Farbkasten (D-031):** "Farbe" filtresi ayarlarda ana renklerin kutuları olarak görünür; tonlar kutularda durur. Kutudaki "+" yeni ton açar (ad + renk), ton başka kutuya sürüklenince ana rengi değişir.
 
 - **Filtre ekleme akışı:** kategori → tip (her tipin yanında yukarıdaki örnek yazar) → ad → seçenekler veya birim → kaydet.
 - Mevcut filtrenin seçenekleri sonradan düzenlenebilir: eklenir, yeniden adlandırılır, silinir. Silinen bir seçenek kaç üründe kullanılıyorsa önce söylenir.
