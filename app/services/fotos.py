@@ -36,22 +36,7 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, inventar_nr: int, daten
     """Prüft und speichert ein Bild; die Datenbankzeile entsteht in der Transaktion des Aufrufers."""
     if conn.execute("SELECT 1 FROM produkt WHERE inventar_nr = ?", (inventar_nr,)).fetchone() is None:
         raise Fehler(t("fehler.produkt_unbekannt"), status=404)
-    if len(daten) > MAX_BYTES:
-        raise Fehler(t("fehler.bild_gross"), "foto")
-    try:
-        bild = Image.open(io.BytesIO(daten))
-        if bild.format not in FORMATE:
-            raise Fehler(t("fehler.bild_format"), "foto")
-        bild = ImageOps.exif_transpose(bild)       # Handyfotos richtig herum
-        bild.load()
-    except (UnidentifiedImageError, OSError):
-        raise Fehler(t("fehler.bild_format"), "foto") from None
-    if bild.mode not in ("RGB", "L"):
-        hintergrund = Image.new("RGB", bild.size, "white")
-        hintergrund.paste(bild.convert("RGBA"), mask=bild.convert("RGBA").getchannel("A"))
-        bild = hintergrund
-    elif bild.mode == "L":
-        bild = bild.convert("RGB")
+    bild = bild_oeffnen(daten)
 
     name = uuid.uuid4().hex
     gross, *vorschauen = dateien_von(media_dir, name)
@@ -72,6 +57,27 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, inventar_nr: int, daten
         dateien_entfernen(media_dir, [name])     # keine verwaisten Dateien
         raise
     return {"id": fid, "datei": name, "breite": kopie.width, "hoehe": kopie.height}
+
+
+def bild_oeffnen(daten: bytes, feld: str = "foto") -> Image.Image:
+    """Prüft Größe und Format; liefert das Bild richtig gedreht in RGB (auch für Einheitsfotos und Unterlagen)."""
+    if len(daten) > MAX_BYTES:
+        raise Fehler(t("fehler.bild_gross"), feld)
+    try:
+        bild = Image.open(io.BytesIO(daten))
+        if bild.format not in FORMATE:
+            raise Fehler(t("fehler.bild_format"), feld)
+        bild = ImageOps.exif_transpose(bild)       # Handyfotos richtig herum
+        bild.load()
+    except (UnidentifiedImageError, OSError):
+        raise Fehler(t("fehler.bild_format"), feld) from None
+    if bild.mode not in ("RGB", "L"):
+        hintergrund = Image.new("RGB", bild.size, "white")
+        hintergrund.paste(bild.convert("RGBA"), mask=bild.convert("RGBA").getchannel("A"))
+        bild = hintergrund
+    elif bild.mode == "L":
+        bild = bild.convert("RGB")
+    return bild
 
 
 def loeschen(conn: sqlite3.Connection, inventar_nr: int, foto_id: int) -> str:
