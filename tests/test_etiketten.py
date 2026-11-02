@@ -96,14 +96,17 @@ def test_fach_etiketten(client):
                    einheiten=[{"id": None, "raum": "a", "nr": 2, "name": "Schrank links", "punkte": KLEIN}])).json()["plan"]
     e = p["einheiten"][0]
     p = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": p["version"], "faecher": [
-        {"id": None, "nr": n, "punkte": [[0, 0], [10, 0], [10, 10]]} for n in (1, 2, 10)]}).json()["plan"]
+        {"id": None, "nr": n, "name": "Obere Schublade" if n == 2 else "", "punkte": [[0, 0], [10, 0], [10, 10]]}
+        for n in (1, 2, 10)]}).json()["plan"]
     r = client.get("/api/etiketten/faecher").json()
     assert [f["code"] for f in r["faecher"]] == ["2.2.1", "2.2.2", "2.2.10"] and r["zahlen"]["ungedruckt"] == 3
     assert [f["code"] for f in client.get("/api/etiketten/faecher", params={"q": "schrank 2.2.10"}).json()["faecher"]] == ["2.2.10"]
     ids = [f["id"] for f in r["faecher"]]
     pdf = PdfReader(io.BytesIO(client.get("/api/etiketten/faecher/pdf", params={"id": ids}).content))
     text = pdf.pages[0].extract_text()
-    assert "2.2.10" in text and "Schrank links" in text
+    # unter dem Code: Name des Fachs, sonst der Einheit (D-020)
+    assert "2.2.10" in text and "Schrank links" in text and "Obere Schublade" in text
+    assert [f["beschreibung"] for f in r["faecher"]] == ["Schrank links", "Obere Schublade", "Schrank links"]
     vorher = client.post("/api/etiketten/faecher/gedruckt", json={"faecher": ids}).json()["vorher"]
     assert client.get("/api/etiketten/faecher").json()["zahlen"]["ungedruckt"] == 0
     assert client.post("/api/etiketten/faecher/zuruecksetzen", json={"vorher": vorher}).json()["zurueck"] == 3

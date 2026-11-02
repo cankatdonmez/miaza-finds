@@ -163,6 +163,7 @@ DE: dict[str, str] = {
     "plan.nr": "Nr.",
     "plan.name": "Name",
     "plan.einheit_name_bsp": "z. B. Schrank links",
+    "fach.name_bsp": "z. B. Obere Schublade",
     "plan.im_raum": "Im Raum {name}",
     "plan.ohne_raum": "Liegt in keinem Raum.",
     "plan.raum_loeschen": "Raum löschen",

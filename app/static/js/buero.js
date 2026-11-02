@@ -98,7 +98,8 @@
         <label class="btn">${icon("camera", 20)}<span>${esc(t(e.foto ? "plan.foto_ersetzen" : "plan.foto_waehlen"))}</span>
           <input class="sr-only" type="file" accept="image/*" data-einheit-foto></label>
         ${e.faecher.length ? `<div class="fachliste">${e.faecher.map((f) => `
-          <button class="zeile" type="button" data-fach="${f.id}"><span class="zeile-haupt"><span class="num">${esc(f.code)}</span></span>
+          <button class="zeile" type="button" data-fach="${f.id}"><span class="zeile-haupt"><span class="num">${esc(f.code)}</span>
+            ${f.name ? `<span class="karte-sub">${esc(f.name)}</span>` : ""}</span>
             <span class="sub">${esc(t("buero.produkte", { n: f.produkte }))}</span>${icon("right", 18)}</button>`).join("")}</div>`
           : `<p class="sub">${esc(t("buero.faecher_leer"))}</p>`}
       </div>`;
@@ -108,7 +109,7 @@
     const produkte = fachInhalt?.produkte || [];
     panel.innerHTML = `<div class="stack">${kopf}${fotoMitFaechern(e, zustand.fach)}
       <div class="buero-kopf"><button class="linkbtn" type="button" data-aktion="zurueck">${esc(t("buero.zurueck_einheit"))}</button>
-        <span class="spacer"></span><span class="num buero-fachcode">${esc(f.code)}</span></div>
+        <span class="spacer"></span>${f.name ? `<span class="sub">${esc(f.name)}</span>` : ""}<span class="num buero-fachcode">${esc(f.code)}</span></div>
       <button class="btn block" type="button" data-aktion="einordnen">${icon("pin", 20)}<span>${esc(t("einordnen.hier"))}</span></button>
       ${produkte.length ? `<div class="fachliste">${produkte.map((p) => `
         <a class="zeile${p.inventar_nr === zustand.produkt ? " gesucht" : ""}" href="/produkt/${p.inventar_nr}">

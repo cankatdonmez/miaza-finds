@@ -8,7 +8,7 @@
   const einheitId = Number(svg.dataset.einheit);
 
   let plan = null, einheit = null;
-  let faecher = [];              // [{id, schluessel, nr, punkte}] in Zeichenkoordinaten
+  let faecher = [];              // [{id, schluessel, nr, name, punkte}] in Zeichenkoordinaten
   let werkzeugName = "auswahl";
   let gewaehlt = null;
   let zaehler = 0;
@@ -28,7 +28,7 @@
     plan = p;
     einheit = p.einheiten.find((e) => e.id === einheitId);
     if (!einheit) { location.href = "/plan"; return; }
-    faecher = einheit.faecher.map((f) => ({ id: f.id, schluessel: "f" + f.id, nr: f.nr, punkte: zuZeichnung(f.punkte) }));
+    faecher = einheit.faecher.map((f) => ({ id: f.id, schluessel: "f" + f.id, nr: f.nr, name: f.name, punkte: zuZeichnung(f.punkte) }));
     $("[data-fach-titel]").textContent = t("fach.titel", { code: einheit.code }) + (einheit.name ? " · " + einheit.name : "");
   }
 
@@ -49,7 +49,7 @@
     neu(punkte) {
       verlauf.merken();
       const s = "n" + ++zaehler;
-      faecher.push({ id: null, schluessel: s, nr: faecher.length ? Math.max(...faecher.map((f) => f.nr)) + 1 : 1, punkte });
+      faecher.push({ id: null, schluessel: s, nr: faecher.length ? Math.max(...faecher.map((f) => f.nr)) + 1 : 1, name: "", punkte });
       gewaehlt = s;
       werkzeug("auswahl");
       alles();
@@ -132,6 +132,8 @@
     p.innerHTML = `<div class="stack">
       <h2 class="abschnitt">${esc(t("fach.fach"))} <span class="num">${esc(einheit.code)}.${f.nr}</span></h2>
       <label class="feld"><span>${esc(t("plan.nr"))}</span><input class="eingabe num" data-feld="nr" inputmode="numeric" value="${f.nr}"></label>
+      <label class="feld"><span>${esc(t("plan.name"))}</span><input class="eingabe" data-feld="name" maxlength="60"
+        placeholder="${esc(t("fach.name_bsp"))}" value="${esc(f.name)}"></label>
       <div class="sub">${esc(t("fach.produkte", { n }))}</div>
       <button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("fach.loeschen"))}</button>
     </div>`;
@@ -140,6 +142,11 @@
   let feldGemerkt = null;
   const panelEl = $("[data-fach-panel]");
   panelEl.addEventListener("input", (e) => {
+    if (e.target.dataset.feld === "name") {
+      if (feldGemerkt !== e.target) { verlauf.merken(); feldGemerkt = e.target; }
+      fach(gewaehlt).name = e.target.value;
+      return leiste();
+    }
     if (e.target.dataset.feld !== "nr") return;
     const nr = parseInt(e.target.value, 10);
     if (!(nr >= 1 && nr <= 999)) return;
@@ -187,13 +194,18 @@
   MF.verlaufTasten(verlauf);
 
   // ---------- Leiste und Speichern ----------
-  const fuerServer = () => faecher.map((f) => ({ id: f.id, nr: f.nr, punkte: geo.runden(zuProzent(f.punkte)) }));
+  // wie der Server: Leerraum zusammengezogen
+  const namen = (s) => s.split(/\s+/).filter(Boolean).join(" ");
+  const fuerServer = () => faecher.map((f) => ({ id: f.id, nr: f.nr, name: namen(f.name), punkte: geo.runden(zuProzent(f.punkte)) }));
 
   // Wirkung vor dem Speichern (SPEC 4.6): aus dem geladenen Stand berechenbar
   function wirkung() {
     const bleiben = new Set(faecher.map((f) => f.id).filter(Boolean));
     const weg = einheit.faecher.filter((f) => !bleiben.has(f.id));
-    const neuDruck = faecher.filter((f) => f.id && gespeichertesFach(f.id).etikett === "gedruckt" && gespeichertesFach(f.id).nr !== f.nr);
+    const neuDruck = faecher.filter((f) => {
+      const alt = f.id && gespeichertesFach(f.id);
+      return alt && alt.etikett === "gedruckt" && (alt.nr !== f.nr || alt.name !== namen(f.name));
+    });
     const texte = [];
     const ohne = weg.reduce((s, f) => s + f.produkte, 0);
     if (ohne) texte.push(t("plan.wirkung_ohne_platz", { n: ohne }));

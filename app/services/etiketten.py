@@ -184,7 +184,8 @@ def _faecher_alle(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     alle = []
     for e in plan.laden(conn)["einheiten"]:
         for f in e["faecher"]:
-            alle.append({"id": f["id"], "code": f["code"], "einheit_name": e["name"], "etikett": f["etikett"]})
+            # Unter dem Code: Name des Fachs, sonst der Einheit (D-020)
+            alle.append({"id": f["id"], "code": f["code"], "beschreibung": f["name"] or e["name"], "etikett": f["etikett"]})
     return alle
 
 
@@ -192,7 +193,7 @@ def fach_liste(conn: sqlite3.Connection, q: str = "", zustand: str | None = None
     worte = normalisieren(q).split()
     return [f for f in _faecher_alle(conn)
             if (zustand not in ZUSTAENDE or f["etikett"] == zustand)
-            and all(w in normalisieren(f"{f['code']} {f['einheit_name']}") for w in worte)]
+            and all(w in normalisieren(f"{f['code']} {f['beschreibung']}") for w in worte)]
 
 
 def fach_zahlen(conn: sqlite3.Connection) -> dict[str, int]:
@@ -218,9 +219,9 @@ def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
             groesse -= 1
         c.setFont("PlexMono", groesse)
         c.drawCentredString(x + w / 2, qy - 5 * mm - groesse * 0.7, f["code"])
-        if f["einheit_name"]:
+        if f["beschreibung"]:
             c.setFont("Figtree", 8)
-            c.drawCentredString(x + w / 2, y + rand, _umbrechen(f["einheit_name"], "Figtree", 8, w - 2 * rand, 1)[0])
+            c.drawCentredString(x + w / 2, y + rand, _umbrechen(f["beschreibung"], "Figtree", 8, w - 2 * rand, 1)[0])
     return _boegen(_faecher(conn, ids), zeichnen)
 
 

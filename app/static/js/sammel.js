@@ -19,7 +19,7 @@
     a = { kategorie_id: null, code: "behalten", marke: "", art: "", platz: "", farben_hinzu: [], farben_weg: [], werte: {} };
     if (!faecher) {
       try {
-        faecher = (await api("GET", "/api/plan")).einheiten.flatMap((x) => x.faecher.map((f) => ({ id: f.id, code: f.code, name: x.name })));
+        faecher = (await api("GET", "/api/plan")).einheiten.flatMap((x) => x.faecher.map((f) => ({ id: f.id, code: f.code, name: f.name || x.name })));
       } catch { faecher = []; }
     }
     const v = await vorschau();

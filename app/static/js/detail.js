@@ -55,7 +55,8 @@
       </div>`;
   };
 
-  const platzText = (f) => `<span class="num">${esc(f.code)}</span>${f.einheit_name ? ` <span class="sub">· ${esc(f.einheit_name)}</span>` : ""}`;
+  // Code, dann Name des Fachs, sonst der Einheit (D-020)
+  const platzText = (f) => `<span class="num">${esc(f.code)}</span>${f.name || f.einheit_name ? ` <span class="sub">· ${esc(f.name || f.einheit_name)}</span>` : ""}`;
 
   // Im Einordnen-Modus (D-016) steht oben ein großer Knopf: ein Tippen und das Produkt liegt im Fach
   function einordnenKnopf(p) {

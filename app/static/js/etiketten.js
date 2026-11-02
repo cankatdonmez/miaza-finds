@@ -18,7 +18,7 @@
       liste: "/api/etiketten/faecher", feld: "faecher", pdf: (ids) => "/api/etiketten/faecher/pdf?" + ids.map((i) => "id=" + i).join("&"),
       gedruckt: "/api/etiketten/faecher/gedruckt", zurueck: "/api/etiketten/faecher/zuruecksetzen", sende: "faecher",
       id: (x) => x.id, qr: (x) => `/api/etiketten/qr/fach/${x.id}.svg`,
-      name: (x) => x.code, sub: (x) => x.einheit_name || "",
+      name: (x) => x.code, sub: (x) => x.beschreibung,
       // Reihenfolge wie im Regal: nach Code
       sortieren: (a, b) => a.code.localeCompare(b.code, "de", { numeric: true }),
     },
@@ -84,7 +84,7 @@
         const links = pb(bogen.rand_links_mm + s * (bogen.breite_mm + bogen.abstand_x_mm));
         const oben = ph(bogen.rand_oben_mm + z * (bogen.hoehe_mm + bogen.abstand_y_mm));
         const text = art === "faecher"
-          ? `<span class="etk-fachcode num">${esc(x.code)}</span><span class="etk-code">${esc(x.einheit_name || "")}</span>`
+          ? `<span class="etk-fachcode num">${esc(x.code)}</span><span class="etk-code">${esc(x.beschreibung)}</span>`
           : `<span class="etk-name">${esc(A().name(x))}</span><span class="etk-code num">${esc(x.code)}</span>`;
         return `<button class="etk-etikett" type="button" data-etk-weg="${A().id(x)}" title="${esc(t("etiketten.entfernen", { name: A().name(x) }))}"
           style="left:${links}%;top:${oben}%;width:${pb(bogen.breite_mm)}%;height:${ph(bogen.hoehe_mm)}%">

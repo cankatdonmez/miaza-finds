@@ -43,7 +43,7 @@ def laden(conn: sqlite3.Connection) -> dict[str, Any]:
     faecher: dict[int, list] = {}
     for f in conn.execute("SELECT * FROM fach ORDER BY nr"):
         faecher.setdefault(f["einheit_id"], []).append({
-            "id": f["id"], "nr": f["nr"], "punkte": json.loads(f["punkte"]), "etikett": f["etikett"],
+            "id": f["id"], "nr": f["nr"], "name": f["name"], "punkte": json.loads(f["punkte"]), "etikett": f["etikett"],
             "produkte": produkte_je_fach.get(f["id"], 0)})
     einheiten = []
     for e in conn.execute("SELECT * FROM einheit ORDER BY raum_id IS NULL, raum_id, nr"):
@@ -68,13 +68,13 @@ def laden(conn: sqlite3.Connection) -> dict[str, Any]:
 def fach(conn: sqlite3.Connection, fach_id: int) -> dict[str, Any] | None:
     """Ein Fach mit Einheit und Code (für Fach-Seite, Produktdetail, Etiketten)."""
     z = conn.execute("""
-        SELECT f.id, f.nr, f.einheit_id, f.etikett, e.nr AS e_nr, e.name AS e_name, r.nr AS r_nr, r.name AS r_name
+        SELECT f.id, f.nr, f.name, f.einheit_id, f.etikett, e.nr AS e_nr, e.name AS e_name, r.nr AS r_nr, r.name AS r_name
         FROM fach f JOIN einheit e ON e.id = f.einheit_id LEFT JOIN raum r ON r.id = e.raum_id
         WHERE f.id = ?""", (fach_id,)).fetchone()
     if z is None:
         return None
     einheit = code_einheit(z["r_nr"], z["e_nr"])
-    return {"id": z["id"], "code": f"{einheit}.{z['nr']}", "einheit_id": z["einheit_id"], "einheit_code": einheit,
+    return {"id": z["id"], "code": f"{einheit}.{z['nr']}", "name": z["name"], "einheit_id": z["einheit_id"], "einheit_code": einheit,
             "einheit_name": z["e_name"], "raum_name": z["r_name"] or "", "etikett": z["etikett"]}
 
 
@@ -266,13 +266,14 @@ def faecher_speichern(conn: sqlite3.Connection, einheit_id: int, daten: dict[str
     _version(conn, daten.get("version"))
     if conn.execute("SELECT 1 FROM einheit WHERE id = ?", (einheit_id,)).fetchone() is None:
         raise Fehler(t("fehler.plan_veraltet"), status=409)
-    alte = {r["id"]: r for r in conn.execute("SELECT id, nr, etikett FROM fach WHERE einheit_id = ?", (einheit_id,))}
+    alte = {r["id"]: r for r in conn.execute("SELECT id, nr, name, etikett FROM fach WHERE einheit_id = ?", (einheit_id,))}
     faecher = []
     for f in daten.get("faecher") or []:
         fid = f.get("id")
         if fid is not None and fid not in alte:
             raise Fehler(t("fehler.plan_veraltet"), status=409)
-        faecher.append({"id": fid, "nr": _nr(f.get("nr"), "fach_nr"), "punkte": _punkte(f.get("punkte"), "fach", prozent=True)})
+        faecher.append({"id": fid, "nr": _nr(f.get("nr"), "fach_nr"), "name": _text(f.get("name"), "fach_name"),
+                        "punkte": _punkte(f.get("punkte"), "fach", prozent=True)})
     _eindeutig([f["nr"] for f in faecher], t("fehler.fach_nr_doppelt"))
 
     behalten = [f["id"] for f in faecher if f["id"] is not None]
@@ -285,14 +286,17 @@ def faecher_speichern(conn: sqlite3.Connection, einheit_id: int, daten: dict[str
     etiketten_neu = 0
     for f in faecher:
         if f["id"] is None:
-            conn.execute("INSERT INTO fach (einheit_id, nr, punkte) VALUES (?, ?, ?)", (einheit_id, f["nr"], json.dumps(f["punkte"])))
+            conn.execute("INSERT INTO fach (einheit_id, nr, name, punkte) VALUES (?, ?, ?, ?)",
+                         (einheit_id, f["nr"], f["name"], json.dumps(f["punkte"])))
             continue
         a = alte[f["id"]]
         etikett = a["etikett"]
-        if a["nr"] != f["nr"] and etikett == "gedruckt":
+        # Code und Name stehen auf dem Etikett (D-020)
+        if (a["nr"], a["name"]) != (f["nr"], f["name"]) and etikett == "gedruckt":
             etikett = "neu_drucken"
             etiketten_neu += 1
-        conn.execute("UPDATE fach SET nr = ?, punkte = ?, etikett = ? WHERE id = ?", (f["nr"], json.dumps(f["punkte"]), etikett, f["id"]))
+        conn.execute("UPDATE fach SET nr = ?, name = ?, punkte = ?, etikett = ? WHERE id = ?",
+                     (f["nr"], f["name"], json.dumps(f["punkte"]), etikett, f["id"]))
     conn.execute("UPDATE plan SET version = version + 1 WHERE id = 1")
     return {"faecher_weg": len(weg), "ohne_platz": ohne_platz, "etiketten_neu": etiketten_neu}
 

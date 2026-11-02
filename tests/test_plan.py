@@ -126,6 +126,28 @@ def test_faecher_umnummerieren_und_loeschen(client, buero, app):
     assert r.json()["wirkung"] == {"faecher_weg": 2, "ohne_platz": 1, "etiketten_neu": 0}
 
 
+
+def test_fach_name(client, buero, app):
+    """Name des Fachs (D-020): gespeichert, im Fach und im Produktdetail; Änderung auf gedrucktem Etikett → neu drucken."""
+    e = buero["plan"]["einheiten"][0]
+    f1, f2 = e["faecher"]
+    faecher = lambda name: [{"id": f1["id"], "nr": 1, "name": name, "punkte": f1["punkte"]},
+                            {"id": f2["id"], "nr": 2, "punkte": f2["punkte"]}]
+    r = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": buero["plan"]["version"], "faecher": faecher("  Obere   Schublade ")})
+    assert r.status_code == 200 and r.json()["wirkung"]["etiketten_neu"] == 0
+    p = r.json()["plan"]
+    assert [f["name"] for f in p["einheiten"][0]["faecher"]] == ["Obere Schublade", ""]
+    assert client.get(f"/api/faecher/{f1['id']}").json()["name"] == "Obere Schublade"
+    from app.db import connect
+    conn = connect(app.state.db_path)
+    conn.execute("UPDATE fach SET etikett = 'gedruckt'")
+    conn.close()
+    r = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": p["version"], "faecher": faecher("Linke Tür")})
+    assert r.json()["wirkung"]["etiketten_neu"] == 1
+    assert [f["etikett"] for f in r.json()["plan"]["einheiten"][0]["faecher"]] == ["neu_drucken", "gedruckt"]
+    zu_lang = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": r.json()["plan"]["version"], "faecher": faecher("x" * 61)})
+    assert zu_lang.status_code == 422
+
 def test_fach_punkte_in_prozent(client, buero):
     e = buero["plan"]["einheiten"][0]
     r = client.put(f"/api/einheiten/{e['id']}/faecher", json={"version": buero["plan"]["version"], "faecher": [
