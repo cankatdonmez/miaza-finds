@@ -383,7 +383,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
 ### 6.6 QR kodları ve etiketler
 - **Ürün QR'ı** sadece envanter numarasına giden kalıcı linki içerir (ör. `…/p/265`).
-- **Ürün etiketi (D-033):** solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** Kâğıt: A4, 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`).
+- **Ürün etiketi (D-033, D-034):** içerik ortalı, her kenarda ≥ 3 mm boşluk; sol kenarda yan dönmüş "miaza" (Comfortaa SemiBold); solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** Kâğıt: A4, 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`).
 - **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında bölmenin adı, yoksa ünitenin adı (D-020). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
