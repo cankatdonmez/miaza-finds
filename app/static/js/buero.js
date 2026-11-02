@@ -16,6 +16,7 @@
 
   const einheit = (id) => plan.einheiten.find((e) => e.id === id);
   const einheitVonFach = (fid) => plan.einheiten.find((e) => e.faecher.some((f) => f.id === fid));
+  const farbeVon = (e) => plan.raeume.find((r) => r.id === e.raum_id)?.farbe || 0;
 
   function unterlageRahmen(u) {
     const w = u.breite * u.massstab, h = u.hoehe * u.massstab;
@@ -44,18 +45,20 @@
       teile.push(el("image", { href: `/media/plan/${u.datei}.png`, x: u.x, y: u.y, width: w, height: h, class: "unterlage",
                                transform: `rotate(${u.drehung} ${u.x + w / 2} ${u.y + h / 2})`, preserveAspectRatio: "none" }));
     }
-    for (const r of plan.raeume) teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum ansicht-raum", style: MF.raumFarbe(r.nr), "stroke-width": 1.5 * m }));
+    for (const r of plan.raeume) teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum", style: MF.raumStil(r.farbe), "stroke-width": 1.5 * m }));
     for (const e of plan.einheiten) {
-      teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (e.id === zustand.einheit ? " gewaehlt" : ""),
-                              "data-einheit": e.id, "stroke-width": (e.id === zustand.einheit ? 2.5 : 1.5) * m }));
+      const an = e.id === zustand.einheit;
+      teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (an ? " gewaehlt" : ""), style: MF.raumStil(farbeVon(e)),
+                              "data-einheit": e.id, "stroke-width": (an ? 3 : 1.5) * m }));
     }
     // Beschriftung (D-018): am Innenpunkt, so groß wie die Fläche erlaubt
     teile.push(...MF.flaechenTexte(plan.raeume.map((r) => ({
-      punkte: r.punkte, zeilen: [{ text: (r.name || String(r.nr)).toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
+      punkte: r.punkte, stil: MF.raumStil(r.farbe),
+      zeilen: [{ text: (r.name || String(r.nr)).toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
       hindernisse: plan.einheiten.filter((e) => e.raum_id === r.id).map((e) => e.punkte),
     })), m, { min: 13, max: 30 }));
     teile.push(...MF.flaechenTexte(plan.einheiten.map((e) => ({
-      punkte: e.punkte, klasse: e.id === zustand.einheit ? "gewaehlt" : null,
+      punkte: e.punkte, stil: MF.raumStil(farbeVon(e)),
       zeilen: [{ text: e.code, klasse: "einheit-text", k: 1, em: 0.62 }, { text: e.name, klasse: "einheit-name", k: 0.72, em: 0.56 }],
     })), m, { min: 13, max: 22, auslassen: true }));
     svg.replaceChildren(...teile);
@@ -181,6 +184,7 @@
       ${platzieren.fach_id ? `<button class="linkbtn" type="button" data-ohne>${esc(t("status.ohne_platz"))}</button>` : ""}
       <a class="iconbtn" href="/produkt/${platzieren.nr}" aria-label="${esc(t("platzieren.abbrechen"))}" title="${esc(t("platzieren.abbrechen"))}">${icon("close", 20)}</a>`;
     el.querySelector("[data-ohne]")?.addEventListener("click", () => ablegen(null));
+    $(".einordnen-leiste")?.remove();      // ein Modus zur Zeit: die Einordnen-Leiste ruht, solange ein Platz gewählt wird
     $(".inhalt").prepend(el);
   }
 

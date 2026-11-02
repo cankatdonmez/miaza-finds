@@ -127,6 +127,16 @@ def test_faecher_umnummerieren_und_loeschen(client, buero, app):
 
 
 
+
+def test_raumfarbe(client):
+    """Farbe des Raums (D-024): gespeichert; ohne gültige Angabe der Reihe nach aus der Nummer."""
+    p = client.get("/api/plan").json()
+    r = client.put("/api/plan", json=_entwurf(p, raeume=[
+        {"id": None, "schluessel": "a", "nr": 1, "farbe": 4, "punkte": QUADRAT},
+        {"id": None, "schluessel": "b", "nr": 8, "farbe": 9, "punkte": QUADRAT}], einheiten=[]))
+    assert r.status_code == 200
+    assert [x["farbe"] for x in r.json()["plan"]["raeume"]] == [4, 2]
+
 def test_fach_name(client, buero, app):
     """Name des Fachs (D-020): gespeichert, im Fach und im Produktdetail; Änderung auf gedrucktem Etikett → neu drucken."""
     e = buero["plan"]["einheiten"][0]

@@ -1,4 +1,4 @@
-/* miaza finds — eine Stildatei. Token-Namen wie miaza counts, Farbwerte aus SPEC 4.4 (D-002).
+/* miaza finds — eine Stildatei. Token-Namen wie miaza counts, Farbwerte aus SPEC 4.4 und THEMA.md (D-002, D-023).
    Telefon zuerst: Kopf + Inhalt + Leiste unten; ab 900 px Seitenleiste links (SPEC 4.5). */
 
 @font-face{font-family:"Figtree";font-weight:400;font-display:swap;src:url(../fonts/figtree-latin-400-normal.woff2) format("woff2")}
@@ -11,19 +11,25 @@
 :root{
   /* Schriftgrößen wie counts (D-002): nur diese Stufen */
   --fs-mini:11px; --fs-klein:12.5px; --fs-text:13.5px; --fs-basis:15px; --fs-titel:19px; --fs-zahl:28px; --fs-hero:52px;
-  --bg:#F3F4F6; --card:#FFFFFF; --sunk:#F8F9FB;
-  --ink:#16181D; --muted:#5F6672;
-  --line:#E7E9EE; --line-2:#D5D9E0;
-  --accent:#2F5BEA; --accent-ink:#2449C4; --accent-soft:#E6ECFD; --on-accent:#FFFFFF;
+  --bg:#FFFFFF; --card:#FFFFFF; --sunk:#F6F6F5;
+  --ink:#1C1C1E; --muted:#66656A;
+  --line:#E8E8E6; --line-2:#D6D5D2;
+  --accent:#F2A43A; --accent-ink:#9A5600; --accent-soft:#FDF0DA; --on-accent:#2A1A05;
   /* Farbe nur für: Akzent, drei Zustände, digitale Art (SPEC 4.4) */
   --am-platz:#166534; --am-platz-soft:#DCFCE7;
   --in-benutzung:#1E40AF; --in-benutzung-soft:#DBEAFE;
-  --ausser-haus:#92400E; --ausser-haus-soft:#FEF3C7;
-  --raum-1:#DDEAF6; --raum-2:#E1F0DF; --raum-3:#FBEEDA; --raum-4:#E8E4F5; --raum-5:#DCF0EC;
-  --einheit-flaeche:#F4C4C7; --einheit-rand:#C9545B; --einheit-tinte:#5E1F22;
+  --ausser-haus:#9D2F5E; --ausser-haus-soft:#FBE5EE;
+  /* Raumfarben (D-024, THEMA.md): Raum · Einheit · Rand · Schrift; 0 = Einheit ohne Raum */
+  --raum-1:#DCEBDB; --raum-1-einheit:#B5D3B3; --raum-1-rand:#6F9A6C; --raum-1-tinte:#2F4A2E;
+  --raum-2:#D9E7F3; --raum-2-einheit:#AFCCE6; --raum-2-rand:#5F8DB8; --raum-2-tinte:#23405E;
+  --raum-3:#E4DFF3; --raum-3-einheit:#C6BCE6; --raum-3-rand:#7E70B8; --raum-3-tinte:#3A3166;
+  --raum-4:#F9E0D1; --raum-4-einheit:#F0BFA3; --raum-4-rand:#C27A55; --raum-4-tinte:#5C3220;
+  --raum-5:#F6EDCC; --raum-5-einheit:#E8D696; --raum-5-rand:#A88E3A; --raum-5-tinte:#4D3F12;
+  --raum-6:#F3DAE2; --raum-6-einheit:#E6B3C3; --raum-6-rand:#B76A84; --raum-6-tinte:#55263A;
+  --raum-0-einheit:#E6E6E4; --raum-0-rand:#8E8C88; --raum-0-tinte:#333336;
   --digital:#5B21B6; --digital-soft:#EDE9FE;
-  --scrim:rgba(15,17,21,.42);
-  --shadow:0 1px 2px rgba(22,24,29,.05),0 8px 24px -12px rgba(22,24,29,.16);
+  --scrim:rgba(20,20,22,.42);
+  --shadow:0 1px 2px rgba(28,28,30,.05),0 8px 24px -12px rgba(28,28,30,.16);
   --font-ui:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --font-num:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
   --r-card:20px; --r-ctrl:14px;
@@ -36,30 +42,40 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0F1115; --card:#181B21; --sunk:#14171C;
-  --ink:#ECEEF2; --muted:#A0A7B4;
-  --line:#2A2F38; --line-2:#3A404B;
-  --accent:#6E8BFF; --accent-ink:#9DB0FF; --accent-soft:#1C2547; --on-accent:#0F1115;
+  --bg:#18191B; --card:#212224; --sunk:#1C1D1F;
+  --ink:#EDEDEC; --muted:#A1A1A0;
+  --line:#303134; --line-2:#3D3E42;
+  --accent:#F5AE3D; --accent-ink:#FFC870; --accent-soft:#3A2E1B; --on-accent:#2A1A05;
   --am-platz:#86EFAC; --am-platz-soft:#14351F;
   --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
-  --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
-  --raum-1:#243240; --raum-2:#2A3A2D; --raum-3:#3D3326; --raum-4:#322D45; --raum-5:#213936;
-  --einheit-flaeche:#5C2B30; --einheit-rand:#E0787D; --einheit-tinte:#FFDDE0;
+  --ausser-haus:#F2A7C3; --ausser-haus-soft:#45263A;
+  --raum-1:#2E3B33; --raum-1-einheit:#435A4A; --raum-1-rand:#8DB39A; --raum-1-tinte:#D4E8D8;
+  --raum-2:#2B3846; --raum-2-einheit:#3F5469; --raum-2-rand:#8BB0D6; --raum-2-tinte:#D3E4F5;
+  --raum-3:#36324A; --raum-3-einheit:#4E4769; --raum-3-rand:#ADA2E0; --raum-3-tinte:#E2DDF7;
+  --raum-4:#46352C; --raum-4-einheit:#654B3D; --raum-4-rand:#E0A483; --raum-4-tinte:#F7DFD2;
+  --raum-5:#433D2B; --raum-5-einheit:#5F563A; --raum-5-rand:#D2BE7C; --raum-5-tinte:#F3EBCB;
+  --raum-6:#443039; --raum-6-einheit:#624451; --raum-6-rand:#D99BB0; --raum-6-tinte:#F5DAE3;
+  --raum-0-einheit:#3A3B3E; --raum-0-rand:#9A9A98; --raum-0-tinte:#E5E5E5;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
-  --bg:#0F1115; --card:#181B21; --sunk:#14171C;
-  --ink:#ECEEF2; --muted:#A0A7B4;
-  --line:#2A2F38; --line-2:#3A404B;
-  --accent:#6E8BFF; --accent-ink:#9DB0FF; --accent-soft:#1C2547; --on-accent:#0F1115;
+  --bg:#18191B; --card:#212224; --sunk:#1C1D1F;
+  --ink:#EDEDEC; --muted:#A1A1A0;
+  --line:#303134; --line-2:#3D3E42;
+  --accent:#F5AE3D; --accent-ink:#FFC870; --accent-soft:#3A2E1B; --on-accent:#2A1A05;
   --am-platz:#86EFAC; --am-platz-soft:#14351F;
   --in-benutzung:#93C5FD; --in-benutzung-soft:#172A4D;
-  --ausser-haus:#FCD34D; --ausser-haus-soft:#3A2A0B;
-  --raum-1:#243240; --raum-2:#2A3A2D; --raum-3:#3D3326; --raum-4:#322D45; --raum-5:#213936;
-  --einheit-flaeche:#5C2B30; --einheit-rand:#E0787D; --einheit-tinte:#FFDDE0;
+  --ausser-haus:#F2A7C3; --ausser-haus-soft:#45263A;
+  --raum-1:#2E3B33; --raum-1-einheit:#435A4A; --raum-1-rand:#8DB39A; --raum-1-tinte:#D4E8D8;
+  --raum-2:#2B3846; --raum-2-einheit:#3F5469; --raum-2-rand:#8BB0D6; --raum-2-tinte:#D3E4F5;
+  --raum-3:#36324A; --raum-3-einheit:#4E4769; --raum-3-rand:#ADA2E0; --raum-3-tinte:#E2DDF7;
+  --raum-4:#46352C; --raum-4-einheit:#654B3D; --raum-4-rand:#E0A483; --raum-4-tinte:#F7DFD2;
+  --raum-5:#433D2B; --raum-5-einheit:#5F563A; --raum-5-rand:#D2BE7C; --raum-5-tinte:#F3EBCB;
+  --raum-6:#443039; --raum-6-einheit:#624451; --raum-6-rand:#D99BB0; --raum-6-tinte:#F5DAE3;
+  --raum-0-einheit:#3A3B3E; --raum-0-rand:#9A9A98; --raum-0-tinte:#E5E5E5;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
@@ -427,22 +443,30 @@ select.eingabe{padding-right:6px}
 .feld-reihe.eng{grid-template-columns:80px minmax(0,1fr)}
 .schalter{display:flex;align-items:center;gap:10px;min-height:44px;font-size:var(--fs-text)}
 .schalter input{width:20px;height:20px;accent-color:var(--accent)}
+.loesch-liste{display:flex;flex-direction:column;gap:4px}
+.loesch-teil{align-items:flex-start;padding-top:6px}
+.loesch-teil input{margin-top:2px;flex:none}
+.schalter:has(input:disabled){opacity:.55}
 .plan-leiste{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-card);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
 .plan-wirkung{display:flex;flex-direction:column;gap:2px}
 .unterlage{opacity:.35;pointer-events:none}
 .unterlage.aktiv{opacity:.6;pointer-events:auto;cursor:move}
 .unterlage-rahmen{fill:none;stroke:var(--accent);stroke-dasharray:6 4}
-.raum{fill-opacity:.8;stroke:var(--muted)}
-.raum.gewaehlt{stroke:var(--accent)}
-.einheit{fill:var(--einheit-flaeche);stroke:var(--einheit-rand)}
-.einheit.ohne-raum{stroke:var(--ausser-haus);fill:var(--ausser-haus-soft)}
-.einheit.gewaehlt,.fach.gewaehlt{fill:var(--accent);fill-opacity:.35;stroke:var(--accent)}
-.raum-text{fill:var(--ink);fill-opacity:.62;font-weight:600;letter-spacing:.06em;pointer-events:none}
-.einheit-text{fill:var(--einheit-tinte);font-family:var(--font-num);font-weight:500;pointer-events:none}
-.einheit-name{fill:var(--einheit-tinte);fill-opacity:.8;pointer-events:none}
+/* Plan (D-024): Farben kommen je Raum als --f/--e/--r/--t (MF.raumStil); Schrift aus derselben Farbfamilie */
+.raum{fill:var(--f);stroke:var(--muted);stroke-opacity:.7}
+.unterlage ~ .raum{fill-opacity:.5}
+.raum.gewaehlt{stroke:var(--accent);stroke-opacity:1}
+.einheit{fill:var(--e);stroke:var(--r)}
+.einheit.gewaehlt{stroke:var(--t)}
+.einheit.ohne-raum{stroke-dasharray:4 3}
+.fach.gewaehlt{fill:var(--accent);fill-opacity:.35;stroke:var(--accent)}
+.raum-text{fill:var(--t);font-weight:600;letter-spacing:.06em;pointer-events:none}
+.einheit-text{fill:var(--t);font-family:var(--font-num);font-weight:500;pointer-events:none}
+.einheit-name{fill:var(--t);fill-opacity:.8;pointer-events:none}
+.raumfarben{display:flex;gap:8px;flex-wrap:wrap}
+.raumfarbe{width:36px;height:36px;border-radius:999px;background:var(--f);border:2px solid var(--r)}
+.raumfarbe[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--t)}
 text{pointer-events:none}
-.einheit.gewaehlt{fill-opacity:.9}
-text.gewaehlt .einheit-text,text.gewaehlt .einheit-name{fill:var(--on-accent)}
 .zeichnen-vorschau{fill:var(--accent);fill-opacity:.12;stroke:var(--accent);stroke-dasharray:4 3}
 .zeichnen-punkt{fill:var(--card);stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
 .griff{fill:var(--card);stroke:var(--accent);cursor:grab}
@@ -462,7 +486,6 @@ text.gewaehlt .einheit-text,text.gewaehlt .einheit-name{fill:var(--on-accent)}
   .buero-panel{overflow:auto}
 }
 @media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}}
-.ansicht-raum{fill-opacity:1}
 .buero-kopf{display:flex;align-items:center;gap:8px}
 .buero-kopf .abschnitt{margin:0;flex:1}
 .buero-fachcode{font-size:var(--fs-titel);font-weight:500}

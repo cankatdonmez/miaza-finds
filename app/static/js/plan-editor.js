@@ -19,6 +19,7 @@
 
   // ---------- Modell ----------
   const raum = (s) => entwurf.raeume.find((r) => r.schluessel === s);
+  const farbeVon = (e) => (e.raum && raum(e.raum)?.farbe) || 0;
   const einheit = (s) => entwurf.einheiten.find((e) => e.schluessel === s);
   const form = (s) => raum(s) || einheit(s);
   const raumNr = (s) => raum(s)?.nr;
@@ -29,7 +30,7 @@
     geladen = p;
     entwurf = {
       version: p.version, unterlage: p.unterlage, unterlage_im_buero: p.unterlage_im_buero,
-      raeume: p.raeume.map((r) => ({ id: r.id, schluessel: "r" + r.id, nr: r.nr, name: r.name, punkte: r.punkte })),
+      raeume: p.raeume.map((r) => ({ id: r.id, schluessel: "r" + r.id, nr: r.nr, name: r.name, farbe: r.farbe, punkte: r.punkte })),
       einheiten: p.einheiten.map((e) => ({ id: e.id, schluessel: "e" + e.id, raum: e.raum_id ? "r" + e.raum_id : null,
                                             nr: e.nr, name: e.name, punkte: e.punkte })),
     };
@@ -96,7 +97,10 @@
       const s = "n" + ++zaehler;
       if (werkzeugName === "raum") {
         const nr = entwurf.raeume.length ? Math.max(...entwurf.raeume.map((r) => r.nr)) + 1 : 1;
-        entwurf.raeume.push({ id: null, schluessel: s, nr, name: "", punkte });
+        // Neuer Raum: erste noch freie Farbe, sonst der Reihe nach (D-024)
+        const belegt = new Set(entwurf.raeume.map((r) => r.farbe));
+        const farbe = [1, 2, 3, 4, 5, 6].find((f) => !belegt.has(f)) || (entwurf.raeume.length % MF.RAUMFARBEN) + 1;
+        entwurf.raeume.push({ id: null, schluessel: s, nr, name: "", farbe, punkte });
         alleZuordnen();
       } else {
         const e = { id: null, schluessel: s, raum: undefined, nr: 1, name: "", punkte };
@@ -128,19 +132,21 @@
     }
     for (const r of entwurf.raeume) {
       teile.push(el("path", { d: geo.pfad(r.punkte), class: "raum" + (r.schluessel === gewaehlt ? " gewaehlt" : ""), "data-form": r.schluessel,
-                              style: MF.raumFarbe(r.nr), "stroke-width": 1.5 * m }));
+                              style: MF.raumStil(r.farbe), "stroke-width": 1.5 * m }));
     }
     for (const e of entwurf.einheiten) {
-      teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (e.schluessel === gewaehlt ? " gewaehlt" : "") + (e.raum ? "" : " ohne-raum"),
-                              "data-form": e.schluessel, "stroke-width": 1.5 * m }));
+      const an = e.schluessel === gewaehlt;
+      teile.push(el("path", { d: geo.pfad(e.punkte), class: "einheit" + (an ? " gewaehlt" : "") + (e.raum ? "" : " ohne-raum"),
+                              "data-form": e.schluessel, style: MF.raumStil(farbeVon(e)), "stroke-width": (an ? 3 : 1.5) * m }));
     }
     // Beschriftung (D-018): am Innenpunkt, so groß wie die Fläche erlaubt
     teile.push(...MF.flaechenTexte(entwurf.raeume.map((r) => ({
-      punkte: r.punkte, zeilen: [{ text: `${r.nr}${r.name ? " · " + r.name : ""}`.toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
+      punkte: r.punkte, stil: MF.raumStil(r.farbe),
+      zeilen: [{ text: `${r.nr}${r.name ? " · " + r.name : ""}`.toLocaleUpperCase("de"), klasse: "raum-text", k: 1, em: 0.72 }],
       hindernisse: entwurf.einheiten.filter((e) => e.raum === r.schluessel).map((e) => e.punkte),
     })), m, { min: 13, max: 30 }));
     teile.push(...MF.flaechenTexte(entwurf.einheiten.map((e) => ({
-      punkte: e.punkte,
+      punkte: e.punkte, stil: MF.raumStil(farbeVon(e)),
       zeilen: [{ text: code(e), klasse: "einheit-text", k: 1, em: 0.62 }, { text: e.name, klasse: "einheit-name", k: 0.72, em: 0.56 }],
     })), m, { min: 13, max: 22, auslassen: true }));
     if (u && werkzeugName === "unterlage") {
@@ -204,6 +210,14 @@
     if (!b || !b.closest("[data-plan]")) return;
     const d = b.dataset;
     if (d.werkzeug) return werkzeug(d.werkzeug);
+    if (d.raumfarbe) {
+      const r = raum(gewaehlt);
+      if (!r || r.farbe === Number(d.raumfarbe)) return;
+      verlauf.merken();
+      r.farbe = Number(d.raumfarbe);
+      zeichnen(); panel(); leiste();
+      return;
+    }
     if (d.unterlageZeigen !== undefined) {
       b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
       return zeichnen();
@@ -269,6 +283,10 @@
         <div class="feld-reihe eng">
           <label class="feld"><span>${esc(t("plan.nr"))}</span><input class="eingabe num" data-feld="nr" inputmode="numeric" value="${r.nr}"></label>
           <label class="feld"><span>${esc(t("plan.name"))}</span><input class="eingabe" data-feld="name" maxlength="60" value="${esc(r.name)}"></label>
+        </div>
+        <div class="feld"><span>${esc(t("plan.farbe"))}</span>
+          <div class="raumfarben">${[1, 2, 3, 4, 5, 6].map((f) => `<button class="raumfarbe" type="button" data-raumfarbe="${f}"
+            style="${MF.raumStil(f)}" aria-pressed="${r.farbe === f}" aria-label="${esc(t("raumfarbe." + f))}" title="${esc(t("raumfarbe." + f))}"></button>`).join("")}</div>
         </div>
         <button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("plan.raum_loeschen"))}</button>
       </div>`;
@@ -373,7 +391,7 @@
 
   const entwurfFuerServer = () => ({
     ...entwurf,
-    raeume: entwurf.raeume.map(({ id, schluessel, nr, name, punkte }) => ({ id, schluessel, nr, name, punkte })),
+    raeume: entwurf.raeume.map(({ id, schluessel, nr, name, farbe, punkte }) => ({ id, schluessel, nr, name, farbe, punkte })),
     einheiten: entwurf.einheiten.map(({ id, raum: r, nr, name, punkte }) => ({ id, raum: r || null, nr, name, punkte })),
   });
 

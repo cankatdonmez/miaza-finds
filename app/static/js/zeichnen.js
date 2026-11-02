@@ -218,7 +218,7 @@
   // Größe zwischen min und max Pixeln. Mit auslassen entfällt eine Beschriftung, die auch knapp über min nicht hineinpasst
   // (Einheiten am Telefon, ganzer Plan); beim Hineinzoomen erscheint sie. Weitere Zeilen (Name der Einheit) fallen weg, wenn sie kleiner als 10 px würden.
   // liste: [{ punkte, zeilen: [{ text, klasse, k: Größe relativ zur ersten Zeile, em: Zeichenbreite in em }],
-  //          hindernisse?, klasse? }]; m: Planeinheiten je Bildschirmpixel
+  //          hindernisse?, klasse?, stil? }]; m: Planeinheiten je Bildschirmpixel
   const lage = new WeakMap();      // gemerkt je Punkte-Array (wird bei Änderung ersetzt, nie verändert) und Hindernissen
   function flaechenTexte(liste, m, { min, max, auslassen = false }) {
     const NS = "http://www.w3.org/2000/svg";
@@ -247,6 +247,7 @@
       const text = document.createElementNS(NS, "text");
       text.setAttribute("text-anchor", "middle");
       if (liste[i].klasse) text.setAttribute("class", liste[i].klasse);
+      if (liste[i].stil) text.setAttribute("style", liste[i].stil);
       let y = p[1] - z.reduce((a, l) => a + 1.2 * l.k * s, 0) / 2;
       for (const l of z) {
         const zeile = document.createElementNS(NS, "tspan");
@@ -262,8 +263,12 @@
     });
   }
 
-  // Raumfarbe aus der Raumnummer: fünf Pastelltöne der Reihe nach (D-018)
-  const raumFarbe = (nr) => `fill:var(--raum-${((Math.max(nr, 1) - 1) % 5) + 1})`;
+  // Farben eines Raums und seiner Einheiten (D-024, THEMA.md) als Variablen für die CSS-Regeln:
+  // --f Raum, --e Einheit, --r Rand, --t Schrift. farbe 0: Einheit ohne Raum (neutral).
+  const raumStil = (farbe) => {
+    const n = farbe || 0;
+    return (n ? `--f:var(--raum-${n});` : "") + `--e:var(--raum-${n}-einheit);--r:var(--raum-${n}-rand);--t:var(--raum-${n}-tinte)`;
+  };
 
   // ---------- Ansicht: viewBox eines <svg> (SPEC 4.8) ----------
   // grenzen(): Rahmen des Inhalts. Zoom zwischen ganzem Inhalt und etwa 8×; der Inhalt kann nicht aus dem Bild laufen.
@@ -580,7 +585,8 @@
   MF.geo = geo;
   MF.flaechenTexte = flaechenTexte;
   MF.einrasten = einrasten;
-  MF.raumFarbe = raumFarbe;
+  MF.raumStil = raumStil;
+  MF.RAUMFARBEN = 6;
   MF.FormenEditor = FormenEditor;
   MF.Ansicht = Ansicht;
   MF.Verlauf = Verlauf;

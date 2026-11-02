@@ -22,6 +22,7 @@ from . import nummern
 from .fotos import GROESSE_GROSS, MAX_BYTES, bild_oeffnen
 
 NAME_MAX = 60
+RAUMFARBEN = 6         # Pastellfarben der Räume (D-024)
 NR_MAX = 999
 PUNKTE_MAX = 200
 # Beim Umnummerieren erst alle Nummern aus dem Weg schieben, damit Tauschen nicht an UNIQUE scheitert
@@ -36,7 +37,7 @@ def code_einheit(raum_nr: int | None, nr: int) -> str:
 
 def laden(conn: sqlite3.Connection) -> dict[str, Any]:
     p = conn.execute("SELECT * FROM plan WHERE id = 1").fetchone()
-    raeume = [{"id": r["id"], "nr": r["nr"], "name": r["name"], "punkte": json.loads(r["punkte"])}
+    raeume = [{"id": r["id"], "nr": r["nr"], "name": r["name"], "farbe": r["farbe"], "punkte": json.loads(r["punkte"])}
               for r in conn.execute("SELECT * FROM raum ORDER BY nr")]
     raum_nr = {r["id"]: r["nr"] for r in raeume}
     produkte_je_fach = dict(conn.execute("SELECT fach_id, count(*) FROM produkt WHERE fach_id IS NOT NULL GROUP BY fach_id").fetchall())
@@ -148,8 +149,12 @@ def _entwurf(conn: sqlite3.Connection, daten: dict[str, Any]) -> dict[str, Any]:
         if not s or s in schluessel:
             raise Fehler(t("fehler.plan_form"))
         schluessel.add(s)
-        raeume.append({"id": rid, "schluessel": s, "nr": _nr(r.get("nr"), "raum_nr"),
-                       "name": _text(r.get("name"), "raum_name"), "punkte": _punkte(r.get("punkte"), "raum")})
+        nr = _nr(r.get("nr"), "raum_nr")
+        farbe = r.get("farbe")
+        if not (isinstance(farbe, int) and not isinstance(farbe, bool) and 1 <= farbe <= RAUMFARBEN):
+            farbe = (nr - 1) % RAUMFARBEN + 1          # ohne gültige Angabe: der Reihe nach (D-024)
+        raeume.append({"id": rid, "schluessel": s, "nr": nr, "name": _text(r.get("name"), "raum_name"), "farbe": farbe,
+                       "punkte": _punkte(r.get("punkte"), "raum")})
     _eindeutig([r["nr"] for r in raeume], t("fehler.raum_nr_doppelt"))
     einheiten = []
     for e in daten.get("einheiten") or []:
@@ -226,11 +231,12 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, daten: dict[str, Any]) 
     conn.execute("UPDATE raum SET nr = nr + ?", (AUSWEICHEN,))
     raum_id = {}
     for r in entwurf["raeume"]:
-        werte = (r["nr"], r["name"], json.dumps(r["punkte"]))
+        werte = (r["nr"], r["name"], r["farbe"], json.dumps(r["punkte"]))
         if r["id"] is None:
-            raum_id[r["schluessel"]] = conn.execute("INSERT INTO raum (nr, name, punkte) VALUES (?, ?, ?) RETURNING id", werte).fetchone()[0]
+            raum_id[r["schluessel"]] = conn.execute("INSERT INTO raum (nr, name, farbe, punkte) VALUES (?, ?, ?, ?) RETURNING id",
+                                                    werte).fetchone()[0]
         else:
-            conn.execute("UPDATE raum SET nr = ?, name = ?, punkte = ? WHERE id = ?", (*werte, r["id"]))
+            conn.execute("UPDATE raum SET nr = ?, name = ?, farbe = ?, punkte = ? WHERE id = ?", (*werte, r["id"]))
             raum_id[r["schluessel"]] = r["id"]
 
     # Einheiten: gelöschte nehmen ihre Fächer mit, die Produkte werden „Ohne Platz“ (ON DELETE)
