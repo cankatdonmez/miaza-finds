@@ -236,6 +236,7 @@ select.eingabe{padding-right:6px}
 .foto img{width:100%;height:100%;object-fit:cover;display:block}
 .foto-x{position:absolute;top:2px;right:2px;width:44px;height:44px;border-radius:999px;display:grid;place-items:center;
   background:color-mix(in srgb,var(--card) 85%,transparent);color:var(--ink)}
+.foto-x.foto-zuschnitt{top:auto;bottom:2px}
 .foto-knoepfe{display:flex;gap:8px;flex-wrap:wrap}
 .foto-knoepfe .btn{flex:1 1 160px}
 .feld-reihe{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
@@ -325,6 +326,23 @@ select.eingabe{padding-right:6px}
 .zeile.erledigt .eingabe{border-color:var(--accent);background:var(--accent-soft)}
 
 /* Serienerfassung (SPEC 6.2): ganze Fläche, Kamera als Hauptknopf */
+/* Zuschneiden (D-027): Foto füllt die Fläche, Rahmen mit Griffen, außen abgedunkelt */
+.zuschnitt{position:fixed;inset:0;z-index:96;background:var(--bg);display:flex;flex-direction:column;gap:12px;
+  padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+.zuschnitt-kopf{display:flex;align-items:center;gap:8px;font-weight:600}
+.zuschnitt-flaeche{flex:1;min-height:0;display:grid;place-items:center;padding:12px}
+.zuschnitt-bild{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}
+.zuschnitt-bild img{display:block;width:100%;height:100%;border-radius:8px;pointer-events:none}
+.zuschnitt-maske{position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none}
+.zuschnitt-loch{position:absolute;box-shadow:0 0 0 9999px var(--foto-schleier)}
+.zuschnitt-rahmen{position:absolute;outline:2px solid var(--foto-text);outline-offset:-1px;cursor:move}
+.zuschnitt-griff{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px}
+.zuschnitt-griff::after{content:"";position:absolute;left:15px;top:15px;width:14px;height:14px;border-radius:4px;background:var(--foto-text)}
+.g-nw{left:0;top:0;cursor:nwse-resize}.g-n{left:50%;top:0;cursor:ns-resize}.g-ne{left:100%;top:0;cursor:nesw-resize}
+.g-e{left:100%;top:50%;cursor:ew-resize}.g-se{left:100%;top:100%;cursor:nwse-resize}.g-s{left:50%;top:100%;cursor:ns-resize}
+.g-sw{left:0;top:100%;cursor:nesw-resize}.g-w{left:0;top:50%;cursor:ew-resize}
+.zuschnitt-knoepfe{display:flex;gap:8px;max-width:560px;width:100%;margin:0 auto}
+.zuschnitt-knoepfe .btn{flex:1}
 .kamera{position:fixed;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column;gap:14px;padding:16px}
 .kamera video{flex:1;min-height:0;width:100%;object-fit:contain;border-radius:var(--r-card);background:var(--sunk)}
 .kamera-knoepfe{display:flex;gap:8px;justify-content:center}

@@ -129,7 +129,8 @@
         <button class="foto-x" type="button" data-foto-weg="${f.id}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button></figure>`);
     const wartend = neueFotos.map((f, i) => `
       <figure class="foto"><img src="${f.url}" alt="">
-        <button class="foto-x" type="button" data-foto-neu-weg="${i}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button></figure>`);
+        <button class="foto-x" type="button" data-foto-neu-weg="${i}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button>
+        <button class="foto-x foto-zuschnitt" type="button" data-foto-neu-zuschnitt="${i}" aria-label="${esc(t("zuschnitt.titel"))}" title="${esc(t("zuschnitt.titel"))}">${icon("zuschnitt", 18)}</button></figure>`);
     return [...gespeichert, ...wartend].join("");
   }
 
@@ -208,6 +209,16 @@
       zeichneFilterNeu();
       return;
     }
+    if (b.dataset.fotoNeuZuschnitt !== undefined) {
+      const f = neueFotos[Number(b.dataset.fotoNeuZuschnitt)];
+      const z = await MF.zuschneiden(f.datei);
+      if (z && z !== f.datei) {
+        URL.revokeObjectURL(f.url);
+        Object.assign(f, { datei: z, url: URL.createObjectURL(z) });
+        $("[data-fotos]", form).innerHTML = zeichneFotos();
+      }
+      return;
+    }
     if (b.dataset.fotoNeuWeg !== undefined) {
       URL.revokeObjectURL(neueFotos[Number(b.dataset.fotoNeuWeg)].url);
       neueFotos.splice(Number(b.dataset.fotoNeuWeg), 1);
@@ -236,8 +247,14 @@
 
   // ---------- Fotos: zwei Wege, am Desktop auch Ziehen und Einfügen (SPEC 4.5) ----------
   async function fotosHinzu(dateien) {
-    const bilder = dateien.filter((f) => f.type.startsWith("image/"));
+    let bilder = dateien.filter((f) => f.type.startsWith("image/"));
     if (!bilder.length) return;
+    // Ein einzelnes Foto gleich zuschneiden (D-027); bei mehreren nicht, das hielte zu lange auf
+    if (bilder.length === 1) {
+      const z = await MF.zuschneiden(bilder[0]);
+      if (!z) return;
+      bilder = [z];
+    }
     if (!inventarNr) {
       neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
       $("[data-fotos]", form).innerHTML = zeichneFotos();
