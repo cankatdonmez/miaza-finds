@@ -32,7 +32,7 @@
 
   function daten() {
     return {
-      name: p.name, art: p.art, kategorie_id: p.kategorie_id, marke: p.marke, abmessungen: p.abmessungen,
+      name: p.name, art: p.art, kategorie_id: p.kategorie_id, marke: p.marke, artikelnummer: p.artikelnummer, abmessungen: p.abmessungen,
       link: p.link, anzahl: p.anzahl === "" ? null : p.anzahl, notiz: p.notiz, farben: p.farben,
       preis: p.preis.betrag.trim() ? p.preis : null, werte: p.werte, code: p.code, version: p.version,
     };
@@ -45,14 +45,14 @@
     if (inventarNr) {
       const r = await api("GET", "/api/produkte/" + inventarNr);
       p = {
-        ...r, marke: r.marke || "", abmessungen: r.abmessungen || "", link: r.link || "", notiz: r.notiz || "",
+        ...r, marke: r.marke || "", artikelnummer: r.artikelnummer || "", abmessungen: r.abmessungen || "", link: r.link || "", notiz: r.notiz || "",
         name: r.name || "", anzahl: r.anzahl ?? "", code: "behalten", code_alt: r.code,
         preis: r.preis ? { betrag: MF.euro(r.preis.cent), einheit: r.preis.einheit, datum: r.preis.datum }
                        : { betrag: "", einheit: "m2" },
       };
     } else {
       const k = kategorie(letzteKategorie()) || kategorien.find((x) => x.fest) || kategorien[0];
-      p = { name: "", art: "physisch", kategorie_id: k.id, marke: "", abmessungen: "", link: "", anzahl: "",
+      p = { name: "", art: "physisch", kategorie_id: k.id, marke: "", artikelnummer: "", abmessungen: "", link: "", anzahl: "",
             notiz: "", farben: [], preis: { betrag: "", einheit: "m2" }, werte: {}, fotos: [], code: "behalten", version: null };
     }
     original = daten();
@@ -100,8 +100,9 @@
         <div class="stack">
         <div class="feld-reihe">
           <label class="feld"><span>${esc(t("produkt.marke"))}</span><input class="eingabe" data-feld="marke" value="${esc(p.marke)}" maxlength="80"></label>
-          <label class="feld"><span>${esc(t("produkt.abmessungen"))}</span><input class="eingabe" data-feld="abmessungen" value="${esc(p.abmessungen)}" maxlength="80"></label>
+          <label class="feld"><span>${esc(t("produkt.artikelnummer"))}</span><input class="eingabe" data-feld="artikelnummer" value="${esc(p.artikelnummer)}" maxlength="60"></label>
         </div>
+        <label class="feld"><span>${esc(t("produkt.abmessungen"))}</span><input class="eingabe" data-feld="abmessungen" value="${esc(p.abmessungen)}" maxlength="80"></label>
         <div class="feld-reihe">
           <label class="feld"><span>${esc(t("produkt.preis"))}</span>
             <span class="preis-zeile"><input class="eingabe num" data-feld="betrag" value="${esc(p.preis.betrag)}" inputmode="decimal" placeholder="0,00">
@@ -134,7 +135,7 @@
   // Offen: beim Bearbeiten, wenn schon etwas eingetragen ist, oder wenn man es geöffnet hat
   function mehrAuf() {
     if (mehrOffen !== null) return mehrOffen;
-    return !!inventarNr || !!(p.marke || p.abmessungen || p.link || p.notiz || p.anzahl || p.farben.length || p.preis.betrag);
+    return !!inventarNr || !!(p.marke || p.artikelnummer || p.abmessungen || p.link || p.notiz || p.anzahl || p.farben.length || p.preis.betrag);
   }
 
   function zeichneFotos() {

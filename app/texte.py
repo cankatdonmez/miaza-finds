@@ -277,6 +277,7 @@ DE: dict[str, str] = {
     "produkt.foto_aufnehmen": "Foto aufnehmen",
     "produkt.bild_waehlen": "Bild wählen",
     "produkt.platz": "Platz",
+    "produkt.artikelnummer": "Artikelnummer",
     "zuschnitt.titel": "Zuschneiden",
     "zuschnitt.ganz": "Ganzes Bild",
     "zuschnitt.ok": "Übernehmen",

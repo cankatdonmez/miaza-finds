@@ -41,6 +41,7 @@
         ${p.art === "physisch" ? zeile(t("produkt.platz"), p.platz ? platzText(p.platz) : `<span class="sub">${esc(t("status.ohne_platz"))}</span>`) : ""}
         ${zeile(t("produkt.kategorie"), esc(p.kategorie_name))}
         ${zeile(t("produkt.marke"), esc(p.marke))}
+        ${zeile(t("produkt.artikelnummer"), p.artikelnummer ? `<span class="num">${esc(p.artikelnummer)}</span>` : "")}
         ${zeile(t("produkt.abmessungen"), esc(p.abmessungen))}
         ${zeile(t("produkt.preis"), preis)}
         ${(p.merkmale || []).map((m) => zeile(m.name, esc(m.wert))).join("")}

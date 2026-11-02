@@ -10,14 +10,14 @@
     produkte: {
       liste: "/api/etiketten", feld: "produkte", pdf: (ids) => "/api/etiketten/pdf?" + ids.map((i) => "nr=" + i).join("&"),
       gedruckt: "/api/etiketten/gedruckt", zurueck: "/api/etiketten/zuruecksetzen", sende: "produkte",
-      id: (x) => x.inventar_nr, qr: (x) => `/api/etiketten/qr/${x.inventar_nr}.svg`,
+      id: (x) => x.inventar_nr, bild: (x) => `/api/etiketten/vorschau/${x.inventar_nr}.png`,
       name: (x) => x.name || t("produkt.unbenannt", { nr: x.inventar_nr }), sub: (x) => x.code,
       sortieren: (a, b) => a.inventar_nr - b.inventar_nr,
     },
     faecher: {
       liste: "/api/etiketten/faecher", feld: "faecher", pdf: (ids) => "/api/etiketten/faecher/pdf?" + ids.map((i) => "id=" + i).join("&"),
       gedruckt: "/api/etiketten/faecher/gedruckt", zurueck: "/api/etiketten/faecher/zuruecksetzen", sende: "faecher",
-      id: (x) => x.id, qr: (x) => `/api/etiketten/qr/fach/${x.id}.svg`,
+      id: (x) => x.id, bild: (x) => `/api/etiketten/vorschau/fach/${x.id}.png`,
       name: (x) => x.code, sub: (x) => x.beschreibung,
       // Reihenfolge wie im Regal: nach Code
       sortieren: (a, b) => a.code.localeCompare(b.code, "de", { numeric: true }),
@@ -26,6 +26,7 @@
   let art = "produkte";
   const A = () => ARTEN[art];
 
+  let geladen = Date.now();   // hängt an den Vorschaubildern, damit Geändertes neu geladen wird
   let treffer = [];
   let zahlen = {};
   let bogen = null;
@@ -83,12 +84,10 @@
         const s = i % bogen.spalten, z = Math.floor(i / bogen.spalten);
         const links = pb(bogen.rand_links_mm + s * (bogen.breite_mm + bogen.abstand_x_mm));
         const oben = ph(bogen.rand_oben_mm + z * (bogen.hoehe_mm + bogen.abstand_y_mm));
-        const text = art === "faecher"
-          ? `<span class="etk-fachcode num">${esc(x.code)}</span><span class="etk-code">${esc(x.beschreibung)}</span>`
-          : `<span class="etk-name">${esc(A().name(x))}</span><span class="etk-code num">${esc(x.code)}</span>`;
+        // Das Etikett als Bild aus derselben Zeichnung wie das PDF: die Vorschau ist der Druck (D-033)
         return `<button class="etk-etikett" type="button" data-etk-weg="${A().id(x)}" title="${esc(t("etiketten.entfernen", { name: A().name(x) }))}"
           style="left:${links}%;top:${oben}%;width:${pb(bogen.breite_mm)}%;height:${ph(bogen.hoehe_mm)}%">
-          <span class="etk-qr"><img src="${A().qr(x)}" alt=""></span>${text}</button>`;
+          <img src="${A().bild(x)}?t=${geladen}" alt="${esc(A().name(x))}" loading="lazy"></button>`;
       }).join("");
       boegen.push(`<div class="etk-bogen" style="aspect-ratio:${bogen.seite_breite_mm}/${bogen.seite_hoehe_mm}">${zellen}</div>`);
     }

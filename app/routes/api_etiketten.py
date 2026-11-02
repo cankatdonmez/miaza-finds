@@ -83,6 +83,19 @@ def faecher_zuruecksetzen(daten: dict[str, Any] = Body(...), db: sqlite3.Connect
         return {"zurueck": etiketten.faecher_zuruecksetzen(db, daten.get("vorher") or [])}
 
 
+@router.get("/api/etiketten/vorschau/{inventar_nr}.png")
+def vorschau(inventar_nr: int, request: Request, db: sqlite3.Connection = Depends(get_db)):
+    """Ein Produktetikett als Bild, genau wie gedruckt (Vorschau der Etikettenseite)."""
+    return Response(etiketten.vorschau(db, inventar_nr, _basis(request)), media_type="image/png",
+                    headers={"Cache-Control": "no-cache"})
+
+
+@router.get("/api/etiketten/vorschau/fach/{fach_id}.png")
+def fach_vorschau(fach_id: int, request: Request, db: sqlite3.Connection = Depends(get_db)):
+    return Response(etiketten.fach_vorschau(db, fach_id, _basis(request)), media_type="image/png",
+                    headers={"Cache-Control": "no-cache"})
+
+
 @router.get("/api/etiketten/qr/fach/{fach_id}.svg")
 def fach_qr(request: Request, fach_id: int):
     puffer = io.BytesIO()
