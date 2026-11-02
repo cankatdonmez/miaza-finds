@@ -107,7 +107,7 @@
           </span>`).join("")}
         <span class="option-neu-zeile">
           <input class="eingabe option-neu" data-feld="option-neu" data-i="${i}" value="${esc(f.neu || "")}" placeholder="${esc(t("kat.auswahl_neu"))}">
-          <button class="iconbtn" type="button" data-aktion="option-neu" data-i="${i}" ${f.neu?.trim() ? "" : "disabled"} aria-label="${esc(t("kat.auswahl_neu"))}">${icon("plus", 20)}</button>
+          <button class="iconbtn" type="button" data-aktion="option-neu" data-i="${i}" ${f.neu?.trim() ? "" : "disabled"} aria-label="${esc(t("kat.auswahl_neu"))}">${icon("plus", 18)}</button>
         </span>
       </div>`;
     }

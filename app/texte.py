@@ -167,6 +167,8 @@ DE: dict[str, str] = {
     "produkt.bild_waehlen": "Bild wählen",
     "produkt.kamera_ausloesen": "Auslösen",
     "produkt.kamera_fehler": "Die Kamera lässt sich nicht öffnen.",
+    "produkt.kamera_wahl": "Kamera",
+    "produkt.kamera_n": "Kamera {n}",
     "produkt.foto_entfernen": "Foto entfernen",
     "produkt.art_physisch": "Physisch",
     "produkt.art_digital": "Digital",

@@ -180,8 +180,9 @@ select.eingabe{padding-right:6px}
 .option-n{font-size:var(--fs-mini);color:var(--muted);padding:0 4px}
 .option-x{width:40px;height:40px;border-radius:999px;color:var(--muted)}
 .option-x:hover{background:var(--sunk);color:var(--ink)}
-.option-neu-zeile{display:inline-flex;align-items:center;gap:2px}
-.option-neu{width:180px;min-height:36px;border-radius:999px;font-size:var(--fs-text)}
+.option-neu-zeile{position:relative;display:inline-flex;align-items:center}
+.option-neu{width:200px;min-height:36px;border-radius:999px;font-size:var(--fs-text);padding-right:36px}
+.option-neu-zeile .iconbtn{position:absolute;right:2px;width:32px;height:32px;border-radius:999px}
 .typwahl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 .typknopf{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border-radius:var(--r-ctrl);border:1px solid var(--line-2);background:var(--card);text-align:left}
 .typknopf:hover{border-color:var(--accent)}
@@ -301,7 +302,9 @@ select.eingabe{padding-right:6px}
 .kamera{position:fixed;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column;gap:14px;padding:16px}
 .kamera video{flex:1;min-height:0;width:100%;object-fit:contain;border-radius:var(--r-card);background:var(--sunk)}
 .kamera-knoepfe{display:flex;gap:8px;justify-content:center}
+.kamera-knoepfe{flex-wrap:wrap}
 .kamera-knoepfe .btn{min-width:160px}
+.kamera-wahl{width:auto;max-width:320px}
 .serie{position:fixed;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column;gap:14px;
   padding:16px 16px calc(16px + env(safe-area-inset-bottom));overflow-y:auto}
 .serie-kopf{display:flex;align-items:center}

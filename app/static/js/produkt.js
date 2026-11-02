@@ -278,25 +278,51 @@
     if (b) b.hidden = !kameraDa;
   }
 
+  // Mehrere Kameras (Laptop, USB, virtuell): Auswahl im Kamerafenster, gemerkt auf diesem Gerät
+  const KAMERA = "mf-kamera";
+  async function kameraStrom(id) {
+    const video = { width: { ideal: 1920 }, height: { ideal: 1440 } };
+    if (id) {
+      try { return await navigator.mediaDevices.getUserMedia({ video: { ...video, deviceId: { exact: id } } }); } catch { /* abgesteckt → Standard */ }
+    }
+    return navigator.mediaDevices.getUserMedia({ video });
+  }
+
   async function kameraOeffnen() {
+    let gemerkt = null;
+    try { gemerkt = localStorage.getItem(KAMERA); } catch { /* ohne Speicher Standardkamera */ }
     let strom;
-    try {
-      strom = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1440 } } });
-    } catch { toast(t("produkt.kamera_fehler"), { fehler: true }); return; }
+    try { strom = await kameraStrom(gemerkt); } catch { toast(t("produkt.kamera_fehler"), { fehler: true }); return; }
+    // Namen der Kameras kennt der Browser erst nach der Erlaubnis
+    const kameras = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "videoinput");
+    const aktiv = () => strom.getVideoTracks()[0]?.getSettings().deviceId;
     const el = document.createElement("div");
     el.className = "kamera";
     el.setAttribute("role", "dialog");
     el.setAttribute("aria-modal", "true");
     el.innerHTML = `<video autoplay playsinline muted></video>
       <div class="kamera-knoepfe">
+        ${kameras.length > 1 ? `<select class="eingabe kamera-wahl" data-k="wahl" aria-label="${esc(t("produkt.kamera_wahl"))}">
+          ${kameras.map((k, i) => `<option value="${esc(k.deviceId)}" ${k.deviceId === aktiv() ? "selected" : ""}>${esc(k.label || t("produkt.kamera_n", { n: i + 1 }))}</option>`).join("")}
+        </select>` : ""}
         <button class="btn" type="button" data-k="zu">${esc(t("produkt.abbrechen"))}</button>
         <button class="btn primary" type="button" data-k="ausloesen">${icon("camera", 20)}<span>${esc(t("produkt.kamera_ausloesen"))}</span></button>
       </div>`;
     const video = $("video", el);
     video.srcObject = strom;
-    const zu = () => { strom.getTracks().forEach((s) => s.stop()); el.remove(); document.removeEventListener("keydown", taste); };
+    const stoppen = () => strom.getTracks().forEach((s) => s.stop());
+    const zu = () => { stoppen(); el.remove(); document.removeEventListener("keydown", taste); };
     const taste = (e) => { if (e.key === "Escape") zu(); };
     document.addEventListener("keydown", taste);
+    el.addEventListener("change", async (e) => {
+      if (e.target.dataset.k !== "wahl") return;
+      stoppen();
+      try {
+        strom = await kameraStrom(e.target.value);
+        video.srcObject = strom;
+        try { localStorage.setItem(KAMERA, e.target.value); } catch { /* egal */ }
+      } catch { toast(t("produkt.kamera_fehler"), { fehler: true }); }
+    });
     el.addEventListener("click", (e) => {
       const k = e.target.closest("[data-k]")?.dataset.k;
       if (k === "zu") zu();
