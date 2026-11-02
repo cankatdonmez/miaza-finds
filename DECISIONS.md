@@ -257,3 +257,10 @@ Cankat'ın kararı (2. yöntem). Renk, malzemeyi aramanın temel yollarından bi
 Yeni ton filtresinin adı varsayılan olarak „Farbton“ (ana renk filtresi „Farbe“ ile karışmasın; tek ad kuralı).
 Claude'un ekledikleri (onay bekliyor): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi; ton tutma noktası.
 → SPEC 6.1, 6.2, 6.3.
+
+## D-032 · 02.11.2026 · Yeni renk filtresi ana renklerle dolu başlar
+Cankat'ın düzeltmesi: her kutuya tonu elle yazmak gereksiz iş. Yeni bir „Farbe“ filtresi her ana renk kutusunda,
+o rengin adını ve rengini taşıyan bir tonla başlar (Weiß altında „Weiß“, Rot altında „Rot“ …). Değiştirilmeyen ton
+olduğu gibi kalır; istenen yeniden adlandırılır, rengi değiştirilir, silinir ya da yanına yeni ton eklenir.
+Var olan renk filtrelerine dokunulmaz.
+→ SPEC 6.3.

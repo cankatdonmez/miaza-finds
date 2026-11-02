@@ -337,7 +337,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 | Var / yok | tek özellik | Var / Yok | Fark etmez / Var / Yok | Rektifiye: Var |
 | Renk (D-031) | kategoriye özel tonlar; her ton bir ana renge bağlı | tonlardan **birden fazla** | seçeneklerden biri eşleşirse; ana renk filtresi de bulur | Holz: Eiche, Nussbaum · Stoff: Weinrot, Burgund |
 
-- **Farbkasten (D-031):** "Farbe" filtresi ayarlarda ana renklerin kutuları olarak görünür; tonlar kutularda durur. Kutudaki "+" yeni ton açar (ad + renk), ton başka kutuya sürüklenince ana rengi değişir.
+- **Farbkasten (D-031):** "Farbe" filtresi ayarlarda ana renklerin kutuları olarak görünür; tonlar kutularda durur. Kutudaki "+" yeni ton açar (ad + renk), ton başka kutuya sürüklenince ana rengi değişir. Yeni filtre her kutuda ana rengin adıyla bir tonla başlar; değiştirilmeyen ton öyle kalır (D-032).
 
 - **Filtre ekleme akışı:** kategori → tip (her tipin yanında yukarıdaki örnek yazar) → ad → seçenekler veya birim → kaydet.
 - Mevcut filtrenin seçenekleri sonradan düzenlenebilir: eklenir, yeniden adlandırılır, silinir. Silinen bir seçenek kaç üründe kullanılıyorsa önce söylenir.
