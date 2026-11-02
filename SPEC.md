@@ -115,7 +115,7 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 
 ### 4.5 Bileşen kuralları
 - **Dokunma hedefi:** en az 44 × 44 px.
-- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha.
+- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
 - **Masaüstünde Okut:** üst çubukta, arama kutusunun yanında küçük bir QR ikonu. Kameralı cihazda kamerayı açar ve telefonla aynı sonuca gider. Kamera yoksa ikon gizlenir; kod arama kutusuna yazılabilir ("265" yeterli).
 - **Filtreler:** telefonda alttan açılan panelde, masaüstünde her zaman açık sol sütunda. Seçili filtreler arama alanının altında, çarpıyla kaldırılabilen etiketler olarak durur.
@@ -265,6 +265,7 @@ Daha (telefon) ─ istatistik
 ### 6.2 Ürün kaydı
 - **Alanlar:** tür (fiziki/dijital), ad, marka, kategori, ebat, ürün linki, fotoğraf(lar), adet, renkler, not, kategoriye özel alanlar.
 - **Zorunlu olan sadece ad.** Kategori son kullanılan kategoriyle gelir. Gerisi sonra tamamlanır.
+- **Kısa form (D-029):** yeni üründe fotoğraf, tür, ad, kategori ve filtreleri görünür; diğer alanlar kapalı "Weitere Angaben" altında. Taslağı atan düğmenin adı her yerde "Verwerfen".
 - **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Tek fotoğraf eklenince kırpma ekranı açılır ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027). Düzenlemede fotoğraf silme ve ekleme de "Speichern"e kadar taslaktır; "Abbrechen" geri alır. Seri sonrası ad listesinin altında "Speichern" çubuğu vardır (D-028).
 - **Fiyat:** değer (€), birim (m², m, adet, paket) ve girildiği tarih. Fiyat güncellenince tarih bugün olur.
 - **Renkler:** sabit bir paletten elle seçilir (beyaz, bej, kahve, terracotta, altın, pembe, yeşil, mavi, gri, siyah); tek dokunuşla. Fotoğraftan otomatik çıkarma v2'dedir.

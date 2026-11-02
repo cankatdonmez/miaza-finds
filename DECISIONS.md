@@ -217,3 +217,17 @@ Cankat'ın denemesinden:
   **„Speichern“** çubuğu; değişen bütün adları birlikte kaydeder. Enter ile bir sonraki ada geçmek ve o adı kaydetmek
   kalır. Kaydedilmemiş ad varken sayfadan çıkılınca tarayıcı uyarır. Diğer bilgiler sonra kütüphaneden girilir.
 → SPEC 6.2.
+
+## D-029 · 02.11.2026 · Tasarım denetimi: önem 2 bulguları
+„İyi tasarımın ilkeleri“ kontrol listesine göre yapılan denetimden; Claude'un önerileri, Cankat onayladı.
+- **Yeni ürün formu kısa:** fotoğraf, tür, ad, kategori ve kategorinin filtreleri görünür; marka, ölçüler, fiyat, adet,
+  link, renkler ve not kapalı bir „Weitere Angaben“ altında (dokununca açılır). Düzenlemede ya da doluysa açık. (İlke 6)
+- **Dokunma hedefleri:** filtre, renk ve seçenek çipleri en az 44 px. (İlke 12)
+- **Tarayıcının onay penceresi yok:** plan, bölme ve kategori düzenleyicide „Verwerfen“ hemen atar, bildirimde
+  „Rückgängig“ geri getirir. Ürün formunda „Verwerfen“ değişiklik varsa ilk dokunuşta düğmenin kendisinde
+  „Wirklich verwerfen?“ sorar, ikinci dokunuş atar (sayfadan çıkıldığı için geri al mümkün değil). Ürün silme onayı
+  kalır: geri alınamaz. (İlke 5)
+- **Tek ad:** taslağı atmak her yerde „Verwerfen“ (ürün formundaki „Abbrechen“ da). (Tek ad kuralı)
+- **Telefon menüsü:** tek satırlık „Mehr“ sayfası kalkar; üçüncü sekme doğrudan „Einstellungen“. Başka şeyler gelince
+  „Mehr“ geri gelir. (Çıkar)
+→ SPEC 4.5, 6.2.
