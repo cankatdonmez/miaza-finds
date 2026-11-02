@@ -22,8 +22,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-026: ünite fotoğrafında bölmeler demodaki gibi (etiket „kod · sayı“, kayan spot, nabız, önizleme).
   - D-027: tek fotoğraf eklenince kırpma ekranı (tek ve seri kayıt); yüklenmemiş fotoğrafta kırpma düğmesi.
   - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“; kartlar hep kare.
-  - D-029 (tasarım denetimi): kısa ürün formu („Weitere Angaben“), çipler 44 px, onay penceresi yerine geri al /
-    „Wirklich verwerfen?“, her yerde „Verwerfen“, telefonda „Mehr“ yerine Einstellungen. D-030: önem 1 bulguları.
+  - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
   - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
