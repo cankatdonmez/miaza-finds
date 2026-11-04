@@ -205,6 +205,8 @@ Bu yüzden elle kaldırılması gereken bir kilit yoktur.
 
 **Yedek güvenlik:** Yine de çakışma olursa sürüm kontrolü ikinci kaydı reddeder: *"Bu kayıt bu arada değişti; güncel hali yükle."*
 
+**Uygulama (D-044):** işaret sunucu belleğinde; sinyal 30 sn'de bir; plan ve ünite fotoğrafı tek işareti paylaşır; serbest kalınca şeritte „Neu laden“.
+
 ### 4.10 Terim sözlüğü (tek ad kuralı)
 Her kavramın tek bir adı vardır; ekranlarda, bildirimlerde ve belgelerde aynı ad kullanılır. Almanca karşılıklar öneridir; kesin hali çeviride belirlenir (11, açık sorular).
 

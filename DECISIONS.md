@@ -421,3 +421,17 @@ SPEC 6.7/4. Ayrıntılar Claude'un önerisi:
 Claude'un ekledikleri (onay bekliyor): başka bölme etiketiyle hedef değiştirme; alınmış ürünün yerleştirilince geri
 konmuş sayılması.
 → SPEC 6.7.
+
+## D-044 · 04.11.2026 · „Wird bearbeitet“ (Dilim 3, 6. parça)
+SPEC 4.9'un ilk hâli. Ayrıntılar Claude'un önerisi:
+- **Kapsam:** ürün formu, kategori ve filtre ayarları, büro planı ve ünite fotoğrafı (plan ve fotoğraf düzenleyicisi
+  aynı işareti paylaşır: ikisi de aynı plan sürümüne kaydeder). Koleksiyonlar gelince onlar da.
+- **İşaret sunucunun belleğindedir, kalıcı değildir** (SPEC 7): kayıt, cihaz, kişi, başlangıç, son sinyal, son değişiklik.
+  Cihaz tarayıcıda rastgele bir kimlikle tanınır; „kim“ bu cihazın kişisi, yoksa „Ein anderes Gerät“.
+- **Düzenleyen cihaz** 30 sn'de bir sinyal yollar; sayfadan çıkınca işaret kalkar. 2 dk sinyal yoksa ya da 15 dk hiç
+  değişiklik yapılmadıysa işaret kendiliğinden düşer. Elle kaldırılacak kilit yoktur.
+- **Başkası açarsa** üstte ince bir şerit: „Wird bearbeitet · Selin bearbeitet das gerade (4 Min.)“; düzenleme alanı salt
+  okunur (görünür, dokunulmaz). Şerit 10 sn'de bir sorar; işaret kalkınca „Jetzt kannst du bearbeiten.“ ve „Neu laden“
+  (diğerinin kaydettiği hâli görmek için yeniden yükleme gerekir).
+- Yedek güvenlik değişmez: yine de çakışma olursa sürüm kontrolü ikinci kaydı reddeder.
+→ SPEC 4.9.
