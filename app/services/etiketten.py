@@ -380,7 +380,7 @@ def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str, format: s
 # Ortsangaben auf dem Fach-Etikett (D-036, D-037), Maße in mm
 ORT_PT, ORT_EIN_ZEILE_MIN_PT, ORT_MIN_PT = 10, 7.5, 6.5
 ORT_LUECKE = 2.2          # unter dem Code
-ORT_EINZUG = 3.2          # Einheit und Fach stehen rechts der Baumlinie
+ORT_EINZUG = 3.2          # je Ebene: Einheit unter dem Raum, Fach unter der Einheit (Baum)
 ORT_ZEILE, ORT_GRUPPE = 1.18, 0.45     # Zeilenabstand und Zusatzabstand zwischen den Angaben, je Schriftgröße
 VERSAL = 0.7              # Versalhöhe je Schriftgröße (Figtree, Plex Mono)
 
@@ -390,7 +390,7 @@ def _ort_satz(namen: list[str], breite: float, hoehe: float) -> tuple[float, lis
     Umbruch auf höchstens zwei Zeilen je Angabe (bis ORT_MIN_PT); erst danach „…“ (D-037).
     breite in pt, hoehe in mm (von der Oberkante der ersten bis zur Grundlinie der letzten Zeile)."""
     def spalte(i: int) -> float:
-        return breite - (ORT_EINZUG * mm if i else 0)
+        return breite - i * ORT_EINZUG * mm
 
     def satz(g: float, max_zeilen: int) -> list[list[str]] | None:
         zeilen = [_umbrechen(n, "Figtree", g, spalte(i), max_zeilen=9) for i, n in enumerate(namen)]
@@ -436,22 +436,20 @@ def _fach_zeichnen(basis_url: str):
             extra = min((QR_SEITE - oben_frei - noetig) / len(saetze), g_mm * 1.2)
             gruppe += extra
             grund = oben_frei + extra + g_mm * VERSAL
-            ast_x = TEXT_LINKS + 0.9
+            # Baum: jede Ebene eine Stufe weiter rechts, mit „└“ an die Ebene darüber gehängt
             mitte = g_mm * VERSAL / 2           # halbe Versalhöhe: dort setzt der Ast an
-            stamm_oben = None
+            unter_eltern = None                 # unterhalb der letzten Zeile der Ebene darüber
             for i, saetze_i in enumerate(saetze):
-                links = TEXT_LINKS + (ORT_EINZUG if i else 0)
-                if i == 0:
-                    stamm_oben = grund + g_mm * 0.35 + zeile * (len(saetze_i) - 1)
-                else:
-                    linien.append((ast_x, grund - mitte, links - 0.8, grund - mitte))     # Ast (└)
-                    stamm_unten = grund - mitte
+                links = TEXT_LINKS + i * ORT_EINZUG
+                if i:
+                    stamm_x = links - ORT_EINZUG + 0.9
+                    linien.append((stamm_x, unter_eltern, stamm_x, grund - mitte))       # senkrecht von der Ebene darüber
+                    linien.append((stamm_x, grund - mitte, links - 0.8, grund - mitte))  # Ast zum Namen
                 for z in saetze_i:
                     teile.append(("Figtree", g, grund, z, links))
                     grund += zeile
-                grund += gruppe                        # zwischen den Angaben: Zeilen- plus Gruppenabstand
-            if len(saetze) > 1:
-                linien.append((ast_x, stamm_oben, ast_x, stamm_unten))                   # Stamm
+                unter_eltern = grund - zeile + g_mm * 0.35
+                grund += gruppe                        # zwischen den Ebenen: Zeilen- plus Gruppenabstand
         _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile, linien)
     return zeichnen
 
