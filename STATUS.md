@@ -20,12 +20,11 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-023 tema (beyaz / antrasit, amber; `THEMA.md`), D-024 oda rengi seçilir, üniteler odanın tonunda (Migration 005),
     D-025 seçerek silme (Produkte · Kategorien · Büroplan · Nummern).
   - D-026: ünite fotoğrafında bölmeler demodaki gibi (etiket „kod · sayı“, kayan spot, nabız, önizleme).
-  - D-027: tek fotoğraf eklenince kırpma ekranı (tek ve seri kayıt); yüklenmemiş fotoğrafta kırpma düğmesi.
-  - D-028: düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası ad listesinde „Speichern“; kartlar hep kare.
+  - D-027/28: foto eklenince kırpma; düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası „Speichern“.
   - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
   - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
-  - D-033/34: etiket kâğıdı A4 3 × 8; 3 mm güvenli kenar içinde sabit ızgara: „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer.
-  - D-035: ikinci biçim „Rolle 38 mm“ (Brother QL-570, DK-22225): 70 × 38 mm, her etiket bir PDF sayfası; Etiketten'de seçilir.
+  - D-033–35: etiket A4 3 × 8 ya da rulo 70 × 38 mm (QL-570, sayfa başına bir etiket); 3 mm kenar içinde sabit ızgara:
+    „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
