@@ -389,3 +389,18 @@ görünmüyor. Neden: HTTPS olmadan tarayıcı sayfa içinde canlı kamera açma
 - Telefonun kendi kamerası tek ürün için zaten iyi çalışır (etiketteki QR bir link). Art arda okutma (bölme onayı,
   toplu yerleştirme) asıl HTTPS ile rahatlar; mkcert ile deneme sonra (Cankat).
 → SPEC 4.5, 8.2.
+
+## D-042 · 04.11.2026 · Fach bestätigen (Dilim 3, 4. parça)
+SPEC 6.7'nin bölme onayı. Ayrıntılar Claude'un önerisi:
+- **„Zurücklegen“** (ürünün bölmesi varsa ve ayar açıksa) düğmenin yerinde küçük bir alan açar: „Fach-Etikett scannen ·
+  2.2.5“. Canlı kamera varsa görüntü orada açılır ve etiket görünce kendiliğinden tanır; yoksa „Fach scannen“ telefonun
+  kamerasını açar (D-041'deki geri bildirimle). Altta her zaman **„Ohne Scan bestätigen“** ve „Abbrechen“.
+- **Doğru bölme:** kısa titreşim, „Zurückgelegt · 2.2.5“ (yeşil onay), kayıtta onaylı.
+- **Başka bölme:** „Der Platz ist 2.2.5. Gescannt: 2.3.1.“ → **„Ich bringe es nach 2.2.5“** (kayıtta onaysız) ya da
+  **„Neuer Platz: 2.3.1“** (ürünün yeri değişir, onaylı). Ürün etiketi okutulursa: „Das ist kein Fach-Etikett.“
+- **Okutmadan onayla:** durum Am Platz olur; kayıtta onaysız. Kimse sorgulanmaz.
+- **Bölmesi olmayan ürün** ya da **ayar kapalı:** „Zurücklegen“ eskisi gibi tek dokunuş.
+- Hepsi „Rückgängig“ ile geri alınır; yeni yer seçildiyse eski yer de geri gelir.
+- **Ayar** (büro geneli, sunucuda; Migration 010): Einstellungen › Allgemein › „Fach beim Zurücklegen bestätigen“
+  Ein (varsayılan) / Aus.
+→ SPEC 6.7, 6.11.

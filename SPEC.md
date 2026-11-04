@@ -415,7 +415,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
    - **Okutmadan onayla:** durum "Yerinde" olur; kayıtta "onaysız" diye işaretlenir. Kullanıcı sorgulanmaz.
 4. **Toplu yerleştirme:** önce bölme QR'ı okutulur ("Buraya yerleştir"), sonra ürünler art arda okutulur. Yeri başka olan ürün için yukarıdaki soru sorulur.
    - **Uygulama içi tarayıcı olmadan (D-016):** bölme sayfasındaki "Hier einordnen" cihazı 30 dakika yerleştirme moduna alır; telefonun kamerasıyla açılan her ürün sayfasında "In 2.2.5 einordnen" düğmesi çıkar. Masaüstünde toplu düzenlemede "Platz" alanı.
-5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter.
+5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter. Bölmesi olmayan üründe de tek dokunuş. Ayrıntılar D-042.
 
 ### 6.8 Koleksiyonlar ve sipariş listesi
 - Koleksiyon bir proje listesi veya moodboard'dur; fiziki ve dijital ürün karışık olabilir.
