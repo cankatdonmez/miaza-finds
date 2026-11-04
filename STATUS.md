@@ -26,8 +26,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-033–35: etiket A4 3 × 8 ya da rulo 70 × 38 mm (QL-570, sayfa başına bir etiket); 3 mm kenar içinde sabit ızgara:
     „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer. D-036/37: Fach etiketinde oda/ünite/bölme ağaç gibi, alanı dolduruyor.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
-- Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
-  sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
+- Dev: „dev“ `--reload`suz (Drive'da takılıyor); kod değişince sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
 
 ## Sıradaki
 1. Cankat: Dilim 2'yi dev'de ya da birleştirdikten sonra beta'da dene; geri bildirim tek liste.
@@ -35,6 +34,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 3. Dilim 3 (Hareket): uygulama içi tarayıcı, alma / yerine koyma, „Düzenleniyor“.
 
 ## Offene Fragen
-1. Etiket QR'ının kalıcı adresi → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
-2. HTTPS: alan adı `miaza.design`, DNS Wix'te (API yok) → yol A için alt alan API'li bir DNS servisine devredilmeli.
+1. QR'ın kalıcı adresi + HTTPS (Cankat bilgi verecek): öneri, bir alt alan adı (ör. `finds.miaza.design`) şimdiden
+   `MF_BASIS_URL` olsun; DNS Wix ya da World4You'da kalabilir, sertifika „DNS alias mode“ ile. Sonra teknisyen belgesi güncellenir.
+2. Mini PC kurulumu: teknisyen belgesi https://claude.ai/artifact/KtCQDEkSQeHfcE4NGtbAoW (denenmedi).
 3. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı); counts'un vurgu rengi (finds: amber).
