@@ -37,6 +37,7 @@
         ${kopf ? `<h2 class="detail-name">${esc(name)}</h2>` : ""}
         <div class="detail-zeile"><span class="num">${esc(p.code)}</span>${p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>` : ""}</div>
       </div>
+      ${MF.entnahmeZeile(p)}
       <dl class="merkmale">
         ${p.art === "physisch" ? zeile(t("produkt.platz"), p.platz ? platzText(p.platz) : `<span class="sub">${esc(t("status.ohne_platz"))}</span>`) : ""}
         ${zeile(t("produkt.kategorie"), esc(p.kategorie_name))}
@@ -77,12 +78,15 @@
     const nr = Number(b.dataset.einordnen);
     b.disabled = true;
     try {
-      const r = await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: m.fach_id });
+      // war es genommen, gilt es damit als zurückgelegt (D-043)
+      const r = await MF.api("POST", `/api/produkte/${nr}/einordnen`, { fach_id: m.fach_id });
       MF.einordnen.verlaengern();
-      b.outerHTML = `<div class="einordnen-ok">${icon("pin", 20)}<span>${esc(t("einordnen.erledigt", { code: m.code }))}</span></div>`;
+      const rahmen = b.closest("[data-panel], [data-detail]");
+      if (rahmen) rahmen.innerHTML = MF.detailHtml(r.produkt, { kopf: rahmen.matches("[data-panel]") });
+      document.dispatchEvent(new CustomEvent("mf:produkt", { detail: r.produkt }));
       MF.toast(t("einordnen.erledigt", { code: m.code }), {
         rueckgaengig: async () => {
-          try { await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: r.vorher }); location.reload(); }
+          try { await MF.api("POST", `/api/produkte/${nr}/einordnen/zurueck`, r.rueckgaengig); location.reload(); }
           catch (err) { MF.toast(err.message, { fehler: true }); }
         },
       });

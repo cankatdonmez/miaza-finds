@@ -20,8 +20,9 @@ router = APIRouter()
 MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
                  ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
 # „Mehr“ erst, wenn mehr als eine Seite hineingehört (D-029); bis dahin direkt die Einstellungen
+# Scannen hervorgehoben; mit den Sammlungen steht es in der Mitte (SPEC 4.5, D-040)
 MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
-                 ("einstellungen", "menue.einstellungen", "settings")]
+                 ("scannen", "menue.scannen", "qr"), ("einstellungen", "menue.einstellungen", "settings")]
 # Seiten, die am Telefon unter „Mehr“ liegen
 
 
@@ -56,6 +57,11 @@ def einstellungen(request: Request):
 @router.get("/buero")
 def buero(request: Request):
     return _seite(request, "buero", "buero.titel")
+
+
+@router.get("/scannen")
+def scannen(request: Request):
+    return _seite(request, "scannen", "scan.titel")
 
 
 @router.get("/f/{fach_id}")

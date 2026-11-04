@@ -6,6 +6,8 @@
   if (!svg) return;
   const NS = "http://www.w3.org/2000/svg";
   const einheitId = Number(svg.dataset.einheit);
+  // gleicher Hinweis wie der Plan: beide speichern in dieselbe Plan-Version (D-044)
+  MF.bearbeitung.beginnen("plan", 0, $("[data-fach]"));
 
   let plan = null, einheit = null;
   let faecher = [];              // [{id, schluessel, nr, name, punkte}] in Zeichenkoordinaten

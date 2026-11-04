@@ -8,7 +8,7 @@ import pytest
 
 from app.texte import DE
 
-SEITEN = ["bibliothek", "buero", "etiketten", "einstellungen"]
+SEITEN = ["bibliothek", "buero", "etiketten", "einstellungen", "scannen"]
 APP = Path(__file__).parent.parent / "app"
 
 
@@ -78,3 +78,12 @@ def test_keine_sichtbaren_texte_direkt_in_seitenvorlagen():
 def test_plan_seiten(client):
     assert 'data-plan-svg' in client.get("/plan").text
     assert client.get("/plan/einheit/999").status_code == 404
+
+
+def test_scannen_mit_eigenem_qr_leser(client):
+    """D-040: Seite im Telefonmenü, jsQR liegt bei der App (kein CDN), Symbol im Kopf der anderen Seiten."""
+    seite = client.get("/scannen").text
+    assert 'leiste-scan' in seite and 'data-kopf-scan' not in seite and '/static/js/scan.js' in seite
+    assert 'data-kopf-scan' in client.get("/bibliothek").text
+    r = client.get("/static/vendor/jsQR.js")
+    assert r.status_code == 200 and "jsQR" in r.text

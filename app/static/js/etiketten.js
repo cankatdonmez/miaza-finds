@@ -31,9 +31,9 @@
   let zahlen = {};
   let papier = {};           // {a4, rolle}: Papierdefinitionen vom Server
   let bogen = null;
-  // A4-Bogen oder 38-mm-Rolle (D-035); die Wahl bleibt in diesem Browser
-  let format = "a4";
-  try { if (localStorage.getItem("mf-etikett-format") === "rolle") format = "rolle"; } catch (e) { /* ohne Speicher: A4 */ }
+  // A4-Bogen oder 38-mm-Rolle (D-035); meist wird von der Rolle gedruckt (D-045), die Wahl bleibt in diesem Browser
+  let format = "rolle";
+  try { if (localStorage.getItem("mf-etikett-format") === "a4") format = "a4"; } catch (e) { /* ohne Speicher: Rolle */ }
   let auswahl = [];          // Einträge in Druckreihenfolge
   const gewaehlt = (id) => auswahl.some((x) => A().id(x) === id);
 

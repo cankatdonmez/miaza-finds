@@ -4,7 +4,7 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 
 ## Durum (01.11.2026)
 
-- **SPEC 0.5** onaylı; dilim 1 `main`de, dilim 2 (Büro) `dilim-2/buero` dalında. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
+- **SPEC 0.5** onaylı; dilim 1 ve 2 `main`de, dilim 3 (Hareket, D-038) `dilim-3/bewegung` dalında. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
 - Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni miaza counts'tan (`C:\Users\canka\Documents\Zeiterfassung`) alınır; iki uygulama aynı ailenin üyesi gibi görünmeli.
 
 ## Belge düzeni (counts ile aynı)

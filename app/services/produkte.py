@@ -11,7 +11,7 @@ from typing import Any
 from .. import zeit
 from ..fehler import Fehler
 from ..texte import t
-from . import nummern, plan
+from . import entnahme, nummern, plan
 from .suche import normalisieren
 
 # Grundfarben (D-031): gemeinsam für alle Kategorien; Farbtöne je Kategorie verweisen auf eine davon
@@ -42,6 +42,9 @@ def lesen(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
         "SELECT id, datei, breite, hoehe FROM foto WHERE produkt_id = ? ORDER BY sortierung, id", (inventar_nr,))]
     # Platz im Büro (SPEC 6.4): Code wird aus dem Fach abgeleitet
     d["platz"] = plan.fach(conn, p["fach_id"]) if p["fach_id"] else None
+    # Genommen? Status kommt aus dem offenen Entnahme-Eintrag (D-039)
+    d["entnahme"] = entnahme.offen(conn, inventar_nr)
+    d["status"] = entnahme.status(d, d["entnahme"])
     return d
 
 

@@ -28,6 +28,8 @@
   --raum-6:#F3DAE2; --raum-6-einheit:#E6B3C3; --raum-6-rand:#B76A84; --raum-6-tinte:#55263A;
   --raum-0-einheit:#E6E6E4; --raum-0-rand:#8E8C88; --raum-0-tinte:#333336;
   --digital:#5B21B6; --digital-soft:#EDE9FE;
+  --st-platz:#166534; --st-platz-soft:#DCFCE7; --st-benutzung:#1E40AF; --st-benutzung-soft:#DBEAFE;
+  --st-haus:#9D2F5E; --st-haus-soft:#FBE5EE;
   --scrim:rgba(20,20,22,.42);
   --shadow:0 1px 2px rgba(28,28,30,.05),0 8px 24px -12px rgba(28,28,30,.16);
   --font-ui:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -61,6 +63,8 @@
   --raum-6:#443039; --raum-6-einheit:#624451; --raum-6-rand:#D99BB0; --raum-6-tinte:#F5DAE3;
   --raum-0-einheit:#3A3B3E; --raum-0-rand:#9A9A98; --raum-0-tinte:#E5E5E5;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
+  --st-platz:#86EFAC; --st-platz-soft:#14351F; --st-benutzung:#93C5FD; --st-benutzung-soft:#172A4D;
+  --st-haus:#F2A7C3; --st-haus-soft:#45263A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
   color-scheme:dark;
@@ -81,6 +85,8 @@
   --raum-6:#443039; --raum-6-einheit:#624451; --raum-6-rand:#D99BB0; --raum-6-tinte:#F5DAE3;
   --raum-0-einheit:#3A3B3E; --raum-0-rand:#9A9A98; --raum-0-tinte:#E5E5E5;
   --digital:#C4B5FD; --digital-soft:#2A1F4A;
+  --st-platz:#86EFAC; --st-platz-soft:#14351F; --st-benutzung:#93C5FD; --st-benutzung-soft:#172A4D;
+  --st-haus:#F2A7C3; --st-haus-soft:#45263A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
   color-scheme:dark;
@@ -118,6 +124,24 @@ a{color:var(--accent-ink)}
   border-radius:var(--r-ctrl);color:var(--muted);text-decoration:none;font-size:var(--fs-mini);font-weight:500;transition:color .16s ease,transform .12s ease}
 .leiste-link:active{transform:scale(.94)}
 .leiste-link[aria-current="page"]{color:var(--accent-ink)}
+/* Scannen hervorgehoben (SPEC 4.5): Symbol auf der Akzentfläche */
+.leiste-scan svg{width:44px;height:30px;padding:3px 10px;border-radius:999px;background:var(--accent);color:var(--on-accent)}
+.leiste-scan[aria-current="page"] svg{box-shadow:0 0 0 2px var(--accent-soft)}
+/* Scannen-Seite (D-040) */
+.scan{max-width:520px;margin:0 auto;width:100%}
+.scan-bild{position:relative;aspect-ratio:3/4;max-height:62vh;border-radius:var(--r-card);overflow:hidden;background:var(--foto-marke)}
+.scan-bild video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-rahmen{position:absolute;inset:18% 14%;border:3px solid var(--foto-ring);border-radius:18px;box-shadow:0 0 0 999px var(--foto-schleier-leicht)}
+.btn.scan-foto{min-height:120px;font-size:var(--fs-basis);flex-direction:column;gap:8px}
+.scan-code{display:flex;gap:8px}
+/* Rückmeldung nach dem Foto (D-041): ganzer Bildschirm, Foto oben, darunter was passiert */
+.scan-schicht{position:fixed;inset:0;z-index:96;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px}
+.scan-schicht-bild{max-width:100%;max-height:46vh;border-radius:var(--r-card);object-fit:contain}
+.scan-schicht-text{display:flex;align-items:center;gap:8px;font-size:var(--fs-titel);font-weight:600;text-align:center}
+.scan-schicht-text svg{color:var(--st-platz)}
+.scan-schicht-text.fehler{color:var(--ink)}
+.scan-schicht-knoepfe{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
+.scan-code .eingabe{flex:1;min-width:0}
 
 /* Seitenleiste (ab 900 px) */
 .seitenleiste{display:none}
@@ -329,7 +353,7 @@ select.eingabe{padding-right:6px}
 .karte-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .leer-bild{display:grid;place-items:center;color:var(--muted)}
 .karte-bild .leer-bild{position:absolute;inset:0}
-.karte-bild .badge-digital{position:absolute;left:8px;top:8px}
+.karte-bild .badge-digital,.karte-bild .status-badge{position:absolute;left:8px;top:8px}
 .karte-text{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
 .karte-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .karte-sub{font-size:var(--fs-klein);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -434,6 +458,30 @@ select.eingabe{padding-right:6px}
 .merkmal{display:grid;grid-template-columns:minmax(110px,40%) 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
 .merkmal dt{color:var(--muted);font-size:var(--fs-text)}
 .merkmal dd{margin:0}
+/* Status eines Produkts (D-039): Rozet in den Statusfarben aus THEMA.md */
+.status-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:var(--fs-mini);font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.status-am_platz{background:var(--st-platz-soft);color:var(--st-platz)}
+.status-in_benutzung{background:var(--st-benutzung-soft);color:var(--st-benutzung)}
+.status-ausser_haus{background:var(--st-haus-soft);color:var(--st-haus)}
+.status-ohne_platz{background:var(--sunk);color:var(--muted)}
+.detail-entnahme{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin:4px 0 8px}
+.detail-status{flex:1 1 200px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.detail-status .sub{font-size:var(--fs-text)}
+.fach-scan-titel{font-weight:600}
+/* „Wird bearbeitet“ (D-044): schmaler Streifen über dem Bereich, der Bereich bleibt sichtbar, aber unberührbar */
+.bearbeitet-streifen{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:12px;padding:10px 14px;border-radius:var(--r-ctrl);
+  background:var(--accent-soft);color:var(--accent-ink);font-size:var(--fs-text)}
+.bearbeitet-streifen.frei{background:var(--st-platz-soft);color:var(--st-platz)}
+.bearbeitet-streifen .btn{margin-left:auto}
+.nur-lesen{opacity:.72}
+/* Einordnen per Scan (D-043) */
+.einordnen-kopf{display:flex;align-items:center;gap:12px}
+.eingeordnet{display:flex;flex-direction:column;gap:2px}
+.eingeordnet-zeile{width:100%}
+.eingeordnet-haken{display:inline-flex;color:var(--st-platz)}
+.fach-scan-bild{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-ctrl);background:var(--foto-marke)}
+.toast.ok::before{content:"";width:10px;height:10px;border-radius:999px;background:var(--st-platz);flex:none}
+.nehmen-form{display:flex;flex-direction:column;gap:10px;width:100%;padding:14px;border:1px solid var(--line-2);border-radius:var(--r-ctrl);background:var(--card)}
 .detail-notiz{margin:0;white-space:pre-wrap;color:var(--ink)}
 .farbknopf.statisch{cursor:default}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -537,7 +585,8 @@ text{pointer-events:none}
   .buero-svg{height:100%}
   .buero-panel{overflow:auto}
 }
-@media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}}
+@media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}
+  .buero.finden .buero-panel{order:-1}}
 .buero-kopf{display:flex;align-items:center;gap:8px}
 .buero-kopf .abschnitt{margin:0;flex:1}
 .buero-fachcode{font-size:var(--fs-titel);font-weight:500}

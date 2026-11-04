@@ -190,5 +190,19 @@ const MF = (() => {
     ? `<span class="farbpunkt klein" style="background:${o.hex}"></span>`
     : `<span class="farbpunkt klein farbe-${esc(o.grundfarbe || "grau")}"></span>`);
 
-  return { GRUNDFARBEN, tonPunkt, $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben };
+  // Scannen-Symbol am Desktop nur, wenn es eine Kamera gibt (SPEC 4.5); den Code kann man sonst in die Suche tippen
+  const kopfScan = document.querySelector("[data-kopf-scan]");
+  if (kopfScan && window.isSecureContext && navigator.mediaDevices?.enumerateDevices) {
+    navigator.mediaDevices.enumerateDevices()
+      .then((g) => { kopfScan.hidden = !g.some((d) => d.kind === "videoinput"); })
+      .catch(() => {});
+  }
+
+  // Person dieses Geräts (D-038), in Einstellungen › Allgemein gewählt; null = niemand gewählt
+  function geraetPerson() {
+    try { return Number(localStorage.getItem("mf-person")) || null; } catch (e) { return null; }
+  }
+
+  return { GRUNDFARBEN, tonPunkt, $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben,
+           geraetPerson };
 })();

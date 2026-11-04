@@ -42,7 +42,10 @@
       </button>`).join("");
   }
 
+  let bearbeitung = null;   // „Wird bearbeitet“ der offenen Kategorie (D-044)
   function oeffnen(id) {
+    bearbeitung?.ende();
+    bearbeitung = typeof id === "number" ? MF.bearbeitung.beginnen("kategorie", id, editor) : null;
     if (id === null) { original = null; entwurf = null; zeichneEditor(); zeichneListe(); return; }
     original = id === "neu" ? null : kopie(kategorien.find((k) => k.id === id));
     entwurf = original ? kopie(original) : { name: "", praefix: "", filter: [], produkte: 0, fest: false };

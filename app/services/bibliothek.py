@@ -16,21 +16,24 @@ from __future__ import annotations
 import sqlite3
 from typing import Any
 
-from . import nummern, produkte
+from . import entnahme, nummern, produkte
 from .suche import normalisieren
 
 SEITE = 120
 STATUS = ("am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend")
 
 
+OFFEN = "EXISTS (SELECT 1 FROM entnahme e WHERE e.produkt_id = p.inventar_nr AND e.zurueck_am IS NULL{})"
+
+
 def _status_bedingung(status: str) -> str:
-    """Dilim 2: Platz über das Fach. Entnahme (in Benutzung, außer Haus) kommt mit Dilim 3; nur diese Funktion ändert sich."""
+    """Platz über das Fach (Dilim 2), genommen über den offenen Entnahme-Eintrag (D-039)."""
     return {
         "ohne_platz": "p.art = 'physisch' AND p.fach_id IS NULL",
         "fehlend": "p.name IS NULL",
-        "am_platz": "p.art = 'physisch' AND p.fach_id IS NOT NULL",
-        "in_benutzung": "0",
-        "ausser_haus": "0",
+        "am_platz": f"p.art = 'physisch' AND p.fach_id IS NOT NULL AND NOT {OFFEN.format('')}",
+        "in_benutzung": "p.art = 'physisch' AND " + OFFEN.format(" AND e.ort = 'buero'"),
+        "ausser_haus": "p.art = 'physisch' AND " + OFFEN.format(" AND e.ort = 'ausser_haus'"),
     }[status]
 
 
@@ -150,7 +153,8 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
     zeilen = conn.execute(f"""
         SELECT p.inventar_nr, p.code_praefix, p.kategorie_nr, p.name, p.marke, p.art, p.etikett, p.version, k.name AS kategorie,
                pr.cent, pr.einheit, pr.datum AS preis_datum,
-               (SELECT f.datei FROM foto f WHERE f.produkt_id = p.inventar_nr ORDER BY f.sortierung, f.id LIMIT 1) AS foto
+               (SELECT f.datei FROM foto f WHERE f.produkt_id = p.inventar_nr ORDER BY f.sortierung, f.id LIMIT 1) AS foto,
+               (SELECT e.ort FROM entnahme e WHERE e.produkt_id = p.inventar_nr AND e.zurueck_am IS NULL) AS genommen
         FROM produkt p JOIN kategorie k ON k.id = p.kategorie_id LEFT JOIN preis pr ON pr.produkt_id = p.inventar_nr
         {where} ORDER BY {ordnung} LIMIT ? OFFSET ?""", [*args, *oargs, SEITE, seite * SEITE]).fetchall()
     produkte = [{
@@ -158,6 +162,8 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
         "name": z["name"], "marke": z["marke"], "art": z["art"], "kategorie": z["kategorie"], "etikett": z["etikett"],
         "preis": {"cent": z["cent"], "einheit": z["einheit"], "datum": z["preis_datum"]} if z["cent"] is not None else None,
         "foto": z["foto"], "version": z["version"],
+        # nur für den Rozet auf der Karte (D-039): in_benutzung | ausser_haus | None
+        "genommen": entnahme.STATUS_NACH_ORT.get(z["genommen"]) if z["art"] == "physisch" else None,
     } for z in zeilen]
     return {"produkte": produkte, "gesamt": gesamt, "seite": seite, "weitere": (seite + 1) * SEITE < gesamt,
             "kategorien": _kategorie_zahlen(conn, auftrag), "marken": _marken(conn)}

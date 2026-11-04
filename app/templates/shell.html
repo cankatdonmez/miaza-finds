@@ -14,12 +14,14 @@
 </aside>
 <header class="kopf">{{ marke() }}</header>
 <main class="inhalt">
-  <div class="seitenkopf"><h1 class="seitentitel">{{ titel }}</h1><span class="spacer"></span>{% block seitenaktion %}{% endblock %}</div>
+  <div class="seitenkopf"><h1 class="seitentitel">{{ titel }}</h1><span class="spacer"></span>{% block seitenaktion %}{% endblock %}
+    {# Scannen am Desktop: kleines Symbol, nur wenn eine Kamera da ist (common.js) #}
+    {% if seite != "scannen" %}<a class="iconbtn nur-desktop" href="/scannen" data-kopf-scan hidden aria-label="{{ t('menue.scannen') }}" title="{{ t('menue.scannen') }}">{{ icon("qr") }}</a>{% endif %}</div>
   {% block inhalt %}{% endblock %}
 </main>
 <nav class="leiste" aria-label="{{ t('menue.haupt') }}">
   {% for ziel, text, ic in menue_telefon %}
-  <a class="leiste-link" href="/{{ ziel }}" {% if ziel == seite %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ t(text) }}</span></a>
+  <a class="leiste-link{% if ziel == 'scannen' %} leiste-scan{% endif %}" href="/{{ ziel }}" {% if ziel == seite %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ t(text) }}</span></a>
   {% endfor %}
 </nav>
 {% endblock %}

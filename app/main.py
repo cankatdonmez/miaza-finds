@@ -14,7 +14,7 @@ from starlette.exceptions import HTTPException
 from .config import BASE_DIR, get_settings
 from .db import DBError, connect, migrate
 from .fehler import Fehler
-from .routes import api_bibliothek, api_etiketten, api_kategorien, api_plan, api_produkte, api_system, pages
+from .routes import api_bearbeitung, api_bibliothek, api_einstellungen, api_entnahme, api_etiketten, api_kategorien, api_personen, api_plan, api_produkte, api_system, pages
 from .templating import templates
 
 SICHERE_METHODEN = {"GET", "HEAD", "OPTIONS"}
@@ -42,6 +42,7 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     app.state.media_dir = media_dir or settings.media_dir
     app.state.sicherung_dir = sicherung_dir or settings.backup_dir
     app.state.media_dir.mkdir(parents=True, exist_ok=True)
+    app.state.bearbeitung = {}       # „Wird bearbeitet“: nur im Speicher (SPEC 7, D-044)
     app.state.sammel_vorher = {}     # Stand vor einer Sammelbearbeitung, für „Rückgängig“ (D-012)
 
     conn = connect(app.state.db_path)
@@ -93,6 +94,10 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     app.include_router(api_bibliothek.router)
     app.include_router(api_etiketten.router)
     app.include_router(api_kategorien.router)
+    app.include_router(api_personen.router)
+    app.include_router(api_entnahme.router)
+    app.include_router(api_einstellungen.router)
+    app.include_router(api_bearbeitung.router)
     app.include_router(api_plan.router)
     app.include_router(api_produkte.router)
     app.include_router(api_system.router)

@@ -48,3 +48,12 @@ def test_dunkles_thema_definiert_jedes_farbtoken():
     for block in (dunkel, system):
         fehlend = farbtoken - set(re.findall(r"(--[a-z0-9-]+):", block))
         assert not fehlend, f"Im dunklen Thema fehlt: {sorted(fehlend)}"
+
+
+def test_jedes_benutzte_symbol_gibt_es():
+    """icon("…") ohne passendes <symbol> zeigt nichts – so fehlte lange das Häkchen."""
+    symbole = set(re.findall(r'<symbol id="i-([a-z-]+)"', (APP / "templates/_icons.html").read_text(encoding="utf-8")))
+    benutzt = set()
+    for p in [*(APP / "static/js").glob("*.js"), *(APP / "templates").glob("*.html")]:
+        benutzt |= set(re.findall(r'icon\(\s*"([a-z-]+)"', p.read_text(encoding="utf-8")))
+    assert not benutzt - symbole, f"Symbol fehlt: {sorted(benutzt - symbole)}"
