@@ -320,3 +320,13 @@ Cankat'ın isteği. Bölme etiketinin sağ sütunu yukarıdan aşağı:
 - Adlar girildiği gibi yazılır (büyük harfe çevrilmez); boş olan satır atlanır. Uzun ad önce küçülür, sonra „…“ ile biter.
 - D-020'deki „bölmenin adı, yoksa ünitenin adı“ kuralının yerini alır. Etiketler sayfasındaki listede alt satır aynı kalır.
 → SPEC 6.6.
+
+## D-037 · 04.11.2026 · Bölme etiketi: yer bilgisi ağaç gibi, alanı dolduran yazı
+Cankat'ın düzeltmesi (D-036'nın üstüne).
+- **Ağaç çizgisi:** oda en üstte; ünite ve bölme satırlarının solunda ince bir dikey çizgi ve her satıra kısa yatay kol
+  (└). Böylece alt katman oldukları görülür. Çizgi tek sütundur; ünite ve bölme aynı girintide durur (yer kazanmak için).
+- **Alanı kullan:** yer bilgisi, kodun altından QR'ın alt kenarına kadar olan yüksekliği doldurur; son satır QR'ın alt
+  kenarıyla hizalanır. Yazı boyu bu alana sığan en büyük boydur (en çok 10 pt).
+- **„…“ son çare:** uzun ad önce ikinci satıra kayar (kelimeden bölünür), sonra yazı küçülür (en az 6,5 pt); ancak o da
+  yetmezse „…“ ile biter. Önce tek satırda sığan bir boy aranır; ikinci satıra kaymak, yazıyı çok küçültmekten iyidir.
+→ SPEC 6.6.
