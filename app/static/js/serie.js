@@ -39,14 +39,13 @@
     if (!e.target.matches("[data-serie-eingabe]")) return;
     let dateien = [...e.target.files].filter((d) => !d.type || d.type.startsWith("image/"));   // manche Kameras: ohne Typ
     e.target.value = "";
-    // Ein Foto: gleich zuschneiden (D-027); „Übernehmen“ ohne Änderung nimmt es, wie es ist
-    if (dateien.length === 1) {
-      const z = await MF.zuschneiden(dateien[0]);
-      dateien = z ? [z] : [];
-    }
-    for (const datei of dateien) warteschlange.push({ datei, url: URL.createObjectURL(datei) });
-    zeichnen();
-    abarbeiten();
+    // Jedes Foto zuschneiden, bei mehreren nacheinander (D-027, D-045). Jedes geht sofort in die Warteschlange:
+    // das Hochladen läuft, während das nächste zugeschnitten wird
+    await MF.zuschneidenAlle(dateien, (datei) => {
+      warteschlange.push({ datei, url: URL.createObjectURL(datei) });
+      zeichnen();
+      abarbeiten();
+    });
   });
 
   async function abarbeiten() {

@@ -81,14 +81,31 @@
     };
   }
 
+  // Anderes Fach-Etikett gescannt: das Ziel wechselt erst nach Ja (D-045)
+  function zielFragen(f) {
+    fragt = true;
+    frage.hidden = false;
+    frage.innerHTML = `<div class="fach-scan-titel">${esc(t("einordnen.ziel_frage", { code: f.code }))}</div>
+      <div class="actions">
+        <button class="btn primary" type="button" data-antwort="ja">${esc(t("einordnen.ziel_ja", { code: f.code }))}</button>
+        <button class="btn" type="button" data-antwort="nein">${esc(t("einordnen.ziel_nein", { code: ziel.code }))}</button>
+      </div>`;
+    frage.onclick = (e) => {
+      const a = e.target.closest("[data-antwort]")?.dataset.antwort;
+      if (!a) return;
+      frage.hidden = true;
+      fragt = false;
+      if (a === "ja") { zielSetzen(f); toast(t("einordnen.ziel_neu", { code: f.code })); }
+    };
+  }
+
   async function behandeln(z) {
     try {
       if (z.art === "fach") {
         if (z.id === ziel.id) return;
         const f = await fachVon(z.id);
         if (!f) return toast(t("fehler.fach_unbekannt"), { fehler: true });
-        zielSetzen(f);
-        return toast(t("einordnen.ziel_neu", { code: f.code }));
+        return zielFragen(f);
       }
       const p = await api("GET", `/api/produkte/${z.id}`);
       if (p.art !== "physisch") return toast(t("fehler.digital_kein_platz"), { fehler: true });
@@ -171,9 +188,9 @@
     if (!roh) return;
     const nr = /^\d+$/.test(roh) ? roh : (/^[A-Za-z]{2}-\d+-(\d+)$/.exec(roh) || [])[1];
     if (nr) {
-      if (!ziel) return gehen(`/produkt/${Number(nr)}`);
-      feld.value = "";
-      return behandeln({ art: "produkt", id: Number(nr) });
+      if (ziel) { feld.value = ""; return behandeln({ art: "produkt", id: Number(nr) }); }
+      try { await api("GET", `/api/produkte/${Number(nr)}`); } catch { return unbekannt(roh); }
+      return gehen(`/produkt/${Number(nr)}`);
     }
     if (/^\d+(\.\d+){2}$/.test(roh)) {
       try {
@@ -185,9 +202,20 @@
         return behandeln({ art: "fach", id: fach.id });
       } catch (err) { return toast(err.message, { fehler: true }); }
     }
-    if (!ziel) gehen(`/bibliothek?q=${encodeURIComponent(roh)}`);
+    if (!ziel) unbekannt(roh);
     else toast(t("scan.fremd"), { fehler: true });
   });
+
+  // Nicht erkannt: sagen, dann fragen, ob in der Bibliothek gesucht werden soll (D-045)
+  function unbekannt(roh) {
+    frage.hidden = false;
+    frage.innerHTML = `<div class="fach-scan-titel">${esc(t("scan.unbekannt", { code: roh }))}</div>
+      <div class="actions">
+        <a class="btn primary" href="/bibliothek?q=${encodeURIComponent(roh)}">${esc(t("scan.suchen"))}</a>
+        <button class="btn" type="button" data-antwort="zu">${esc(t("scan.schliessen"))}</button>
+      </div>`;
+    frage.onclick = (e) => { if (e.target.closest("[data-antwort=zu]")) frage.hidden = true; };
+  }
 
   // ---------- Start ----------
   async function los() {

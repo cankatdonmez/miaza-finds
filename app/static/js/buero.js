@@ -135,6 +135,10 @@
     const e = zustand.einheit && einheit(zustand.einheit);
     if (e) ansicht.zeigen(geo.rahmen(e.punkte), 0.8);
     else if (weich) ansicht.einpassen();
+    // Vom Produkt gekommen, um es zu finden: am Telefon zuerst das Regal, der Plan darunter (D-045)
+    const finden = Boolean(zustand.produkt && e);
+    svg.closest(".buero").classList.toggle("finden", finden);
+    if (finden && !weich) window.scrollTo(0, 0);
   }
 
   svg.addEventListener("click", (e) => {

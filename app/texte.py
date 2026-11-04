@@ -23,6 +23,8 @@ DE: dict[str, str] = {
     "scan.fremd": "Das ist kein miaza-Code.",
     "scan.fach_unbekannt": "Fach {code} gibt es nicht.",
     "scan.liest": "Wird gelesen …",
+    "scan.unbekannt": "„{code}“ wurde nicht erkannt.",
+    "scan.suchen": "In der Bibliothek suchen",
     "scan.fach": "Fach {code}",
     "scan.nochmal": "Noch einmal",
     "scan.schliessen": "Schließen",
@@ -261,6 +263,9 @@ DE: dict[str, str] = {
     "einordnen.hierher": "Nach {code} verlegen",
     "einordnen.ueberspringen": "Überspringen",
     "einordnen.ziel_neu": "Jetzt in {code} einordnen",
+    "einordnen.ziel_frage": "Fach {code} gescannt. Ab jetzt dort einordnen?",
+    "einordnen.ziel_ja": "Ja, nach {code}",
+    "einordnen.ziel_nein": "Nein, weiter in {code}",
 
     # Fächer einer Einheit (SPEC 6.4)
     "fach.titel": "Einheit {code}",

@@ -585,7 +585,8 @@ text{pointer-events:none}
   .buero-svg{height:100%}
   .buero-panel{overflow:auto}
 }
-@media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}}
+@media (max-width:899px){.buero:has(.buero-kopf) .buero-svg{height:24vh;min-height:160px}
+  .buero.finden .buero-panel{order:-1}}
 .buero-kopf{display:flex;align-items:center;gap:8px}
 .buero-kopf .abschnitt{margin:0;flex:1}
 .buero-fachcode{font-size:var(--fs-titel);font-weight:500}

@@ -1,5 +1,6 @@
 // Foto zuschneiden, bevor es hochgeladen wird (D-027): Einzel- und Serienerfassung.
 // MF.zuschneiden(datei) → Promise<File | null>; null = verworfen, dieselbe Datei = unverändert („Ganzes Bild“).
+// MF.zuschneidenAlle(dateien, beiJedem): mehrere nacheinander, „2 / 5“ im Kopf (D-045); beiJedem bekommt jedes Ergebnis.
 // Der Rahmen steht in Anteilen des Fotos (0–1): Ecken und Kanten ziehen, innen verschieben, außerhalb neu aufziehen.
 (function () {
   const { esc, icon, t } = MF;
@@ -9,11 +10,19 @@
   const klemmen = (v, a, b) => Math.min(Math.max(v, a), b);
 
   // Geht etwas schief, kommt das Foto unbeschnitten durch: ein Foto darf nie verloren gehen
-  MF.zuschneiden = async (datei) => {
-    try { return await zuschneiden(datei); } catch { document.querySelector(".zuschnitt")?.remove(); return datei; }
+  MF.zuschneiden = async (datei, schritt = null) => {
+    try { return await zuschneiden(datei, schritt); } catch { document.querySelector(".zuschnitt")?.remove(); return datei; }
   };
 
-  async function zuschneiden(datei) {
+  // Jedes Foto wird zugeschnitten, auch bei Mehrfachauswahl: fast jedes Foto braucht es (D-045)
+  MF.zuschneidenAlle = async (dateien, beiJedem) => {
+    for (let i = 0; i < dateien.length; i++) {
+      const z = await MF.zuschneiden(dateien[i], dateien.length > 1 ? { nr: i + 1, von: dateien.length } : null);
+      if (z) beiJedem(z);
+    }
+  };
+
+  async function zuschneiden(datei, schritt) {
     // Das Foto nur einmal dekodieren: als <img> für die Anzeige und als Quelle des Zuschnitts. Kamerafotos haben
     // 12–50 Megapixel; eine zweite Kopie (createImageBitmap) sprengte am Telefon den Speicher und lud die Seite neu.
     const url = URL.createObjectURL(datei);
@@ -31,7 +40,7 @@
     el.innerHTML = `
       <div class="zuschnitt-kopf">
         <button class="iconbtn" type="button" data-z="zu" aria-label="${esc(t("zuschnitt.verwerfen"))}" title="${esc(t("zuschnitt.verwerfen"))}">${icon("close")}</button>
-        <span>${esc(t("zuschnitt.titel"))}</span></div>
+        <span>${esc(t("zuschnitt.titel"))}</span>${schritt ? `<span class="spacer"></span><span class="num sub">${schritt.nr} / ${schritt.von}</span>` : ""}</div>
       <div class="zuschnitt-flaeche" data-flaeche>
         <div class="zuschnitt-bild" data-bild>
           <div class="zuschnitt-maske"><div class="zuschnitt-loch" data-loch></div></div>

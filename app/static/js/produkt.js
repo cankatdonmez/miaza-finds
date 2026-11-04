@@ -282,14 +282,11 @@
     // Manche Kameras liefern keinen Dateityp; ob es ein Bild ist, prüft der Server
     let bilder = dateien.filter((f) => !f.type || f.type.startsWith("image/"));
     if (!bilder.length) return;
-    // Ein einzelnes Foto gleich zuschneiden (D-027); bei mehreren nicht, das hielte zu lange auf
-    if (bilder.length === 1) {
-      const z = await MF.zuschneiden(bilder[0]);
-      if (!z) return;
-      bilder = [z];
-    }
-    neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
-    $("[data-fotos]", form).innerHTML = zeichneFotos();
+    // Jedes Foto gleich zuschneiden, bei mehreren nacheinander (D-027, D-045)
+    await MF.zuschneidenAlle(bilder, (f) => {
+      neueFotos.push({ datei: f, url: URL.createObjectURL(f) });
+      $("[data-fotos]", form).innerHTML = zeichneFotos();
+    });
   }
 
   async function hochladen(nr, datei) {
