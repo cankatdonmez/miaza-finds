@@ -14,7 +14,7 @@ from starlette.exceptions import HTTPException
 from .config import BASE_DIR, get_settings
 from .db import DBError, connect, migrate
 from .fehler import Fehler
-from .routes import api_bibliothek, api_etiketten, api_kategorien, api_personen, api_plan, api_produkte, api_system, pages
+from .routes import api_bibliothek, api_entnahme, api_etiketten, api_kategorien, api_personen, api_plan, api_produkte, api_system, pages
 from .templating import templates
 
 SICHERE_METHODEN = {"GET", "HEAD", "OPTIONS"}
@@ -94,6 +94,7 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     app.include_router(api_etiketten.router)
     app.include_router(api_kategorien.router)
     app.include_router(api_personen.router)
+    app.include_router(api_entnahme.router)
     app.include_router(api_plan.router)
     app.include_router(api_produkte.router)
     app.include_router(api_system.router)

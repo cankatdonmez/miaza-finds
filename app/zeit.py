@@ -9,3 +9,8 @@ from .config import get_settings
 
 def heute() -> date:
     return datetime.now(ZoneInfo(get_settings().timezone)).date()
+
+
+def jetzt() -> str:
+    """Zeitpunkt in Wiener Zeit, sekundengenau (Entnahme, D-039)."""
+    return datetime.now(ZoneInfo(get_settings().timezone)).replace(tzinfo=None).isoformat(timespec="seconds")

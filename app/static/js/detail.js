@@ -37,6 +37,7 @@
         ${kopf ? `<h2 class="detail-name">${esc(name)}</h2>` : ""}
         <div class="detail-zeile"><span class="num">${esc(p.code)}</span>${p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>` : ""}</div>
       </div>
+      ${MF.entnahmeZeile(p)}
       <dl class="merkmale">
         ${p.art === "physisch" ? zeile(t("produkt.platz"), p.platz ? platzText(p.platz) : `<span class="sub">${esc(t("status.ohne_platz"))}</span>`) : ""}
         ${zeile(t("produkt.kategorie"), esc(p.kategorie_name))}

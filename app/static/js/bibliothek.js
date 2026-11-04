@@ -124,7 +124,9 @@
   const bild = (p, cls) => p.foto
     ? `<img class="${cls}" src="/media/fotos/${esc(p.foto)}-320.webp" srcset="${srcset(p.foto)}" sizes="${cls === "karte-img" ? KARTE : "48px"}" alt="" loading="lazy">`
     : `<span class="${cls} leer-bild">${icon("image", 28)}</span>`;
-  const digital = (p) => (p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>` : "");
+  // Rozet: digital, oder genommen (In Benutzung, Außer Haus; D-039)
+  const digital = (p) => (p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>`
+    : p.genommen ? `<span class="status-badge status-${p.genommen}">${esc(t("status." + p.genommen))}</span>` : "");
 
   function karte(p) {
     return `<a class="karte" href="/produkt/${p.inventar_nr}" data-produkt="${p.inventar_nr}">
@@ -362,6 +364,8 @@
 
   // ---------- Detailpanel (Desktop) ----------
   const panel = $("[data-panel]");
+  // Nehmen / Zurücklegen im Panel ändert Rozet und Zahlen: Liste neu laden (D-039)
+  document.addEventListener("mf:produkt", () => laden());
   async function panelAuf(nr) {
     try {
       const p = await api("GET", "/api/produkte/" + nr);
