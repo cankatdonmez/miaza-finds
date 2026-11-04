@@ -9,6 +9,7 @@ from typing import Any
 from .. import zeit
 from ..fehler import Fehler
 from ..texte import t
+from . import plan
 
 ORTE = ("buero", "ausser_haus")
 STATUS_NACH_ORT = {"buero": "in_benutzung", "ausser_haus": "ausser_haus"}
@@ -59,14 +60,29 @@ def nehmen(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any]) ->
                         (inventar_nr, person_id, ort, notiz, zeit.jetzt())).lastrowid
 
 
-def zuruecklegen(conn: sqlite3.Connection, inventar_nr: int) -> int:
-    """Schließt den offenen Eintrag; liefert seine id für „Rückgängig“."""
+def zuruecklegen(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any] | None = None) -> tuple[int, int | None]:
+    """Schließt den offenen Eintrag (D-042). daten: fach_bestaetigt (True: Fach-QR gescannt, False: ohne Scan,
+    fehlt: keine Abfrage), neuer_fach (gescanntes anderes Fach wird der neue Platz).
+    Liefert (Eintrag, Platz vorher) für „Rückgängig“."""
+    daten = daten or {}
     _physisch(conn, inventar_nr)
     e = offen(conn, inventar_nr)
     if e is None:
         raise Fehler(t("fehler.nicht_genommen"), status=409)
-    conn.execute("UPDATE entnahme SET zurueck_am = ? WHERE id = ?", (zeit.jetzt(), e["id"]))
-    return e["id"]
+    vorher = conn.execute("SELECT fach_id FROM produkt WHERE inventar_nr = ?", (inventar_nr,)).fetchone()["fach_id"]
+    bestaetigt = daten.get("fach_bestaetigt")
+    if daten.get("neuer_fach") is not None:
+        plan.platz_setzen(conn, inventar_nr, _ganzzahl(daten["neuer_fach"]))
+        bestaetigt = True
+    wert = None if bestaetigt is None else int(bool(bestaetigt))
+    conn.execute("UPDATE entnahme SET zurueck_am = ?, fach_bestaetigt = ? WHERE id = ?", (zeit.jetzt(), wert, e["id"]))
+    return e["id"], vorher
+
+
+def _ganzzahl(w: Any) -> int:
+    if isinstance(w, bool) or not isinstance(w, int):
+        raise Fehler(t("fehler.fach_unbekannt"), status=404)
+    return w
 
 
 def _eintrag(conn: sqlite3.Connection, entnahme_id: int) -> sqlite3.Row:
@@ -85,12 +101,16 @@ def nehmen_zuruecknehmen(conn: sqlite3.Connection, entnahme_id: int) -> int:
     return e["produkt_id"]
 
 
-def zuruecklegen_zuruecknehmen(conn: sqlite3.Connection, entnahme_id: int) -> int:
-    """„Rückgängig“ nach Zurücklegen: der Eintrag ist wieder offen, sofern das Produkt nicht schon neu genommen wurde."""
+def zuruecklegen_zuruecknehmen(conn: sqlite3.Connection, entnahme_id: int, platz: dict[str, Any] | None = None) -> int:
+    """„Rückgängig“ nach Zurücklegen: der Eintrag ist wieder offen, sofern das Produkt nicht schon neu genommen wurde.
+    platz = {"fach": id oder None}: der Platz von vorher, falls beim Zurücklegen ein neuer gewählt wurde."""
     e = _eintrag(conn, entnahme_id)
     if e["zurueck_am"] is None:
         return e["produkt_id"]
     if offen(conn, e["produkt_id"]):
         raise Fehler(t("fehler.rueckgaengig_vorbei"), status=409)
     conn.execute("UPDATE entnahme SET zurueck_am = NULL, fach_bestaetigt = NULL WHERE id = ?", (entnahme_id,))
+    if platz is not None:
+        fach = platz.get("fach")
+        plan.platz_setzen(conn, e["produkt_id"], None if fach is None else _ganzzahl(fach))
     return e["produkt_id"]

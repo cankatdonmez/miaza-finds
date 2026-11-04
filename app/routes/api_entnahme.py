@@ -21,10 +21,10 @@ def nehmen(inventar_nr: int, daten: dict[str, Any] = Body(default={}), db: sqlit
 
 
 @router.post("/produkte/{inventar_nr}/zuruecklegen")
-def zuruecklegen(inventar_nr: int, db: sqlite3.Connection = Depends(get_db)):
+def zuruecklegen(inventar_nr: int, daten: dict[str, Any] = Body(default={}), db: sqlite3.Connection = Depends(get_db)):
     with transaction(db):
-        eid = entnahme.zuruecklegen(db, inventar_nr)
-    return {"entnahme": eid, "produkt": produkte.lesen(db, inventar_nr)}
+        eid, vorher = entnahme.zuruecklegen(db, inventar_nr, daten)
+    return {"entnahme": eid, "platz_vorher": vorher, "produkt": produkte.lesen(db, inventar_nr)}
 
 
 @router.delete("/entnahmen/{entnahme_id}")
@@ -35,7 +35,7 @@ def nehmen_rueckgaengig(entnahme_id: int, db: sqlite3.Connection = Depends(get_d
 
 
 @router.post("/entnahmen/{entnahme_id}/offen")
-def zuruecklegen_rueckgaengig(entnahme_id: int, db: sqlite3.Connection = Depends(get_db)):
+def zuruecklegen_rueckgaengig(entnahme_id: int, daten: dict[str, Any] = Body(default={}), db: sqlite3.Connection = Depends(get_db)):
     with transaction(db):
-        nr = entnahme.zuruecklegen_zuruecknehmen(db, entnahme_id)
+        nr = entnahme.zuruecklegen_zuruecknehmen(db, entnahme_id, daten.get("platz"))
     return {"produkt": produkte.lesen(db, nr)}

@@ -41,6 +41,16 @@
     </div>
   </div>
   <div class="card">
+    <h2 class="abschnitt">{{ t("einstellungen.buero") }}</h2>
+    <div class="stack">
+      <div id="fach-bestaetigen-titel" class="sub">{{ t("einstellungen.fach_bestaetigen") }}</div>
+      <div class="segs" role="group" aria-labelledby="fach-bestaetigen-titel">
+        <button class="segbtn" type="button" data-fach-bestaetigen="1">{{ t("einstellungen.ein") }}</button>
+        <button class="segbtn" type="button" data-fach-bestaetigen="0">{{ t("einstellungen.aus") }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
     <h2 class="abschnitt">{{ t("einstellungen.personen") }}</h2>
     <div class="optionen" data-personen></div>
   </div>

@@ -23,6 +23,17 @@
 
   anwenden(gewaehlt());
 
+  // Büro: Fach beim Zurücklegen bestätigen (D-042), gilt für alle Geräte
+  const fachKnoepfe = MF.$$("[data-fach-bestaetigen]");
+  const fachZeigen = (an) => fachKnoepfe.forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.fachBestaetigen === "1") === an)));
+  if (fachKnoepfe.length) {
+    MF.api("GET", "/api/einstellungen").then((e) => fachZeigen(e.fach_bestaetigen)).catch(() => {});
+    fachKnoepfe.forEach((b) => b.addEventListener("click", async () => {
+      try { fachZeigen((await MF.api("PUT", "/api/einstellungen", { fach_bestaetigen: b.dataset.fachBestaetigen === "1" })).fach_bestaetigen); }
+      catch (err) { MF.toast(err.message, { fehler: true }); }
+    }));
+  }
+
   // Reiter (nur am Desktop sichtbar). Am Telefon gilt immer „Allgemein“ (SPEC 5).
   const reiter = MF.$$("[data-reiter]");
   const schmal = window.matchMedia("(max-width: 899px)");

@@ -131,5 +131,41 @@
     foto();
   });
 
-  MF.scan = { ziel, lesen, liveMoeglich, foto };
+  // Live-Kamera in ein <video> (Rückkamera, zuletzt gewählte Kamera zuerst); beiTreffer(ziel) kommt einmal,
+  // fremde Codes melden sich höchstens alle 2 s. Liefert stop() oder null, wenn keine Kamera aufgeht.
+  async function kamera(video, beiTreffer) {
+    if (!liveMoeglich()) return null;
+    let gemerkt = null;
+    try { gemerkt = localStorage.getItem("mf-kamera"); } catch { /* Standardkamera */ }
+    const wunsch = { width: { ideal: 1280 }, height: { ideal: 720 } };
+    const versuche = [...(gemerkt ? [{ ...wunsch, deviceId: { exact: gemerkt } }] : []), { ...wunsch, facingMode: { ideal: "environment" } }];
+    let strom = null;
+    for (const v of versuche) {
+      try { strom = await navigator.mediaDevices.getUserMedia({ video: v }); break; } catch { /* nächster Versuch */ }
+    }
+    if (!strom) return null;
+    video.srcObject = strom;
+    let aus = false;
+    let zuletzt = 0;
+    const stop = () => { aus = true; strom.getTracks().forEach((s) => s.stop()); };
+    const schleife = async (zeit) => {
+      if (aus || !video.isConnected) return stop();
+      if (zeit - zuletzt > 180 && video.readyState >= 2 && video.videoWidth) {
+        zuletzt = zeit;
+        const text = await lesen(video, video.videoWidth, video.videoHeight, 640);
+        const z = ziel(text);
+        if (z && !aus) {
+          if (navigator.vibrate) navigator.vibrate(30);
+          stop();
+          return beiTreffer(z);
+        }
+        if (text) { MF.toast(t("scan.fremd"), { fehler: true }); zuletzt = zeit + 2000; }
+      }
+      requestAnimationFrame(schleife);
+    };
+    requestAnimationFrame(schleife);
+    return stop;
+  }
+
+  MF.scan = { ziel, lesen, liveMoeglich, foto, kamera };
 })();

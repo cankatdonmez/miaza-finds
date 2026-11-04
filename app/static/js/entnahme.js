@@ -1,4 +1,4 @@
-// Nehmen und Zurücklegen im Produktdetail (SPEC 6.7, D-039). Gilt für Seite und Seitenpanel gleich:
+// Nehmen und Zurücklegen im Produktdetail (SPEC 6.7, D-039), beim Zurücklegen mit Fach-Bestätigung (D-042). Gilt für Seite und Seitenpanel gleich:
 // nach jeder Änderung wird das Detail neu gezeichnet und „mf:produkt“ gemeldet (die Bibliothek lädt ihre Karten neu).
 (function () {
   const { esc, icon, t, api, toast, datum } = MF;
@@ -22,7 +22,7 @@
   MF.entnahmeKnopf = function (p) {
     if (p.art !== "physisch") return "";
     return p.entnahme
-      ? `<button class="btn primary" type="button" data-zuruecklegen="${p.inventar_nr}">${icon("pin", 20)}<span>${esc(t("entnahme.zuruecklegen"))}</span></button>`
+      ? `<button class="btn primary" type="button" data-zuruecklegen="${p.inventar_nr}" data-fach="${p.platz?.id || ""}" data-fach-code="${esc(p.platz?.code || "")}">${icon("pin", 20)}<span>${esc(t("entnahme.zuruecklegen"))}</span></button>`
       : `<button class="btn primary" type="button" data-nehmen="${p.inventar_nr}">${esc(t("entnahme.nehmen"))}</button>`;
   };
 
@@ -91,21 +91,106 @@
     else document.dispatchEvent(new CustomEvent("mf:produkt", { detail: p }));
   }
 
+  // ---------- Zurücklegen ----------
+  // daten: {fach_bestaetigt} oder {neuer_fach}; ohne Fach-Abfrage leer. el = Knopf oder Bestätigungsfeld
+  async function zuruecklegen(el, nr, daten = {}) {
+    try {
+      const r = await api("POST", `/api/produkte/${nr}/zuruecklegen`, daten);
+      neuZeichnen(el, r.produkt);
+      const platzWeg = r.platz_vorher !== (r.produkt.platz?.id ?? null);
+      const ok = daten.fach_bestaetigt === true || daten.neuer_fach != null;
+      toast(r.produkt.platz ? t("entnahme.zurueckgelegt_fach", { code: r.produkt.platz.code }) : t("entnahme.zurueckgelegt"), {
+        rueckgaengig: async () => {
+          try {
+            const zurueck = await api("POST", `/api/entnahmen/${r.entnahme}/offen`, platzWeg ? { platz: { fach: r.platz_vorher } } : {});
+            neuNachRueckgaengig(zurueck.produkt);
+          } catch (err) { toast(err.message, { fehler: true }); }
+        },
+      });
+      if (ok) document.querySelector(".toast")?.classList.add("ok");
+    } catch (err) {
+      if (el.matches("button")) el.disabled = false;
+      toast(err.message, { fehler: true });
+    }
+  }
+
+  let einstellungen = null;     // einmal je Seite; Änderungen in den Einstellungen gelten ab dem nächsten Laden
+  async function fachBestaetigen() {
+    einstellungen = einstellungen || await api("GET", "/api/einstellungen");
+    return einstellungen.fach_bestaetigen;
+  }
+
+  // Bestätigungsfeld an der Stelle des Knopfs (D-042): Fach-Etikett scannen oder ohne Scan bestätigen
+  async function bestaetigen(b) {
+    const nr = Number(b.dataset.zuruecklegen);
+    const soll = { id: Number(b.dataset.fach), code: b.dataset.fachCode };
+    const feld = document.createElement("div");
+    feld.className = "nehmen-form";
+    const live = MF.scan.liveMoeglich();
+    let stop = null;
+    const aus = () => { if (stop) stop(); stop = null; };
+    const grund = () => {
+      feld.innerHTML = `
+        <div class="fach-scan-titel">${esc(t("fach.scannen_titel", { code: soll.code }))}</div>
+        ${live ? `<video class="fach-scan-bild" playsinline muted autoplay></video>` : ""}
+        <div class="actions">
+          ${live ? "" : `<button class="btn primary" type="button" data-f="foto">${icon("camera", 20)}<span>${esc(t("fach.scannen"))}</span></button>`}
+          <button class="btn" type="button" data-f="ohne">${esc(t("fach.ohne_scan"))}</button>
+          <button class="btn" type="button" data-f="ab">${esc(t("entnahme.abbrechen"))}</button>
+        </div>`;
+      if (live) {
+        MF.scan.kamera(feld.querySelector("video"), gescannt).then((s) => {
+          stop = s;
+          // Kamera will nicht (abgelehnt, belegt): dann wie ohne HTTPS mit Foto
+          if (!s && feld.isConnected) { feld.querySelector("video")?.remove(); feld.querySelector(".actions").insertAdjacentHTML("afterbegin",
+            `<button class="btn primary" type="button" data-f="foto">${icon("camera", 20)}<span>${esc(t("fach.scannen"))}</span></button>`); }
+        });
+      }
+    };
+
+    async function gescannt(z) {
+      aus();
+      if (z.art !== "fach") { toast(t("fach.kein_fach"), { fehler: true }); return grund(); }
+      if (z.id === soll.id) return zuruecklegen(feld, nr, { fach_bestaetigt: true });
+      // Anderes Fach: sagen, was los ist, und den Menschen entscheiden lassen
+      let ist = String(z.id);
+      try {
+        const plan = await api("GET", "/api/plan");
+        ist = plan.einheiten.flatMap((x) => x.faecher).find((f) => f.id === z.id)?.code || ist;
+      } catch { /* dann eben die Nummer */ }
+      feld.innerHTML = `
+        <div class="fach-scan-titel">${esc(t("fach.falsch", { soll: soll.code, ist }))}</div>
+        <div class="actions">
+          <button class="btn primary" type="button" data-f="hin">${esc(t("fach.hinbringen", { soll: soll.code }))}</button>
+          <button class="btn" type="button" data-f="neu" data-neu="${z.id}">${esc(t("fach.neuer_platz", { ist }))}</button>
+          <button class="btn" type="button" data-f="ab">${esc(t("entnahme.abbrechen"))}</button>
+        </div>`;
+    }
+
+    feld.addEventListener("click", (e) => {
+      const x = e.target.closest("[data-f]");
+      if (!x) return;
+      const f = x.dataset.f;
+      if (f === "foto") return MF.scan.foto(gescannt);
+      aus();
+      if (f === "ab") { const k = document.createElement("div"); k.innerHTML = b.outerHTML; const neu = k.firstElementChild; neu.disabled = false; return feld.replaceWith(neu); }
+      x.disabled = true;
+      if (f === "ohne" || f === "hin") return zuruecklegen(feld, nr, { fach_bestaetigt: false });
+      if (f === "neu") return zuruecklegen(feld, nr, { neuer_fach: Number(x.dataset.neu) });
+    });
+    grund();
+    b.replaceWith(feld);
+  }
+
   document.addEventListener("click", async (e) => {
     const nehmen = e.target.closest("[data-nehmen]");
     if (nehmen) return formular(nehmen);
     const zurueck = e.target.closest("[data-zuruecklegen]");
     if (!zurueck) return;
     zurueck.disabled = true;
-    try {
-      const r = await api("POST", `/api/produkte/${zurueck.dataset.zuruecklegen}/zuruecklegen`);
-      neuZeichnen(zurueck, r.produkt);
-      toast(r.produkt.platz ? t("entnahme.zurueckgelegt_fach", { code: r.produkt.platz.code }) : t("entnahme.zurueckgelegt"), {
-        rueckgaengig: async () => {
-          try { neuNachRueckgaengig((await api("POST", `/api/entnahmen/${r.entnahme}/offen`)).produkt); }
-          catch (err) { toast(err.message, { fehler: true }); }
-        },
-      });
-    } catch (err) { zurueck.disabled = false; toast(err.message, { fehler: true }); }
+    let abfragen = false;
+    try { abfragen = Boolean(zurueck.dataset.fach) && await fachBestaetigen(); } catch { abfragen = false; }
+    if (abfragen) return bestaetigen(zurueck);
+    zuruecklegen(zurueck, Number(zurueck.dataset.zuruecklegen));
   });
 })();

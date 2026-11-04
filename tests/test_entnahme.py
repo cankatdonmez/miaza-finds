@@ -90,3 +90,45 @@ def test_migration_009(tmp_path):
     with pytest.raises(sqlite3.IntegrityError):
         conn.execute("INSERT INTO entnahme (produkt_id, ort, genommen_am, zurueck_am) VALUES (1, 'keller', 'a', 'b')")
     conn.close()
+
+
+@pytest.fixture
+def mit_faechern(client, ware, tmp_path):
+    """Zwei Fächer; das Produkt liegt in Fach 1."""
+    conn = connect(tmp_path / "test.db")
+    conn.execute("INSERT INTO einheit (nr, punkte) VALUES (1, '[]')")
+    conn.executemany("INSERT INTO fach (einheit_id, nr, punkte) VALUES (1, ?, '[]')", [(1,), (2,)])
+    conn.execute("UPDATE produkt SET fach_id = 1 WHERE inventar_nr = ?", (ware["nr"],))
+    conn.commit()
+    def bestaetigt(eid):
+        return conn.execute("SELECT fach_bestaetigt FROM entnahme WHERE id = ?", (eid,)).fetchone()[0]
+    yield {**ware, "bestaetigt": bestaetigt}
+    conn.close()
+
+
+def test_fach_bestaetigen(client, mit_faechern):
+    """D-042: gescannt → bestätigt; ohne Scan → unbestätigt; keine Abfrage → leer."""
+    nr, bestaetigt = mit_faechern["nr"], mit_faechern["bestaetigt"]
+    for daten, erwartet in (({"fach_bestaetigt": True}, 1), ({"fach_bestaetigt": False}, 0), ({}, None)):
+        client.post(f"/api/produkte/{nr}/nehmen", json={})
+        r = client.post(f"/api/produkte/{nr}/zuruecklegen", json=daten).json()
+        assert bestaetigt(r["entnahme"]) == erwartet and r["produkt"]["status"] == "am_platz" and r["platz_vorher"] == 1
+
+
+def test_neuer_platz_beim_zuruecklegen_und_rueckgaengig(client, mit_faechern):
+    nr = mit_faechern["nr"]
+    client.post(f"/api/produkte/{nr}/nehmen", json={})
+    r = client.post(f"/api/produkte/{nr}/zuruecklegen", json={"neuer_fach": 2}).json()
+    assert r["produkt"]["platz"]["id"] == 2 and mit_faechern["bestaetigt"](r["entnahme"]) == 1
+    p = client.post(f"/api/entnahmen/{r['entnahme']}/offen", json={"platz": {"fach": r["platz_vorher"]}}).json()["produkt"]
+    assert p["platz"]["id"] == 1 and p["status"] == "in_benutzung"
+    assert client.post(f"/api/produkte/{nr}/zuruecklegen", json={"neuer_fach": 99}).status_code == 404
+    assert client.get(f"/api/produkte/{nr}").json()["status"] == "in_benutzung"        # nichts halb gespeichert
+
+
+def test_einstellung_fach_bestaetigen(client, tmp_path):
+    assert client.get("/api/einstellungen").json() == {"fach_bestaetigen": True}            # Standard
+    assert client.put("/api/einstellungen", json={"fach_bestaetigen": False}).json() == {"fach_bestaetigen": False}
+    assert client.get("/api/einstellungen").json()["fach_bestaetigen"] is False
+    assert client.put("/api/einstellungen", json={"gibt_es_nicht": True}).status_code == 422
+    assert client.put("/api/einstellungen", json={"fach_bestaetigen": "ja"}).status_code == 422
