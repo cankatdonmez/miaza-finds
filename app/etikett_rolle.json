@@ -1,0 +1,14 @@
+{
+  "_hinweis": "Rollenetikett für Brother QL-570 mit DK-22225 (38 mm Endlosrolle), D-035. Jedes Etikett ist eine PDF-Seite; der Druckertreiber schneidet nach jedem Etikett. Andere Rolle oder Länge: nur diese Datei ändern.",
+  "name": "Rolle 38 mm (70 × 38 mm)",
+  "seite_breite_mm": 70,
+  "seite_hoehe_mm": 38,
+  "spalten": 1,
+  "zeilen": 1,
+  "breite_mm": 70,
+  "hoehe_mm": 38,
+  "rand_links_mm": 0,
+  "rand_oben_mm": 0,
+  "abstand_x_mm": 0,
+  "abstand_y_mm": 0
+}

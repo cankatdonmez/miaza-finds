@@ -8,16 +8,16 @@
   // Was sich je Art unterscheidet
   const ARTEN = {
     produkte: {
-      liste: "/api/etiketten", feld: "produkte", pdf: (ids) => "/api/etiketten/pdf?" + ids.map((i) => "nr=" + i).join("&"),
+      liste: "/api/etiketten", feld: "produkte", pdf: (ids) => "/api/etiketten/pdf?" + ids.map((i) => "nr=" + i).join("&") + "&format=" + format,
       gedruckt: "/api/etiketten/gedruckt", zurueck: "/api/etiketten/zuruecksetzen", sende: "produkte",
-      id: (x) => x.inventar_nr, bild: (x) => `/api/etiketten/vorschau/${x.inventar_nr}.png`,
+      id: (x) => x.inventar_nr, bild: (x) => `/api/etiketten/vorschau/${x.inventar_nr}.png?format=${format}`,
       name: (x) => x.name || t("produkt.unbenannt", { nr: x.inventar_nr }), sub: (x) => x.code,
       sortieren: (a, b) => a.inventar_nr - b.inventar_nr,
     },
     faecher: {
-      liste: "/api/etiketten/faecher", feld: "faecher", pdf: (ids) => "/api/etiketten/faecher/pdf?" + ids.map((i) => "id=" + i).join("&"),
+      liste: "/api/etiketten/faecher", feld: "faecher", pdf: (ids) => "/api/etiketten/faecher/pdf?" + ids.map((i) => "id=" + i).join("&") + "&format=" + format,
       gedruckt: "/api/etiketten/faecher/gedruckt", zurueck: "/api/etiketten/faecher/zuruecksetzen", sende: "faecher",
-      id: (x) => x.id, bild: (x) => `/api/etiketten/vorschau/fach/${x.id}.png`,
+      id: (x) => x.id, bild: (x) => `/api/etiketten/vorschau/fach/${x.id}.png?format=${format}`,
       name: (x) => x.code, sub: (x) => x.beschreibung,
       // Reihenfolge wie im Regal: nach Code
       sortieren: (a, b) => a.code.localeCompare(b.code, "de", { numeric: true }),
@@ -29,7 +29,11 @@
   let geladen = Date.now();   // hängt an den Vorschaubildern, damit Geändertes neu geladen wird
   let treffer = [];
   let zahlen = {};
+  let papier = {};           // {a4, rolle}: Papierdefinitionen vom Server
   let bogen = null;
+  // A4-Bogen oder 38-mm-Rolle (D-035); die Wahl bleibt in diesem Browser
+  let format = "a4";
+  try { if (localStorage.getItem("mf-etikett-format") === "rolle") format = "rolle"; } catch (e) { /* ohne Speicher: A4 */ }
   let auswahl = [];          // Einträge in Druckreihenfolge
   const gewaehlt = (id) => auswahl.some((x) => A().id(x) === id);
 
@@ -39,7 +43,8 @@
       const r = await api("GET", A().liste + "?q=" + encodeURIComponent(q));
       treffer = r[A().feld];
       zahlen = r.zahlen;
-      bogen = r.bogen;
+      papier = { a4: r.bogen, rolle: r.rolle };
+      bogen = papier[format];
       const hinweis = $("[data-etk-qr-hinweis]");
       const lokal = /\/\/(localhost|127\.|\[::1\])/.test(r.qr_adresse);
       hinweis.hidden = !lokal;
@@ -50,6 +55,7 @@
 
   function zeichnen() {
     $$("[data-etk-art]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.etkArt === art)));
+    $$("[data-etk-format]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.etkFormat === format)));
     $("[data-etk-vorwahl]").innerHTML = `
       <button class="pill" type="button" data-vorwahl="ungedruckt">${esc(t("etiketten.ungedruckt"))} <span class="num">${zahlen.ungedruckt || 0}</span></button>
       <button class="pill" type="button" data-vorwahl="neu_drucken">${esc(t("etiketten.neu_drucken"))} <span class="num">${zahlen.neu_drucken || 0}</span></button>
@@ -69,7 +75,11 @@
   function zeichneBoegen() {
     const je = bogen.spalten * bogen.zeilen;
     const anzahlBoegen = Math.ceil(auswahl.length / je);
-    $("[data-etk-anzahl]").textContent = t(anzahlBoegen === 1 && auswahl.length > 1 ? "etiketten.anzahl_ein_bogen" : "etiketten.anzahl", { n: auswahl.length, b: anzahlBoegen });
+    const rolle = format === "rolle";
+    $("[data-etk-anzahl]").textContent = rolle
+      ? t(auswahl.length === 1 ? "etiketten.anzahl_rolle_eins" : "etiketten.anzahl_rolle", { n: auswahl.length })
+      : t(anzahlBoegen === 1 && auswahl.length > 1 ? "etiketten.anzahl_ein_bogen" : "etiketten.anzahl", { n: auswahl.length, b: anzahlBoegen });
+    $("[data-etk-boegen]").classList.toggle("etk-rolle", rolle);
     $("[data-etk-pdf]").disabled = !auswahl.length;
     if (!auswahl.length) {
       $("[data-etk-boegen]").innerHTML = `<div class="card leer">${esc(t(art === "faecher" ? "etiketten.keine_auswahl_faecher" : "etiketten.keine_auswahl"))}</div>`;
@@ -87,7 +97,7 @@
         // Das Etikett als Bild aus derselben Zeichnung wie das PDF: die Vorschau ist der Druck (D-033)
         return `<button class="etk-etikett" type="button" data-etk-weg="${A().id(x)}" title="${esc(t("etiketten.entfernen", { name: A().name(x) }))}"
           style="left:${links}%;top:${oben}%;width:${pb(bogen.breite_mm)}%;height:${ph(bogen.hoehe_mm)}%">
-          <img src="${A().bild(x)}?t=${geladen}" alt="${esc(A().name(x))}" loading="lazy"></button>`;
+          <img src="${A().bild(x)}&t=${geladen}" alt="${esc(A().name(x))}" loading="lazy"></button>`;
       }).join("");
       boegen.push(`<div class="etk-bogen" style="aspect-ratio:${bogen.seite_breite_mm}/${bogen.seite_hoehe_mm}">${zellen}</div>`);
     }
@@ -111,6 +121,12 @@
       const id = Number(d.etk);
       if (gewaehlt(id)) auswahl = auswahl.filter((x) => A().id(x) !== id);
       else auswahl.push(treffer.find((x) => A().id(x) === id));
+      return zeichnen();
+    }
+    if (d.etkFormat && d.etkFormat !== format) {
+      format = d.etkFormat;
+      bogen = papier[format];
+      try { localStorage.setItem("mf-etikett-format", format); } catch (err) { /* nur Komfort */ }
       return zeichnen();
     }
     if (d.etkWeg) { auswahl = auswahl.filter((x) => A().id(x) !== Number(d.etkWeg)); return zeichnen(); }

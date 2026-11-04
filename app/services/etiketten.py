@@ -8,6 +8,7 @@ from __future__ import annotations
 import io
 import json
 import sqlite3
+import threading
 from functools import lru_cache
 from typing import Any
 
@@ -28,9 +29,15 @@ from .suche import normalisieren
 ZUSTAENDE = ("ungedruckt", "gedruckt", "neu_drucken")
 
 
+# Papier: A4-Bogen (D-033) oder 38-mm-Rolle für den Brother QL-570, ein Etikett je Seite (D-035)
+FORMATE = {"a4": "etikett_bogen.json", "rolle": "etikett_rolle.json"}
+
+
 @lru_cache
-def bogen() -> dict[str, Any]:
-    return json.loads((BASE_DIR / "etikett_bogen.json").read_text(encoding="utf-8"))
+def bogen(format: str = "a4") -> dict[str, Any]:
+    if format not in FORMATE:
+        raise Fehler(t("fehler.etikett_format"), "format")
+    return json.loads((BASE_DIR / FORMATE[format]).read_text(encoding="utf-8"))
 
 
 @lru_cache
@@ -72,16 +79,16 @@ def _produkte(conn: sqlite3.Connection, ids: list[int]) -> list[sqlite3.Row]:
     return [zeilen[i] for i in dict.fromkeys(ids)]      # Reihenfolge der Auswahl
 
 
-def pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
-    """A4-Bögen nach der Bogendefinition, Etiketten in der gewählten Reihenfolge."""
+def pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str, format: str = "a4") -> bytes:
+    """Bögen oder Rollenseiten nach der Papierdefinition, Etiketten in der gewählten Reihenfolge."""
+    b = bogen(format)
     eintraege = [inhalt(conn, p["inventar_nr"]) for p in _produkte(conn, ids)]
-    return _boegen(eintraege, lambda c, x, y, w, h, d: _etikett(c, x, y, w, h, d, basis_url))
+    return _boegen(eintraege, lambda c, x, y, w, h, d: _etikett(c, x, y, w, h, d, basis_url), b)
 
 
-def _boegen(eintraege: list, zeichnen) -> bytes:
-    """Gemeinsames Raster für Produkt- und Fach-Etiketten."""
+def _boegen(eintraege: list, zeichnen, b: dict[str, Any]) -> bytes:
+    """Gemeinsames Raster für Produkt- und Fach-Etiketten; auf der Rolle ist jede Seite ein Etikett."""
     _schriften()
-    b = bogen()
     puffer = io.BytesIO()
     c = canvas.Canvas(puffer, pagesize=(b["seite_breite_mm"] * mm, b["seite_hoehe_mm"] * mm))
     c.setTitle("miaza finds – Etiketten")
@@ -134,27 +141,33 @@ def _marke(c: canvas.Canvas, x: float, y: float, h: float) -> None:
     c.restoreState()
 
 
-def _als_bild(zeichnen, eintrag: Any) -> bytes:
+_PDFIUM = threading.Lock()
+
+
+def _als_bild(zeichnen, eintrag: Any, format: str = "a4") -> bytes:
     """Ein Etikett allein als PNG, gezeichnet wie im PDF: die Vorschau zeigt genau, was gedruckt wird."""
     _schriften()
-    b = bogen()
+    b = bogen(format)
     w, h = b["breite_mm"] * mm, b["hoehe_mm"] * mm
     puffer = io.BytesIO()
     c = canvas.Canvas(puffer, pagesize=(w, h))
     zeichnen(c, 0, 0, w, h, eintrag)
     c.save()
-    seite = pdfium.PdfDocument(puffer.getvalue())[0]
     aus = io.BytesIO()
-    seite.render(scale=4).to_pil().save(aus, "PNG", optimize=True)
+    # pdfium ist nicht threadsicher; die Vorschaubilder kommen aber gleichzeitig (ein Request je Etikett)
+    with _PDFIUM:
+        seite = pdfium.PdfDocument(puffer.getvalue())[0]
+        bild = seite.render(scale=4).to_pil()
+    bild.save(aus, "PNG", optimize=True)
     return aus.getvalue()
 
 
-def vorschau(conn: sqlite3.Connection, inventar_nr: int, basis_url: str) -> bytes:
-    return _als_bild(lambda c, x, y, w, h, d: _etikett(c, x, y, w, h, d, basis_url), inhalt(conn, inventar_nr))
+def vorschau(conn: sqlite3.Connection, inventar_nr: int, basis_url: str, format: str = "a4") -> bytes:
+    return _als_bild(lambda c, x, y, w, h, d: _etikett(c, x, y, w, h, d, basis_url), inhalt(conn, inventar_nr), format)
 
 
-def fach_vorschau(conn: sqlite3.Connection, fach_id: int, basis_url: str) -> bytes:
-    return _als_bild(_fach_zeichnen(basis_url), _faecher(conn, [fach_id])[0])
+def fach_vorschau(conn: sqlite3.Connection, fach_id: int, basis_url: str, format: str = "a4") -> bytes:
+    return _als_bild(_fach_zeichnen(basis_url), _faecher(conn, [fach_id])[0], format)
 
 
 def _qr(c: canvas.Canvas, inhalt: str, x: float, qr_oben: float) -> None:
@@ -348,9 +361,10 @@ def _faecher(conn: sqlite3.Connection, ids: list[int]) -> list[dict[str, Any]]:
     return [alle[i] for i in dict.fromkeys(ids)]
 
 
-def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str) -> bytes:
+def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str, format: str = "a4") -> bytes:
     """Gleicher Aufbau wie das Produktetikett (D-033): QR links, rechts groß der Fachcode, darunter Name."""
-    return _boegen(_faecher(conn, ids), _fach_zeichnen(basis_url))
+    b = bogen(format)
+    return _boegen(_faecher(conn, ids), _fach_zeichnen(basis_url), b)
 
 
 def _fach_zeichnen(basis_url: str):

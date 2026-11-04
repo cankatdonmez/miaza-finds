@@ -193,3 +193,26 @@ def test_etikett_mittig_mit_rand(client, produkte):
     oben, unten = mm_(min(y for _, y in dunkel)), mm_(h - max(y for _, y in dunkel))
     assert min(links, rechts, oben, unten) >= 3 - 0.2           # nichts im Sicherheitsrand
     assert abs(oben - unten) < 1                                 # senkrecht mittig (QR)
+
+
+def test_rolle_ein_etikett_je_seite_mit_rand(client, produkte):
+    """D-035: Rolle 38 mm für den Brother QL-570 – je Etikett eine Seite 70 × 38 mm, 3 mm Rand, auch für Fächer."""
+    import pypdfium2 as pdfium
+    r = client.get("/api/etiketten/pdf", params={"nr": produkte["ids"][:5], "format": "rolle"})
+    assert r.status_code == 200
+    seiten = PdfReader(io.BytesIO(r.content)).pages
+    assert len(seiten) == 5
+    mm_ = lambda pt: float(pt) / 72 * 25.4
+    assert all(round(mm_(s.mediabox.width)) == 70 and round(mm_(s.mediabox.height)) == 38 for s in seiten)
+    assert "FL-001-001" in seiten[0].extract_text()
+    k = 6
+    bild = pdfium.PdfDocument(r.content)[0].render(scale=k).to_pil().convert("L")
+    px, (w, h) = bild.load(), bild.size
+    dunkel = [(x, y) for x in range(w) for y in range(h) if px[x, y] < 128]
+    px_mm = lambda p: p / k / 72 * 25.4
+    raender = (px_mm(min(x for x, _ in dunkel)), px_mm(w - max(x for x, _ in dunkel)),
+               px_mm(min(y for _, y in dunkel)), px_mm(h - max(y for _, y in dunkel)))
+    assert min(raender) >= 3 - 0.2
+    assert client.get("/api/etiketten", params={"q": "x"}).json()["rolle"]["hoehe_mm"] == 38
+    assert client.get(f"/api/etiketten/vorschau/{produkte['ids'][0]}.png", params={"format": "rolle"}).status_code == 200
+    assert client.get("/api/etiketten/pdf", params={"nr": produkte["ids"][:1], "format": "zettel"}).status_code == 422

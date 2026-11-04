@@ -1,11 +1,11 @@
 # STATUS
 
-Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleştirilmedi, push yok)
+Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleştirilmedi, push yok)
 
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** dalda, 189 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** dalda, 191 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -25,6 +25,7 @@ Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
   - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
   - D-033/34: etiket kâğıdı A4 3 × 8; 3 mm güvenli kenar içinde sabit ızgara: „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer.
+  - D-035: ikinci biçim „Rolle 38 mm“ (Brother QL-570, DK-22225): 70 × 38 mm, her etiket bir PDF sayfası; Etiketten'de seçilir.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
