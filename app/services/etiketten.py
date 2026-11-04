@@ -334,10 +334,13 @@ def auf_druckliste(conn: sqlite3.Connection, inventar_nr: int) -> str:
 def _faecher_alle(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     from . import plan        # Plan kennt die Codes
     alle = []
-    for e in plan.laden(conn)["einheiten"]:
+    p = plan.laden(conn)
+    raum_name = {r["id"]: r["name"] or "" for r in p["raeume"]}
+    for e in p["einheiten"]:
         for f in e["faecher"]:
-            # Unter dem Code: Name des Fachs, sonst der Einheit (D-020)
-            alle.append({"id": f["id"], "code": f["code"], "beschreibung": f["name"] or e["name"], "etikett": f["etikett"]})
+            # Liste: Name des Fachs, sonst der Einheit (D-020); das Etikett zeigt Raum, Einheit, Fach untereinander (D-036)
+            alle.append({"id": f["id"], "code": f["code"], "beschreibung": f["name"] or e["name"], "etikett": f["etikett"],
+                         "orte": [raum_name.get(e["raum_id"], ""), e["name"] or "", f["name"] or ""]})
     return alle
 
 
@@ -367,6 +370,10 @@ def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str, format: s
     return _boegen(_faecher(conn, ids), _fach_zeichnen(basis_url), b)
 
 
+FACH_ORT_PT, FACH_ORT_MIN_PT = 9, 7
+FACH_ORT_GRUNDLINIE, FACH_ORT_ABSTAND = 13.5, 5.75    # drei Zeilen; die letzte endet an der QR-Unterkante
+
+
 def _fach_zeichnen(basis_url: str):
     def zeichnen(c: canvas.Canvas, x: float, y: float, w: float, h: float, f: dict[str, Any]) -> None:
         breite = _spalte(w)
@@ -374,9 +381,14 @@ def _fach_zeichnen(basis_url: str):
         groesse = 22
         while groesse > 10 and pdfmetrics.stringWidth(f["code"], "PlexMono", groesse) > breite:
             groesse -= 1
-        teile = [("PlexMono", groesse, 8.5, f["code"])]
-        if f["beschreibung"]:
-            teile += [("Figtree", 9, 15 + i * 4, zeile) for i, zeile in enumerate(_umbrechen(f["beschreibung"], "Figtree", 9, breite))]
+        # Oberkante der Ziffern bündig mit der QR-Oberkante, wie der Produktname (Versalhöhe ≈ 0,7 em)
+        teile = [("PlexMono", groesse, groesse * 0.7 / 72 * 25.4, f["code"])]
+        # Raum, Einheit, Fach untereinander, wie eingegeben; leere entfallen, lange werden kleiner, zuletzt „…“ (D-036)
+        for i, name in enumerate(n for n in f["orte"] if n.strip()):
+            g = FACH_ORT_PT
+            while g > FACH_ORT_MIN_PT and pdfmetrics.stringWidth(name, "Figtree", g) > breite:
+                g -= 0.5
+            teile.append(("Figtree", g, FACH_ORT_GRUNDLINIE + i * FACH_ORT_ABSTAND, _passend(name, "Figtree", g, breite)))
         _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile)
     return zeichnen
 

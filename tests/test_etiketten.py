@@ -105,8 +105,10 @@ def test_fach_etiketten(client):
     ids = [f["id"] for f in r["faecher"]]
     pdf = PdfReader(io.BytesIO(client.get("/api/etiketten/faecher/pdf", params={"id": ids}).content))
     text = pdf.pages[0].extract_text()
-    # unter dem Code: Name des Fachs, sonst der Einheit (D-020)
+    # unter dem Code: Raum, Einheit, Fach untereinander, leere entfallen (D-036)
     assert "2.2.10" in text and "Schrank links" in text and "Obere Schublade" in text
+    zweites = pdf.pages[0].extract_text()
+    assert zweites.index("Schrank links") < zweites.index("Obere Schublade")
     assert [f["beschreibung"] for f in r["faecher"]] == ["Schrank links", "Obere Schublade", "Schrank links"]
     vorher = client.post("/api/etiketten/faecher/gedruckt", json={"faecher": ids}).json()["vorher"]
     assert client.get("/api/etiketten/faecher").json()["zahlen"]["ungedruckt"] == 0
