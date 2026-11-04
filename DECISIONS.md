@@ -451,5 +451,7 @@ yerleşince geri konmuş sayılır).
   „In der Bibliothek suchen“ diye sorar.
 - **Yerleştirirken başka bölme etiketi** (D-043'ün yerine): hedef hemen değişmez; „Jetzt in 1.6.6 einordnen?“ sorulur,
   onaylanınca sonraki ürünler oraya yerleşir.
-Cevapsız kalanlar: Verano renk adlarının dili ve eşlemesi, Fach etiketinde adların biçimi, ürün kodunun boşluksuz yazımı.
+Sonradan cevaplananlar (Cankat): ürün adları her zaman üreticinin kendi sitesindeki **orijinal adlarıyla** girilir, çevrilmez
+(Verano Türkçe sayfadan geldiği için Türkçe; İtalyan ürünü İtalyanca). Ton ana renge bağlanır (Antrasit → Schwarz) — doğru.
+Fach etiketinde adlar girildiği gibi (büyük harfe çevrilmez). Ürün kodu etikette boşluksuz: „FL-001-001“.
 → SPEC 6.1, 6.2, 6.6, 6.7, 4.5.
