@@ -225,8 +225,9 @@ def test_fach_orte_umbrechen_vor_kuerzen():
     from app.services import etiketten
     etiketten._schriften()
     breite = (etiketten.bogen("rolle")["breite_mm"] - etiketten.TEXT_LINKS - etiketten.TEXT_RAND_RECHTS) / 25.4 * 72
-    g, saetze = etiketten._ort_satz(["Workspace", "Eckschrank", "Obere Schublade"], breite, 17)
-    assert g >= 9 and all(len(z) == 1 for z in saetze)
-    g, saetze = etiketten._ort_satz(["Materialbibliothek Erdgeschoss", "Hochschrank mit Glastüren", "Obere Reihe ganz links hinten"], breite, 17)
+    hoehe = etiketten.QR_SEITE - (22 * etiketten.VERSAL / 72 * 25.4 + etiketten.ORT_LUECKE)   # wie auf dem Etikett
+    g, saetze = etiketten._ort_satz(["Workspace", "Eckschrank", "Obere Schublade"], breite, hoehe)
+    assert g >= 8 and all(len(z) == 1 for z in saetze)
+    g, saetze = etiketten._ort_satz(["Materialbibliothek Erdgeschoss", "Hochschrank mit Glastüren", "Obere Reihe ganz links hinten"], breite, hoehe)
     assert g >= etiketten.ORT_MIN_PT and any(len(z) == 2 for z in saetze)
     assert not any("…" in zeile for z in saetze for zeile in z)
