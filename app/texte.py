@@ -22,6 +22,10 @@ DE: dict[str, str] = {
     "scan.nichts": "Kein QR-Code erkannt. Näher heran und noch einmal.",
     "scan.fremd": "Das ist kein miaza-Code.",
     "scan.fach_unbekannt": "Fach {code} gibt es nicht.",
+    "scan.liest": "Wird gelesen …",
+    "scan.fach": "Fach {code}",
+    "scan.nochmal": "Noch einmal",
+    "scan.schliessen": "Schließen",
     "menue.neues_produkt": "Neues Produkt",
     "menue.haupt": "Hauptmenü",
     # Seiten

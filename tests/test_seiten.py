@@ -83,7 +83,7 @@ def test_plan_seiten(client):
 def test_scannen_mit_eigenem_qr_leser(client):
     """D-040: Seite im Telefonmenü, jsQR liegt bei der App (kein CDN), Symbol im Kopf der anderen Seiten."""
     seite = client.get("/scannen").text
-    assert '/static/vendor/jsQR.js' in seite and 'leiste-scan' in seite and 'data-kopf-scan' not in seite
+    assert 'leiste-scan' in seite and 'data-kopf-scan' not in seite and '/static/js/scan.js' in seite
     assert 'data-kopf-scan' in client.get("/bibliothek").text
     r = client.get("/static/vendor/jsQR.js")
     assert r.status_code == 200 and "jsQR" in r.text

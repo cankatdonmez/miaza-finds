@@ -1,6 +1,5 @@
-// Scannen (SPEC 4.5, 6.7, D-040). Live-Kamera nur bei sicherer Verbindung (HTTPS, localhost); sonst öffnet
-// „Foto aufnehmen“ die Kamera-App und der QR wird aus dem Foto gelesen. Gelesen wird nur das Ende der Adresse
-// (…/p/<nr>, …/f/<id>): so bleiben gedruckte Etiketten gültig, auch wenn der Server einmal anders heißt (D-038).
+// Scannen-Seite (SPEC 4.5, 6.7, D-040, D-041). Live-Kamera nur bei sicherer Verbindung (HTTPS, localhost): der Code
+// wird erkannt, sobald er im Bild ist. Sonst „Foto aufnehmen“ (MF.scan.foto, mit Rückmeldung). Tippen geht immer.
 (function () {
   const { $, esc, t, api, toast } = MF;
   const rahmen = $("[data-scan-bild]");
@@ -12,48 +11,12 @@
   let strom = null;
   let fertig = false;
 
-  // ---------- Was bedeutet der Inhalt? ----------
-  function ziel(text) {
-    const m = /\/(p|f)\/(\d+)(?:[/?#]|$)/.exec(String(text).trim());
-    if (!m) return null;
-    return m[1] === "p" ? `/produkt/${m[2]}` : `/buero?fach=${m[2]}`;
-  }
-
   function gehen(url) {
     if (fertig) return;
     fertig = true;
     if (navigator.vibrate) navigator.vibrate(30);
     stoppen();
     location.href = url;
-  }
-
-  function gelesen(text) {
-    const url = ziel(text);
-    if (url) gehen(url);
-    else toast(t("scan.fremd"), { fehler: true });
-  }
-
-  // ---------- QR aus einem Bild (Canvas) ----------
-  const detektor = "BarcodeDetector" in window ? (() => { try { return new BarcodeDetector({ formats: ["qr_code"] }); } catch { return null; } })() : null;
-  const leinwand = document.createElement("canvas");
-  const ctx = leinwand.getContext("2d", { willReadFrequently: true });
-
-  async function lesen(quelle, breite, hoehe, max) {
-    if (detektor) {
-      try {
-        const codes = await detektor.detect(quelle);
-        if (codes.length) return codes[0].rawValue;
-      } catch { /* weiter mit jsQR */ }
-    }
-    if (!window.jsQR) return null;
-    // Klein rechnen: jsQR ist auf ~1000 px schnell und sicher genug, große Fotos machen es nur langsam
-    const s = Math.min(1, max / Math.max(breite, hoehe));
-    leinwand.width = Math.round(breite * s);
-    leinwand.height = Math.round(hoehe * s);
-    ctx.drawImage(quelle, 0, 0, leinwand.width, leinwand.height);
-    const bild = ctx.getImageData(0, 0, leinwand.width, leinwand.height);
-    const code = window.jsQR(bild.data, bild.width, bild.height, { inversionAttempts: "dontInvert" });
-    return code ? code.data : null;
   }
 
   // ---------- Live-Kamera ----------
@@ -89,10 +52,10 @@
     if (fertig || !strom) return;
     if (zeit - zuletzt > 180 && video.readyState >= 2 && video.videoWidth) {
       zuletzt = zeit;
-      const text = await lesen(video, video.videoWidth, video.videoHeight, 640);
+      const text = await MF.scan.lesen(video, video.videoWidth, video.videoHeight, 640);
       if (text) {
-        const url = ziel(text);
-        if (url) return gehen(url);
+        const z = MF.scan.ziel(text);
+        if (z) return gehen(z.url);
         toast(t("scan.fremd"), { fehler: true });
         zuletzt = zeit + 2000;            // fremden Code nicht im Takt melden
       }
@@ -105,24 +68,7 @@
     if (await starten(kameraWahl.value)) requestAnimationFrame(schleife);
   });
 
-  // ---------- Foto (ohne sichere Verbindung, oder wenn die Kamera nicht will) ----------
-  $("[data-scan-datei]").addEventListener("change", async (e) => {
-    const datei = e.target.files?.[0];
-    e.target.value = "";
-    if (!datei) return;
-    const url = URL.createObjectURL(datei);
-    const img = new Image();
-    img.onload = async () => {
-      // erst mittelgroß, dann größer: kleine QR-Codes auf großen Fotos brauchen mehr Pixel
-      let text = await lesen(img, img.naturalWidth, img.naturalHeight, 1000);
-      if (!text) text = await lesen(img, img.naturalWidth, img.naturalHeight, 2000);
-      URL.revokeObjectURL(url);
-      if (text) gelesen(text);
-      else toast(t("scan.nichts"), { fehler: true });
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); toast(t("scan.nichts"), { fehler: true }); };
-    img.src = url;
-  });
+  fotoKnopf.addEventListener("click", () => MF.scan.foto());
 
   // ---------- Code tippen: „265“, „FL-021-024“ → Produkt; „1.6.4“ → Fach; sonst Suche ----------
   $("[data-scan-code]").addEventListener("submit", async (e) => {
@@ -144,10 +90,9 @@
 
   // ---------- Start ----------
   async function los() {
-    const live = window.isSecureContext && navigator.mediaDevices?.getUserMedia;
     let gemerkt = null;
     try { gemerkt = localStorage.getItem(KAMERA); } catch { /* Standardkamera */ }
-    if (live && await starten(gemerkt)) {
+    if (MF.scan.liveMoeglich() && await starten(gemerkt)) {
       kamerasZeigen().catch(() => {});
       requestAnimationFrame(schleife);
     } else {

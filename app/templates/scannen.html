@@ -8,10 +8,7 @@
     <span class="scan-rahmen" aria-hidden="true"></span>
   </div>
   <select class="eingabe" data-scan-kamera hidden aria-label="{{ t('produkt.kamera_wahl') }}"></select>
-  <label class="btn primary block scan-foto" data-scan-foto hidden>
-    {{ icon("camera", 20) }}<span>{{ t("scan.foto") }}</span>
-    <input type="file" accept="image/*" capture="environment" data-scan-datei hidden>
-  </label>
+  <button class="btn primary block scan-foto" type="button" data-scan-foto hidden>{{ icon("camera", 20) }}<span>{{ t("scan.foto") }}</span></button>
   <form class="scan-code" data-scan-code>
     <input class="eingabe" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false"
            placeholder="{{ t('scan.code_platzhalter') }}" aria-label="{{ t('scan.code') }}">
@@ -19,4 +16,4 @@
   </form>
 </div>
 {% endblock %}
-{% block scripts %}<script src="/static/vendor/jsQR.js?v={{ asset_v }}"></script><script src="/static/js/scannen.js?v={{ asset_v }}"></script>{% endblock %}
+{% block scripts %}<script src="/static/js/scannen.js?v={{ asset_v }}"></script>{% endblock %}
