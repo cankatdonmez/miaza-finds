@@ -1,27 +1,40 @@
 # STATUS
 
-Stand: 02.11.2026 · v0.1.0 · SPEC 0.5 · Dal `main` (dilim 1 birleştirildi, push yok)
+Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleştirilmedi, push yok)
 
 ## Aktueller Stand
-- **Dilim 1 (Kütüphane ve kayıt) bitti**, 148 test yeşil. Kararlar D-001–D-013. Ayrıntılar: `git log`.
-- İçerik: kategori/filtre ayarları · tek kayıt (fotoğraf, filtre değerleri, fiyat, renk, silme) · kütüphane (arama,
-  filtreler, ızgara/liste, detay paneli) · toplu düzenleme · telefonda seri kayıt + adları listede tamamlama ·
-  etiket sayfası + A4 PDF · Systembereich (yönetici, güvenlik anahtarı, yedek, geri yükleme, veri taşıma, toplu silme).
-- Adım 11 (Tekrar bak): metinlerde tek ad („Option“ filtre seçeneği, „Auswahl“ yalnız seçim), du-hitap, tekil
-  biçimler (`_eins`); dokunma alanları ≥ 44 px; kontrast açık/koyu ≥ 5,2:1; 375 px'te yana kayma yok.
-- Beta geri bildirimi 1 (D-014): masaüstü canlı kamera, Option „+“ düğmesi, gerçek QR önizlemesi, `start.bat netz` ile QR ağ adresi. 150 test.
-- Denenmedi: Docker, `start.bat` ilk kurulum (Cankat'ın bilgisayarında 8090 çalışıyor görünüyor), gerçek telefonda kamera.
-- Dev: sunucu PowerShell Start-Process ile 8091'de (preview_start eski klasörü görüyor); kapatırken portu dinleyen
-  işlemi ve alt işlemini bul. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
+- **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
+  `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
+- **Dilim 2 (Büro)** dalda, 191 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+  - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
+  - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
+    tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
+  - `/plan/einheit/<id>`: ünite fotoğrafı, bölme çizimi, „Neu nummerieren“.
+  - `/buero`: plan → ünite → bölme (spot ışığı) → ürünler; ünite listesi; telefonda ünite fotoğrafı.
+  - Ürün detayı: Platz, „Im Büro zeigen“; „Hier einordnen“ modu (30 dk) + ürün sayfasında „In … einordnen“.
+  - Fach-Etiketten (Etiketten › Fächer, QR `/f/<id>`), toplu düzenlemede „Platz“, durum filtresi Am Platz / Ohne Platz.
+  - Geri bildirim (D-018): oda ve ünite yazıları şeklin içinde, okunur boyda; odalar 5 pastel tonda (numaradan).
+  - D-019: dikdörtgen ünite sürüklenince duvara / komşuya yapışır, uzun kenarıyla döner, komşunun içine giremez (Alt: serbest).
+  - D-020: bölmenin isteğe bağlı adı (Migration 004); Büro, ürün detayı, toplu düzenleme ve bölme etiketinde görünür.
+  - D-021/D-022: ürün detayında „Platz ändern“ → Büro yer seçme modunda: plan → ünite → bölme → „Hier ablegen“, geri al.
+  - D-023 tema (beyaz / antrasit, amber; `THEMA.md`), D-024 oda rengi seçilir, üniteler odanın tonunda (Migration 005),
+    D-025 seçerek silme (Produkte · Kategorien · Büroplan · Nummern).
+  - D-026: ünite fotoğrafında bölmeler demodaki gibi (etiket „kod · sayı“, kayan spot, nabız, önizleme).
+  - D-027/28: foto eklenince kırpma; düzenlemede fotoğraflar „Speichern“e kadar taslak; seri sonrası „Speichern“.
+  - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
+  - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
+  - D-033–35: etiket A4 3 × 8 ya da rulo 70 × 38 mm (QL-570, sayfa başına bir etiket); 3 mm kenar içinde sabit ızgara:
+    „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer. D-036/37: Fach etiketinde oda/ünite/bölme ağaç gibi, alanı dolduruyor.
+- Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
+- Dev: „dev“ `--reload`suz (Drive'da takılıyor); kod değişince sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
 
 ## Sıradaki
-1. Cankat: beta'yı (`start.bat`) dene, geri bildirimi tek liste halinde ver; Systembereich'i kendisi kursun.
-2. Uzak depo (ör. GitHub, private) henüz yok; istenirse eklenir.
-3. Dilim 2 (Ofis): plan düzenleyici, üniteler, bölmeler, bölme etiketleri, bölme QR'ıyla toplu yerleştirme.
+1. Cankat: Dilim 2'yi dev'de ya da birleştirdikten sonra beta'da dene; geri bildirim tek liste.
+2. Kart yayı / yelpaze animasyonları (D-017) gerçek veriyle.
+3. Dilim 3 (Hareket): uygulama içi tarayıcı, alma / yerine koyma, „Düzenleniyor“.
 
 ## Offene Fragen
-1. Etiket QR'ının kalıcı adresi (mini PC'nin ofis adresi veya HTTPS alan adı) → `MF_BASIS_URL`. Basılı etiketler buna bağlı.
-2. Etiket kâğıdının düzen PDF'i → `app/etikett_bogen.json` (şimdilik geçici 20'li, 48 × 52 mm).
-3. HTTPS: büronun alan adı `miaza.design` (site HTTPS). DNS Wix'te (ns6/ns7.wixdns.net); Wix'in DNS API'si yok →
-   yol A için bir alt alan (ör. `buro.miaza.design`) API'li bir DNS servisine devredilmeli. Sonra bakılacak.
-4. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı), vurgu renkleri.
+1. QR'ın kalıcı adresi + HTTPS (Cankat bilgi verecek): öneri, bir alt alan adı (ör. `finds.miaza.design`) şimdiden
+   `MF_BASIS_URL` olsun; DNS Wix ya da World4You'da kalabilir, sertifika „DNS alias mode“ ile. Sonra teknisyen belgesi güncellenir.
+2. Mini PC kurulumu: teknisyen belgesi https://claude.ai/artifact/KtCQDEkSQeHfcE4NGtbAoW (denenmedi).
+3. SPEC 11: Drive uygulaması mini PC'de mi, de-AT terimleri („Bibliothek“ adı); counts'un vurgu rengi (finds: amber).

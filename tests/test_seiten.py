@@ -8,7 +8,7 @@ import pytest
 
 from app.texte import DE
 
-SEITEN = ["bibliothek", "etiketten", "einstellungen", "mehr"]
+SEITEN = ["bibliothek", "buero", "etiketten", "einstellungen"]
 APP = Path(__file__).parent.parent / "app"
 
 
@@ -17,7 +17,7 @@ def test_seite_laedt_mit_marke_und_menue(client, seite):
     r = client.get(f"/{seite}")
     assert r.status_code == 200
     assert 'class="marke-miaza">miaza<' in r.text and "finds" in r.text
-    assert f'href="/{seite}" aria-current="page"' in r.text or seite == "mehr"
+    assert f'href="/{seite}" aria-current="page"' in r.text
 
 
 def test_produktseiten_und_qr_link(client):
@@ -31,10 +31,12 @@ def test_produktseiten_und_qr_link(client):
     assert '<h1 class="seitentitel">Eichendiele</h1>' in seite
 
 
-def test_einstellungen_liegen_am_telefon_unter_mehr(client):
+def test_einstellungen_direkt_im_telefonmenue(client):
+    """D-029: kein „Mehr“ mit nur einer Seite; die alte Adresse leitet weiter."""
     html = client.get("/einstellungen").text
     leiste = html[html.index('class="leiste"'):]
-    assert 'href="/mehr" aria-current="page"' in leiste
+    assert 'href="/einstellungen" aria-current="page"' in leiste and 'href="/mehr"' not in leiste
+    assert client.get("/mehr", follow_redirects=False).headers["location"] == "/einstellungen"
 
 
 def test_darstellung_hat_drei_wahlen(client):
@@ -71,3 +73,8 @@ def test_keine_sichtbaren_texte_direkt_in_seitenvorlagen():
         html = re.sub(r"{#.*?#}|{%.*?%}|{{.*?}}|<script.*?</script>|<[^>]+>", " ", p.read_text(encoding="utf-8"), flags=re.S)
         woerter = {w.strip(" ·") for w in re.split(r"\s{2,}|\n", html)} - {""}
         assert woerter <= erlaubt, f"{p.name}: Text ohne Wörterbuch: {woerter - erlaubt}"
+
+
+def test_plan_seiten(client):
+    assert 'data-plan-svg' in client.get("/plan").text
+    assert client.get("/plan/einheit/999").status_code == 404

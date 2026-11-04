@@ -5,7 +5,7 @@
   const ergebnis = $("[data-ergebnis]");
   if (!ergebnis) return;
 
-  const FARBEN = ["weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz"];
+  const FARBEN = MF.GRUNDFARBEN;
   const STATUS = ["am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend"];
   const breit = window.matchMedia("(min-width: 900px)");
 
@@ -100,7 +100,8 @@
   }
 
   function zeichneErgebnis() {
-    ergebnis.className = "ergebnis " + sichtbar();
+    // Leeres Ergebnis ohne Listenrahmen: die Karte „Keine Treffer“ steht allein (kein Rahmen im Rahmen)
+    ergebnis.className = "ergebnis" + (antwort.produkte.length ? " " + sichtbar() : "");
     if (!antwort.produkte.length) {
       const leererBestand = antwort.zaehler.gesamt === 0;
       ergebnis.innerHTML = `<div class="card leer stack">
@@ -111,6 +112,7 @@
     } else {
       ergebnis.innerHTML = antwort.produkte.map(sichtbar() === "liste" ? zeile : karte).join("");
     }
+    namenLeiste.hidden = !(ergaenzen() && antwort.produkte.length);
     $("[data-mehr]").hidden = !antwort.weitere;
   }
 
@@ -138,7 +140,7 @@
     return `<div class="zeile" data-ergaenzen="${p.inventar_nr}">
       ${bild(p, "zeile-img")}
       <span class="zeile-haupt">
-        <input class="eingabe" data-name-fuer="${p.inventar_nr}" data-version="${p.version}" value="${esc(p.name || "")}"
+        <input class="eingabe" data-name-fuer="${p.inventar_nr}" data-version="${p.version}" data-gespeichert="${esc(p.name || "")}" value="${esc(p.name || "")}"
           placeholder="${esc(t("produkt.unbenannt", { nr: p.inventar_nr }))}" aria-label="${esc(t("serie.name", { code: p.code }))}" enterkeyhint="next" maxlength="120">
         <span class="karte-sub num">${esc(p.code)} · ${esc(p.kategorie)}</span>
       </span>
@@ -232,7 +234,7 @@
         `<button class="pill" type="button" data-janein="${f.id}" data-v="${v}" aria-pressed="${(w || "") === v}">${esc(text)}</button>`).join("")}</div>`;
     } else {
       inhalt = `<div class="pills">${f.optionen.map((o) =>
-        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${(w || []).includes(o.id)}">${esc(o.name)}</button>`).join("")}</div>`;
+        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${(w || []).includes(o.id)}">${f.farbe ? MF.tonPunkt(o) : ""}${esc(o.name)}</button>`).join("")}</div>`;
     }
     return `<section class="fgruppe"><h3 class="abschnitt">${esc(f.name)}</h3>${inhalt}</section>`;
   }
@@ -388,27 +390,55 @@
     laden();
   });
 
-  // Name eintippen, Enter → speichern und weiter zum nächsten Feld
+  // ---------- Namen nach der Serie (D-028) ----------
+  // Enter speichert dieses Feld und springt weiter; „Speichern“ unter der Liste speichert alle geänderten auf einmal
+  const namenLeiste = document.createElement("div");
+  namenLeiste.className = "formleiste";
+  namenLeiste.hidden = true;
+  namenLeiste.innerHTML = `<span class="sub" data-namen-zahl></span>
+    <button class="btn primary" type="button" data-namen-speichern>${esc(t("produkt.speichern"))}</button>`;
+  ergebnis.after(namenLeiste);
+
+  const offeneNamen = () => $$("[data-name-fuer]").filter((f) => f.value.trim() && f.value.trim() !== f.dataset.gespeichert);
+  function namenZahl() {
+    const n = offeneNamen().length;
+    $("[data-namen-zahl]", namenLeiste).textContent = n ? t("serie.namen_offen", { n }) : "";
+  }
+  async function nameSpeichern(feld) {
+    const name = feld.value.trim();
+    if (!name || name === feld.dataset.gespeichert) return true;
+    try {
+      const r = await api("PATCH", "/api/produkte/" + feld.dataset.nameFuer, { name, version: Number(feld.dataset.version) });
+      feld.dataset.version = r.version;
+      feld.dataset.gespeichert = name;
+      feld.closest(".zeile").classList.add("erledigt");
+      return true;
+    } catch (err) {
+      toast(err.message, { fehler: true });
+      return false;
+    } finally { namenZahl(); }
+  }
+  document.addEventListener("input", (e) => { if (e.target.closest?.("[data-name-fuer]")) namenZahl(); });
   document.addEventListener("keydown", async (e) => {
     const feld = e.target.closest?.("[data-name-fuer]");
     if (!feld || e.key !== "Enter") return;
     e.preventDefault();
-    const name = feld.value.trim();
     const alle = $$("[data-name-fuer]");
     const naechstes = alle[alle.indexOf(feld) + 1];
     // Sofort weiter, damit schnelles Tippen nicht im alten Feld landet; gespeichert wird im Hintergrund
     if (naechstes) naechstes.focus();
     else feld.blur();
-    if (!name) return;
-    try {
-      const r = await api("PATCH", "/api/produkte/" + feld.dataset.nameFuer, { name, version: Number(feld.dataset.version) });
-      feld.dataset.version = r.version;
-      feld.closest(".zeile").classList.add("erledigt");
-    } catch (err) {
-      toast(err.message, { fehler: true });
-      feld.focus();
-    }
+    if (!(await nameSpeichern(feld))) feld.focus();
   });
+  namenLeiste.addEventListener("click", async (e) => {
+    if (!e.target.closest("[data-namen-speichern]")) return;
+    const offen = offeneNamen();
+    if (!offen.length) return toast(t("serie.namen_keine"));
+    let ok = 0;
+    for (const f of offen) if (await nameSpeichern(f)) ok += 1;
+    if (ok) toast(t("serie.namen_gespeichert", { n: ok }));
+  });
+  window.addEventListener("beforeunload", (e) => { if (offeneNamen().length) e.preventDefault(); });
 
   // ---------- Start ----------
   api("GET", "/api/kategorien")

@@ -139,12 +139,10 @@ def uebernehmen_pfad(request: Request, daten: dict[str, Any] = Body(...), _: dic
 def loeschen(request: Request, daten: dict[str, Any] = Body(...), _: dict = Depends(angemeldet),
              db: sqlite3.Connection = Depends(get_db)):
     s = request.app.state
-    was = daten.get("was")
-    if was not in ("produkte", "alles"):
-        raise Fehler(t("fehler.art"), "was")
+    teile = sicherung.teile_pruefen(daten.get("teile"))
     vorher = sicherung.erstellen(s.db_path, s.media_dir, s.sicherung_dir, "vor-loeschen")
     with transaction(db):
-        (sicherung.produkte_loeschen if was == "produkte" else sicherung.alles_loeschen)(db, s.media_dir)
+        sicherung.loeschen(db, s.media_dir, teile)
     return {"sicherung_vorher": vorher.name, "wirkung": sicherung.wirkung(db)}
 
 

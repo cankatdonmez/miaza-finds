@@ -5,7 +5,9 @@
   const editor = $("[data-kat-editor]");
   if (!liste) return;
 
-  const TYPEN = ["mass", "einfach", "mehrfach", "janein"];
+  const TYPEN = ["mass", "einfach", "mehrfach", "janein", "farbe"];
+  // Startfarbe eines neuen Tons: die Grundfarbe selbst (aus den Token)
+  const grundHex = (g) => getComputedStyle(document.documentElement).getPropertyValue("--farbe-" + g).trim() || "#888888";
   const EINHEITEN = ["mm", "cm", "m", "kg", "Stk"];
 
   let kategorien = [];
@@ -51,8 +53,20 @@
     if (!original) $("[data-feld=name]", editor).focus();
   }
 
+  // Wechseln verwirft ungespeicherte Änderungen sofort; „Rückgängig“ holt sie zurück (D-029)
   function wechseln(ziel) {
-    if (geaendert() && !window.confirm(t("allg.ungespeichert"))) return;
+    if (geaendert()) {
+      const zurueck = { id: original ? original.id : "neu", entwurf: kopie(entwurf), praefixVonHand };
+      toast(t("plan.verworfen"), {
+        rueckgaengig: () => {
+          oeffnen(zurueck.id);
+          entwurf = zurueck.entwurf;
+          praefixVonHand = zurueck.praefixVonHand;
+          zeichneListe();
+          zeichneEditor();
+        },
+      });
+    }
     oeffnen(ziel);
   }
 
@@ -98,6 +112,8 @@
       inhalt = `<label class="feld feld-einheit"><span>${esc(t("kat.einheit"))}</span>
         <select class="eingabe" data-feld="einheit" data-i="${i}">
           ${EINHEITEN.map((e) => `<option ${e === f.einheit ? "selected" : ""}>${e}</option>`).join("")}</select></label>`;
+    } else if (f.farbe) {
+      inhalt = zeichneFarbkasten(f, i);
     } else if (f.typ === "einfach" || f.typ === "mehrfach") {
       inhalt = `<div class="optionen">
         ${f.optionen.map((o, j) => `<span class="option">
@@ -114,13 +130,35 @@
     return `<div class="filterkarte">
       <div class="filterkopf">
         <input class="eingabe filter-name" data-feld="filtername" data-i="${i}" value="${esc(f.name)}" placeholder="${esc(t("kat.filter_name"))}" maxlength="60">
-        <span class="typ-chip">${esc(t("kat.typ_" + f.typ))}</span>
+        <span class="typ-chip">${esc(t("kat.typ_" + (f.farbe ? "farbe" : f.typ)))}</span>
         <button class="iconbtn" type="button" data-aktion="hoch" data-i="${i}" ${i === 0 ? "disabled" : ""} aria-label="${esc(t("kat.nach_oben"))}">${icon("up", 20)}</button>
         <button class="iconbtn" type="button" data-aktion="runter" data-i="${i}" ${letzter ? "disabled" : ""} aria-label="${esc(t("kat.nach_unten"))}">${icon("down", 20)}</button>
         <button class="iconbtn" type="button" data-aktion="filter-weg" data-i="${i}" aria-label="${esc(t("kat.filter_entfernen"))}">${icon("close", 20)}</button>
       </div>
       ${inhalt}
     </div>`;
+  }
+
+  // Farbkasten (D-031): je Grundfarbe ein Kasten, die Töne liegen darin; ziehen = andere Grundfarbe
+  function zeichneFarbkasten(f, i) {
+    return `<div class="farbkasten">${MF.GRUNDFARBEN.map((g) => {
+      const toene = f.optionen.map((o, j) => ({ o, j })).filter(({ o }) => o.grundfarbe === g);
+      const name = t("farbe." + g);
+      return `<div class="farbfach" data-grund="${g}" data-i="${i}">
+        <div class="farbfach-kopf"><span class="farbpunkt klein farbe-${g}"></span><span>${esc(name)}</span>
+          <button class="iconbtn" type="button" data-aktion="ton-neu" data-i="${i}" data-grund="${g}" aria-label="${esc(t("kat.ton_neu", { farbe: name }))}" title="${esc(t("kat.ton_neu", { farbe: name }))}">${icon("plus", 18)}</button></div>
+        ${toene.map(({ o, j }) => `<span class="ton" data-i="${i}" data-j="${j}">
+          <span class="ton-griff" draggable="true" title="${esc(t("kat.ton_ziehen"))}" aria-label="${esc(t("kat.ton_ziehen"))}">${icon("griff", 18)}</span>
+          ${o.hex
+            ? `<input class="ton-farbe" type="color" data-feld="ton-hex" data-i="${i}" data-j="${j}" value="${esc(o.hex)}" aria-label="${esc(t("kat.ton_farbe"))}">`
+            : `<label class="farbpunkt ton-ohne farbe-${g}" title="${esc(t("kat.ton_farbe"))}">
+                <input class="sr-only" type="color" data-feld="ton-hex" data-i="${i}" data-j="${j}" value="${esc(grundHex(g))}" aria-label="${esc(t("kat.ton_farbe"))}"></label>`}
+          <input class="option-name" data-feld="option" data-i="${i}" data-j="${j}" value="${esc(o.name)}" placeholder="${esc(t("kat.ton_name"))}" aria-label="${esc(t("kat.ton_name"))}">
+          ${o.produkte ? `<span class="option-n num">${o.produkte}</span>` : ""}
+          <button class="option-x" type="button" data-aktion="option-weg" data-i="${i}" data-j="${j}" aria-label="${esc(t("kat.auswahl_entfernen", { name: o.name }))}">×</button>
+        </span>`).join("")}
+      </div>`;
+    }).join("")}</div>`;
   }
 
   function zeichneTypwahl() {
@@ -177,6 +215,7 @@
       case "filtername": entwurf.filter[i].name = el.value; break;
       case "einheit": entwurf.filter[i].einheit = el.value; break;
       case "option": entwurf.filter[i].optionen[Number(el.dataset.j)].name = el.value; break;
+      case "ton-hex": entwurf.filter[i].optionen[Number(el.dataset.j)].hex = el.value; break;
       case "option-neu":
         entwurf.filter[i].neu = el.value;
         $(`[data-aktion=option-neu][data-i="${i}"]`, editor).disabled = !el.value.trim();
@@ -184,6 +223,9 @@
     }
     zeichneLeiste();
   });
+
+  // Ton ohne eigene Farbe (z. B. Mehrfarbig) zeigt das Zeichen seiner Grundfarbe; nach der ersten Wahl die gewählte Farbe
+  editor.addEventListener("change", (e) => { if (e.target.closest(".ton-ohne")) zeichneEditor(); });
 
   editor.addEventListener("keydown", (e) => {
     const el = e.target;
@@ -215,7 +257,12 @@
       case "filter-neu": typwahlOffen = true; zeichneEditor(); return;
       case "typ": {
         const typ = b.dataset.typ;
-        fl.push({ id: null, name: "", typ, einheit: typ === "mass" ? "mm" : null, optionen: [], produkte: 0 });
+        // „Farbe“ ist eine Mehrfachauswahl mit Farbtönen (D-031)
+        // Ein neuer Farbfilter beginnt mit einem Ton je Grundfarbe, benannt wie sie (D-032); umbenennen nach Bedarf
+        const toene = typ === "farbe"
+          ? MF.GRUNDFARBEN.map((g) => ({ id: null, name: t("farbe." + g), hex: g === "mehrfarbig" ? null : grundHex(g), grundfarbe: g, produkte: 0 })) : [];
+        fl.push({ id: null, name: typ === "farbe" ? t("kat.farbton") : "", typ: typ === "farbe" ? "mehrfach" : typ, farbe: typ === "farbe",
+                  einheit: typ === "mass" ? "mm" : null, optionen: toene, produkte: 0 });
         typwahlOffen = false;
         zeichneEditor();
         $(`[data-feld=filtername][data-i="${fl.length - 1}"]`, editor).focus();
@@ -226,6 +273,13 @@
       case "filter-weg": fl.splice(i, 1); break;
       case "option-weg": fl[i].optionen.splice(Number(b.dataset.j), 1); break;
       case "option-neu": optionHinzu(i); return;
+      case "ton-neu": {
+        const g = b.dataset.grund;
+        fl[i].optionen.push({ id: null, name: "", hex: grundHex(g), grundfarbe: g, produkte: 0 });
+        zeichneEditor();
+        $(`.ton [data-feld=option][data-i="${i}"][data-j="${fl[i].optionen.length - 1}"]`, editor)?.focus();
+        return;
+      }
       case "verwerfen": oeffnen(original ? original.id : null); return;
       case "speichern": await speichern(b); return;
       case "loeschen": await loeschen(); return;
@@ -270,13 +324,40 @@
       rueckgaengig: async () => {
         try {
           const { id } = await api("POST", "/api/kategorien", { name: weg.name, praefix: weg.praefix });
-          const filter = weg.filter.map((f) => ({ ...f, id: null, optionen: f.optionen.map((o) => ({ name: o.name })) }));
+          const filter = weg.filter.map((f) => ({ ...f, id: null, optionen: f.optionen.map((o) => ({ name: o.name, hex: o.hex, grundfarbe: o.grundfarbe })) }));
           await api("PUT", "/api/kategorien/" + id, { name: weg.name, praefix: weg.praefix, version: 1, filter });
           await laden(id);
         } catch (err) { toast(err.message, { fehler: true }); }
       },
     });
   }
+
+  // Ton in einen anderen Kasten ziehen: neue Grundfarbe, gleicher Ton (Kennung bleibt)
+  let gezogen = null;
+  editor.addEventListener("dragstart", (e) => {
+    const ton = e.target.closest?.(".ton-griff")?.closest(".ton");
+    if (!ton) return;
+    gezogen = { i: Number(ton.dataset.i), j: Number(ton.dataset.j) };
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", ton.dataset.j);
+    e.dataTransfer.setDragImage(ton, 16, 22);
+  });
+  editor.addEventListener("dragover", (e) => {
+    const fach = e.target.closest?.(".farbfach");
+    if (!gezogen || !fach || Number(fach.dataset.i) !== gezogen.i) return;
+    e.preventDefault();
+    $$(".farbfach.ueber", editor).forEach((x) => x !== fach && x.classList.remove("ueber"));
+    fach.classList.add("ueber");
+  });
+  editor.addEventListener("drop", (e) => {
+    const fach = e.target.closest?.(".farbfach");
+    if (!gezogen || !fach) return;
+    e.preventDefault();
+    entwurf.filter[gezogen.i].optionen[gezogen.j].grundfarbe = fach.dataset.grund;
+    gezogen = null;
+    zeichneEditor();
+  });
+  editor.addEventListener("dragend", () => { gezogen = null; $$(".farbfach.ueber", editor).forEach((x) => x.classList.remove("ueber")); });
 
   laden().catch((err) => toast(err.message, { fehler: true }));
 })();

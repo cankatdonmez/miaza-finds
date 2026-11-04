@@ -143,12 +143,14 @@
 
       <section class="card stack">
         <h2 class="abschnitt">${esc(t("system.loeschen"))}</h2>
-        <div class="actions">
-          <button class="btn" type="button" data-frage="produkte">${esc(t("system.produkte_loeschen"))}</button>
-          <button class="btn" type="button" data-frage="alles">${esc(t("system.alles_loeschen"))}</button>
+        <div class="loesch-liste" data-loeschen>
+          <label class="schalter"><input type="checkbox" data-alles><span>${esc(t("system.alles_auswaehlen"))}</span></label>
+          ${["produkte", "kategorien", "plan", "nummern"].map((teil) => `
+          <label class="schalter loesch-teil"><input type="checkbox" data-teil="${teil}">
+            <span class="zeile-haupt"><span>${esc(t("system.teil_" + teil))}</span><span class="karte-sub">${esc(t("system.teil_" + teil + "_wirkung", w))}</span></span></label>`).join("")}
         </div>
-        ${rueckfrage("produkte", t("system.wirkung_produkte", w))}
-        ${rueckfrage("alles", t("system.wirkung_alles", w))}
+        <div><button class="btn" type="button" data-frage="loeschen" disabled>${esc(t("system.ausgewaehlte_loeschen"))}</button></div>
+        ${rueckfrage("loeschen", t("system.wirkung_loeschen"))}
       </section>
 
       <section class="card stack">
@@ -206,8 +208,9 @@
         if (datei) { const fd = new FormData(); fd.append("datei", datei); r = await sapi("POST", "/api/system/uebernehmen", fd, true); }
         else r = await sapi("POST", "/api/system/uebernehmen-pfad", { pfad });
         toast(t("system.uebernommen", r));
-      } else if (art === "produkte" || art === "alles") {
-        const r = await sapi("POST", "/api/system/loeschen", { was: art });
+      } else if (art === "loeschen") {
+        const teile = [...ziel.querySelectorAll("[data-teil]:checked")].map((x) => x.dataset.teil);
+        const r = await sapi("POST", "/api/system/loeschen", { teile });
         toast(t("system.geloescht", { name: r.sicherung_vorher }));
       } else if (art === "schluessel") {
         return zeigeSchluessel((await sapi("POST", "/api/system/schluessel")).schluessel);
@@ -217,6 +220,23 @@
       toast(err.message, { fehler: true });
       b.disabled = false;
     }
+  });
+
+  // Löschauswahl (D-025): Kategorien nur mit Produkten, neue Nummern nur mit Produkten und Büroplan
+  ziel.addEventListener("change", (e) => {
+    const liste = e.target.closest("[data-loeschen]");
+    if (!liste) return;
+    const kasten = (teil) => liste.querySelector(`[data-teil="${teil}"]`);
+    if (e.target.matches("[data-alles]")) liste.querySelectorAll("[data-teil]").forEach((x) => { x.disabled = false; x.checked = e.target.checked; });
+    kasten("produkte").disabled = kasten("kategorien").checked;
+    if (kasten("kategorien").checked) kasten("produkte").checked = true;
+    const nummern = kasten("produkte").checked && kasten("plan").checked;
+    kasten("nummern").disabled = !nummern;
+    if (!nummern) kasten("nummern").checked = false;
+    const alle = [...liste.querySelectorAll("[data-teil]")];
+    liste.querySelector("[data-alles]").checked = alle.every((x) => x.checked);
+    ziel.querySelector('[data-frage="loeschen"]').disabled = !alle.some((x) => x.checked);
+    ziel.querySelector('[data-rueckfrage="loeschen"]').hidden = true;
   });
 
   ziel.addEventListener("submit", async (e) => {

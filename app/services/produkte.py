@@ -11,13 +11,15 @@ from typing import Any
 from .. import zeit
 from ..fehler import Fehler
 from ..texte import t
-from . import nummern
+from . import nummern, plan
 from .suche import normalisieren
 
-FARBEN = ("weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz")
+# Grundfarben (D-031): gemeinsam für alle Kategorien; Farbtöne je Kategorie verweisen auf eine davon
+FARBEN = ("weiss", "beige", "braun", "rot", "orange", "gelb", "gruen", "blau", "violett", "rosa", "grau", "schwarz",
+          "metall", "mehrfarbig")
 PREIS_EINHEITEN = ("m2", "m", "stueck", "paket")
 ARTEN = ("physisch", "digital")
-TEXT_MAX = {"name": 120, "marke": 80, "abmessungen": 80, "link": 500, "notiz": 2000}
+TEXT_MAX = {"name": 120, "marke": 80, "artikelnummer": 60, "abmessungen": 80, "link": 500, "notiz": 2000}
 
 
 # ---------- Lesen ----------
@@ -38,6 +40,8 @@ def lesen(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
     d["merkmale"] = _merkmale(conn, inventar_nr, p["kategorie_id"])
     d["fotos"] = [dict(r) for r in conn.execute(
         "SELECT id, datei, breite, hoehe FROM foto WHERE produkt_id = ? ORDER BY sortierung, id", (inventar_nr,))]
+    # Platz im Büro (SPEC 6.4): Code wird aus dem Fach abgeleitet
+    d["platz"] = plan.fach(conn, p["fach_id"]) if p["fach_id"] else None
     return d
 
 
@@ -126,7 +130,8 @@ def _felder(daten: dict[str, Any], name_pflicht: bool = True) -> dict[str, Any]:
             raise Fehler(t("fehler.anzahl"), "anzahl") from None
         if anzahl < 0:
             raise Fehler(t("fehler.anzahl"), "anzahl")
-    return {"name": name, "art": art, "marke": _text(daten, "marke"), "abmessungen": _text(daten, "abmessungen"),
+    return {"name": name, "art": art, "marke": _text(daten, "marke"), "artikelnummer": _text(daten, "artikelnummer"),
+            "abmessungen": _text(daten, "abmessungen"),
             "link": _link(daten), "anzahl": anzahl, "notiz": _text(daten, "notiz")}
 
 
@@ -139,8 +144,8 @@ def anlegen(conn: sqlite3.Connection, daten: dict[str, Any], name_pflicht: bool 
     inv = nummern.naechste_inventar_nr(conn)
     nr = nummern.naechste_kategorie_nr(conn, kat["id"])
     conn.execute("""INSERT INTO produkt (inventar_nr, kategorie_id, code_praefix, kategorie_nr, name, art, marke,
-                                         abmessungen, link, anzahl, notiz)
-                    VALUES (:inv, :kat, :praefix, :nr, :name, :art, :marke, :abmessungen, :link, :anzahl, :notiz)""",
+                                         artikelnummer, abmessungen, link, anzahl, notiz)
+                    VALUES (:inv, :kat, :praefix, :nr, :name, :art, :marke, :artikelnummer, :abmessungen, :link, :anzahl, :notiz)""",
                  {**felder, "inv": inv, "kat": kat["id"], "praefix": kat["praefix"], "nr": nr})
     _nebendaten(conn, inv, kat["id"], daten)
     suchtext_erneuern(conn, inv)
@@ -159,7 +164,8 @@ def aendern(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any]) -
         raise Fehler(t("fehler.veraltet"), status=409)
     felder = _felder(daten)
     kat = _kategorie(conn, daten.get("kategorie_id", alt["kategorie_id"]))
-    conn.execute("""UPDATE produkt SET name = :name, art = :art, marke = :marke, abmessungen = :abmessungen,
+    vorher = _etikett_inhalt(conn, inventar_nr)
+    conn.execute("""UPDATE produkt SET name = :name, art = :art, marke = :marke, artikelnummer = :artikelnummer, abmessungen = :abmessungen,
                     link = :link, anzahl = :anzahl, notiz = :notiz, version = version + 1,
                     geaendert_am = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE inventar_nr = :inv""",
                  {**felder, "inv": inventar_nr})
@@ -167,7 +173,19 @@ def aendern(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any]) -
         kategorie_wechseln(conn, inventar_nr, kat["id"], neuer_code=daten.get("code") == "neu")
     _nebendaten(conn, inventar_nr, kat["id"], daten)
     suchtext_erneuern(conn, inventar_nr)
+    _etikett_veraltet(conn, inventar_nr, vorher)
     return lesen(conn, inventar_nr)
+
+
+def _etikett_inhalt(conn: sqlite3.Connection, inventar_nr: int) -> dict[str, Any]:
+    from . import etiketten      # Etiketten lesen Produkte; nur hier umgekehrt, deshalb spät importiert
+    return etiketten.inhalt(conn, inventar_nr)
+
+
+def _etikett_veraltet(conn: sqlite3.Connection, inventar_nr: int, vorher: dict[str, Any]) -> None:
+    """Steht auf dem gedruckten Etikett etwas anderes als jetzt, kommt es auf die Druckliste (D-033)."""
+    if _etikett_inhalt(conn, inventar_nr) != vorher:
+        conn.execute("UPDATE produkt SET etikett = 'neu_drucken' WHERE inventar_nr = ? AND etikett = 'gedruckt'", (inventar_nr,))
 
 
 def name_setzen(conn: sqlite3.Connection, inventar_nr: int, name: Any, version: Any) -> dict[str, Any]:
@@ -179,9 +197,11 @@ def name_setzen(conn: sqlite3.Connection, inventar_nr: int, name: Any, version: 
     neu = _text({"name": name}, "name")
     if neu is None:
         raise Fehler(t("fehler.name_fehlt"), "name")
+    vorher = _etikett_inhalt(conn, inventar_nr)
     conn.execute("""UPDATE produkt SET name = ?, version = version + 1, geaendert_am = strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
                     WHERE inventar_nr = ?""", (neu, inventar_nr))
     suchtext_erneuern(conn, inventar_nr)
+    _etikett_veraltet(conn, inventar_nr, vorher)
     return {"inventar_nr": inventar_nr, "name": neu, "version": alt["version"] + 1}
 
 
@@ -273,7 +293,7 @@ def suchtext_erneuern(conn: sqlite3.Connection, inv: int) -> None:
     """Name, Marke, Code, Inventarnummer, Kategorie, Maße und Filterwerte (z. B. „R11“) – SPEC 6.1."""
     p = conn.execute("""SELECT p.*, k.name AS kategorie FROM produkt p JOIN kategorie k ON k.id = p.kategorie_id
                         WHERE p.inventar_nr = ?""", (inv,)).fetchone()
-    teile = [p["name"], p["marke"], p["abmessungen"], p["kategorie"],
+    teile = [p["name"], p["marke"], p["artikelnummer"], p["abmessungen"], p["kategorie"],
              nummern.code(p["code_praefix"], p["kategorie_nr"], p["inventar_nr"]), str(p["inventar_nr"])]
     teile += [r[0] for r in conn.execute("""SELECT o.name FROM produkt_wert w JOIN filter_option o ON o.id = w.option_id
                                             WHERE w.produkt_id = ?""", (inv,))]

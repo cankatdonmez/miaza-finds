@@ -4,6 +4,7 @@
 {% block inhalt %}
 <div class="segs reiter nur-desktop" role="tablist">
   <button class="segbtn" type="button" role="tab" data-reiter="kategorien" aria-selected="true" aria-pressed="true">{{ t("einstellungen.reiter_kategorien") }}</button>
+  <button class="segbtn" type="button" role="tab" data-reiter="plan" aria-selected="false" aria-pressed="false">{{ t("einstellungen.reiter_plan") }}</button>
   <button class="segbtn" type="button" role="tab" data-reiter="allgemein" aria-selected="false" aria-pressed="false">{{ t("einstellungen.reiter_allgemein") }}</button>
 </div>
 
@@ -14,6 +15,13 @@
       <nav class="katliste" data-katliste aria-label="{{ t('einstellungen.reiter_kategorien') }}"></nav>
     </div>
     <div data-kat-editor><div class="card leer">{{ t("kat.waehlen") }}</div></div>
+  </div>
+</section>
+
+<section class="reiter-inhalt nur-desktop" data-reiter-inhalt="plan" hidden>
+  <div class="card stack">
+    <div class="sub num" data-plan-zahlen></div>
+    <div><a class="btn primary" href="/plan">{{ t("einstellungen.plan_bearbeiten") }}</a></div>
   </div>
 </section>
 

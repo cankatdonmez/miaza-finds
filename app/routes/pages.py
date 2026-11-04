@@ -17,18 +17,19 @@ router = APIRouter()
 
 # (Ziel, Textschlüssel, Symbol). Nur, was in diesem Dilim schon funktioniert; Ofis, Scannen und Sammlungen
 # kommen mit ihren Dilims dazu (SPEC 4.5). Etiketten-Druck gibt es nur am Desktop (SPEC 5).
-MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("etiketten", "menue.etiketten", "tag"),
+MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
+                 ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
+# „Mehr“ erst, wenn mehr als eine Seite hineingehört (D-029); bis dahin direkt die Einstellungen
+MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
                  ("einstellungen", "menue.einstellungen", "settings")]
-MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("mehr", "menue.mehr", "more")]
 # Seiten, die am Telefon unter „Mehr“ liegen
-MEHR_SEITEN = {"mehr", "einstellungen"}
 
 
 def _seite(request: Request, seite: str, titel_schluessel: str | None, vorlage: str | None = None,
            titel: str | None = None, **extra):
     return templates.TemplateResponse(request, f"{vorlage or seite}.html", {
         "seite": seite, "titel": titel or t(titel_schluessel), "menue_desktop": MENUE_DESKTOP,
-        "menue_telefon": MENUE_TELEFON, "mehr_seiten": MEHR_SEITEN, **extra,
+        "menue_telefon": MENUE_TELEFON, **extra,
     })
 
 
@@ -52,9 +53,35 @@ def einstellungen(request: Request):
     return _seite(request, "einstellungen", "einstellungen.titel")
 
 
+@router.get("/buero")
+def buero(request: Request):
+    return _seite(request, "buero", "buero.titel")
+
+
+@router.get("/f/{fach_id}")
+def fach_link(fach_id: int):
+    """Bleibender Link auf dem Fach-Etikett (SPEC 6.6): die Kennung des Fachs, nie sein Code."""
+    return RedirectResponse(f"/buero?fach={fach_id}", status_code=303)
+
+
+@router.get("/plan")
+def plan_bearbeiten(request: Request):
+    """Büroplan bearbeiten (SPEC 6.4): nur Desktop, erreichbar über Einstellungen › Büroplan."""
+    return _seite(request, "einstellungen", "plan.titel", vorlage="plan")
+
+
+@router.get("/plan/einheit/{einheit_id}")
+def faecher_bearbeiten(request: Request, einheit_id: int, db: sqlite3.Connection = Depends(get_db)):
+    """Fächer einer Einheit auf ihrem Foto (SPEC 6.4): nur Desktop."""
+    if db.execute("SELECT 1 FROM einheit WHERE id = ?", (einheit_id,)).fetchone() is None:
+        raise HTTPException(404)
+    return _seite(request, "einstellungen", "plan.titel", vorlage="fach", einheit_id=einheit_id)
+
+
 @router.get("/mehr")
-def mehr(request: Request):
-    return _seite(request, "mehr", "mehr.titel")
+def mehr():
+    """Alte Adresse: „Mehr“ enthält derzeit nur die Einstellungen (D-029)."""
+    return RedirectResponse("/einstellungen", status_code=303)
 
 
 @router.get("/system")

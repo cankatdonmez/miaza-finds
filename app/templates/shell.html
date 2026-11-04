@@ -19,7 +19,7 @@
 </main>
 <nav class="leiste" aria-label="{{ t('menue.haupt') }}">
   {% for ziel, text, ic in menue_telefon %}
-  <a class="leiste-link" href="/{{ ziel }}" {% if ziel == seite or (ziel == "mehr" and seite in mehr_seiten) %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ t(text) }}</span></a>
+  <a class="leiste-link" href="/{{ ziel }}" {% if ziel == seite %}aria-current="page"{% endif %}>{{ icon(ic) }}<span>{{ t(text) }}</span></a>
   {% endfor %}
 </nav>
 {% endblock %}

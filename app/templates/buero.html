@@ -1,0 +1,9 @@
+{% extends "shell.html" %}
+{# Büro (SPEC 6.5): links der Plan, rechts (Telefon: darunter) Einheit, Fächer und Produkte #}
+{% block inhalt %}
+<div class="buero">
+  <svg class="buero-svg" data-buero-svg role="img" aria-label="{{ t('plan.titel') }}"></svg>
+  <aside class="buero-panel card" data-buero-panel></aside>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/zeichnen.js?v={{ asset_v }}"></script><script src="/static/js/buero.js?v={{ asset_v }}"></script>{% endblock %}

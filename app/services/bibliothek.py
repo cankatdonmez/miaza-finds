@@ -24,14 +24,11 @@ STATUS = ("am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend")
 
 
 def _status_bedingung(status: str) -> str:
-    """Dilim 1 kennt noch keine Fächer und keine Entnahme: jedes physische Produkt ist „ohne Platz“.
-
-    Mit Dilim 2 (Fach) und 3 (Entnahme) ändert sich nur diese Funktion.
-    """
+    """Dilim 2: Platz über das Fach. Entnahme (in Benutzung, außer Haus) kommt mit Dilim 3; nur diese Funktion ändert sich."""
     return {
-        "ohne_platz": "p.art = 'physisch'",
+        "ohne_platz": "p.art = 'physisch' AND p.fach_id IS NULL",
         "fehlend": "p.name IS NULL",
-        "am_platz": "0",
+        "am_platz": "p.art = 'physisch' AND p.fach_id IS NOT NULL",
         "in_benutzung": "0",
         "ausser_haus": "0",
     }[status]
@@ -46,8 +43,11 @@ def _bedingungen(auftrag: dict[str, Any], mit_kategorie: bool = True) -> tuple[l
         wo.append("p.art = ?")
         args.append(auftrag["art"])
     if auftrag.get("farben"):
-        wo.append(f"EXISTS (SELECT 1 FROM produkt_farbe pf WHERE pf.produkt_id = p.inventar_nr AND pf.farbe IN ({_platz(auftrag['farben'])}))")
-        args += auftrag["farben"]
+        # eigene Grundfarben oder Farbtöne, die zu einer der gesuchten Grundfarben gehören (D-031)
+        wo.append(f"""(EXISTS (SELECT 1 FROM produkt_farbe pf WHERE pf.produkt_id = p.inventar_nr AND pf.farbe IN ({_platz(auftrag['farben'])}))
+                    OR EXISTS (SELECT 1 FROM produkt_wert pw JOIN filter_option fo ON fo.id = pw.option_id
+                               WHERE pw.produkt_id = p.inventar_nr AND fo.grundfarbe IN ({_platz(auftrag['farben'])})))""")
+        args += auftrag["farben"] * 2
     if auftrag.get("marken"):
         wo.append(f"p.marke IN ({_platz(auftrag['marken'])})")
         args += auftrag["marken"]

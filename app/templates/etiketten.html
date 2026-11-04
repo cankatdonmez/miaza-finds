@@ -1,9 +1,13 @@
 {% extends "shell.html" %}
 {% from "_macros.html" import icon %}
-{# Etiketten drucken (SPEC 6.6, nur Desktop): links auswählen, rechts die Bögen so, wie sie gedruckt werden #}
+{# Etiketten drucken (SPEC 6.6, nur Desktop): links auswählen, rechts die Bögen oder Rollenetiketten (D-035) so, wie sie gedruckt werden #}
 {% block inhalt %}
 <div class="etk">
   <section class="etk-wahl stack">
+    <div class="segs" role="group" aria-label="{{ t('etiketten.art') }}">
+      <button class="segbtn" type="button" data-etk-art="produkte" aria-pressed="true">{{ t("etiketten.art_produkte") }}</button>
+      <button class="segbtn" type="button" data-etk-art="faecher" aria-pressed="false">{{ t("etiketten.art_faecher") }}</button>
+    </div>
     <label class="suchfeld">{{ icon("search", 20) }}
       <input class="sucheingabe" type="search" data-etk-suche placeholder="{{ t('etiketten.suche') }}" aria-label="{{ t('etiketten.suche') }}" autocomplete="off"></label>
     <div class="pills" data-etk-vorwahl></div>
@@ -11,6 +15,10 @@
   </section>
   <section class="etk-vorschau stack">
     <div class="etk-kopf">
+      <div class="segs" role="group" aria-label="{{ t('etiketten.format') }}">
+        <button class="segbtn" type="button" data-etk-format="a4" aria-pressed="true">{{ t("etiketten.format_a4") }}</button>
+        <button class="segbtn" type="button" data-etk-format="rolle" aria-pressed="false">{{ t("etiketten.format_rolle") }}</button>
+      </div>
       <span class="sub" data-etk-anzahl></span>
       <span class="spacer"></span>
       <button class="btn primary" type="button" data-etk-pdf disabled>{{ t("etiketten.pdf") }}</button>

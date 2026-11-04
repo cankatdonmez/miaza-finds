@@ -5,6 +5,7 @@
   marke          neue Marke (nicht leer)
   art            "physisch" | "digital"
   farben_hinzu, farben_weg   Listen aus der Palette
+  platz          Fach-Kennung oder "ohne" (D-016); gilt nur für physische Produkte, digitale haben keinen Platz
   werte          {filter_id: wert} – nur wenn alle Produkte in derselben Kategorie sind und sie nicht wechselt;
                  None entfernt den Wert dieses Filters
 
@@ -56,7 +57,7 @@ def _schnappschuss(conn: sqlite3.Connection, z: sqlite3.Row) -> dict[str, Any]:
     inv = z["inventar_nr"]
     return {
         "inventar_nr": inv,
-        "felder": {k: z[k] for k in ("kategorie_id", "code_praefix", "kategorie_nr", "marke", "art", "etikett")},
+        "felder": {k: z[k] for k in ("kategorie_id", "code_praefix", "kategorie_nr", "marke", "art", "etikett", "fach_id")},
         "farben": [r[0] for r in conn.execute("SELECT farbe FROM produkt_farbe WHERE produkt_id = ?", (inv,))],
         "werte": [tuple(r) for r in conn.execute("SELECT filter_id, option_id, zahl, janein FROM produkt_wert WHERE produkt_id = ?", (inv,))],
     }
@@ -75,6 +76,14 @@ def anwenden(conn: sqlite3.Connection, ids: list[int], aenderung: dict[str, Any]
     hinzu, weg = aenderung.get("farben_hinzu") or [], aenderung.get("farben_weg") or []
     if any(f not in produkte.FARBEN for f in [*hinzu, *weg]):
         raise Fehler(t("fehler.farbe"), "farben")
+    platz = aenderung.get("platz")
+    fach_id = None
+    if isinstance(platz, int) and not isinstance(platz, bool):
+        if not conn.execute("SELECT 1 FROM fach WHERE id = ?", (platz,)).fetchone():
+            raise Fehler(t("fehler.fach_unbekannt"), "platz")
+        fach_id = platz
+    elif platz not in (None, "ohne"):
+        raise Fehler(t("fehler.fach_unbekannt"), "platz")
     werte = aenderung.get("werte") or {}
     if werte and (ziel is not None or len({z["kategorie_id"] for z in zeilen}) != 1):
         raise Fehler(t("fehler.sammel_werte"), "werte")
@@ -89,6 +98,8 @@ def anwenden(conn: sqlite3.Connection, ids: list[int], aenderung: dict[str, Any]
             conn.execute("UPDATE produkt SET marke = ? WHERE inventar_nr = ?", (marke, inv))
         if art:
             conn.execute("UPDATE produkt SET art = ? WHERE inventar_nr = ?", (art, inv))
+        if platz is not None or art == "digital":
+            conn.execute("UPDATE produkt SET fach_id = CASE WHEN art = 'physisch' THEN ? END WHERE inventar_nr = ?", (fach_id, inv))
         conn.executemany("INSERT OR IGNORE INTO produkt_farbe (produkt_id, farbe) VALUES (?, ?)", [(inv, f) for f in hinzu])
         conn.executemany("DELETE FROM produkt_farbe WHERE produkt_id = ? AND farbe = ?", [(inv, f) for f in weg])
         if werte:
@@ -135,7 +146,7 @@ def _zuruecksetzen(conn: sqlite3.Connection, s: dict[str, Any]) -> None:
     inv = s["inventar_nr"]
     f = s["felder"]
     conn.execute("""UPDATE produkt SET kategorie_id = :kategorie_id, code_praefix = :code_praefix, kategorie_nr = :kategorie_nr,
-                    marke = :marke, art = :art, etikett = :etikett, version = version + 1,
+                    marke = :marke, art = :art, etikett = :etikett, fach_id = :fach_id, version = version + 1,
                     geaendert_am = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE inventar_nr = :inv""", {**f, "inv": inv})
     conn.execute("DELETE FROM produkt_farbe WHERE produkt_id = ?", (inv,))
     conn.executemany("INSERT INTO produkt_farbe (produkt_id, farbe) VALUES (?, ?)", [(inv, x) for x in s["farben"]])

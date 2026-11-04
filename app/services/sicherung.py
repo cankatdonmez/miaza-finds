@@ -159,27 +159,48 @@ def _media_ersetzen(media_dir: Path, neu: Path | None) -> int:
 
 # ---------- Löschen ----------
 
+# Teile, die einzeln gelöscht werden können (D-025)
+TEILE = ("produkte", "kategorien", "plan", "nummern")
+
+
 def wirkung(conn: sqlite3.Connection) -> dict[str, int]:
-    """Was die Sammellöschung trifft – steht vor dem Klick da (SPEC 6.13)."""
-    return {"produkte": conn.execute("SELECT count(*) FROM produkt").fetchone()[0],
-            "fotos": conn.execute("SELECT count(*) FROM foto").fetchone()[0],
-            "kategorien": conn.execute("SELECT count(*) FROM kategorie WHERE fest = 0").fetchone()[0]}
+    """Was die Löschung je Teil trifft – steht vor dem Klick da (SPEC 6.13)."""
+    zahl = lambda sql: conn.execute(sql).fetchone()[0]
+    return {"produkte": zahl("SELECT count(*) FROM produkt"), "fotos": zahl("SELECT count(*) FROM foto"),
+            "kategorien": zahl("SELECT count(*) FROM kategorie WHERE fest = 0"),
+            "raeume": zahl("SELECT count(*) FROM raum"), "einheiten": zahl("SELECT count(*) FROM einheit"),
+            "faecher": zahl("SELECT count(*) FROM fach")}
 
 
-def produkte_loeschen(conn: sqlite3.Connection, media_dir: Path) -> None:
-    """Alle Produkte mit Fotos; Kategorien, Filter und Nummernzähler bleiben (Nummern kommen nicht wieder)."""
-    conn.execute("DELETE FROM produkt")
-    shutil.rmtree(media_dir / "fotos", ignore_errors=True)
+def teile_pruefen(teile: Any) -> set[str]:
+    """Kategorien gibt es nur mit ihren Produkten; Nummern neu nur, wenn nichts mehr auf sie verweist."""
+    if not isinstance(teile, list) or not teile or any(x not in TEILE for x in teile):
+        raise Fehler(t("fehler.art"), "teile")
+    gewaehlt = set(teile)
+    if "kategorien" in gewaehlt:
+        gewaehlt.add("produkte")
+    if "nummern" in gewaehlt and not {"produkte", "plan"} <= gewaehlt:
+        raise Fehler(t("fehler.nummern_nur_mit"), "teile")
+    return gewaehlt
 
 
-def alles_loeschen(conn: sqlite3.Connection, media_dir: Path) -> None:
-    """Neuanfang, z. B. nach der Testphase: Produkte, Kategorien (außer „Sonstiges“), Filter; Zähler beginnen bei 1.
-
-    Vorher gedruckte Etiketten werden dadurch ungültig – das sagt die Oberfläche vor dem Klick.
-    """
-    conn.execute("DELETE FROM produkt")
-    conn.execute("DELETE FROM filter")
-    conn.execute("DELETE FROM kategorie WHERE fest = 0")
-    conn.execute("UPDATE kategorie SET naechste_nr = 1, version = version + 1")
-    conn.execute("UPDATE zaehler SET wert = 0")
-    shutil.rmtree(media_dir / "fotos", ignore_errors=True)
+def loeschen(conn: sqlite3.Connection, media_dir: Path, teile: set[str]) -> None:
+    """Gewählte Teile löschen (D-025). Vorher gedruckte Etiketten werden bei „nummern“ ungültig – das sagt die Oberfläche."""
+    if "produkte" in teile:
+        conn.execute("DELETE FROM produkt")
+        shutil.rmtree(media_dir / "fotos", ignore_errors=True)
+    if "kategorien" in teile:
+        conn.execute("DELETE FROM filter")
+        conn.execute("DELETE FROM kategorie WHERE fest = 0")
+    if "plan" in teile:
+        # Einheiten nehmen ihre Fächer mit; Produkte werden „Ohne Platz“ (ON DELETE SET NULL)
+        conn.execute("DELETE FROM einheit")
+        conn.execute("DELETE FROM raum")
+        conn.execute("""UPDATE plan SET version = version + 1, unterlage = NULL, unterlage_breite = NULL, unterlage_hoehe = NULL,
+                        unterlage_x = 0, unterlage_y = 0, unterlage_massstab = 1, unterlage_drehung = 0, unterlage_im_buero = 0""")
+        shutil.rmtree(media_dir / "plan", ignore_errors=True)
+        shutil.rmtree(media_dir / "einheiten", ignore_errors=True)
+    if "nummern" in teile:
+        conn.execute("UPDATE kategorie SET naechste_nr = 1, version = version + 1")
+        conn.execute("UPDATE zaehler SET wert = 0")
+        conn.execute("DELETE FROM sqlite_sequence WHERE name = 'fach'")

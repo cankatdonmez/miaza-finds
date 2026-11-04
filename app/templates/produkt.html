@@ -3,4 +3,5 @@
 {% block inhalt %}
 <form class="produktform" data-produktform data-inventar-nr="{{ inventar_nr or '' }}" novalidate></form>
 {% endblock %}
-{% block scripts %}<script src="/static/js/produkt.js?v={{ asset_v }}"></script>{% endblock %}
+{% block scripts %}<script src="/static/js/zuschnitt.js?v={{ asset_v }}"></script>
+<script src="/static/js/produkt.js?v={{ asset_v }}"></script>{% endblock %}

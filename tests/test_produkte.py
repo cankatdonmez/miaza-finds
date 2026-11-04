@@ -68,11 +68,11 @@ def test_alle_felder_und_werte(client, fliese, tag):
     r11 = f["Rutschhemmung"]["optionen"][1]["id"]
     matt, glaenzend = (o["id"] for o in f["Oberfläche"]["optionen"])
     p = _neu(client, fliese["id"], marke="Mutina", abmessungen="60 × 120 cm", link="mutina.it/terrazzo", anzahl=3,
-             notiz="Muster vom Messestand", farben=["terracotta", "beige"], preis={"betrag": "1.234,5", "einheit": "m2"},
+             notiz="Muster vom Messestand", farben=["orange", "beige"], preis={"betrag": "1.234,5", "einheit": "m2"},
              werte={str(f["Rutschhemmung"]["id"]): r11, str(f["Stärke"]["id"]): "10,5",
                     str(f["Oberfläche"]["id"]): [matt, glaenzend], str(f["Rektifiziert"]["id"]): True})
     assert p["link"] == "https://mutina.it/terrazzo" and p["anzahl"] == 3
-    assert sorted(p["farben"]) == ["beige", "terracotta"]
+    assert sorted(p["farben"]) == ["beige", "orange"]
     assert p["preis"] == {"cent": 123450, "einheit": "m2", "datum": "2026-11-01"}
     assert p["werte"] == {str(f["Rutschhemmung"]["id"]): r11, str(f["Stärke"]["id"]): 10.5,
                           str(f["Oberfläche"]["id"]): [matt, glaenzend], str(f["Rektifiziert"]["id"]): True}

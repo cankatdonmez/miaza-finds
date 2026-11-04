@@ -4,7 +4,7 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 
 ## Durum (01.11.2026)
 
-- **SPEC 0.5** onaylı; dilim 1 bitti ve `main`e birleştirildi. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
+- **SPEC 0.5** onaylı; dilim 1 `main`de, dilim 2 (Büro) `dilim-2/buero` dalında. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
 - Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni miaza counts'tan (`C:\Users\canka\Documents\Zeiterfassung`) alınır; iki uygulama aynı ailenin üyesi gibi görünmeli.
 
 ## Belge düzeni (counts ile aynı)
@@ -18,7 +18,7 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 %USERPROFILE%\miaza-local\finds\.venv\Scripts\python -m pytest -q
 start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\data\finds.db)
 ```
-- Geliştirme sunucusu: `.claude/launch.json` "dev" → 127.0.0.1:8091, `dev.db`. CSS/JS değişince sunucu yeniden başlatılır.
+- Geliştirme sunucusu: `.claude/launch.json` "dev" → 127.0.0.1:8091, `dev.db`, `--reload` yok (Drive klasöründe takılıyor). Her kod değişikliğinde sunucu yeniden başlatılır.
 - Portlar ailede sabittir (D-001): counts 8080/8081, finds 8090/8091.
 
 ## Dosyalar
@@ -27,6 +27,7 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 |---|---|
 | `SPEC.md` | Ürün spesifikasyonu (0.5). Ne yapılacağının tek kaynağı. |
 | `DESIGN-PRINCIPLES.md` | Tasarım ilkeleri, kontrol listesi ve karar tablosu. |
+| `THEMA.md` | Renk teması (D-023, D-024): tokenlar, kurallar, oda renkleri; counts için yol. |
 | `DEGERLENDIRME-0.3.md` | SPEC 0.4'ü doğuran dört aşamalı değerlendirme. |
 | `demo/` | Tıklanabilir demonun kaynakları (`*.dc.html`) ve ofis planı PDF'i. Demo SPEC 0.3 düzeyindedir, 0.4'e güncellenmedi. |
 
@@ -74,9 +75,9 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 
 ## Açık sorular (SPEC 11)
 
-1. Brother yazıcı modeli (v2).
+1. ~~Brother yazıcı modeli~~ → QL-570, 38 mm rulo (D-035).
 2. HTTPS yolu: büronun alan adı ve sağlayıcısı, ofisteki modem.
-3. Etiket kâğıdının düzen PDF'i. Kullanıcı gönderecek.
+3. ~~Etiket kâğıdının düzen PDF'i~~ → geldi, uygulandı (D-033).
 4. Google Drive masaüstü uygulaması mini PC'de mi?
 5. de-AT biçimleri ve Almanca terimlerin kesinleşmesi.
 6. "finds" ve "counts" vurgu renkleri.

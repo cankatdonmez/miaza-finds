@@ -96,26 +96,26 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 |---|---|---|
 | Arayüz yazı tipi | Figtree (400, 500, 600); sayılar ve kodlar IBM Plex Mono (400, 500) — miaza counts ile aynı (D-002) | aynı |
 | **Yazı ölçeği** | **11 · 12,5 · 13,5 · 15 · 19 · 28 · 52 px** (`--fs-mini … --fs-hero`, counts ile aynı; başka boyut kullanılmaz) | aynı |
-| Zemin | `#F3F4F6` | `#0F1115` |
-| Kart | `#FFFFFF`, kenar `#E7E9EE` | `#181B21`, kenar `#2A2F38` |
+| Zemin | `#FFFFFF` | `#18191B` (antrasit) |
+| Kart | `#FFFFFF`, kenar `#E8E8E6` | `#212224`, kenar `#303134` |
 | Kart köşesi | 14–20 px | aynı |
-| Metin / ikincil metin (≥ 4.5:1) | `#16181D` / `#5F6672` | `#ECEEF2` / `#A0A7B4` |
-| Vurgu (tek renk) | `#2F5BEA` | `#6E8BFF` |
+| Metin / ikincil metin (≥ 4.5:1) | `#1C1C1E` / `#66656A` | `#EDEDEC` / `#A1A1A0` |
+| Vurgu (tek renk, amber; D-023) | düğme `#F2A43A`, yazı `#9A5600`, zemin `#FDF0DA` | düğme `#F5AE3D`, yazı `#FFC870`, zemin `#3A2E1B` |
 | Durum: Yerinde | `#DCFCE7` / `#166534` | `#14351F` / `#86EFAC` |
 | Durum: Kullanımda | `#DBEAFE` / `#1E40AF` | `#172A4D` / `#93C5FD` |
-| Durum: Büro dışında | `#FEF3C7` / `#92400E` | `#3A2A0B` / `#FCD34D` |
+| Durum: Büro dışında | `#FBE5EE` / `#9D2F5E` | `#45263A` / `#F2A7C3` |
 | Tür: Dijital | `#EDE9FE` / `#5B21B6` | `#2A1F4A` / `#C4B5FD` |
-| Plan: odalar | nötr gri zemin, adı üzerinde | aynı, koyu tonda |
-| Plan: ünite | yarı saydam, tek ton; seçili ünite vurgu renginde | aynı |
+| Plan: odalar | 6 pastelden seçilen renk, adı üzerinde (D-024) | aynı, koyu tonlarda |
+| Plan: ünite | odasının bir ton koyusu; seçili ünitenin kenarı kalın ve en koyu tonda | odasının bir ton açığı |
 
-**Renk kuralı:** arayüzde renk sadece şu anlamları taşır: vurgu, üç durum, dijital tür. Kategori ve oda renkleri yoktur. Malzemenin kendi renkleri (fotoğraf, renk etiketleri) bu kuralın dışındadır.
+**Renk kuralı:** arayüzde renk sadece şu anlamları taşır: vurgu, üç durum, dijital tür ve planda oda renkleri (D-024). Kategori renkleri yoktur. Renk üstüne başka aileden renk gelmez: yazı, zemininin ailesinden bir tondur (D-023). Ayrıntı: `THEMA.md`. Malzemenin kendi renkleri (fotoğraf, renk etiketleri) bu kuralın dışındadır.
 
 - Renkler yalnızca tonla değil açıklıkla da ayrışır (renk körlüğü).
 - Yazı tipleri sunucudan verilir; dış servisten çekilmez.
 
 ### 4.5 Bileşen kuralları
 - **Dokunma hedefi:** en az 44 × 44 px.
-- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha.
+- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
 - **Masaüstünde Okut:** üst çubukta, arama kutusunun yanında küçük bir QR ikonu. Kameralı cihazda kamerayı açar ve telefonla aynı sonuca gider. Kamera yoksa ikon gizlenir; kod arama kutusuna yazılabilir ("265" yeterli).
 - **Filtreler:** telefonda alttan açılan panelde, masaüstünde her zaman açık sol sütunda. Seçili filtreler arama alanının altında, çarpıyla kaldırılabilen etiketler olarak durur.
@@ -143,7 +143,7 @@ Efektler uygulamayı **anlaşılır ve canlı** yapar; süs olmaz, kullanımı z
 - **Plan yakınlaşması:** üniteye dokununca plan o üniteye yumuşakça yaklaşır.
 - **Ürün kartları:** ünitenin etrafında düzenli bir yay üzerinde açılır. Aranan ürün öne çıkar ve tek farklı duran kart odur.
 - **Bölme kartları:** bölme seçilince içindeki ürünler yelpaze gibi açılır.
-- **Spot ışığı:** fotoğrafta seçili bölme dışında her yer kararır.
+- **Spot ışığı:** fotoğrafta seçili bölme dışında her yer kararır. Spot bölmeden bölmeye kayar, seçili bölmenin kenarı nabız gibi atar; her bölmede "kod · ürün sayısı" etiketi (D-026).
 - **Fareyle önizleme (masaüstü):**
   - Üniteye gelince küçük önizleme: ürün sayısı ve küçük resimler.
   - Bölmeye gelince spot ışığı önizlemesi.
@@ -154,6 +154,8 @@ Efektler uygulamayı **anlaşılır ve canlı** yapar; süs olmaz, kullanımı z
 - Geçişler 150–800 ms arasıdır; animasyon sürerken de tıklanabilir.
 - Hedefler fareyi takip ederek yer değiştirmez.
 - "Hareketi azalt" açıksa animasyonlar kısalır veya kapanır.
+
+> **D-017:** kart yayı ve yelpaze önce sade hâlde (liste); gerçek veriyle "Tekrar bak" adımında eklenir.
 
 **Çok ürünlü durumlar:**
 - Ünite çevresinde tek tek ürün yerine dolu bölmeler kart destesi olarak gösterilir (en fazla 18 deste).
@@ -215,6 +217,7 @@ Her kavramın tek bir adı vardır; ekranlarda, bildirimlerde ve belgelerde ayn�
 | Başka cihazda düzenlenen kayıt | Düzenleniyor | Wird bearbeitet | |
 | Proje listesi / moodboard | Koleksiyonlar | Sammlungen | Telefon menüsünde de aynı ad. |
 | QR okutma | Okut | Scannen | |
+| Ofis görünümü (menü) | Ofis | Büro | D-017 |
 | Fiyat birimi | "/ m²" biçiminde, kelimesiz | "/ m²"; dışa aktarımda sütun adı **ME** | "Einheit" kelimesi fiyatta kullanılmaz; ünite ile karışır. |
 
 - **"Kütüphane" bölümünün Almanca adı** kesinleşirken dikkat: doküman klasörünün adı da "Bibliothek". İkisi karışmamalı (ör. bölüm "Bibliothek", klasör "Dokumente"; ya da tersi).
@@ -257,13 +260,15 @@ Daha (telefon) ─ istatistik
 - **Kart:** görsel, ad, marka, kategori, fiyat; dijitalse veya yerinde değilse durum rozeti.
 - Masaüstünde karta gelince konum kodu belirir; tıklanınca ofis planında gösterir.
 - Ürün detayı telefonda tam ekran, masaüstünde sağdan açılan panelde açılır.
+- Fiziki ürünün detayında "Büroda göster"in yanında **"Yerini değiştir"** (yeri yoksa "Yer seç"): Büro yer seçme modunda açılır; plan → ünite → bölme → **"Buraya koy"**. Sonra ürüne dönülür; onay yok, geri al var. Çubukta "Konumsuz" da seçilebilir (D-021, D-022).
 
 ### 6.2 Ürün kaydı
 - **Alanlar:** tür (fiziki/dijital), ad, marka, kategori, ebat, ürün linki, fotoğraf(lar), adet, renkler, not, kategoriye özel alanlar.
 - **Zorunlu olan sadece ad.** Kategori son kullanılan kategoriyle gelir. Gerisi sonra tamamlanır.
-- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir.
+- **Kısa form (D-029):** yeni üründe fotoğraf, tür, ad, kategori ve filtreleri görünür; diğer alanlar kapalı "Weitere Angaben" altında. Taslağı atan düğmenin adı her yerde "Verwerfen".
+- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Tek fotoğraf eklenince kırpma ekranı açılır ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027). Düzenlemede fotoğraf silme ve ekleme de "Speichern"e kadar taslaktır; "Abbrechen" geri alır. Seri sonrası ad listesinin altında "Speichern" çubuğu vardır (D-028).
 - **Fiyat:** değer (€), birim (m², m, adet, paket) ve girildiği tarih. Fiyat güncellenince tarih bugün olur.
-- **Renkler:** sabit bir paletten elle seçilir (beyaz, bej, kahve, terracotta, altın, pembe, yeşil, mavi, gri, siyah); tek dokunuşla. Fotoğraftan otomatik çıkarma v2'dedir.
+- **Renkler (D-031):** ortak ana renklerden elle, birden çok seçilir (Weiß, Beige, Braun, Rot, Orange, Gelb, Grün, Blau, Violett, Rosa, Grau, Schwarz, Metall, Mehrfarbig). Kategoriye özel **renk tonları** (Eiche, Weinrot …) kategorinin "Farbe" filtresinden seçilir; her ton bir ana renge bağlıdır ve o ana renk aramasında da bulunur. Fotoğraftan otomatik çıkarma v2'dedir.
 - **Konum (fiziki ürün):** ünite seçilir, sonra fotoğrafta bölmeye dokunulur.
 - **Dijitalden fizikiye çevirme:** tek adımda yapılır. Kod, bilgiler, fiyat ve dokümanlar korunur; konum seçilir, etiket baskı listesine eklenir.
 
@@ -330,6 +335,9 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 | Tekli seçim | değerler birbirini dışlar | listeden **bir** değer | birden fazla seçenek işaretlenebilir | R değeri: R9 *ya da* R10 |
 | Çoklu seçim | değerler birbirinden bağımsız | listeden **birden fazla** değer | seçeneklerden biri eşleşirse | Yüzey: Mat *ve* Yapılı |
 | Var / yok | tek özellik | Var / Yok | Fark etmez / Var / Yok | Rektifiye: Var |
+| Renk (D-031) | kategoriye özel tonlar; her ton bir ana renge bağlı | tonlardan **birden fazla** | seçeneklerden biri eşleşirse; ana renk filtresi de bulur | Holz: Eiche, Nussbaum · Stoff: Weinrot, Burgund |
+
+- **Farbkasten (D-031):** "Farbe" filtresi ayarlarda ana renklerin kutuları olarak görünür; tonlar kutularda durur. Kutudaki "+" yeni ton açar (ad + renk), ton başka kutuya sürüklenince ana rengi değişir. Yeni filtre her kutuda ana rengin adıyla bir tonla başlar; değiştirilmeyen ton öyle kalır (D-032).
 
 - **Filtre ekleme akışı:** kategori → tip (her tipin yanında yukarıdaki örnek yazar) → ad → seçenekler veya birim → kaydet.
 - Mevcut filtrenin seçenekleri sonradan düzenlenebilir: eklenir, yeniden adlandırılır, silinir. Silinen bir seçenek kaç üründe kullanılıyorsa önce söylenir.
@@ -343,19 +351,21 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Görünürlük:**
   - Düzenleyicide: göster / gizle. Görünüm sabit ve soluktur; ayrı bir saydamlık ayarı yoktur.
   - Ofis görünümünde: Ayarlar › Ofis planı › "Altlığı ofis görünümünde göster".
-  - Altlık gizliyken ofis görünümü nötr odaları (adlarıyla) ve üniteleri gösterir.
+  - Altlık gizliyken ofis görünümü renkli odaları (adlarıyla) ve üniteleri gösterir; altlık açıkken odalar %50 saydamdır (D-024).
 - Plan ölçekli değildir.
 
 **Çizim öğeleri:**
-- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi seçilmez. Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
+- **Odalar:** dikdörtgen veya poligonla çizilir; adı verilir; taşınır, köşeleri düzenlenir, silinir. Rengi oda panelinde 6 pastelden seçilir; yeni oda sıradakini alır (D-024). Odanın numarası ünite kodlarının ilk hanesidir. Oda ayrımı **sadece** bu çizimle yapılır.
 - **Üniteler:**
   - Dikdörtgen veya poligonla çizilir.
   - Bulunduğu odaya otomatik bağlanır ve sıradaki kodu alır (ör. 4.1); kod elle değiştirilebilir.
   - **İsteğe bağlı bir adı** olur ("Schrank links", "Rollcontainer").
   - Hiçbir odanın içinde olmayan ünite uyarıyla işaretlenir.
+  - **Dikdörtgen ünite sürüklenince (D-019)** oda kenarına veya başka bir ünitenin kenarına yaklaşınca yapışır, kenara paralel döner, kenar boyunca kayar; çekince ayrılır. Başka bir ünitenin içine giremez, onu itmez. Alt tuşu yapışmayı kapatır.
 - **Ünite fotoğrafı:** çekilir veya mevcut görsel seçilir.
-- **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir.
+- **Bölmeler:** fotoğraf üzerinde dikdörtgen veya poligonla çizilir. Raf gözü, kapaklı bölme veya çekmece fark etmez; hepsi bölmedir. Ünite gibi **isteğe bağlı bir adı** olur ("Obere Schublade"); kodun yanında bilgi olarak görünür (D-020).
 - **Kod şeması:** `Oda.Ünite.Bölme`, ör. **2.2.5**.
+- **Yazılar (D-018):** oda adı ve ünite kodu şeklin içindeki en geniş noktada durur, şekle sığacak kadar büyür ama ekranda okunur sınırlar içinde kalır. Ünitenin adı sığarsa kodun altında yazılır.
 
 **Numaralama:**
 - Yeni bölme **sona eklenir**; mevcut kodlar kendiliğinden değişmez.
@@ -363,7 +373,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
 **Silme:** ünite veya bölme silinince içindeki ürünler konumsuz kalır. Bu, kaydetmeden önce söylenir (4.6); ürünler "Konumsuz" filtresinde görünür.
 
-**Düzenleme yeri:** çizim masaüstündedir. Telefonda sadece ünite fotoğrafı yüklenebilir.
+**Düzenleme yeri:** çizim masaüstündedir. Telefonda sadece ünite fotoğrafı yüklenebilir. Dar ekranda düzenleyici yerine "Am Desktop zeichnen" kartı görünür (D-030).
 
 ### 6.5 Konum bulma senaryoları
 1. **Ürünü bul:** kütüphanede ara → "Ofiste göster" → plan üniteye yaklaşır, kartlar açılır, ürün öne çıkar → "Fotoğrafta göster" → bölme spot ışığıyla vurgulanır.
@@ -373,15 +383,15 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
 ### 6.6 QR kodları ve etiketler
 - **Ürün QR'ı** sadece envanter numarasına giden kalıcı linki içerir (ör. `…/p/265`).
-- **Ürün etiketi:** ad, QR ve ürün kodu. **Konum yazmaz.**
-- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
+- **Ürün etiketi (D-033, D-034):** sabit düzen, her kenarda 3 mm güvenli alan, QR (26 mm) dikeyde ortalı ve solda, metne geniş sütun; sol kenarda yan dönmüş "miaza" (Comfortaa SemiBold, QR yüksekliğinin ~%70'i); solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** İki biçim (D-035): **A4-Bogen** 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`) ve **Rolle 38 mm** (Brother QL-570, DK-22225), 70 × 38 mm, her etiket bir PDF sayfası (`app/etikett_rolle.json`).
+- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında alt alta oda, ünite ve bölme adı; boş olan atlanır (D-036). Ünite odanın, bölme ünitenin altında birer kademe içeride, „└“ çizgileriyle bağlı (kademeli ağaç); yazı kodun altından QR'ın alt kenarına kadar olan alanı doldurur, uzun ad ikinci satıra kayar, „…“ son çaredir (D-037). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
-  - Seçilenler A4'e otomatik dizilir; sağda önizleme görünür.
-  - **Düzen, kullanılan etiket kâğıdından gelir.** Hazır kesim çizgili yapışkanlı A4 kâğıt kullanılır; etiketler çekip çıkarılır. Kâğıdın düzen PDF'i alınır ve etiket ölçüleri, kenar boşlukları ve aralıklar buna göre bir **düzen tanımı** olarak kaydedilir (yaklaşık 20'li, ≈ 48 × 52 mm). Kâğıt değişirse sadece bu tanım değişir; kod değişmez.
-  - İlk sürümde tek bir düzen tanımı vardır. Birden fazla kâğıt türünü yöneten bir ekran yoktur.
-  - Çıktı PDF olarak alınır; basılanlar "basıldı" olarak işaretlenir.
-- **Brother etiket yazıcısı:** v2, model teyit edilince.
+  - Önizlemenin üstünde biçim seçilir: „A4-Bogen“ ya da „Rolle 38 mm“ (D-035). A4'te seçilenler bogene otomatik dizilir; rulo önizlemesi etiketleri tek tek gösterir.
+  - **Düzen, kullanılan etiket kâğıdından gelir.** Hazır kesim çizgili yapışkanlı A4 kâğıt kullanılır; etiketler çekip çıkarılır. Kâğıdın düzen PDF'inden etiket ölçüleri, kenar boşlukları ve aralıklar bir **düzen tanımı** olarak kaydedilir. Kâğıt ya da rulo değişirse sadece bu tanım değişir; kod değişmez.
+  - İki sabit düzen tanımı vardır (A4, rulo). Kâğıt türlerini yöneten bir ekran yoktur.
+  - Çıktı PDF olarak alınır; basılanlar "basıldı" olarak işaretlenir. Rulo PDF'i yazıcı sürücüsüyle tek işte basılır; sürücü her etiketten sonra keser.
+- **Brother etiket yazıcısı:** QL-570, rulo PDF'iyle (D-035). Uygulamadan doğrudan yazıcıya basmak v2.
 
 ### 6.7 Ürün alma ve yerine koyma
 - **Ürünü al:** kim (bu cihazın kişisi önceden seçili), nereye (büro içinde / büro dışına), not.
@@ -402,6 +412,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
    - **Başka bölme:** *"Bu ürünün yeri 2.2.5. Okuttuğun bölme 2.3.1."* → "2.2.5'e götüreceğim" veya "Yeni yeri 2.3.1 olsun".
    - **Okutmadan onayla:** durum "Yerinde" olur; kayıtta "onaysız" diye işaretlenir. Kullanıcı sorgulanmaz.
 4. **Toplu yerleştirme:** önce bölme QR'ı okutulur ("Buraya yerleştir"), sonra ürünler art arda okutulur. Yeri başka olan ürün için yukarıdaki soru sorulur.
+   - **Uygulama içi tarayıcı olmadan (D-016):** bölme sayfasındaki "Hier einordnen" cihazı 30 dakika yerleştirme moduna alır; telefonun kamerasıyla açılan her ürün sayfasında "In 2.2.5 einordnen" düğmesi çıkar. Masaüstünde toplu düzenlemede "Platz" alanı.
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter.
 
 ### 6.8 Koleksiyonlar ve sipariş listesi
@@ -467,9 +478,12 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
     - Yeni kurulumda: önce yönetici oluşturulur, sonra "Verileri al" ile dosya veya klasör seçilir. Mevcut veri kaldırılır, eskisi yüklenir (önce otomatik güvenlik yedeği alınır).
     - Eski bir sürümden gelen veri, açılışta güncel şemaya yükseltilir; daha yeni bir sürümden gelen veri reddedilir.
     - Yeni kurulumun yönetici şifresi ve güvenlik anahtarı geçerli kalır; eski kurulumunkiler alınmaz.
-  - Toplu silme (D-013):
-    - "Alle Produkte löschen": ürünler ve fotoğrafları; kategoriler, filtreler ve numara sayaçları kalır.
-    - "Alles löschen (Neuanfang)": ürünler, kategoriler (Sonstiges hariç) ve filtreler; numaralar yeniden 1'den başlar (deneme verisinden sonra temiz başlangıç). Basılmış etiketler geçersiz olur.
+  - Seçerek silme (D-025): onay kutuları, üstte "Alles auswählen":
+    - **Produkte:** ürünler ve fotoğrafları.
+    - **Kategorien und Filter:** Sonstiges hariç; seçilince Produkte de seçilir.
+    - **Büroplan:** odalar, üniteler, bölmeler, ünite fotoğrafları, altlık; ürünler konumsuz kalır.
+    - **Nummern zurücksetzen:** envanter ve bölme numaraları 1'den başlar; yalnız Produkte ve Büroplan da seçiliyse. Basılmış etiketler geçersiz olur.
+  - Dışa aktarma her zaman bütün veriyi kapsar.
   - Diğer güvenlik işleri (ör. şifre değiştirme, güvenlik anahtarını yenileme).
 - Her işlem öncesinde etkisi yazılır ("280 ürün ve 1.140 fotoğraf silinecek"). Geri dönüşü olmayan her işlemden önce kendiliğinden yedek alınır.
 
@@ -479,7 +493,7 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
 |---|---|
 | Kategori | id, ad, önek (2 harf, benzersiz), sabit mi, sıra, sonraki kategori no |
 | Filtre | id, kategori, ad, tip (ölçü / tekli / çoklu / var-yok), seçenekler, birim, sıra |
-| Ürün | **envanter no (kalıcı kimlik)**, kategori no, kod, tür, ad, marka, kategori, ebat, link, adet, not, özellik değerleri, renkler, bölme, etiket durumu, eksik bilgi mi, eklenme tarihi, sürüm |
+| Ürün | **envanter no (kalıcı kimlik)**, kategori no, kod, tür, ad, marka, marka kodu (Artikelnummer), kategori, ebat, link, adet, not, özellik değerleri, renkler, bölme, etiket durumu, eksik bilgi mi, eklenme tarihi, sürüm |
 | Fiyat | ürün, değer, birim, para birimi (€), tarih |
 | Fotoğraf | ürün, dosya, sıra |
 | Doküman | ürün, göreli yol, tür |
@@ -627,7 +641,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 **v2 ve sonrası**
 - Sipariş listesi: miktar, fiyat hesabı, isteğe bağlı vergi, fiyatlı/fiyatsız PDF ve Excel
 - Linkten doldurma, fotoğraftan otomatik renk
-- Brother etiket yazıcısı
+- Brother etiket yazıcısına uygulamadan doğrudan baskı (D-035)
 - Fiyat geçmişi
 - "Klasörde göster" yardımcısı
 - Kanıt gelirse: 6.12'deki bekleyen fikirler
@@ -656,7 +670,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
   - Etiket düzeni kâğıdın PDF'inden alınacak (6.6)
 
 **Açık kalanlar:**
-1. Brother etiket yazıcısının modeli nedir, çalışıyor mu?
+1. ~~Brother etiket yazıcısının modeli~~ → QL-570, 38 mm rulo (DK-22225), çalışıyor (D-035).
 2. **HTTPS yolu (8.2):** Büronun alan adı var mı (ör. miaza.at), yönetim erişimi kimde ve hangi sağlayıcıda? Varsa A, yoksa B. Ofiste hangi modem kullanılıyor?
 3. Kullanılacak etiket kâğıdının düzen PDF'i (ürün adı ya da kâğıt). Gelince düzen tanımı ona göre yapılır.
 4. Google Drive masaüstü uygulaması mini PC'de mi, başka bir bilgisayarda mı?

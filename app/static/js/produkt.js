@@ -4,7 +4,7 @@
   const form = $("[data-produktform]");
   if (!form) return;
 
-  const FARBEN = ["weiss", "beige", "braun", "terracotta", "gold", "rosa", "gruen", "blau", "grau", "schwarz"];
+  const FARBEN = MF.GRUNDFARBEN;
   const EINHEITEN = ["m2", "m", "stueck", "paket"];
   const LETZTE = "mf-letzte-kategorie";
   const inventarNr = Number(form.dataset.inventarNr) || null;
@@ -14,8 +14,13 @@
   let kategorien = [];
   let original = null;       // gespeicherter Stand (null = neu)
   let p = null;              // Formularzustand
-  let neueFotos = [];        // bei neuen Produkten: Dateien, die nach dem Anlegen hochgeladen werden
+  // Fotos sind bis „Speichern“ Entwurf (D-028): neue werden danach hochgeladen, entfernte danach gelöscht
+  let neueFotos = [];        // {datei, url}
+  let wegFotos = new Set();  // Kennungen gespeicherter Fotos, die beim Speichern gelöscht werden
   let speichert = false;
+  // „Weitere Angaben“ (D-029): bei neuen Produkten zu, bis man es öffnet; bleibt über Neuzeichnen hinweg offen
+  let mehrOffen = null;
+  let verwerfenFrage = 0;     // Zeitpunkt der ersten Berührung von „Verwerfen“ (zweite Berührung bestätigt)
 
   // Telefon: Kamera-App über „capture“. Desktop ignoriert „capture“ → eigene Kamera, nur wenn es eine gibt (D-014)
   const TELEFON = matchMedia("(pointer: coarse)").matches;
@@ -27,12 +32,12 @@
 
   function daten() {
     return {
-      name: p.name, art: p.art, kategorie_id: p.kategorie_id, marke: p.marke, abmessungen: p.abmessungen,
+      name: p.name, art: p.art, kategorie_id: p.kategorie_id, marke: p.marke, artikelnummer: p.artikelnummer, abmessungen: p.abmessungen,
       link: p.link, anzahl: p.anzahl === "" ? null : p.anzahl, notiz: p.notiz, farben: p.farben,
       preis: p.preis.betrag.trim() ? p.preis : null, werte: p.werte, code: p.code, version: p.version,
     };
   }
-  const geaendert = () => neueFotos.length > 0 || JSON.stringify(daten()) !== JSON.stringify(original);
+  const geaendert = () => neueFotos.length > 0 || wegFotos.size > 0 || JSON.stringify(daten()) !== JSON.stringify(original);
 
   // ---------- Laden ----------
   async function laden() {
@@ -40,14 +45,14 @@
     if (inventarNr) {
       const r = await api("GET", "/api/produkte/" + inventarNr);
       p = {
-        ...r, marke: r.marke || "", abmessungen: r.abmessungen || "", link: r.link || "", notiz: r.notiz || "",
+        ...r, marke: r.marke || "", artikelnummer: r.artikelnummer || "", abmessungen: r.abmessungen || "", link: r.link || "", notiz: r.notiz || "",
         name: r.name || "", anzahl: r.anzahl ?? "", code: "behalten", code_alt: r.code,
         preis: r.preis ? { betrag: MF.euro(r.preis.cent), einheit: r.preis.einheit, datum: r.preis.datum }
                        : { betrag: "", einheit: "m2" },
       };
     } else {
       const k = kategorie(letzteKategorie()) || kategorien.find((x) => x.fest) || kategorien[0];
-      p = { name: "", art: "physisch", kategorie_id: k.id, marke: "", abmessungen: "", link: "", anzahl: "",
+      p = { name: "", art: "physisch", kategorie_id: k.id, marke: "", artikelnummer: "", abmessungen: "", link: "", anzahl: "",
             notiz: "", farben: [], preis: { betrag: "", einheit: "m2" }, werte: {}, fotos: [], code: "behalten", version: null };
     }
     original = daten();
@@ -90,11 +95,14 @@
         ${k.filter.map(zeichneFilter).join("")}
       </section>
 
-      <section class="card stack">
+      <details class="card mehr-angaben" data-mehr ${mehrAuf() ? "open" : ""}>
+        <summary>${esc(t("produkt.weitere_angaben"))}</summary>
+        <div class="stack">
         <div class="feld-reihe">
           <label class="feld"><span>${esc(t("produkt.marke"))}</span><input class="eingabe" data-feld="marke" value="${esc(p.marke)}" maxlength="80"></label>
-          <label class="feld"><span>${esc(t("produkt.abmessungen"))}</span><input class="eingabe" data-feld="abmessungen" value="${esc(p.abmessungen)}" maxlength="80"></label>
+          <label class="feld"><span>${esc(t("produkt.artikelnummer"))}</span><input class="eingabe" data-feld="artikelnummer" value="${esc(p.artikelnummer)}" maxlength="60"></label>
         </div>
+        <label class="feld"><span>${esc(t("produkt.abmessungen"))}</span><input class="eingabe" data-feld="abmessungen" value="${esc(p.abmessungen)}" maxlength="80"></label>
         <div class="feld-reihe">
           <label class="feld"><span>${esc(t("produkt.preis"))}</span>
             <span class="preis-zeile"><input class="eingabe num" data-feld="betrag" value="${esc(p.preis.betrag)}" inputmode="decimal" placeholder="0,00">
@@ -113,23 +121,31 @@
               <span class="farbpunkt farbe-${f}"></span><span>${esc(t("farbe." + f))}</span></button>`).join("")}</div>
         </div>
         <label class="feld"><span>${esc(t("produkt.notiz"))}</span><textarea class="eingabe notiz" data-feld="notiz" rows="3" maxlength="2000">${esc(p.notiz)}</textarea></label>
-      </section>
+        </div>
+      </details>
 
       ${inventarNr ? `<div class="produkt-fuss"><span class="num sub">${esc(p.code_alt || "")}</span><button class="linkbtn" type="button" data-aktion="loeschen">${esc(t("produkt.loeschen"))}</button></div>` : ""}
 
       <div class="formleiste">
-        <a class="btn" href="${zurueck}" data-aktion="abbrechen">${esc(t("produkt.abbrechen"))}</a>
+        <a class="btn" href="${zurueck}" data-aktion="abbrechen">${esc(t("produkt.verwerfen"))}</a>
         <button class="btn primary" type="submit">${esc(t("produkt.speichern"))}</button>
       </div>`;
   }
 
+  // Offen: beim Bearbeiten, wenn schon etwas eingetragen ist, oder wenn man es geöffnet hat
+  function mehrAuf() {
+    if (mehrOffen !== null) return mehrOffen;
+    return !!inventarNr || !!(p.marke || p.artikelnummer || p.abmessungen || p.link || p.notiz || p.anzahl || p.farben.length || p.preis.betrag);
+  }
+
   function zeichneFotos() {
-    const gespeichert = (p.fotos || []).map((f) => `
+    const gespeichert = (p.fotos || []).filter((f) => !wegFotos.has(f.id)).map((f) => `
       <figure class="foto"><img src="/media/fotos/${esc(f.datei)}-320.webp" alt="" loading="lazy">
         <button class="foto-x" type="button" data-foto-weg="${f.id}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button></figure>`);
     const wartend = neueFotos.map((f, i) => `
       <figure class="foto"><img src="${f.url}" alt="">
-        <button class="foto-x" type="button" data-foto-neu-weg="${i}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button></figure>`);
+        <button class="foto-x" type="button" data-foto-neu-weg="${i}" aria-label="${esc(t("produkt.foto_entfernen"))}">${icon("close", 18)}</button>
+        <button class="foto-x foto-zuschnitt" type="button" data-foto-neu-zuschnitt="${i}" aria-label="${esc(t("zuschnitt.titel"))}" title="${esc(t("zuschnitt.titel"))}">${icon("zuschnitt", 18)}</button></figure>`);
     return [...gespeichert, ...wartend].join("");
   }
 
@@ -148,7 +164,7 @@
     } else {
       const gewaehlt = f.typ === "mehrfach" ? (wert || []) : (wert ? [wert] : []);
       knoepfe = f.optionen.map((o) =>
-        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${gewaehlt.includes(o.id)}">${esc(o.name)}</button>`).join("");
+        `<button class="pill" type="button" data-option="${f.id}" data-o="${o.id}" aria-pressed="${gewaehlt.includes(o.id)}">${f.farbe ? MF.tonPunkt(o) : ""}${esc(o.name)}</button>`).join("");
     }
     return `<div class="feld">${kopf}<div class="pills">${knoepfe}</div></div>`;
   }
@@ -163,6 +179,8 @@
     else if (feld === "kategorie_id") return;    // „change“ zeichnet neu
     else p[feld] = el.value;
   });
+
+  form.addEventListener("toggle", (e) => { if (e.target.matches("[data-mehr]")) mehrOffen = e.target.open; }, true);
 
   form.addEventListener("change", (e) => {
     const el = e.target;
@@ -208,19 +226,42 @@
       zeichneFilterNeu();
       return;
     }
+    if (b.dataset.fotoNeuZuschnitt !== undefined) {
+      const f = neueFotos[Number(b.dataset.fotoNeuZuschnitt)];
+      const z = await MF.zuschneiden(f.datei);
+      if (z && z !== f.datei) {
+        URL.revokeObjectURL(f.url);
+        Object.assign(f, { datei: z, url: URL.createObjectURL(z) });
+        $("[data-fotos]", form).innerHTML = zeichneFotos();
+      }
+      return;
+    }
     if (b.dataset.fotoNeuWeg !== undefined) {
       URL.revokeObjectURL(neueFotos[Number(b.dataset.fotoNeuWeg)].url);
       neueFotos.splice(Number(b.dataset.fotoNeuWeg), 1);
       $("[data-fotos]", form).innerHTML = zeichneFotos();
       return;
     }
-    if (b.dataset.fotoWeg) { await fotoLoeschen(Number(b.dataset.fotoWeg)); return; }
+    if (b.dataset.fotoWeg) {
+      wegFotos.add(Number(b.dataset.fotoWeg));
+      $("[data-fotos]", form).innerHTML = zeichneFotos();
+      return;
+    }
     if (b.dataset.aktion === "kamera") { kameraOeffnen(); return; }
     if (b.dataset.aktion === "loeschen") { await loeschen(); return; }
     if (b.dataset.aktion === "abbrechen" && geaendert()) {
-      if (!window.confirm(t("allg.ungespeichert"))) { e.preventDefault(); return; }
+      // Erste Berührung fragt im Knopf selbst, die zweite (innerhalb von 4 s) verwirft (D-029)
+      if (Date.now() - verwerfenFrage > 4000) {
+        e.preventDefault();
+        verwerfenFrage = Date.now();
+        b.textContent = t("produkt.wirklich_verwerfen");
+        b.classList.add("warnend");
+        setTimeout(() => { if (Date.now() - verwerfenFrage >= 4000) { b.textContent = t("produkt.verwerfen"); b.classList.remove("warnend"); } }, 4100);
+        return;
+      }
       original = daten();      // bewusst verworfen: kein zweiter Hinweis beim Verlassen
       neueFotos = [];
+      wegFotos.clear();
     }
   });
 
@@ -236,18 +277,16 @@
 
   // ---------- Fotos: zwei Wege, am Desktop auch Ziehen und Einfügen (SPEC 4.5) ----------
   async function fotosHinzu(dateien) {
-    const bilder = dateien.filter((f) => f.type.startsWith("image/"));
+    // Manche Kameras liefern keinen Dateityp; ob es ein Bild ist, prüft der Server
+    let bilder = dateien.filter((f) => !f.type || f.type.startsWith("image/"));
     if (!bilder.length) return;
-    if (!inventarNr) {
-      neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
-      $("[data-fotos]", form).innerHTML = zeichneFotos();
-      return;
+    // Ein einzelnes Foto gleich zuschneiden (D-027); bei mehreren nicht, das hielte zu lange auf
+    if (bilder.length === 1) {
+      const z = await MF.zuschneiden(bilder[0]);
+      if (!z) return;
+      bilder = [z];
     }
-    for (const f of bilder) {
-      try {
-        p.fotos.push(await hochladen(inventarNr, f));
-      } catch (err) { toast(err.message, { fehler: true }); }
-    }
+    neueFotos.push(...bilder.map((f) => ({ datei: f, url: URL.createObjectURL(f) })));
     $("[data-fotos]", form).innerHTML = zeichneFotos();
   }
 
@@ -258,14 +297,6 @@
     const d = await res.json().catch(() => ({}));
     if (!res.ok) throw new MF.ApiError(d.fehler?.text || t("allg.fehler"), null, res.status);
     return d;
-  }
-
-  async function fotoLoeschen(id) {
-    try {
-      await api("DELETE", `/api/produkte/${inventarNr}/fotos/${id}`);
-      p.fotos = p.fotos.filter((f) => f.id !== id);
-      $("[data-fotos]", form).innerHTML = zeichneFotos();
-    } catch (err) { toast(err.message, { fehler: true }); }
   }
 
   // ---------- Kamera am Desktop (nur sichere Verbindung: localhost oder HTTPS, SPEC 8.2) ----------
@@ -361,6 +392,10 @@
       const r = inventarNr ? await api("PUT", "/api/produkte/" + inventarNr, daten())
                            : await api("POST", "/api/produkte", daten());
       try { localStorage.setItem(LETZTE, String(p.kategorie_id)); } catch { /* egal */ }
+      for (const id of wegFotos) {
+        try { await api("DELETE", `/api/produkte/${r.inventar_nr}/fotos/${id}`); } catch (err) { toast(err.message, { fehler: true }); }
+      }
+      wegFotos.clear();
       if (neueFotos.length) {
         toast(t("produkt.fotos_laden"));
         for (const f of neueFotos) {
