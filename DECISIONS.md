@@ -455,3 +455,14 @@ Sonradan cevaplananlar (Cankat): ürün adları her zaman üreticinin kendi site
 (Verano Türkçe sayfadan geldiği için Türkçe; İtalyan ürünü İtalyanca). Ton ana renge bağlanır (Antrasit → Schwarz) — doğru.
 Fach etiketinde adlar girildiği gibi (büyük harfe çevrilmez). Ürün kodu etikette boşluksuz: „FL-001-001“.
 → SPEC 6.1, 6.2, 6.6, 6.7, 4.5.
+
+## D-046 · 04.11.2026 · Dilim 4 beginnt mit der Statistik; „Mehr“ öffnet sich
+Cankat wählte die Reihenfolge: **Statistik** → danach Sammlungen, Dokumente, Nachtsicherung (jeweils eigene Entscheidung).
+- **Telefon:** Leiste wird Bibliothek · Büro · Scannen · **Mehr**. „Mehr“ (`/mehr`) ist eine kurze Liste: Statistik, Einstellungen.
+  Das war in D-029 so vorgesehen („Daha“ öffnet sich, sobald mehr als eine Seite hineingehört). Die alte Adresse `/mehr` leitet nicht mehr um.
+- **Statistik (`/statistik`, SPEC 6.10):** Gesamt, Physisch, Digital, Am Platz, Außer Haus, Ohne Platz, Fehlende Angaben, darunter die
+  Verteilung nach Kategorie (Balken). Jede Zahl ist ein Link in die Bibliothek mit dem passenden Filter (`status`, `art`, `kategorie`).
+  Serverseitig gerendert, kein JS. Eigene Zähler gibt es nicht: `bibliothek.zaehler` bleibt die einzige Quelle (Statuszeile = Statistik).
+- **Desktop:** keine Seitenleisten-Eintrag (SPEC 4.5 bleibt); die Statuszeile der Bibliothek ist der Ersatz. Die Seite funktioniert
+  trotzdem, wenn man sie per Adresse öffnet.
+→ SPEC 4.5, 6.10.
