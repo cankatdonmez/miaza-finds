@@ -240,19 +240,26 @@ def _info_zeilen(info: list[str], breite: float, max_zeilen: int = 4) -> list[st
 
 
 def _im_raster(c: canvas.Canvas, x: float, y: float, w: float, h: float, qr_inhalt: str,
-               teile: list[tuple[str, float, float, str]]) -> None:
+               teile: list[tuple], linien: list[tuple[float, float, float, float]] = ()) -> None:
     """Zeichnet „miaza“, QR und Textzeilen im festen Raster innerhalb des Sicherheitsrands (D-034).
 
     Das Raster füllt den Bereich zwischen den Rändern und ist auf jedem Etikett gleich; senkrecht steht der QR mittig.
-    teile: (Schrift, Größe in pt, Grundlinie in mm ab QR-Oberkante, Text).
+    teile: (Schrift, Größe in pt, Grundlinie in mm ab QR-Oberkante, Text[, linker Rand in mm ab Etikettkante]).
+    linien: (x1, y1, x2, y2) in mm; x ab Etikettkante, y ab QR-Oberkante.
     """
     oben = _qr_oben(y + h, h)
     _marke(c, x, y, h)
     _qr(c, qr_inhalt, x, oben)
     c.setFillColor(black)
-    for schrift, g, grund, text in teile:
+    for schrift, g, grund, text, *links in teile:
         c.setFont(schrift, g)
-        c.drawString(x + TEXT_LINKS * mm, oben - grund * mm, text)
+        c.drawString(x + (links[0] if links else TEXT_LINKS) * mm, oben - grund * mm, text)
+    if linien:
+        c.setStrokeColor(black)
+        c.setLineWidth(0.5)
+        c.setLineCap(1)
+        for x1, y1, x2, y2 in linien:
+            c.line(x + x1 * mm, oben - y1 * mm, x + x2 * mm, oben - y2 * mm)
 
 
 def _spalte(w: float) -> float:
@@ -370,8 +377,39 @@ def fach_pdf(conn: sqlite3.Connection, ids: list[int], basis_url: str, format: s
     return _boegen(_faecher(conn, ids), _fach_zeichnen(basis_url), b)
 
 
-FACH_ORT_PT, FACH_ORT_MIN_PT = 9, 7
-FACH_ORT_GRUNDLINIE, FACH_ORT_ABSTAND = 13.5, 5.75    # drei Zeilen; die letzte endet an der QR-Unterkante
+# Ortsangaben auf dem Fach-Etikett (D-036, D-037), Maße in mm
+ORT_PT, ORT_EIN_ZEILE_MIN_PT, ORT_MIN_PT = 10, 7.5, 6.5
+ORT_LUECKE = 2.2          # unter dem Code
+ORT_EINZUG = 3.2          # Einheit und Fach stehen rechts der Baumlinie
+ORT_ZEILE, ORT_GRUPPE = 1.18, 0.45     # Zeilenabstand und Zusatzabstand zwischen den Angaben, je Schriftgröße
+VERSAL = 0.7              # Versalhöhe je Schriftgröße (Figtree, Plex Mono)
+
+
+def _ort_satz(namen: list[str], breite: float, hoehe: float) -> tuple[float, list[list[str]]]:
+    """Größte Schrift, bei der Raum, Einheit, Fach in die Höhe passen. Erst einzeilig (bis ORT_EIN_ZEILE_MIN_PT), dann mit
+    Umbruch auf höchstens zwei Zeilen je Angabe (bis ORT_MIN_PT); erst danach „…“ (D-037).
+    breite in pt, hoehe in mm (von der Oberkante der ersten bis zur Grundlinie der letzten Zeile)."""
+    def spalte(i: int) -> float:
+        return breite - (ORT_EINZUG * mm if i else 0)
+
+    def satz(g: float, max_zeilen: int) -> list[list[str]] | None:
+        zeilen = [_umbrechen(n, "Figtree", g, spalte(i), max_zeilen=9) for i, n in enumerate(namen)]
+        if any(len(z) > max_zeilen or any(pdfmetrics.stringWidth(t_, "Figtree", g) > spalte(i) for t_ in z)
+               for i, z in enumerate(zeilen)):
+            return None
+        g_mm = g / 72 * 25.4
+        noetig = g_mm * (VERSAL + ORT_ZEILE * (sum(map(len, zeilen)) - 1) + ORT_GRUPPE * (len(zeilen) - 1))
+        return zeilen if noetig <= hoehe else None
+
+    for max_zeilen, kleinste in ((1, ORT_EIN_ZEILE_MIN_PT), (2, ORT_MIN_PT)):
+        g = ORT_PT
+        while g >= kleinste:
+            if (zeilen := satz(g, max_zeilen)) is not None:
+                return g, zeilen
+            g -= 0.5
+    # Notfall: kleinste Schrift, je Angabe zwei Zeilen, der Rest mit „…“
+    return ORT_MIN_PT, [[_passend(z, "Figtree", ORT_MIN_PT, spalte(i)) for z in _umbrechen(n, "Figtree", ORT_MIN_PT, spalte(i))]
+                        for i, n in enumerate(namen)]
 
 
 def _fach_zeichnen(basis_url: str):
@@ -381,15 +419,40 @@ def _fach_zeichnen(basis_url: str):
         groesse = 22
         while groesse > 10 and pdfmetrics.stringWidth(f["code"], "PlexMono", groesse) > breite:
             groesse -= 1
-        # Oberkante der Ziffern bündig mit der QR-Oberkante, wie der Produktname (Versalhöhe ≈ 0,7 em)
-        teile = [("PlexMono", groesse, groesse * 0.7 / 72 * 25.4, f["code"])]
-        # Raum, Einheit, Fach untereinander, wie eingegeben; leere entfallen, lange werden kleiner, zuletzt „…“ (D-036)
-        for i, name in enumerate(n for n in f["orte"] if n.strip()):
-            g = FACH_ORT_PT
-            while g > FACH_ORT_MIN_PT and pdfmetrics.stringWidth(name, "Figtree", g) > breite:
-                g -= 0.5
-            teile.append(("Figtree", g, FACH_ORT_GRUNDLINIE + i * FACH_ORT_ABSTAND, _passend(name, "Figtree", g, breite)))
-        _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile)
+        # Oberkante der Ziffern bündig mit der QR-Oberkante, wie der Produktname
+        code_grund = groesse * VERSAL / 72 * 25.4
+        teile: list[tuple] = [("PlexMono", groesse, code_grund, f["code"])]
+        linien: list[tuple[float, float, float, float]] = []
+        namen = [n.strip() for n in f["orte"] if n.strip()]
+        if namen:
+            # Raum, Einheit, Fach füllen den Platz zwischen Code und QR-Unterkante; die letzte Zeile schließt mit ihr ab
+            oben_frei = code_grund + ORT_LUECKE
+            g, saetze = _ort_satz(namen, breite, QR_SEITE - oben_frei)
+            g_mm = g / 72 * 25.4
+            zeile, gruppe = ORT_ZEILE * g_mm, ORT_GRUPPE * g_mm
+            noetig = g_mm * VERSAL + zeile * (sum(map(len, saetze)) - 1) + gruppe * (len(saetze) - 1)
+            # Übriger Platz verteilt sich gleich auf den Abstand unter dem Code und die Abstände zwischen den Angaben
+            # (je höchstens 1,2 Schriftgrößen); was dann noch frei ist, bleibt unten
+            extra = min((QR_SEITE - oben_frei - noetig) / len(saetze), g_mm * 1.2)
+            gruppe += extra
+            grund = oben_frei + extra + g_mm * VERSAL
+            ast_x = TEXT_LINKS + 0.9
+            mitte = g_mm * VERSAL / 2           # halbe Versalhöhe: dort setzt der Ast an
+            stamm_oben = None
+            for i, saetze_i in enumerate(saetze):
+                links = TEXT_LINKS + (ORT_EINZUG if i else 0)
+                if i == 0:
+                    stamm_oben = grund + g_mm * 0.35 + zeile * (len(saetze_i) - 1)
+                else:
+                    linien.append((ast_x, grund - mitte, links - 0.8, grund - mitte))     # Ast (└)
+                    stamm_unten = grund - mitte
+                for z in saetze_i:
+                    teile.append(("Figtree", g, grund, z, links))
+                    grund += zeile
+                grund += gruppe                        # zwischen den Angaben: Zeilen- plus Gruppenabstand
+            if len(saetze) > 1:
+                linien.append((ast_x, stamm_oben, ast_x, stamm_unten))                   # Stamm
+        _im_raster(c, x, y, w, h, f"{basis_url.rstrip('/')}/f/{f['id']}", teile, linien)
     return zeichnen
 
 

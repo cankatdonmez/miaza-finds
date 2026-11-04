@@ -218,3 +218,15 @@ def test_rolle_ein_etikett_je_seite_mit_rand(client, produkte):
     assert client.get("/api/etiketten", params={"q": "x"}).json()["rolle"]["hoehe_mm"] == 38
     assert client.get(f"/api/etiketten/vorschau/{produkte['ids'][0]}.png", params={"format": "rolle"}).status_code == 200
     assert client.get("/api/etiketten/pdf", params={"nr": produkte["ids"][:1], "format": "zettel"}).status_code == 422
+
+
+def test_fach_orte_umbrechen_vor_kuerzen():
+    """D-037: lange Ortsnamen laufen in eine zweite Zeile, statt mit „…“ gekürzt zu werden; kurze bleiben groß und einzeilig."""
+    from app.services import etiketten
+    etiketten._schriften()
+    breite = (etiketten.bogen("rolle")["breite_mm"] - etiketten.TEXT_LINKS - etiketten.TEXT_RAND_RECHTS) / 25.4 * 72
+    g, saetze = etiketten._ort_satz(["Workspace", "Eckschrank", "Obere Schublade"], breite, 17)
+    assert g >= 9 and all(len(z) == 1 for z in saetze)
+    g, saetze = etiketten._ort_satz(["Materialbibliothek Erdgeschoss", "Hochschrank mit Glastüren", "Obere Reihe ganz links hinten"], breite, 17)
+    assert g >= etiketten.ORT_MIN_PT and any(len(z) == 2 for z in saetze)
+    assert not any("…" in zeile for z in saetze for zeile in z)

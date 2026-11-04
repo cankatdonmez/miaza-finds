@@ -24,7 +24,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
   - D-029/D-030 (tasarım denetimi): kısa ürün formu, 44 px hedefler, geri al, tek ad „Verwerfen“, telefonda Einstellungen.
   - D-031: 14 ana renk (Mehrfarbig dahil) + kategoriye özel „Farbton“ filtresi; ayarlarda Farbkasten (sürükle-bırak).
   - D-033–35: etiket A4 3 × 8 ya da rulo 70 × 38 mm (QL-570, sayfa başına bir etiket); 3 mm kenar içinde sabit ızgara:
-    „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer. D-036: Fach etiketinde oda/ünite/bölme alt alta.
+    „miaza“ | QR 26 mm (dikey orta) | geniş metin sütunu; Artikelnummer. D-036/37: Fach etiketinde oda/ünite/bölme ağaç gibi, alanı dolduruyor.
 - Denenmedi: gerçek telefonda kamera, Docker, gerçek ofis planıyla uzun çizim.
 - Dev: `.claude/launch.json` „dev“ artık `--reload`suz (Drive klasöründe yeniden yükleme takılıyordu); kod değişince
   sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
