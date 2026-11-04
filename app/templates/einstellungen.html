@@ -35,10 +35,17 @@
         <button class="segbtn" type="button" data-darstellung="light">{{ t("darstellung.hell") }}</button>
         <button class="segbtn" type="button" data-darstellung="dark">{{ t("darstellung.dunkel") }}</button>
       </div>
+      {# Person dieses Geräts (D-038): vorausgewählt beim Nehmen, Name bei „Wird bearbeitet“ #}
+      <div id="person-titel" class="sub">{{ t("einstellungen.person") }}</div>
+      <div class="pills" role="group" aria-labelledby="person-titel" data-geraet-person></div>
     </div>
+  </div>
+  <div class="card">
+    <h2 class="abschnitt">{{ t("einstellungen.personen") }}</h2>
+    <div class="optionen" data-personen></div>
   </div>
   {# Seltenes und Folgenschweres: klein ganz unten (SPEC 6.13, D-006) #}
   <p class="system-link"><a class="linkbtn leise" href="/system">{{ t("system.link") }}</a></p>
 </section>
 {% endblock %}
-{% block scripts %}<script src="/static/js/einstellungen.js?v={{ asset_v }}"></script><script src="/static/js/kategorien.js?v={{ asset_v }}"></script>{% endblock %}
+{% block scripts %}<script src="/static/js/einstellungen.js?v={{ asset_v }}"></script><script src="/static/js/personen.js?v={{ asset_v }}"></script><script src="/static/js/kategorien.js?v={{ asset_v }}"></script>{% endblock %}

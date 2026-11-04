@@ -29,7 +29,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-3/bewegung` (Dilim 2 main'
 - Dev: „dev“ `--reload`suz (Drive'da takılıyor); kod değişince sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
 
 ## Sıradaki
-1. Dilim 3 (D-038): kişiler + Bu cihaz → Al/Yerine koy → Okut → bölme onayı → toplu yerleştirme → „Wird bearbeitet“.
+1. Dilim 3 (D-038): ~~kişiler + Bu cihaz~~ (Migration 008, Ayarlar › Allgemein) → Al/Yerine koy → Okut → bölme onayı → toplu yerleştirme → „Wird bearbeitet“.
 2. Cankat: gerçek dünya testi (etiket bas, telefonla okut); geri bildirim tek liste.
 3. Kart yayı / yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle.
 

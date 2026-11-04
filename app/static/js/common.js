@@ -190,5 +190,11 @@ const MF = (() => {
     ? `<span class="farbpunkt klein" style="background:${o.hex}"></span>`
     : `<span class="farbpunkt klein farbe-${esc(o.grundfarbe || "grau")}"></span>`);
 
-  return { GRUNDFARBEN, tonPunkt, $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben };
+  // Person dieses Geräts (D-038), in Einstellungen › Allgemein gewählt; null = niemand gewählt
+  function geraetPerson() {
+    try { return Number(localStorage.getItem("mf-person")) || null; } catch (e) { return null; }
+  }
+
+  return { GRUNDFARBEN, tonPunkt, $, $$, esc, icon, t, api, ApiError, toast, toastNachher, datum, euro, einordnen, fotoMitFaechern, fotoBeleben,
+           geraetPerson };
 })();

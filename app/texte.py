@@ -135,6 +135,13 @@ DE: dict[str, str] = {
     "einstellungen.reiter_plan": "Büroplan",
     "einstellungen.plan_bearbeiten": "Plan bearbeiten",
     "einstellungen.plan_zahlen": "{r} Räume · {e} Einheiten · {f} Fächer",
+    "einstellungen.person": "Wer nutzt dieses Gerät?",
+    "einstellungen.personen": "Personen",
+    "personen.neu": "Person hinzufügen",
+    "personen.name": "Name",
+    "personen.entfernen": "{name} entfernen",
+    "personen.entfernt": "{name} entfernt",
+    "personen.leer": "Noch keine Personen. Unten hinzufügen.",
 
     # Büroplan bearbeiten (SPEC 6.4, 4.6)
     "plan.titel": "Büroplan",
@@ -417,6 +424,8 @@ DE: dict[str, str] = {
     "fehler.veraltet": "Das wurde inzwischen an einem anderen Gerät geändert. Bitte neu laden.",
     "fehler.name_fehlt": "Bitte einen Namen eingeben.",
     "fehler.name_zu_lang": "Der Name ist zu lang (höchstens 60 Zeichen).",
+    "fehler.person_doppelt": "{name} gibt es schon.",
+    "fehler.person_unbekannt": "Diese Person gibt es nicht mehr.",
     "fehler.kategorie_name_vergeben": "Diese Kategorie gibt es schon.",
     "fehler.praefix_form": "Das Präfix besteht aus zwei Buchstaben, z. B. FL.",
     "fehler.praefix_vergeben": "Dieses Präfix hat schon die Kategorie „{name}“.",
