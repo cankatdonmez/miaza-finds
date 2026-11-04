@@ -468,6 +468,12 @@ select.eingabe{padding-right:6px}
 .detail-status{flex:1 1 200px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
 .detail-status .sub{font-size:var(--fs-text)}
 .fach-scan-titel{font-weight:600}
+/* „Wird bearbeitet“ (D-044): schmaler Streifen über dem Bereich, der Bereich bleibt sichtbar, aber unberührbar */
+.bearbeitet-streifen{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:12px;padding:10px 14px;border-radius:var(--r-ctrl);
+  background:var(--accent-soft);color:var(--accent-ink);font-size:var(--fs-text)}
+.bearbeitet-streifen.frei{background:var(--st-platz-soft);color:var(--st-platz)}
+.bearbeitet-streifen .btn{margin-left:auto}
+.nur-lesen{opacity:.72}
 /* Einordnen per Scan (D-043) */
 .einordnen-kopf{display:flex;align-items:center;gap:12px}
 .eingeordnet{display:flex;flex-direction:column;gap:2px}

@@ -5,7 +5,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-3/bewegung` (Dilim 2 main'
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** main'de; 208 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** main'de; 212 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
@@ -29,7 +29,7 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-3/bewegung` (Dilim 2 main'
 - Dev: „dev“ `--reload`suz (Drive'da takılıyor); kod değişince sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
 
 ## Sıradaki
-1. Dilim 3 (D-038): ~~kişiler + Bu cihaz~~ (Migration 008) → ~~Al/Yerine koy~~ (D-039) → ~~Okut~~ (D-040, D-041: HTTPS yokken kamera doğrudan) → ~~bölme onayı~~ (D-042, Migration 010 ayar) → ~~toplu yerleştirme~~ (D-043) → „Wird bearbeitet“.
+1. Dilim 3 (D-038): ~~kişiler + Bu cihaz~~ (Migration 008) → ~~Al/Yerine koy~~ (D-039) → ~~Okut~~ (D-040, D-041: HTTPS yokken kamera doğrudan) → ~~bölme onayı~~ (D-042, Migration 010 ayar) → ~~toplu yerleştirme~~ (D-043) → ~~„Wird bearbeitet“~~ (D-044). Dilim 3 tamam; gerçek telefon + canlı kamera denenmedi.
 2. Cankat: gerçek dünya testi (etiket bas, telefonla okut); geri bildirim tek liste.
 3. Kart yayı / yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle.
 

@@ -10,6 +10,8 @@
   const inventarNr = Number(form.dataset.inventarNr) || null;
   // Nach Speichern/Abbrechen: bestehendes Produkt → seine Detailseite, neues → Bibliothek
   const zurueck = inventarNr ? `/produkt/${inventarNr}` : "/bibliothek";
+  // Bestehendes Produkt: anderen zeigen, dass es gerade bearbeitet wird (SPEC 4.9)
+  if (inventarNr) MF.bearbeitung.beginnen("produkt", inventarNr, form);
 
   let kategorien = [];
   let original = null;       // gespeicherter Stand (null = neu)

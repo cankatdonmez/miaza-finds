@@ -5,6 +5,8 @@
   const svg = $("[data-plan-svg]");
   if (!svg) return;
   const NS = "http://www.w3.org/2000/svg";
+  // Plan und Einheitsfotos teilen sich einen Hinweis „Wird bearbeitet“ (D-044)
+  MF.bearbeitung.beginnen("plan", 0, $("[data-plan]"));
 
   let entwurf = null;            // {version, unterlage, unterlage_im_buero, raeume[], einheiten[]}
   let geladen = null;            // letzter Stand vom Server (Fotos, Fächerzahlen)
