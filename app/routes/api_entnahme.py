@@ -39,3 +39,18 @@ def zuruecklegen_rueckgaengig(entnahme_id: int, daten: dict[str, Any] = Body(def
     with transaction(db):
         nr = entnahme.zuruecklegen_zuruecknehmen(db, entnahme_id, daten.get("platz"))
     return {"produkt": produkte.lesen(db, nr)}
+
+
+@router.post("/produkte/{inventar_nr}/einordnen")
+def einordnen(inventar_nr: int, daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    """In ein Fach legen, beim Einordnen per Scan oder „In … einordnen“ (D-016, D-043)."""
+    with transaction(db):
+        rueck = entnahme.einordnen(db, inventar_nr, daten.get("fach_id"))
+    return {"rueckgaengig": rueck, "produkt": produkte.lesen(db, inventar_nr)}
+
+
+@router.post("/produkte/{inventar_nr}/einordnen/zurueck")
+def einordnen_rueckgaengig(inventar_nr: int, daten: dict[str, Any] = Body(...), db: sqlite3.Connection = Depends(get_db)):
+    with transaction(db):
+        entnahme.einordnen_zuruecknehmen(db, inventar_nr, daten)
+    return {"produkt": produkte.lesen(db, inventar_nr)}

@@ -165,10 +165,8 @@
     if (b.dataset.aktion === "schliessen") setzen({ einheit: null, fach: null, produkt: null });
     if (b.dataset.aktion === "zurueck") setzen({ fach: null, produkt: null });
     if (b.dataset.aktion === "ablegen") ablegen(zustand.fach, fachInhalt?.code);
-    if (b.dataset.aktion === "einordnen") {
-      MF.einordnen.starten({ id: zustand.fach, code: fachInhalt?.code });
-      toast(t("einordnen.gestartet", { code: fachInhalt?.code }));
-    }
+    // Einordnen per Scan (D-043); die Seite startet auch den 30-Minuten-Modus für die Kamera-App (D-016)
+    if (b.dataset.aktion === "einordnen") location.href = `/scannen?fach=${zustand.fach}`;
   });
 
   // Ablegen: speichern, zurück zum Produkt; dort bietet die Meldung „Rückgängig“

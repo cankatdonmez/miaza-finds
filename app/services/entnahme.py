@@ -114,3 +114,22 @@ def zuruecklegen_zuruecknehmen(conn: sqlite3.Connection, entnahme_id: int, platz
         fach = platz.get("fach")
         plan.platz_setzen(conn, e["produkt_id"], None if fach is None else _ganzzahl(fach))
     return e["produkt_id"]
+
+
+def einordnen(conn: sqlite3.Connection, inventar_nr: int, fach_id: Any) -> dict[str, Any]:
+    """Produkt in ein Fach legen (D-043). War es genommen, gilt es damit als zurückgelegt (bestätigt):
+    der Scan zeigt, dass es im Fach liegt. Liefert, was „Rückgängig“ braucht."""
+    fach = _ganzzahl(fach_id)
+    e = offen(conn, inventar_nr)
+    vorher = plan.platz_setzen(conn, inventar_nr, fach)["vorher"]
+    if e:
+        conn.execute("UPDATE entnahme SET zurueck_am = ?, fach_bestaetigt = 1 WHERE id = ?", (zeit.jetzt(), e["id"]))
+    return {"vorher": vorher, "entnahme": e["id"] if e else None}
+
+
+def einordnen_zuruecknehmen(conn: sqlite3.Connection, inventar_nr: int, daten: dict[str, Any]) -> None:
+    """„Rückgängig“ nach Einordnen: alter Platz, und war es genommen, wieder genommen."""
+    vorher = daten.get("vorher")
+    if daten.get("entnahme") is not None:
+        zuruecklegen_zuruecknehmen(conn, _ganzzahl(daten["entnahme"]))
+    plan.platz_setzen(conn, inventar_nr, None if vorher is None else _ganzzahl(vorher))

@@ -78,12 +78,15 @@
     const nr = Number(b.dataset.einordnen);
     b.disabled = true;
     try {
-      const r = await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: m.fach_id });
+      // war es genommen, gilt es damit als zurückgelegt (D-043)
+      const r = await MF.api("POST", `/api/produkte/${nr}/einordnen`, { fach_id: m.fach_id });
       MF.einordnen.verlaengern();
-      b.outerHTML = `<div class="einordnen-ok">${icon("pin", 20)}<span>${esc(t("einordnen.erledigt", { code: m.code }))}</span></div>`;
+      const rahmen = b.closest("[data-panel], [data-detail]");
+      if (rahmen) rahmen.innerHTML = MF.detailHtml(r.produkt, { kopf: rahmen.matches("[data-panel]") });
+      document.dispatchEvent(new CustomEvent("mf:produkt", { detail: r.produkt }));
       MF.toast(t("einordnen.erledigt", { code: m.code }), {
         rueckgaengig: async () => {
-          try { await MF.api("PUT", `/api/produkte/${nr}/platz`, { fach_id: r.vorher }); location.reload(); }
+          try { await MF.api("POST", `/api/produkte/${nr}/einordnen/zurueck`, r.rueckgaengig); location.reload(); }
           catch (err) { MF.toast(err.message, { fehler: true }); }
         },
       });

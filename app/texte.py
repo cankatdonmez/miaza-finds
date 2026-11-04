@@ -255,7 +255,12 @@ DE: dict[str, str] = {
     "einordnen.knopf": "In {code} einordnen",
     "einordnen.erledigt": "In {code} eingeordnet",
     "einordnen.schon": "Liegt schon in {code}",
-    "einordnen.gestartet": "Scanne jetzt die Produkte mit der Kamera; auf jeder Produktseite steht „In {code} einordnen“.",
+    "einordnen.produkt_scannen": "Produkt scannen",
+    "einordnen.fertig": "Fertig",
+    "einordnen.liegt_in": "{name} liegt in {code}.",
+    "einordnen.hierher": "Nach {code} verlegen",
+    "einordnen.ueberspringen": "Überspringen",
+    "einordnen.ziel_neu": "Jetzt in {code} einordnen",
 
     # Fächer einer Einheit (SPEC 6.4)
     "fach.titel": "Einheit {code}",

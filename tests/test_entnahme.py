@@ -132,3 +132,20 @@ def test_einstellung_fach_bestaetigen(client, tmp_path):
     assert client.get("/api/einstellungen").json()["fach_bestaetigen"] is False
     assert client.put("/api/einstellungen", json={"gibt_es_nicht": True}).status_code == 422
     assert client.put("/api/einstellungen", json={"fach_bestaetigen": "ja"}).status_code == 422
+
+
+def test_einordnen_und_rueckgaengig(client, mit_faechern):
+    """D-043: Einordnen setzt den Platz; ein genommenes Produkt gilt damit als zurückgelegt (bestätigt)."""
+    nr = mit_faechern["nr"]
+    r = client.post(f"/api/produkte/{nr}/einordnen", json={"fach_id": 2}).json()
+    assert r["produkt"]["platz"]["id"] == 2 and r["rueckgaengig"] == {"vorher": 1, "entnahme": None}
+    client.post(f"/api/produkte/{nr}/einordnen/zurueck", json=r["rueckgaengig"])
+    assert client.get(f"/api/produkte/{nr}").json()["platz"]["id"] == 1
+    # genommen → einordnen → zurück am Platz, bestätigt; Rückgängig: wieder genommen und alter Platz
+    eid = client.post(f"/api/produkte/{nr}/nehmen", json={}).json()["entnahme"]
+    r = client.post(f"/api/produkte/{nr}/einordnen", json={"fach_id": 2}).json()
+    assert r["produkt"]["status"] == "am_platz" and r["rueckgaengig"]["entnahme"] == eid and mit_faechern["bestaetigt"](eid) == 1
+    p = client.post(f"/api/produkte/{nr}/einordnen/zurueck", json=r["rueckgaengig"]).json()["produkt"]
+    assert p["status"] == "in_benutzung" and p["platz"]["id"] == 1
+    assert client.post(f"/api/produkte/{nr}/einordnen", json={"fach_id": 99}).status_code == 404
+    assert client.post(f"/api/produkte/{mit_faechern['digital']}/einordnen", json={"fach_id": 1}).status_code == 422

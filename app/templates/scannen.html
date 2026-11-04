@@ -1,19 +1,27 @@
 {% extends "shell.html" %}
 {% from "_macros.html" import icon %}
-{# Scannen (SPEC 4.5, 6.7, D-040): Live-Kamera bei sicherer Verbindung, sonst Foto; der Code lässt sich immer tippen #}
+{# Scannen (SPEC 4.5, 6.7, D-040): Live-Kamera bei sicherer Verbindung, sonst Foto; der Code lässt sich immer tippen.
+   Mit ?fach=<id> ordnet die Seite ein (D-043): Ziel oben, Gescanntes darunter, „Fertig“ zurück ins Büro. #}
 {% block inhalt %}
 <div class="scan stack">
+  <div class="einordnen-kopf" data-einordnen-kopf hidden>
+    <span class="fach-scan-titel" data-einordnen-titel></span>
+    <span class="spacer"></span>
+    <button class="btn" type="button" data-einordnen-fertig>{{ t("einordnen.fertig") }}</button>
+  </div>
   <div class="scan-bild" data-scan-bild hidden>
     <video playsinline muted autoplay></video>
     <span class="scan-rahmen" aria-hidden="true"></span>
   </div>
   <select class="eingabe" data-scan-kamera hidden aria-label="{{ t('produkt.kamera_wahl') }}"></select>
-  <button class="btn primary block scan-foto" type="button" data-scan-foto hidden>{{ icon("camera", 20) }}<span>{{ t("scan.foto") }}</span></button>
+  <div class="nehmen-form" data-einordnen-frage hidden></div>
+  <button class="btn primary block scan-foto" type="button" data-scan-foto hidden>{{ icon("camera", 20) }}<span data-scan-foto-text>{{ t("scan.foto") }}</span></button>
   <form class="scan-code" data-scan-code>
     <input class="eingabe" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false"
            placeholder="{{ t('scan.code_platzhalter') }}" aria-label="{{ t('scan.code') }}">
     <button class="btn" type="submit">{{ t("scan.oeffnen") }}</button>
   </form>
+  <div class="eingeordnet" data-eingeordnet></div>
 </div>
 {% endblock %}
 {% block scripts %}<script src="/static/js/scannen.js?v={{ asset_v }}"></script>{% endblock %}
