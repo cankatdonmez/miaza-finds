@@ -118,7 +118,7 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 - **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
 - **Okut, HTTPS yokken (D-041):** telefonda „Scannen“ doğrudan kamerayı açar; fotoğraftan hemen sonra tam ekran „Wird gelesen …“, ardından bulunan ürün/bölme ya da „Noch einmal“.
-- **Okut sayfası `/scannen` (D-040):** canlı kamera ya da „Foto aufnehmen“, her zaman kod kutusu („265“, „FL-021-024“, „1.6.4“). QR adresinin yalnız sonu okunur.
+- **Okut sayfası `/scannen` (D-040):** canlı kamera ya da „Foto aufnehmen“, her zaman kod kutusu („265“, „FL-021-024“, „1.6.4“). QR adresinin yalnız sonu okunur. Tanınmayan yazıda önce „nicht erkannt“, sonra „In der Bibliothek suchen“ sorulur (D-045).
 - **Masaüstünde Okut:** üst çubukta, arama kutusunun yanında küçük bir QR ikonu. Kameralı cihazda kamerayı açar ve telefonla aynı sonuca gider. Kamera yoksa ikon gizlenir; kod arama kutusuna yazılabilir ("265" yeterli).
 - **Filtreler:** telefonda alttan açılan panelde, masaüstünde her zaman açık sol sütunda. Seçili filtreler arama alanının altında, çarpıyla kaldırılabilen etiketler olarak durur.
 - **Bildirimler:** kısa ve olguyu söyler ("Yerine konuldu · 2.2.5"); ekranın kenarında belirir. Hızlı işlemlerin bildiriminde birkaç saniye **"Geri al"** bulunur.
@@ -263,6 +263,7 @@ Daha (telefon) ─ istatistik
 - **Durum satırı (masaüstü):** kütüphane başlığında tek satır, ör. "28 kayıt · 2 büro dışında · 3 konumsuz · 5 eksik". Her sayı tıklanınca ilgili filtreyi açar. Telefondaki İstatistik ekranının masaüstü karşılığıdır.
 - **Kart:** görsel, ad, marka, kategori, fiyat; dijitalse ya da alınmışsa (Kullanımda, Büro dışında) rozet (D-039).
 - Masaüstünde karta gelince konum kodu belirir; tıklanınca ofis planında gösterir.
+- **„Büroda göster“ telefonda rafı önce gösterir** (D-045): ünitenin fotoğrafı ve vurgulu bölme en üstte, plan altta.
 - Ürün detayı telefonda tam ekran, masaüstünde sağdan açılan panelde açılır.
 - Fiziki ürünün detayında "Büroda göster"in yanında **"Yerini değiştir"** (yeri yoksa "Yer seç"): Büro yer seçme modunda açılır; plan → ünite → bölme → **"Buraya koy"**. Sonra ürüne dönülür; onay yok, geri al var. Çubukta "Konumsuz" da seçilebilir (D-021, D-022).
 
@@ -270,7 +271,7 @@ Daha (telefon) ─ istatistik
 - **Alanlar:** tür (fiziki/dijital), ad, marka, kategori, ebat, ürün linki, fotoğraf(lar), adet, renkler, not, kategoriye özel alanlar.
 - **Zorunlu olan sadece ad.** Kategori son kullanılan kategoriyle gelir. Gerisi sonra tamamlanır.
 - **Kısa form (D-029):** yeni üründe fotoğraf, tür, ad, kategori ve filtreleri görünür; diğer alanlar kapalı "Weitere Angaben" altında. Taslağı atan düğmenin adı her yerde "Verwerfen".
-- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Tek fotoğraf eklenince kırpma ekranı açılır ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027). Düzenlemede fotoğraf silme ve ekleme de "Speichern"e kadar taslaktır; "Abbrechen" geri alır. Seri sonrası ad listesinin altında "Speichern" çubuğu vardır (D-028).
+- **Fotoğraf:** çekilir veya mevcut görsel seçilir (4.5). Sunucu önizleme boyutlarını kendisi üretir. Eklenen her fotoğraf için kırpma ekranı açılır, birden çok seçilince sırayla („2 / 5“, D-045) ("Übernehmen" / "Ganzes Bild"); dokunmadan geçmek fotoğrafı olduğu gibi alır. Seri kayıtta da aynı (D-027). Düzenlemede fotoğraf silme ve ekleme de "Speichern"e kadar taslaktır; "Abbrechen" geri alır. Seri sonrası ad listesinin altında "Speichern" çubuğu vardır (D-028).
 - **Fiyat:** değer (€), birim (m², m, adet, paket) ve girildiği tarih. Fiyat güncellenince tarih bugün olur.
 - **Renkler (D-031):** ortak ana renklerden elle, birden çok seçilir (Weiß, Beige, Braun, Rot, Orange, Gelb, Grün, Blau, Violett, Rosa, Grau, Schwarz, Metall, Mehrfarbig). Kategoriye özel **renk tonları** (Eiche, Weinrot …) kategorinin "Farbe" filtresinden seçilir; her ton bir ana renge bağlıdır ve o ana renk aramasında da bulunur. Fotoğraftan otomatik çıkarma v2'dedir.
 - **Konum (fiziki ürün):** ünite seçilir, sonra fotoğrafta bölmeye dokunulur.
@@ -391,7 +392,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında alt alta oda, ünite ve bölme adı; boş olan atlanır (D-036). Ünite odanın, bölme ünitenin altında birer kademe içeride, „└“ çizgileriyle bağlı (kademeli ağaç); yazı kodun altından QR'ın alt kenarına kadar olan alanı doldurur, uzun ad ikinci satıra kayar, „…“ son çaredir (D-037). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
-  - Önizlemenin üstünde biçim seçilir: „A4-Bogen“ ya da „Rolle 38 mm“ (D-035). A4'te seçilenler bogene otomatik dizilir; rulo önizlemesi etiketleri tek tek gösterir.
+  - Önizlemenin üstünde biçim seçilir: „A4-Bogen“ ya da „Rolle 38 mm“ (D-035); varsayılan Rolle, seçim hatırlanır (D-045). A4'te seçilenler bogene otomatik dizilir; rulo önizlemesi etiketleri tek tek gösterir.
   - **Düzen, kullanılan etiket kâğıdından gelir.** Hazır kesim çizgili yapışkanlı A4 kâğıt kullanılır; etiketler çekip çıkarılır. Kâğıdın düzen PDF'inden etiket ölçüleri, kenar boşlukları ve aralıklar bir **düzen tanımı** olarak kaydedilir. Kâğıt ya da rulo değişirse sadece bu tanım değişir; kod değişmez.
   - İki sabit düzen tanımı vardır (A4, rulo). Kâğıt türlerini yöneten bir ekran yoktur.
   - Çıktı PDF olarak alınır; basılanlar "basıldı" olarak işaretlenir. Rulo PDF'i yazıcı sürücüsüyle tek işte basılır; sürücü her etiketten sonra keser.
@@ -416,7 +417,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
    - **Başka bölme:** *"Bu ürünün yeri 2.2.5. Okuttuğun bölme 2.3.1."* → "2.2.5'e götüreceğim" veya "Yeni yeri 2.3.1 olsun".
    - **Okutmadan onayla:** durum "Yerinde" olur; kayıtta "onaysız" diye işaretlenir. Kullanıcı sorgulanmaz.
 4. **Toplu yerleştirme:** önce bölme QR'ı okutulur ("Buraya yerleştir"), sonra ürünler art arda okutulur. Yeri başka olan ürün için yukarıdaki soru sorulur.
-   - **Okutarak (D-043):** bölmedeki „Hier einordnen“ yerleştirme ekranını açar; canlı kamerada ürünler art arda, yoksa her ürün için bir fotoğraf. Başka bölme etiketi hedefi değiştirir; alınmış ürün yerleşince geri konmuş sayılır.
+   - **Okutarak (D-043):** bölmedeki „Hier einordnen“ yerleştirme ekranını açar; canlı kamerada ürünler art arda, yoksa her ürün için bir fotoğraf. Başka bölme etiketinde hedefi değiştirmek önce sorulur (D-045); alınmış ürün yerleşince geri konmuş sayılır.
    - **Uygulama içi tarayıcı olmadan (D-016):** bölme sayfasındaki "Hier einordnen" cihazı 30 dakika yerleştirme moduna alır; telefonun kamerasıyla açılan her ürün sayfasında "In 2.2.5 einordnen" düğmesi çıkar. Masaüstünde toplu düzenlemede "Platz" alanı.
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter. Bölmesi olmayan üründe de tek dokunuş. Ayrıntılar D-042.
 

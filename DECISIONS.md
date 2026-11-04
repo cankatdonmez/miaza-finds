@@ -136,7 +136,7 @@ Cankat'ın isteği. Fiziki ürünün detayında „Im Büro zeigen“in yanında
 **„Platz wählen“**). Açılan seçici demodaki konum seçicisini izler: üstte ünite çipleri, altında seçili ünitenin
 fotoğrafı; bölmeye fotoğrafta ya da altındaki listede dokunulur, seçilen kod büyük yazılır. „Übernehmen“ kaydeder;
 onay penceresi yok, bildirimde „Rückgängig“ var. Yeri olan üründe „Ohne Platz“ da seçilebilir.
-Claude'un ekledikleri (onay bekliyor): seçici açılınca ürünün bulunduğu ünite seçili gelir; fotoğrafı olmayan ünitede
+Claude'un ekledikleri (karar: D-045): seçici açılınca ürünün bulunduğu ünite seçili gelir; fotoğrafı olmayan ünitede
 yalnız liste görünür.
 → SPEC 6.1.
 
@@ -189,7 +189,7 @@ Cankat'ın isteği: Büro'daki ünite fotoğrafı demodaki davranışı alır.
   (önizleme). Spot dışındaki etiketler solar.
 - Hareket azaltma tercihi varsa kayma ve nabız olmaz.
 - Spot, bölmenin dış çerçevesini (sınır kutusu) izler; bölmeler çoğunlukla dikdörtgen çizilir.
-Claude'un ekledikleri (onay bekliyor): yok; fotoğraf üstü renkler (karartma, etiket) iki temada aynıdır, çünkü fotoğrafın
+Claude'un ekledikleri (karar: D-045): yok; fotoğraf üstü renkler (karartma, etiket) iki temada aynıdır, çünkü fotoğrafın
 üstündedir.
 → SPEC 4.7.
 
@@ -204,7 +204,7 @@ Cankat'ın isteği (üşendiren ara adım olmasın: ayrıca kırpıp yeniden ekl
 - **Birden çok dosya** birlikte seçilince ekran açılmaz (çok sayıda dosyada üşendirir); yeni üründe henüz yüklenmemiş
   her fotoğrafın üstünde bir kırpma düğmesi vardır.
 - Oran serbesttir; döndürme yok.
-Claude'un ekledikleri (onay bekliyor): çoklu seçimde kırpma ekranının açılmaması ve yüklenmemiş fotoğraftaki kırpma
+Claude'un ekledikleri (karar: D-045): çoklu seçimde kırpma ekranının açılmaması ve yüklenmemiş fotoğraftaki kırpma
 düğmesi. Kaydedilmiş bir fotoğrafı sonradan kırpmak şimdilik yok.
 → SPEC 6.2.
 
@@ -255,7 +255,7 @@ Cankat'ın kararı (2. yöntem). Renk, malzemeyi aramanın temel yollarından bi
 - Teknik: „Farbe“ filtresi veritabanında çoklu seçim filtresidir (`filter.farbe = 1`); tonlar `filter_option.hex`
   ve `filter_option.grundfarbe` taşır. Böylece ürün formu, toplu düzenleme ve arama mevcut filtre yolunu kullanır.
 Yeni ton filtresinin adı varsayılan olarak „Farbton“ (ana renk filtresi „Farbe“ ile karışmasın; tek ad kuralı).
-Claude'un ekledikleri (onay bekliyor): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi; ton tutma noktası.
+Claude'un ekledikleri (karar: D-045): ana renk listesi ve Terracotta → Orange, Gold → Metall eşlemesi; ton tutma noktası.
 → SPEC 6.1, 6.2, 6.3.
 
 ## D-032 · 02.11.2026 · Yeni renk filtresi ana renklerle dolu başlar
@@ -279,7 +279,7 @@ Cankat'ın gönderdiği düzen PDF'inden („QR Code Sticker Paper.pdf“, A4).
 - **Yeni alan „Artikelnummer“** (üreticinin ürün kodu): ürün formunda Marka'nın yanında, aramada da bulunur (Migration 007).
 - **Bölme etiketi** aynı kâğıtta aynı düzende: solda QR, sağda büyük bölme kodu ve adı.
 - Etiketler sayfasındaki önizleme de bu düzeni gösterir.
-Claude'un ekledikleri (onay bekliyor): basılmış bir etikette görünen bilgi (ad, marka, marka kodu, ölçüler, özellikler)
+Claude'un ekledikleri (karar: D-045): basılmış bir etikette görünen bilgi (ad, marka, marka kodu, ölçüler, özellikler)
 değişince etiket „yeniden bas“ listesine girer.
 → SPEC 6.6.
 
@@ -308,7 +308,7 @@ Cankat'ın isteği. Büroda Brother QL-570 var; DK-22225 (38 mm genişlikte sür
 - **Sonra, kanıt gelirse (v2):** uygulamadan doğrudan yazıcıya basmak (raster komutlarıyla, ör. `brother_ql`). USB ve
   sürücü ayarı ister.
 - Rulo tanımı `app/etikett_rolle.json`; A4 tanımı (`app/etikett_bogen.json`) değişmez.
-Claude'un ekledikleri (onay bekliyor): seçilen biçim tarayıcıda hatırlanır; bölme (Fach) etiketleri de rulodan basılabilir.
+Claude'un ekledikleri (karar: D-045): seçilen biçim tarayıcıda hatırlanır; bölme (Fach) etiketleri de rulodan basılabilir.
 → SPEC 6.6, SPEC 9 (v2), SPEC 11 (soru 1 cevaplandı).
 
 ## D-036 · 04.11.2026 · Bölme etiketinde yer bilgisi alt alta
@@ -361,7 +361,7 @@ SPEC 6.7'nin okutmasız ilk hâli. Ayrıntılar Claude'un önerisi:
   yeni kayıtların çoğu önce konumsuz, rozet gürültü olurdu; onun yeri filtre ve durum satırı.
 - **Çıkış kaydı** (Migration 009): ürün, kişi, Im Büro / Außer Haus, not, alınma ve iade zamanı, bölme onayı (4. parça
   için boş). Bir ürünün aynı anda tek açık kaydı olur. Geçmişin gösterimi istatistikle (dilim 4).
-Claude'un ekledikleri (onay bekliyor): Nehmen'in geri alınabilmesi; rozetin yalnız iki durumda olması.
+Claude'un ekledikleri (karar: D-045): Nehmen'in geri alınabilmesi; rozetin yalnız iki durumda olması.
 → SPEC 6.1, 6.7, 7.
 
 ## D-040 · 04.11.2026 · Scannen (Dilim 3, 3. parça)
@@ -374,7 +374,7 @@ doğrulandı); tarayıcıda BarcodeDetector varsa o kullanılır. Ayrıntılar C
 - **Okunan içerik:** adresin yalnız sonu sayılır (`…/p/<nr>` ürün, `…/f/<id>` bölme); sunucu adresi önemsiz (D-038).
   Ürün → ürün sayfası (Nehmen / Zurücklegen orada). Bölme → Büro'da o bölme. miaza'ya ait olmayan QR → kısa uyarı.
 - **Kod yazmak** her zaman mümkün: „265“, „FL-021-024“ (ürün) ya da „1.6.4“ (bölme). Tanınmayan yazı kütüphane aramasına gider.
-Claude'un ekledikleri (onay bekliyor): kod kutusunun bölme kodunu da tanıması; tanınmayanın aramaya gitmesi.
+Claude'un ekledikleri (karar: D-045): kod kutusunun bölme kodunu da tanıması; tanınmayanın aramaya gitmesi.
 → SPEC 4.5, 8.1.
 
 ## D-041 · 04.11.2026 · Scannen ohne HTTPS: Kamera direkt aus dem Menü, sichtbare Rückmeldung
@@ -418,7 +418,7 @@ SPEC 6.7/4. Ayrıntılar Claude'un önerisi:
 - Her satırın kendi „Rückgängig“'i vardır.
 - **Alınmış ürün** (In Benutzung / Außer Haus) yerleştirilince aynı anda geri konmuş sayılır (onaylı): fiziken
   bölmede olduğu okutulmuştur. Ürün sayfasındaki „In … einordnen“ düğmesi de aynı kuralla çalışır.
-Claude'un ekledikleri (onay bekliyor): başka bölme etiketiyle hedef değiştirme; alınmış ürünün yerleştirilince geri
+Claude'un ekledikleri (karar: D-045): başka bölme etiketiyle hedef değiştirme; alınmış ürünün yerleştirilince geri
 konmuş sayılması.
 → SPEC 6.7.
 
@@ -435,3 +435,21 @@ SPEC 4.9'un ilk hâli. Ayrıntılar Claude'un önerisi:
   (diğerinin kaydettiği hâli görmek için yeniden yükleme gerekir).
 - Yedek güvenlik değişmez: yine de çakışma olursa sürüm kontrolü ikinci kaydı reddeder.
 → SPEC 4.9.
+
+## D-045 · 04.11.2026 · Bekleyen önerilere Cankat'ın kararları
+**Onaylandı:** D-021 (seçici ürünün ünitesiyle açılır), D-031 (14 ana renk; Terracotta → Orange, Gold → Metall),
+D-033 (içerik değişince „Neu drucken“), D-035 (biçim hatırlanır; Fach etiketi de rulodan), D-039 (Nehmen geri alınır;
+„Ohne Platz“ rozet almaz, görüntü kirliliği olur), D-040 (kod kutusu bölme kodunu tanır), D-043 (alınmış ürün
+yerleşince geri konmuş sayılır).
+**Değişenler:**
+- **„Im Büro zeigen“ telefonda rafı önce gösterir.** Ürün sayfasından gelince (yeri bulmak için) ilk görünen ünitenin
+  fotoğrafı ve vurgulu bölmedir; plan altta kalır. Adım adım gezerken düzen aynı (orada kaydırmak sorun değil).
+- **Çoklu seçimde de her fotoğraf kırpılır** (D-027'nin yerine): kırpma ekranı fotoğrafları sırayla açar, başlıkta
+  „2 / 5“. Kaydedilmiş fotoğrafı sonradan kırpmak gerekmez; gerekirse fotoğraf silinip yeniden eklenir.
+- **Etiketlerde varsayılan „Rolle 38 mm“:** büro çoğunlukla ruloyla basar; seçim yine hatırlanır.
+- **Scannen'de tanınmayan kod** (D-040'ın yerine): doğrudan aramaya gitmez; önce „… nicht erkannt“ der, sonra
+  „In der Bibliothek suchen“ diye sorar.
+- **Yerleştirirken başka bölme etiketi** (D-043'ün yerine): hedef hemen değişmez; „Jetzt in 1.6.6 einordnen?“ sorulur,
+  onaylanınca sonraki ürünler oraya yerleşir.
+Cevapsız kalanlar: Verano renk adlarının dili ve eşlemesi, Fach etiketinde adların biçimi, ürün kodunun boşluksuz yazımı.
+→ SPEC 6.1, 6.2, 6.6, 6.7, 4.5.
