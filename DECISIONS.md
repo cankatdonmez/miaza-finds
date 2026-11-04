@@ -466,3 +466,26 @@ Cankat wählte die Reihenfolge: **Statistik** → danach Sammlungen, Dokumente, 
 - **Desktop:** keine Seitenleisten-Eintrag (SPEC 4.5 bleibt); die Statuszeile der Bibliothek ist der Ersatz. Die Seite funktioniert
   trotzdem, wenn man sie per Adresse öffnet.
 → SPEC 4.5, 6.10.
+
+## D-047 · 04.11.2026 · Sammlungen (Dilim 4, zweiter Schritt)
+Cankat gab für Sammlungen keine Einzelvorgaben; es gilt die einfachste Fassung (Vorschlag von Claude, Änderung jederzeit möglich).
+- **Was:** Eine Sammlung ist eine benannte Liste von Produkten (Projektliste, Moodboard); Name (1–60 Zeichen, unter den aktiven eindeutig)
+  und freie Notiz. Ein Produkt kann in mehreren Sammlungen liegen, physisch und digital gemischt. **Ohne Mengen, Preise, Steuer, Export** (v2, SPEC 6.8).
+- **Hinzufügen:** im Produktdetail der Knopf „Sammlungen“: Liste aller Sammlungen zum Ankreuzen, darunter „Neue Sammlung“.
+  Jede Änderung gilt sofort, mit „Rückgängig“; kein Bestätigungsfenster.
+- **Sammlungsseite (`/sammlungen`, `/sammlungen/<id>`):** Liste mit Anzahl; Detail mit Produktzeilen (Foto, Name, Code), je „Entfernen“ mit
+  Rückgängig; Name und Notiz bearbeiten; Sammlung entfernen mit Rückgängig (ausgeblendet, `entfernt_am`, wie Personen).
+- **Menü:** Desktop: Seitenleiste „Sammlungen“ (SPEC 4.5). Telefon: unter „Mehr“ (nicht in der Leiste; D-029: Leiste bleibt Bibliothek · Büro · Scannen · Mehr).
+- **Nicht in v1 (kein Beleg, SPEC 6.12):** Reihenfolge, Titelbild, Teilen, Warnung zu fehlenden Produkten. Wird ein Produkt gelöscht, verschwindet es aus allen Sammlungen.
+- **Daten:** Migration 011 (`sammlung`, `sammlung_produkt`).
+→ SPEC 4.5, 6.8.
+
+## D-047 · 04.11.2026 · Sammlungen (Dilim 4, ohne Mengen)
+Nächster Schritt nach der Statistik (D-046). Umfang wie SPEC 6.8 für v1: Sammlung = Projektliste oder Moodboard, **ohne Mengen, Preise, MwSt., Export** (das ist v2).
+- **Daten (Migration 011):** `sammlung` (Name, Notiz, `entfernt_am`) und `sammlung_produkt` (Sammlung, Produkt, hinzugefügt am). Löschen einer Sammlung blendet
+  sie aus (wie Personen): „Rückgängig“ holt sie samt Inhalt zurück. Wird ein Produkt gelöscht, verschwindet es aus allen Sammlungen (CASCADE). Name ist unter aktiven Sammlungen eindeutig.
+- **Seiten:** `/sammlungen` (Liste mit Anzahl, Neue Sammlung direkt oben) und `/sammlung/<id>` (Name und Notiz ändern, Produkte als Liste, „Entfernen“ pro Produkt mit Rückgängig, Sammlung löschen).
+- **Hinzufügen im Produktdetail:** Abschnitt „Sammlungen“: gesetzte Sammlungen als Chips, „Zu Sammlung“ klappt die Liste aller Sammlungen mit Häkchen auf (Tippen schaltet um, sofort gespeichert) und ein Feld „Neue Sammlung“.
+- **Menü (SPEC 4.5):** Telefon Bibliothek · Büro · Scannen · **Sammlungen** · Mehr; Desktop Bibliothek · Büro · **Sammlungen** · Etiketten · Einstellungen.
+- **Nicht dabei:** Mengen, Reihenfolge per Ziehen, Mehrfachauswahl aus der Bibliothek (kommt nur mit Beleg, SPEC 6.12).
+→ SPEC 4.5, 6.8.

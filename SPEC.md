@@ -115,7 +115,7 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 
 ### 4.5 Bileşen kuralları
 - **Dokunma hedefi:** en az 44 × 44 px.
-- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029). Statistik ile "Daha" açıldı: Kütüphane · Ofis · Okut · Daha (Statistik, Ayarlar); Koleksiyonlar gelince araya girer (D-046).
+- **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029). Statistik ile "Daha" açıldı: Kütüphane · Ofis · Okut · Daha (Statistik, Ayarlar); Koleksiyonlar telefonda Daha'nın içindedir, alt menüye girmez (D-047).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
 - **Okut, HTTPS yokken (D-041):** telefonda „Scannen“ doğrudan kamerayı açar; fotoğraftan hemen sonra tam ekran „Wird gelesen …“, ardından bulunan ürün/bölme ya da „Noch einmal“.
 - **Okut sayfası `/scannen` (D-040):** canlı kamera ya da „Foto aufnehmen“, her zaman kod kutusu („265“, „FL-021-024“, „1.6.4“). QR adresinin yalnız sonu okunur. Tanınmayan yazıda önce „nicht erkannt“, sonra „In der Bibliothek suchen“ sorulur (D-045).
@@ -423,6 +423,8 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter. Bölmesi olmayan üründe de tek dokunuş. Ayrıntılar D-042.
 
 ### 6.8 Koleksiyonlar ve sipariş listesi
+- **Uygulandı (D-047, miktarsız):** `/sammlungen` liste, `/sammlung/<id>` ayrıntı; ürün detayında „Sammlungen“ bölümü (işaretle = ekle). Silme „Rückgängig“ ile geri alınır. Aşağıdaki sipariş listesi v2'dir.
+- **v1 (D-047):** ad + not; ürün detayında "Sammlungen" düğmesiyle bir veya birden çok koleksiyona işaretlenir (anında, geri al ile); `/sammlungen` listesi ve detayı (ürün satırı, çıkar + geri al, ad/not düzenle, koleksiyonu kaldır + geri al). Telefonda Mehr içinde, masaüstünde sol menüde. Miktar yok.
 - Koleksiyon bir proje listesi veya moodboard'dur; fiziki ve dijital ürün karışık olabilir.
 - Ürün detayından bir veya birden fazla koleksiyona eklenir.
 - **Sipariş listesi (v2):**
