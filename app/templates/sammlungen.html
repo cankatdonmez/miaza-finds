@@ -1,0 +1,11 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Sammlungen (SPEC 6.8, D-047): Liste und Detail; gezeichnet von sammlungen.js #}
+{% block inhalt %}
+{% if sammlung_id is defined %}
+<div data-sammlung="{{ sammlung_id }}"></div>
+{% else %}
+<div class="stack" data-sammlungen></div>
+{% endif %}
+{% endblock %}
+{% block scripts %}<script src="/static/js/sammlungen.js?v={{ asset_v }}"></script>{% endblock %}

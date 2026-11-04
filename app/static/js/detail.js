@@ -50,6 +50,7 @@
       </dl>
       ${farben ? `<div class="farben">${farben}</div>` : ""}
       ${p.notiz ? `<p class="detail-notiz">${esc(p.notiz)}</p>` : ""}
+      <section class="sammlungen-feld" data-sammlungen-fuer="${p.inventar_nr}"></section>
       <div class="actions">
         ${p.link ? `<a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">${esc(t("produkt.link_oeffnen"))}</a>` : ""}
         ${p.platz ? `<a class="btn" href="/buero?fach=${p.platz.id}&produkt=${p.inventar_nr}">${icon("buero", 20)}<span>${esc(t("produkt.im_buero_zeigen"))}</span></a>` : ""}
@@ -91,6 +92,86 @@
         },
       });
     } catch (err) { b.disabled = false; MF.toast(err.message, { fehler: true }); }
+  });
+
+  // Sammlungen des Produkts (D-047): Chips der gesetzten, „Zu Sammlung“ klappt die Liste zum Umschalten auf
+  const offen = new Set();
+  const stand = new Map();
+
+  function sammlungenZeichnen(el) {
+    const nr = Number(el.dataset.sammlungenFuer);
+    const alle = stand.get(nr) || [];
+    const drin = alle.filter((s) => s.enthalten);
+    const auf = offen.has(nr);
+    el.innerHTML = `
+      <h3 class="abschnitt">${esc(t("sammlungen.abschnitt"))}</h3>
+      <div class="sammlungen-chips">
+        ${drin.map((s) => `<a class="pill" href="/sammlungen/${s.id}">${esc(s.name)}</a>`).join("") || `<span class="sub">${esc(t("sammlungen.keine"))}</span>`}
+        <button class="btn" type="button" data-sammlungen-auf aria-expanded="${auf}">${icon("plus", 18)}<span>${esc(t("sammlungen.zu"))}</span></button>
+      </div>
+      ${auf ? `<div class="sammlungen-wahl">${alle.map((s) => `
+        <button class="zeile" type="button" data-sammlung-wahl="${s.id}" aria-pressed="${s.enthalten}">
+          <span class="waehler">${s.enthalten ? icon("check", 16) : ""}</span><span class="zeile-haupt"><span class="karte-name">${esc(s.name)}</span></span></button>`).join("")}
+        <form class="sammlung-neu" data-sammlung-neu>
+          <input class="eingabe" maxlength="60" placeholder="${esc(t("sammlungen.neu"))}" aria-label="${esc(t("sammlungen.neu"))}">
+          <button class="iconbtn" type="submit" aria-label="${esc(t("sammlungen.anlegen"))}">${icon("plus", 18)}</button>
+        </form></div>` : ""}`;
+  }
+
+  async function sammlungenLaden(el) {
+    const nr = Number(el.dataset.sammlungenFuer);
+    try { stand.set(nr, (await MF.api("GET", `/api/sammlungen?produkt=${nr}`)).sammlungen); sammlungenZeichnen(el); }
+    catch (err) { MF.toast(err.message, { fehler: true }); }
+  }
+
+  const beobachter = new MutationObserver(() => {
+    document.querySelectorAll("[data-sammlungen-fuer]:empty").forEach(sammlungenLaden);
+  });
+  beobachter.observe(document.documentElement, { childList: true, subtree: true });
+  document.querySelectorAll("[data-sammlungen-fuer]:empty").forEach(sammlungenLaden);
+
+  async function umschalten(el, sid, an) {
+    const nr = Number(el.dataset.sammlungenFuer);
+    const s = (stand.get(nr) || []).find((x) => x.id === sid);
+    const setzen = async (ein) => {
+      stand.set(nr, (await MF.api(ein ? "PUT" : "DELETE", `/api/sammlungen/${sid}/produkte/${nr}`)).sammlungen);
+      sammlungenZeichnen(el);
+    };
+    try {
+      await setzen(an);
+      MF.toast(t(an ? "sammlungen.hinzugefuegt" : "sammlungen.herausgenommen", { name: s.name }), {
+        rueckgaengig: async () => { try { await setzen(!an); } catch (err) { MF.toast(err.message, { fehler: true }); } },
+      });
+    } catch (err) { MF.toast(err.message, { fehler: true }); }
+  }
+
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-sammlungen-fuer]");
+    if (!el) return;
+    const nr = Number(el.dataset.sammlungenFuer);
+    if (e.target.closest("[data-sammlungen-auf]")) {
+      if (offen.has(nr)) offen.delete(nr); else offen.add(nr);
+      sammlungenZeichnen(el);
+      return;
+    }
+    const w = e.target.closest("[data-sammlung-wahl]");
+    if (w) umschalten(el, Number(w.dataset.sammlungWahl), w.getAttribute("aria-pressed") !== "true");
+  });
+
+  document.addEventListener("submit", async (e) => {
+    const f = e.target.closest("[data-sammlung-neu]");
+    if (!f) return;
+    e.preventDefault();
+    const el = f.closest("[data-sammlungen-fuer]");
+    const nr = Number(el.dataset.sammlungenFuer);
+    const n = f.querySelector("input").value.trim();
+    if (!n) return;
+    try {
+      const r = await MF.api("POST", "/api/sammlungen", { name: n, produkt: nr });
+      stand.set(nr, r.sammlungen);
+      sammlungenZeichnen(el);
+      MF.toast(t("sammlungen.hinzugefuegt", { name: n }));
+    } catch (err) { MF.toast(err.message, { fehler: true }); }
   });
 
   // Druckliste (SPEC 5): auch am Telefon; gedruckt wird am Desktop

@@ -8,7 +8,7 @@ from fastapi.responses import RedirectResponse
 
 from ..deps import get_db
 from ..fehler import Fehler
-from ..services import bibliothek as bestand, produkte
+from ..services import bibliothek as bestand, produkte, sammlungen
 from ..templating import templates
 from ..texte import t
 from ..version import VERSION
@@ -18,7 +18,7 @@ router = APIRouter()
 # (Ziel, Textschlüssel, Symbol). Nur, was in diesem Dilim schon funktioniert; Ofis, Scannen und Sammlungen
 # kommen mit ihren Dilims dazu (SPEC 4.5). Etiketten-Druck gibt es nur am Desktop (SPEC 5).
 MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
-                 ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
+                 ("sammlungen", "menue.sammlungen", "sammlung"), ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
 # „Mehr“ (D-029, D-046): Statistik und Einstellungen
 # Scannen hervorgehoben; mit den Sammlungen steht es in der Mitte (SPEC 4.5, D-040)
 MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
@@ -87,6 +87,21 @@ def faecher_bearbeiten(request: Request, einheit_id: int, db: sqlite3.Connection
 @router.get("/mehr")
 def mehr(request: Request):
     return _seite(request, "mehr", "menue.mehr")
+
+
+@router.get("/sammlungen")
+def sammlungen_liste(request: Request):
+    """Sammlungen (SPEC 6.8, D-047): am Desktop in der Seitenleiste, am Telefon unter „Mehr“."""
+    return _seite(request, "sammlungen", "sammlungen.titel")
+
+
+@router.get("/sammlungen/{sammlung_id}")
+def sammlung(request: Request, sammlung_id: int, db: sqlite3.Connection = Depends(get_db)):
+    try:
+        s = sammlungen.lesen(db, sammlung_id)
+    except Fehler:
+        raise HTTPException(404) from None
+    return _seite(request, "sammlungen", None, vorlage="sammlungen", titel=s["name"], sammlung_id=sammlung_id)
 
 
 @router.get("/statistik")

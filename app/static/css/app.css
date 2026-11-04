@@ -634,3 +634,14 @@ text{pointer-events:none}
 .zeile .num{font-weight:600}
 .balken{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 12px 8px}
 .balken>span{display:block;height:100%;background:var(--accent)}
+
+/* Sammlungen (D-047) */
+.sammlung-neu{display:flex;gap:10px;align-items:center}
+.sammlung-neu .eingabe{flex:1;min-width:0}
+.zeile-link{flex:1;min-width:0;display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
+.sammlungen-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sammlungen-wahl{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.sammlungen-wahl .zeile{cursor:pointer}
+.sammlungen-wahl .waehler{width:24px;height:24px;border:1.5px solid var(--line);border-radius:8px;display:grid;place-items:center;flex:none}
+.sammlungen-wahl [aria-pressed="true"] .waehler{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.sammlungen-feld{margin-top:16px}
