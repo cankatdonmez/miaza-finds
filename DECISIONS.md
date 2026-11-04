@@ -310,3 +310,13 @@ Cankat'ın isteği. Büroda Brother QL-570 var; DK-22225 (38 mm genişlikte sür
 - Rulo tanımı `app/etikett_rolle.json`; A4 tanımı (`app/etikett_bogen.json`) değişmez.
 Claude'un ekledikleri (onay bekliyor): seçilen biçim tarayıcıda hatırlanır; bölme (Fach) etiketleri de rulodan basılabilir.
 → SPEC 6.6, SPEC 9 (v2), SPEC 11 (soru 1 cevaplandı).
+
+## D-036 · 04.11.2026 · Bölme etiketinde yer bilgisi alt alta
+Cankat'ın isteği. Bölme etiketinin sağ sütunu yukarıdan aşağı:
+1. **Bölme kodu** (ör. 1.6.4), büyük, eskisi gibi,
+2. **Oda** adı (ör. Lager),
+3. **Ünite** adı (ör. Plotter Schrank),
+4. **Bölme** adı (ör. Obere Reihe Links).
+- Adlar girildiği gibi yazılır (büyük harfe çevrilmez); boş olan satır atlanır. Uzun ad önce küçülür, sonra „…“ ile biter.
+- D-020'deki „bölmenin adı, yoksa ünitenin adı“ kuralının yerini alır. Etiketler sayfasındaki listede alt satır aynı kalır.
+→ SPEC 6.6.

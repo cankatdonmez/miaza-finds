@@ -384,7 +384,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 ### 6.6 QR kodları ve etiketler
 - **Ürün QR'ı** sadece envanter numarasına giden kalıcı linki içerir (ör. `…/p/265`).
 - **Ürün etiketi (D-033, D-034):** sabit düzen, her kenarda 3 mm güvenli alan, QR (26 mm) dikeyde ortalı ve solda, metne geniş sütun; sol kenarda yan dönmüş "miaza" (Comfortaa SemiBold, QR yüksekliğinin ~%70'i); solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** İki biçim (D-035): **A4-Bogen** 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`) ve **Rolle 38 mm** (Brother QL-570, DK-22225), 70 × 38 mm, her etiket bir PDF sayfası (`app/etikett_rolle.json`).
-- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında bölmenin adı, yoksa ünitenin adı (D-020). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
+- **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında alt alta oda, ünite ve bölme adı; boş olan atlanır (D-036). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
   - Önizlemenin üstünde biçim seçilir: „A4-Bogen“ ya da „Rolle 38 mm“ (D-035). A4'te seçilenler bogene otomatik dizilir; rulo önizlemesi etiketleri tek tek gösterir.
