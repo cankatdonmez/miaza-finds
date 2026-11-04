@@ -1,0 +1,22 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Scannen (SPEC 4.5, 6.7, D-040): Live-Kamera bei sicherer Verbindung, sonst Foto; der Code lässt sich immer tippen #}
+{% block inhalt %}
+<div class="scan stack">
+  <div class="scan-bild" data-scan-bild hidden>
+    <video playsinline muted autoplay></video>
+    <span class="scan-rahmen" aria-hidden="true"></span>
+  </div>
+  <select class="eingabe" data-scan-kamera hidden aria-label="{{ t('produkt.kamera_wahl') }}"></select>
+  <label class="btn primary block scan-foto" data-scan-foto hidden>
+    {{ icon("camera", 20) }}<span>{{ t("scan.foto") }}</span>
+    <input type="file" accept="image/*" capture="environment" data-scan-datei hidden>
+  </label>
+  <form class="scan-code" data-scan-code>
+    <input class="eingabe" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false"
+           placeholder="{{ t('scan.code_platzhalter') }}" aria-label="{{ t('scan.code') }}">
+    <button class="btn" type="submit">{{ t("scan.oeffnen") }}</button>
+  </form>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/vendor/jsQR.js?v={{ asset_v }}"></script><script src="/static/js/scannen.js?v={{ asset_v }}"></script>{% endblock %}
