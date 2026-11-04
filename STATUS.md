@@ -1,6 +1,6 @@
 # STATUS
 
-Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleştirilmedi, push yok)
+Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-3/bewegung` (Dilim 2 main'de; push yok)
 
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
@@ -29,9 +29,9 @@ Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-2/buero` (main'e birleşti
 - Dev: „dev“ `--reload`suz (Drive'da takılıyor); kod değişince sunucu yeniden başlatılır. Dev verisi `%USERPROFILE%\miaza-local\finds\data\dev.db`.
 
 ## Sıradaki
-1. Cankat: Dilim 2'yi dev'de ya da birleştirdikten sonra beta'da dene; geri bildirim tek liste.
-2. Kart yayı / yelpaze animasyonları (D-017) gerçek veriyle.
-3. Dilim 3 (Hareket): uygulama içi tarayıcı, alma / yerine koyma, „Düzenleniyor“.
+1. Dilim 3 (D-038): kişiler + Bu cihaz → Al/Yerine koy → Okut → bölme onayı → toplu yerleştirme → „Wird bearbeitet“.
+2. Cankat: gerçek dünya testi (etiket bas, telefonla okut); geri bildirim tek liste.
+3. Kart yayı / yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle.
 
 ## Offene Fragen
 1. QR'ın kalıcı adresi + HTTPS (Cankat bilgi verecek): öneri, bir alt alan adı (ör. `finds.miaza.design`) şimdiden

@@ -331,3 +331,18 @@ Cankat'ın düzeltmesi (D-036'nın üstüne).
 - **„…“ son çare:** uzun ad önce ikinci satıra kayar (kelimeden bölünür), sonra yazı küçülür (en az 6,5 pt); ancak o da
   yetmezse „…“ ile biter. Önce tek satırda sığan bir boy aranır; ikinci satıra kaymak, yazıyı çok küçültmekten iyidir.
 → SPEC 6.6.
+
+## D-038 · 04.11.2026 · Dilim 3'ün kapsamı ve sırası
+Claude'un önerisi, Cankat onayladı. Dilim 2 main'e birleştirildi; Dilim 3 `dilim-3/bewegung` dalında. Sıra (her parça
+kendi başına çalışır ve denenir):
+1. **Kişiler ve „Bu cihaz“:** Ayarlar'da kişi listesi (yalnız ad); her cihazda kullanan kişi seçilir (cihazda saklanır).
+2. **Al / Yerine koy** (6.7): „Nehmen“ (kim, Im Büro / Außer Haus, not), durumlar Am Platz · In Benutzung · Außer Haus,
+   kütüphanede durum filtresi, çıkış kaydı. Önce düğmeyle, okutmasız.
+3. **Okut / Scannen:** telefonda alt menünün ortasında, masaüstünde üst çubukta ikon. Canlı kamera yalnız güvenli
+   bağlantıda; yoksa „Fotoğrafla okut“. Kod elle de yazılır. QR'daki adres yok sayılır, yalnız numara okunur (Claude'un
+   önerisi: sunucu adresi değişse de basılı etiketler uygulama içinden okunur).
+4. **Bölme onayı** (6.7, ayar Açık/Kapalı).
+5. **Toplu yerleştirme okutarak:** bölme QR'ı, sonra ürünler art arda.
+6. **„Wird bearbeitet“** (4.9).
+Kart yayı ve yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle „Tekrar bak“ adımında.
+→ SPEC 10, CLAUDE.md, STATUS.

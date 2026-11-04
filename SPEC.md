@@ -631,7 +631,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 - **Kat planı düzenleyicisi:** oda, ünite, bölme; taslak, geri al/yinele, kaydet/vazgeç; altlık hizalama ve gizleme; kaydırma/yakınlaştırma
 - Ofis görünümü ve dört konum senaryosu
 - Ürün ve bölme QR'ları; A4 etiket PDF'i (20'li)
-- **Okut:** telefonda ana menüde, masaüstünde ikincil ikon
+- **Okut:** telefonda ana menüde, masaüstünde ikincil ikon (Dilim 3, sıra D-038)
 - **Ürün alma ve yerine koyma;** bölme onayı (Açık/Kapalı) ve toplu yerleştirme
 - "Düzenleniyor" uyarısı ve sürüm kontrolü
 - Koleksiyonlar (miktarsız)
