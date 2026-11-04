@@ -186,6 +186,17 @@ def _marken(conn: sqlite3.Connection) -> list[str]:
     return [r[0] for r in conn.execute("SELECT DISTINCT marke FROM produkt WHERE marke IS NOT NULL ORDER BY marke COLLATE NOCASE")]
 
 
+def statistik(conn: sqlite3.Connection) -> dict[str, Any]:
+    """Statistik (SPEC 6.10, D-046): dieselben Zähler wie die Statuszeile, dazu Art und Verteilung nach Kategorie."""
+    z = zaehler(conn)
+    z["physisch"] = conn.execute("SELECT count(*) FROM produkt WHERE art = 'physisch'").fetchone()[0]
+    z["digital"] = conn.execute("SELECT count(*) FROM produkt WHERE art = 'digital'").fetchone()[0]
+    kategorien = [dict(r) for r in conn.execute(
+        """SELECT k.id, k.name, count(p.inventar_nr) AS n FROM kategorie k
+           LEFT JOIN produkt p ON p.kategorie_id = k.id GROUP BY k.id ORDER BY k.sortierung, k.name COLLATE NOCASE""")]
+    return {"zaehler": z, "kategorien": [k for k in kategorien if k["n"]]}
+
+
 def zaehler(conn: sqlite3.Connection) -> dict[str, int]:
     """Statuszeile des Desktops (SPEC 6.1) und Statistik: über den ganzen Bestand."""
     z = {"gesamt": conn.execute("SELECT count(*) FROM produkt").fetchone()[0]}

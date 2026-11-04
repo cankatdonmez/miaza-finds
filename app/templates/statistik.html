@@ -1,0 +1,25 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Statistik (SPEC 6.10, D-046): jede Zahl führt in die Bibliothek mit dem passenden Filter #}
+{% block inhalt %}
+{% set z = zaehler %}
+<div class="card zeilen">
+  <a class="zeile" href="/bibliothek"><span>{{ t("statistik.gesamt") }}</span><span class="num">{{ z.gesamt }}</span></a>
+  <a class="zeile" href="/bibliothek?art=physisch"><span>{{ t("statistik.physisch") }}</span><span class="num">{{ z.physisch }}</span></a>
+  <a class="zeile" href="/bibliothek?art=digital"><span>{{ t("statistik.digital") }}</span><span class="num">{{ z.digital }}</span></a>
+</div>
+<div class="card zeilen">
+  {% for s in ["am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend"] %}
+  <a class="zeile" href="/bibliothek?status={{ s }}"><span>{{ t("status." ~ s) }}</span><span class="num">{{ z[s] }}</span></a>
+  {% endfor %}
+</div>
+{% if kategorien %}
+<div class="card zeilen">
+  <h2 class="abschnitt">{{ t("statistik.nach_kategorie") }}</h2>
+  {% for k in kategorien %}
+  <a class="zeile" href="/bibliothek?kategorie={{ k.id }}"><span>{{ k.name }}</span><span class="num">{{ k.n }}</span></a>
+  <div class="balken" aria-hidden="true"><span style="width:{{ (k.n * 100 / z.gesamt) | round(1) }}%"></span></div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

@@ -31,12 +31,19 @@ def test_produktseiten_und_qr_link(client):
     assert '<h1 class="seitentitel">Eichendiele</h1>' in seite
 
 
-def test_einstellungen_direkt_im_telefonmenue(client):
-    """D-029: kein „Mehr“ mit nur einer Seite; die alte Adresse leitet weiter."""
-    html = client.get("/einstellungen").text
-    leiste = html[html.index('class="leiste"'):]
-    assert 'href="/einstellungen" aria-current="page"' in leiste and 'href="/mehr"' not in leiste
-    assert client.get("/mehr", follow_redirects=False).headers["location"] == "/einstellungen"
+def test_mehr_und_statistik(client):
+    """D-046: „Mehr“ ersetzt Einstellungen in der Leiste; Statistik zählt und verlinkt in die Bibliothek."""
+    for adresse in ("/einstellungen", "/statistik"):
+        html = client.get(adresse).text
+        leiste = html[html.index('class="leiste"'):]
+        assert 'href="/mehr" aria-current="page"' in leiste and 'href="/einstellungen" aria-current' not in leiste
+    mehr = client.get("/mehr").text
+    assert 'href="/statistik"' in mehr and 'href="/einstellungen"' in mehr
+    kid = client.get("/api/kategorien").json()["kategorien"][0]["id"]
+    client.post("/api/produkte", json={"name": "Eichendiele", "kategorie_id": kid})
+    html = client.get("/statistik").text
+    assert 'href="/bibliothek?status=ohne_platz"' in html and f'href="/bibliothek?kategorie={kid}"' in html
+    assert 'href="/bibliothek?art=physisch"' in html
 
 
 def test_darstellung_hat_drei_wahlen(client):

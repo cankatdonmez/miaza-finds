@@ -1,0 +1,9 @@
+{% extends "shell.html" %}
+{% from "_macros.html" import icon %}
+{# Telefon: kurze Liste der Seiten außerhalb der Leiste (D-046) #}
+{% block inhalt %}
+<nav class="card zeilen" aria-label="{{ t('menue.mehr') }}">
+  <a class="zeile" href="/statistik"><span>{{ t("mehr.statistik") }}</span>{{ icon("right", 18) }}</a>
+  <a class="zeile" href="/einstellungen"><span>{{ t("menue.einstellungen") }}</span>{{ icon("right", 18) }}</a>
+</nav>
+{% endblock %}

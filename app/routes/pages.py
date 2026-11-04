@@ -8,7 +8,7 @@ from fastapi.responses import RedirectResponse
 
 from ..deps import get_db
 from ..fehler import Fehler
-from ..services import produkte
+from ..services import bibliothek as bestand, produkte
 from ..templating import templates
 from ..texte import t
 from ..version import VERSION
@@ -19,10 +19,10 @@ router = APIRouter()
 # kommen mit ihren Dilims dazu (SPEC 4.5). Etiketten-Druck gibt es nur am Desktop (SPEC 5).
 MENUE_DESKTOP = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
                  ("etiketten", "menue.etiketten", "tag"), ("einstellungen", "menue.einstellungen", "settings")]
-# „Mehr“ erst, wenn mehr als eine Seite hineingehört (D-029); bis dahin direkt die Einstellungen
+# „Mehr“ (D-029, D-046): Statistik und Einstellungen
 # Scannen hervorgehoben; mit den Sammlungen steht es in der Mitte (SPEC 4.5, D-040)
 MENUE_TELEFON = [("bibliothek", "menue.bibliothek", "grid"), ("buero", "menue.buero", "buero"),
-                 ("scannen", "menue.scannen", "qr"), ("einstellungen", "menue.einstellungen", "settings")]
+                 ("scannen", "menue.scannen", "qr"), ("mehr", "menue.mehr", "more")]
 # Seiten, die am Telefon unter „Mehr“ liegen
 
 
@@ -85,9 +85,14 @@ def faecher_bearbeiten(request: Request, einheit_id: int, db: sqlite3.Connection
 
 
 @router.get("/mehr")
-def mehr():
-    """Alte Adresse: „Mehr“ enthält derzeit nur die Einstellungen (D-029)."""
-    return RedirectResponse("/einstellungen", status_code=303)
+def mehr(request: Request):
+    return _seite(request, "mehr", "menue.mehr")
+
+
+@router.get("/statistik")
+def statistik(request: Request, db: sqlite3.Connection = Depends(get_db)):
+    """Statistik (SPEC 6.10): am Telefon unter „Mehr“; am Desktop ersetzt die Statuszeile sie (nicht im Menü)."""
+    return _seite(request, "statistik", "statistik.titel", **bestand.statistik(db))
 
 
 @router.get("/system")

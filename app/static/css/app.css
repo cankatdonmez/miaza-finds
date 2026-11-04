@@ -626,3 +626,11 @@ text{pointer-events:none}
 @media print{.version{display:none}}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Mehr und Statistik (D-046) */
+.zeilen{display:flex;flex-direction:column;gap:2px}
+.zeile{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;padding:0 12px;border-radius:12px;color:var(--ink)}
+.zeile:hover{background:var(--card)}
+.zeile .num{font-weight:600}
+.balken{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 12px 8px}
+.balken>span{display:block;height:100%;background:var(--accent)}
