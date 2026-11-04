@@ -383,15 +383,15 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 
 ### 6.6 QR kodları ve etiketler
 - **Ürün QR'ı** sadece envanter numarasına giden kalıcı linki içerir (ör. `…/p/265`).
-- **Ürün etiketi (D-033, D-034):** sabit düzen, her kenarda 3 mm güvenli alan, QR (26 mm) dikeyde ortalı ve solda, metne geniş sütun; sol kenarda yan dönmüş "miaza" (Comfortaa SemiBold, QR yüksekliğinin ~%70'i); solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** Kâğıt: A4, 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`).
+- **Ürün etiketi (D-033, D-034):** sabit düzen, her kenarda 3 mm güvenli alan, QR (26 mm) dikeyde ortalı ve solda, metne geniş sütun; sol kenarda yan dönmüş "miaza" (Comfortaa SemiBold, QR yüksekliğinin ~%70'i); solda QR; sağda ad (büyük harf, kalın), marka, marka kodu (Artikelnummer), ölçüler, diğer özellikler (" | " ile) ve altta ürün kodu. **Konum yazmaz.** İki biçim (D-035): **A4-Bogen** 3 × 8 = 24, 69,5 × 36,8 mm (`app/etikett_bogen.json`) ve **Rolle 38 mm** (Brother QL-570, DK-22225), 70 × 38 mm, her etiket bir PDF sayfası (`app/etikett_rolle.json`).
 - **Bölme etiketi:** QR (bölmenin değişmeyen iç kimliği) ve büyük yazılı bölme kodu (2.2.5). Altında bölmenin adı, yoksa ünitenin adı (D-020). Yeniden numaralamada QR geçerli kalır, sadece yazı eskir.
 - **Etiket yazdırma (masaüstü › Etiketler):**
   - Arama (kelimenin bir kısmıyla) ve hazır seçimler: "bulunanları seç", "basılmamışlar", "yeniden basılacaklar", "temizle".
-  - Seçilenler A4'e otomatik dizilir; sağda önizleme görünür.
-  - **Düzen, kullanılan etiket kâğıdından gelir.** Hazır kesim çizgili yapışkanlı A4 kâğıt kullanılır; etiketler çekip çıkarılır. Kâğıdın düzen PDF'i alınır ve etiket ölçüleri, kenar boşlukları ve aralıklar buna göre bir **düzen tanımı** olarak kaydedilir (yaklaşık 20'li, ≈ 48 × 52 mm). Kâğıt değişirse sadece bu tanım değişir; kod değişmez.
-  - İlk sürümde tek bir düzen tanımı vardır. Birden fazla kâğıt türünü yöneten bir ekran yoktur.
-  - Çıktı PDF olarak alınır; basılanlar "basıldı" olarak işaretlenir.
-- **Brother etiket yazıcısı:** v2, model teyit edilince.
+  - Önizlemenin üstünde biçim seçilir: „A4-Bogen“ ya da „Rolle 38 mm“ (D-035). A4'te seçilenler bogene otomatik dizilir; rulo önizlemesi etiketleri tek tek gösterir.
+  - **Düzen, kullanılan etiket kâğıdından gelir.** Hazır kesim çizgili yapışkanlı A4 kâğıt kullanılır; etiketler çekip çıkarılır. Kâğıdın düzen PDF'inden etiket ölçüleri, kenar boşlukları ve aralıklar bir **düzen tanımı** olarak kaydedilir. Kâğıt ya da rulo değişirse sadece bu tanım değişir; kod değişmez.
+  - İki sabit düzen tanımı vardır (A4, rulo). Kâğıt türlerini yöneten bir ekran yoktur.
+  - Çıktı PDF olarak alınır; basılanlar "basıldı" olarak işaretlenir. Rulo PDF'i yazıcı sürücüsüyle tek işte basılır; sürücü her etiketten sonra keser.
+- **Brother etiket yazıcısı:** QL-570, rulo PDF'iyle (D-035). Uygulamadan doğrudan yazıcıya basmak v2.
 
 ### 6.7 Ürün alma ve yerine koyma
 - **Ürünü al:** kim (bu cihazın kişisi önceden seçili), nereye (büro içinde / büro dışına), not.
@@ -641,7 +641,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 **v2 ve sonrası**
 - Sipariş listesi: miktar, fiyat hesabı, isteğe bağlı vergi, fiyatlı/fiyatsız PDF ve Excel
 - Linkten doldurma, fotoğraftan otomatik renk
-- Brother etiket yazıcısı
+- Brother etiket yazıcısına uygulamadan doğrudan baskı (D-035)
 - Fiyat geçmişi
 - "Klasörde göster" yardımcısı
 - Kanıt gelirse: 6.12'deki bekleyen fikirler
@@ -670,7 +670,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
   - Etiket düzeni kâğıdın PDF'inden alınacak (6.6)
 
 **Açık kalanlar:**
-1. Brother etiket yazıcısının modeli nedir, çalışıyor mu?
+1. ~~Brother etiket yazıcısının modeli~~ → QL-570, 38 mm rulo (DK-22225), çalışıyor (D-035).
 2. **HTTPS yolu (8.2):** Büronun alan adı var mı (ör. miaza.at), yönetim erişimi kimde ve hangi sağlayıcıda? Varsa A, yoksa B. Ofiste hangi modem kullanılıyor?
 3. Kullanılacak etiket kâğıdının düzen PDF'i (ürün adı ya da kâğıt). Gelince düzen tanımı ona göre yapılır.
 4. Google Drive masaüstü uygulaması mini PC'de mi, başka bir bilgisayarda mı?

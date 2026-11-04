@@ -75,7 +75,7 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 
 ## Açık sorular (SPEC 11)
 
-1. Brother yazıcı modeli (v2).
+1. ~~Brother yazıcı modeli~~ → QL-570, 38 mm rulo (D-035).
 2. HTTPS yolu: büronun alan adı ve sağlayıcısı, ofisteki modem.
 3. ~~Etiket kâğıdının düzen PDF'i~~ → geldi, uygulandı (D-033).
 4. Google Drive masaüstü uygulaması mini PC'de mi?

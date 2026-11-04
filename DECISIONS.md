@@ -293,3 +293,20 @@ Cankat'ın isteği.
   ~%70'i kadar uzun, dikeyde ortalı. Numunenin büroya ait olduğu anlaşılır. Ürün ve bölme etiketinde aynı.
 - Yazı tipi dosyası Cankat'ın bilgisayarındaki Comfortaa'dan alındı (SIL Open Font License), `app/assets/fonts`.
 → SPEC 6.6.
+
+## D-035 · 04.11.2026 · Rulo etiket: Brother QL-570, 38 mm rulo
+Cankat'ın isteği. Büroda Brother QL-570 var; DK-22225 (38 mm genişlikte sürekli rulo) ile deneme baskısı çalıştı.
+- **A4 bogen kalır; ikinci biçim „Rolle 38 mm“.** Etiket 70 × 38 mm; düzen D-034'ün aynısı (her kenarda 3 mm güvenli
+  alan, „miaza“ | QR 26 mm | metin sütunu). İki biçim arasındaki fark yalnız ölçü ve sayfaya diziliş.
+- **Etiketler sayfasında** önizlemenin üstünde iki seçenek: „A4-Bogen“ / „Rolle 38 mm“. Rulo önizlemesi etiketleri tek
+  tek gösterir.
+- **Çıktı: tek PDF, her etiket bir sayfa (70 × 38 mm).** Yazıcı sürücüsü sayfaları sırayla basar ve her etiketten sonra
+  keser; 50 etiket tek baskı işidir. Ek program gerekmez; PDF herhangi bir bilgisayardan basılır.
+- **Neden P-touch Editor'ın veri içe aktarması değil:** orada şablonu yeniden çizmek, QR'ı bir veri alanına bağlamak ve her
+  düzen değişikliğinde iki yeri (uygulama ve şablon) güncellemek gerekir. PDF'te düzen ve yazı tipleri tek yerde kalır;
+  önizleme baskının aynısıdır.
+- **Sonra, kanıt gelirse (v2):** uygulamadan doğrudan yazıcıya basmak (raster komutlarıyla, ör. `brother_ql`). USB ve
+  sürücü ayarı ister.
+- Rulo tanımı `app/etikett_rolle.json`; A4 tanımı (`app/etikett_bogen.json`) değişmez.
+Claude'un ekledikleri (onay bekliyor): seçilen biçim tarayıcıda hatırlanır; bölme (Fach) etiketleri de rulodan basılabilir.
+→ SPEC 6.6, SPEC 9 (v2), SPEC 11 (soru 1 cevaplandı).
