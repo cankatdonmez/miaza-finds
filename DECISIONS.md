@@ -349,7 +349,7 @@ Kart yayı ve yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle „Tekrar bak�
 
 ## D-039 · 04.11.2026 · Al / Yerine koy (Dilim 3, 2. parça)
 SPEC 6.7'nin okutmasız ilk hâli. Ayrıntılar Claude'un önerisi:
-- **Ürün detayında** fiziki ürünün durumu bir satırda: „Am Platz“ ya da „In Benutzung · Selin · seit 04.11.“ /
+- **Ürün detayında, başlığın hemen altında** (sayfanın en sık işi; telefonda aşağıda kaybolmasın) fiziki ürünün durumu bir satırda: „Am Platz“ ya da „In Benutzung · Selin · seit 04.11.“ /
   „Außer Haus · Selin · seit 04.11.“ (+ not). Ana düğme duruma göre **„Nehmen“** ya da **„Zurücklegen“**.
 - **Nehmen:** düğmenin yerinde küçük bir form açılır: kişi (bu cihazın kişisi seçili gelir), Im Büro / Außer Haus
   (Im Büro seçili), not (isteğe bağlı), „Nehmen“. Hiç kişi tanımlı değilse kişisiz de alınır.
