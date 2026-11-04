@@ -404,3 +404,20 @@ SPEC 6.7'nin bölme onayı. Ayrıntılar Claude'un önerisi:
 - **Ayar** (büro geneli, sunucuda; Migration 010): Einstellungen › Allgemein › „Fach beim Zurücklegen bestätigen“
   Ein (varsayılan) / Aus.
 → SPEC 6.7, 6.11.
+
+## D-043 · 04.11.2026 · Toplu yerleştirme okutarak (Dilim 3, 5. parça)
+SPEC 6.7/4. Ayrıntılar Claude'un önerisi:
+- **Büro'da bölmenin „Hier einordnen“** artık yerleştirme ekranını açar (`/scannen?fach=<id>`): başlıkta „In 1.6.4
+  einordnen“, altında bu sırada yerleştirilenlerin listesi ve „Fertig“. D-016'daki 30 dakikalık mod da aynı anda açılır;
+  telefonun kendi kamerasıyla açılan ürün sayfalarında „In 1.6.4 einordnen“ düğmesi yine çıkar.
+- **Canlı kamera varsa** görüntü açık kalır; ürünler art arda okutulur, her biri hemen yerleşir (titreşim, listede ✓).
+  Yoksa „Produkt scannen“ her seferinde telefonun kamerasını açar (D-041'deki geri bildirimle); kod da yazılabilir.
+- **Ürün başka bir bölmede:** „Verano Tarçın liegt in 1.1.3.“ → „Hierher verlegen“ / „Überspringen“. Konumsuz ürün
+  sorulmadan yerleşir; zaten bu bölmedeki „schon hier“ diye listelenir.
+- **Başka bir bölme etiketi okutulursa** hedef o bölme olur (raf raf yerleştirirken akış kesilmez).
+- Her satırın kendi „Rückgängig“'i vardır.
+- **Alınmış ürün** (In Benutzung / Außer Haus) yerleştirilince aynı anda geri konmuş sayılır (onaylı): fiziken
+  bölmede olduğu okutulmuştur. Ürün sayfasındaki „In … einordnen“ düğmesi de aynı kuralla çalışır.
+Claude'un ekledikleri (onay bekliyor): başka bölme etiketiyle hedef değiştirme; alınmış ürünün yerleştirilince geri
+konmuş sayılması.
+→ SPEC 6.7.

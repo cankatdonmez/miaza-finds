@@ -414,6 +414,7 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
    - **Başka bölme:** *"Bu ürünün yeri 2.2.5. Okuttuğun bölme 2.3.1."* → "2.2.5'e götüreceğim" veya "Yeni yeri 2.3.1 olsun".
    - **Okutmadan onayla:** durum "Yerinde" olur; kayıtta "onaysız" diye işaretlenir. Kullanıcı sorgulanmaz.
 4. **Toplu yerleştirme:** önce bölme QR'ı okutulur ("Buraya yerleştir"), sonra ürünler art arda okutulur. Yeri başka olan ürün için yukarıdaki soru sorulur.
+   - **Okutarak (D-043):** bölmedeki „Hier einordnen“ yerleştirme ekranını açar; canlı kamerada ürünler art arda, yoksa her ürün için bir fotoğraf. Başka bölme etiketi hedefi değiştirir; alınmış ürün yerleşince geri konmuş sayılır.
    - **Uygulama içi tarayıcı olmadan (D-016):** bölme sayfasındaki "Hier einordnen" cihazı 30 dakika yerleştirme moduna alır; telefonun kamerasıyla açılan her ürün sayfasında "In 2.2.5 einordnen" düğmesi çıkar. Masaüstünde toplu düzenlemede "Platz" alanı.
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter. Bölmesi olmayan üründe de tek dokunuş. Ayrıntılar D-042.
 
