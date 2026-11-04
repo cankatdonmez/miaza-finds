@@ -479,13 +479,3 @@ Cankat gab für Sammlungen keine Einzelvorgaben; es gilt die einfachste Fassung 
 - **Nicht in v1 (kein Beleg, SPEC 6.12):** Reihenfolge, Titelbild, Teilen, Warnung zu fehlenden Produkten. Wird ein Produkt gelöscht, verschwindet es aus allen Sammlungen.
 - **Daten:** Migration 011 (`sammlung`, `sammlung_produkt`).
 → SPEC 4.5, 6.8.
-
-## D-047 · 04.11.2026 · Sammlungen (Dilim 4, ohne Mengen)
-Nächster Schritt nach der Statistik (D-046). Umfang wie SPEC 6.8 für v1: Sammlung = Projektliste oder Moodboard, **ohne Mengen, Preise, MwSt., Export** (das ist v2).
-- **Daten (Migration 011):** `sammlung` (Name, Notiz, `entfernt_am`) und `sammlung_produkt` (Sammlung, Produkt, hinzugefügt am). Löschen einer Sammlung blendet
-  sie aus (wie Personen): „Rückgängig“ holt sie samt Inhalt zurück. Wird ein Produkt gelöscht, verschwindet es aus allen Sammlungen (CASCADE). Name ist unter aktiven Sammlungen eindeutig.
-- **Seiten:** `/sammlungen` (Liste mit Anzahl, Neue Sammlung direkt oben) und `/sammlung/<id>` (Name und Notiz ändern, Produkte als Liste, „Entfernen“ pro Produkt mit Rückgängig, Sammlung löschen).
-- **Hinzufügen im Produktdetail:** Abschnitt „Sammlungen“: gesetzte Sammlungen als Chips, „Zu Sammlung“ klappt die Liste aller Sammlungen mit Häkchen auf (Tippen schaltet um, sofort gespeichert) und ein Feld „Neue Sammlung“.
-- **Menü (SPEC 4.5):** Telefon Bibliothek · Büro · Scannen · **Sammlungen** · Mehr; Desktop Bibliothek · Büro · **Sammlungen** · Etiketten · Einstellungen.
-- **Nicht dabei:** Mengen, Reihenfolge per Ziehen, Mehrfachauswahl aus der Bibliothek (kommt nur mit Beleg, SPEC 6.12).
-→ SPEC 4.5, 6.8.

@@ -423,7 +423,6 @@ Amaç: ürünün doğru bölmeye konduğunu, kullanıcıyı yormadan doğrulamak
 5. **Ayar: Bölme onayı Açık (varsayılan) / Kapalı.** Kapalıyken "Yerine koy" kamerasız, tek dokunuşla biter. Bölmesi olmayan üründe de tek dokunuş. Ayrıntılar D-042.
 
 ### 6.8 Koleksiyonlar ve sipariş listesi
-- **Uygulandı (D-047, miktarsız):** `/sammlungen` liste, `/sammlung/<id>` ayrıntı; ürün detayında „Sammlungen“ bölümü (işaretle = ekle). Silme „Rückgängig“ ile geri alınır. Aşağıdaki sipariş listesi v2'dir.
 - **v1 (D-047):** ad + not; ürün detayında "Sammlungen" düğmesiyle bir veya birden çok koleksiyona işaretlenir (anında, geri al ile); `/sammlungen` listesi ve detayı (ürün satırı, çıkar + geri al, ad/not düzenle, koleksiyonu kaldır + geri al). Telefonda Mehr içinde, masaüstünde sol menüde. Miktar yok.
 - Koleksiyon bir proje listesi veya moodboard'dur; fiziki ve dijital ürün karışık olabilir.
 - Ürün detayından bir veya birden fazla koleksiyona eklenir.
