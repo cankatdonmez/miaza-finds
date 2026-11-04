@@ -363,3 +363,16 @@ SPEC 6.7'nin okutmasız ilk hâli. Ayrıntılar Claude'un önerisi:
   için boş). Bir ürünün aynı anda tek açık kaydı olur. Geçmişin gösterimi istatistikle (dilim 4).
 Claude'un ekledikleri (onay bekliyor): Nehmen'in geri alınabilmesi; rozetin yalnız iki durumda olması.
 → SPEC 6.1, 6.7, 7.
+
+## D-040 · 04.11.2026 · Scannen (Dilim 3, 3. parça)
+Cankat onayladı: QR çözücü olarak jsQR 1.4.0 (Apache-2.0) uygulamayla gelir (`app/static/vendor/`, npm'den, bütünlüğü
+doğrulandı); tarayıcıda BarcodeDetector varsa o kullanılır. Ayrıntılar Claude'un önerisi:
+- **Kendi sayfası `/scannen`.** Telefonda alt menüde vurgulu „Scannen“ (Koleksiyonlar gelince ortada kalır);
+  masaüstünde her sayfanın başlık satırında küçük QR ikonu, yalnız kamera varsa.
+- **Canlı kamera** güvenli bağlantıda (HTTPS, masaüstünde localhost): görüntü sürekli taranır, kod bulununca hemen gidilir.
+  Değilse büyük „Foto aufnehmen“ düğmesi: telefonun kamera uygulaması açılır, QR fotoğraftan okunur.
+- **Okunan içerik:** adresin yalnız sonu sayılır (`…/p/<nr>` ürün, `…/f/<id>` bölme); sunucu adresi önemsiz (D-038).
+  Ürün → ürün sayfası (Nehmen / Zurücklegen orada). Bölme → Büro'da o bölme. miaza'ya ait olmayan QR → kısa uyarı.
+- **Kod yazmak** her zaman mümkün: „265“, „FL-021-024“ (ürün) ya da „1.6.4“ (bölme). Tanınmayan yazı kütüphane aramasına gider.
+Claude'un ekledikleri (onay bekliyor): kod kutusunun bölme kodunu da tanıması; tanınmayanın aramaya gitmesi.
+→ SPEC 4.5, 8.1.

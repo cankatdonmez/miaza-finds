@@ -117,6 +117,7 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 - **Dokunma hedefi:** en az 44 × 44 px.
 - **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
+- **Okut sayfası `/scannen` (D-040):** canlı kamera ya da „Foto aufnehmen“, her zaman kod kutusu („265“, „FL-021-024“, „1.6.4“). QR adresinin yalnız sonu okunur.
 - **Masaüstünde Okut:** üst çubukta, arama kutusunun yanında küçük bir QR ikonu. Kameralı cihazda kamerayı açar ve telefonla aynı sonuca gider. Kamera yoksa ikon gizlenir; kod arama kutusuna yazılabilir ("265" yeterli).
 - **Filtreler:** telefonda alttan açılan panelde, masaüstünde her zaman açık sol sütunda. Seçili filtreler arama alanının altında, çarpıyla kaldırılabilen etiketler olarak durur.
 - **Bildirimler:** kısa ve olguyu söyler ("Yerine konuldu · 2.2.5"); ekranın kenarında belirir. Hızlı işlemlerin bildiriminde birkaç saniye **"Geri al"** bulunur.
@@ -528,7 +529,7 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
   - Pillow: önizleme boyutları
   - pypdfium2: PDF altlığı görsele çevirme
   - segno: QR üretme
-- **Tarayıcıda QR okuma:** varsa yerleşik okuyucu (BarcodeDetector), yoksa uygulamayla gelen küçük bir JS okuyucu (jsQR). Dış CDN yok.
+- **Tarayıcıda QR okuma:** varsa yerleşik okuyucu (BarcodeDetector), yoksa uygulamayla gelen JS okuyucu (jsQR 1.4.0, `app/static/vendor/`, D-040). Dış CDN yok.
 - **Testler:** pytest; her değişiklikten sonra hepsi koşar. Paketler `requirements.txt` içinde sabit sürümlerle.
 - **Dil:** bütün arayüz metinleri tek bir sözlük dosyasında; terimler 4.10'a uyar. Varsayılan dil Almanca. Tarih `01.11.2026`, sayı `1.234,56`.
 - **Performans:** arama ve filtre sonuçları < 200 ms. Görseller önizleme boyutlarında sunulur. Kartlar ekrana göre 320 veya 960 px, detay 960 px, tam boy (2400 px) yalnız dokununca (D-015). Görseller dosyada kırpılmaz, kare görünüm yalnız ekranda. Seri kayıtta fotoğraf yüklemesi arkada sürer; kamera beklemez.
