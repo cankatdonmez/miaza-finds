@@ -117,6 +117,7 @@ Ailenin her uygulaması **"miaza" + tek bir İngilizce fiil** adını taşır:
 - **Dokunma hedefi:** en az 44 × 44 px.
 - **Telefonda alt menü:** Kütüphane · Ofis · **Okut** (ortada, vurgulu) · Koleksiyonlar · Daha. Okut ve Koleksiyonlar gelene kadar: Kütüphane · Büro · Ayarlar; "Daha" ancak içine birden çok şey girince açılır (D-029).
 - **Masaüstünde sol menü:** Kütüphane · Ofis · Koleksiyonlar · Etiketler · Ayarlar; altta "Yeni ürün". Kenar çubuğunda başka seçenek durmaz.
+- **Okut, HTTPS yokken (D-041):** telefonda „Scannen“ doğrudan kamerayı açar; fotoğraftan hemen sonra tam ekran „Wird gelesen …“, ardından bulunan ürün/bölme ya da „Noch einmal“.
 - **Okut sayfası `/scannen` (D-040):** canlı kamera ya da „Foto aufnehmen“, her zaman kod kutusu („265“, „FL-021-024“, „1.6.4“). QR adresinin yalnız sonu okunur.
 - **Masaüstünde Okut:** üst çubukta, arama kutusunun yanında küçük bir QR ikonu. Kameralı cihazda kamerayı açar ve telefonla aynı sonuca gider. Kamera yoksa ikon gizlenir; kod arama kutusuna yazılabilir ("265" yeterli).
 - **Filtreler:** telefonda alttan açılan panelde, masaüstünde her zaman açık sol sütunda. Seçili filtreler arama alanının altında, çarpıyla kaldırılabilen etiketler olarak durur.

@@ -376,3 +376,16 @@ doğrulandı); tarayıcıda BarcodeDetector varsa o kullanılır. Ayrıntılar C
 - **Kod yazmak** her zaman mümkün: „265“, „FL-021-024“ (ürün) ya da „1.6.4“ (bölme). Tanınmayan yazı kütüphane aramasına gider.
 Claude'un ekledikleri (onay bekliyor): kod kutusunun bölme kodunu da tanıması; tanınmayanın aramaya gitmesi.
 → SPEC 4.5, 8.1.
+
+## D-041 · 04.11.2026 · Scannen ohne HTTPS: Kamera direkt aus dem Menü, sichtbare Rückmeldung
+Cankat'ın geri bildirimi: „Scannen“ → „Foto aufnehmen“ → kamera seçimi gereksiz adım; fotoğraftan sonra ne olduğu
+görünmüyor. Neden: HTTPS olmadan tarayıcı sayfa içinde canlı kamera açmaz (SPEC 8.2). Çözüm Claude'un önerisi:
+- **Canlı kamera mümkün değilse** (telefon, düz `http://`) alt menüdeki „Scannen“ doğrudan telefonun kamerasını açar;
+  ara sayfa ve „Foto aufnehmen“ düğmesi yok.
+- **Fotoğraftan hemen sonra tam ekran geri bildirim:** „Wird gelesen …“, sonra bulunan ürünün ya da bölmenin adı
+  (kısa titreşim) ve sayfaya geçiş. Bulunamazsa „Kein QR-Code erkannt“ ile **„Noch einmal“** (kamerayı yeniden açar) ve
+  „Code eingeben“ (`/scannen`).
+- **Canlı kamera mümkünse** (HTTPS, masaüstünde localhost) değişiklik yok: `/scannen` açılır, kod görüntüye girince tanınır.
+- Telefonun kendi kamerası tek ürün için zaten iyi çalışır (etiketteki QR bir link). Art arda okutma (bölme onayı,
+  toplu yerleştirme) asıl HTTPS ile rahatlar; mkcert ile deneme sonra (Cankat).
+→ SPEC 4.5, 8.2.
