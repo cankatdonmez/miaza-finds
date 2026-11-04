@@ -346,3 +346,20 @@ kendi başına çalışır ve denenir):
 6. **„Wird bearbeitet“** (4.9).
 Kart yayı ve yelpaze (D-017) Dilim 3'ten sonra, gerçek veriyle „Tekrar bak“ adımında.
 → SPEC 10, CLAUDE.md, STATUS.
+
+## D-039 · 04.11.2026 · Al / Yerine koy (Dilim 3, 2. parça)
+SPEC 6.7'nin okutmasız ilk hâli. Ayrıntılar Claude'un önerisi:
+- **Ürün detayında** fiziki ürünün durumu bir satırda: „Am Platz“ ya da „In Benutzung · Selin · seit 04.11.“ /
+  „Außer Haus · Selin · seit 04.11.“ (+ not). Ana düğme duruma göre **„Nehmen“** ya da **„Zurücklegen“**.
+- **Nehmen:** düğmenin yerinde küçük bir form açılır: kişi (bu cihazın kişisi seçili gelir), Im Büro / Außer Haus
+  (Im Büro seçili), not (isteğe bağlı), „Nehmen“. Hiç kişi tanımlı değilse kişisiz de alınır.
+- **Zurücklegen:** tek dokunuş, „Rückgängig“ ile. Bölme onayı (okutma) 4. parçada bunun önüne gelir.
+- **Nehmen** de „Rückgängig“ ile geri alınır (kayıt silinir); yanlış dokunuşta iz kalmaz.
+- **Durum** çıkış kaydından türetilir, üründe ayrı alan yok: açık kayıt → In Benutzung / Außer Haus; yoksa bölmesi
+  varsa Am Platz. „Ohne Platz“ yine bölmesi olmayan fiziki üründür (alınmış olsa da).
+- **Kütüphane kartında rozet** yalnız In Benutzung ve Außer Haus için (durum renkleriyle). „Ohne Platz“ rozet almaz:
+  yeni kayıtların çoğu önce konumsuz, rozet gürültü olurdu; onun yeri filtre ve durum satırı.
+- **Çıkış kaydı** (Migration 009): ürün, kişi, Im Büro / Außer Haus, not, alınma ve iade zamanı, bölme onayı (4. parça
+  için boş). Bir ürünün aynı anda tek açık kaydı olur. Geçmişin gösterimi istatistikle (dilim 4).
+Claude'un ekledikleri (onay bekliyor): Nehmen'in geri alınabilmesi; rozetin yalnız iki durumda olması.
+→ SPEC 6.1, 6.7, 7.

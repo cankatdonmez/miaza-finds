@@ -257,7 +257,7 @@ Daha (telefon) ─ istatistik
 - **Kategoriye özel filtreler:** kategori seçilince o kategorinin filtreleri görünür (6.3).
 - Masaüstünde kategori sayıları diğer filtrelere göre güncellenir.
 - **Durum satırı (masaüstü):** kütüphane başlığında tek satır, ör. "28 kayıt · 2 büro dışında · 3 konumsuz · 5 eksik". Her sayı tıklanınca ilgili filtreyi açar. Telefondaki İstatistik ekranının masaüstü karşılığıdır.
-- **Kart:** görsel, ad, marka, kategori, fiyat; dijitalse veya yerinde değilse durum rozeti.
+- **Kart:** görsel, ad, marka, kategori, fiyat; dijitalse ya da alınmışsa (Kullanımda, Büro dışında) rozet (D-039).
 - Masaüstünde karta gelince konum kodu belirir; tıklanınca ofis planında gösterir.
 - Ürün detayı telefonda tam ekran, masaüstünde sağdan açılan panelde açılır.
 - Fiziki ürünün detayında "Büroda göster"in yanında **"Yerini değiştir"** (yeri yoksa "Yer seç"): Büro yer seçme modunda açılır; plan → ünite → bölme → **"Buraya koy"**. Sonra ürüne dönülür; onay yok, geri al var. Çubukta "Konumsuz" da seçilebilir (D-021, D-022).
@@ -394,7 +394,7 @@ Biçim: **`KK-KKK-EEE`**, ör. **`ST-005-265`**.
 - **Brother etiket yazıcısı:** QL-570, rulo PDF'iyle (D-035). Uygulamadan doğrudan yazıcıya basmak v2.
 
 ### 6.7 Ürün alma ve yerine koyma
-- **Ürünü al:** kim (bu cihazın kişisi önceden seçili), nereye (büro içinde / büro dışına), not.
+- **Ürünü al:** kim (bu cihazın kişisi önceden seçili), nereye (büro içinde / büro dışına), not. Detayda ana düğme „Nehmen“ / „Zurücklegen“; ikisi de geri alınabilir, durum çıkış kaydından türetilir (D-039).
 - **Durumlar:**
   - **Yerinde**
   - **Kullanımda:** büro içinde, kişi adıyla
@@ -497,7 +497,7 @@ Seyrek yapılan ama yanlışlıkla yapılınca ağır sonuç doğuran işlerin t
 | Fiyat | ürün, değer, birim, para birimi (€), tarih |
 | Fotoğraf | ürün, dosya, sıra |
 | Doküman | ürün, göreli yol, tür |
-| Çıkış kaydı | ürün, kişi, büro içi/dışı, not, alınma tarihi, iade tarihi, bölme onaylı mı |
+| Çıkış kaydı | ürün, kişi, büro içi/dışı, not, alınma tarihi, iade tarihi, bölme onaylı mı; ürün başına en çok bir açık kayıt (D-039) |
 | Kişi | ad |
 | Kat planı | sürüm no, altlık dosyası, altlık konumu/ölçeği/dönüşü, ofis görünümünde göster |
 | Oda | numara, ad, poligon |
