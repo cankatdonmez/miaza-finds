@@ -69,9 +69,11 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 - **Git deposu burada durabilir ama:**
   - Aynı anda tek bilgisayarda çalışılır.
   - Bilgisayar değiştirmeden önce Drive'ın eşitlemeyi bitirmesi beklenir.
-  - Güvenlik için ileride özel bir uzak depo (ör. GitHub, private) eklenmesi önerilir.
+  - Uzak depo (private): https://github.com/cankatdonmez/miaza-finds (`origin`, 04.11.2026). Push yine yalnız istenince.
 - Klasörün yolu uzun (Drive kısayolu). Windows'taki 260 karakter sınırına takılmamak için derin klasör yapısından kaçınılır. Gerekirse Git'te `core.longpaths true` açılır.
-- Drive, `.git` içine `desktop.ini` dosyaları koyuyor; git bunları bozuk dal sanıyor ("ignoring broken ref"). Görünce sil: `find .git -name desktop.ini -delete`, sonra `git fsck`. Kalıcı çözüm: özel bir uzak depo.
+- Drive, `.git` içine `desktop.ini` dosyaları koyuyor; git bunları bozuk dal sanıyor ("ignoring broken ref"). Görünce sil: `find .git -name desktop.ini -delete`, sonra `git fsck`.
+- Drive bazen `.git/index.lock`'u silinse de geri getirir (04.11.2026): silmek yerine adını değiştir
+  (`index.lock.alt-drive`), sonra sil. Dosya içeriği aynıyken „M“ görünürse: `git -c core.trustctime=false -c core.checkStat=minimal update-index --refresh`.
 
 ## Açık sorular (SPEC 11)
 
