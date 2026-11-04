@@ -11,7 +11,7 @@ Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büron
 - Oturum başında CLAUDE.md ve STATUS.md okunur. SPEC.md'nin yalnız ilgili bölümü okunur.
 - Her yeni karar: (1) DECISIONS.md sonuna yeni D-numarası, (2) SPEC.md / DESIGN-PRINCIPLES.md güncellenir, (3) ayrı belge commit'i, sonra kod.
 - Her biten adımdan sonra STATUS.md güncellenir (< 40 satır).
-- Commit: küçük, Almanca başlık; yazar `Cankat Dönmez <cankatdonmez@gmail.com>`; push yalnız istenince.
+- Commit: küçük, Almanca başlık; yazar `Cankat Dönmez <cankatdonmez@gmail.com>`; push yalnız istenince. (`find .git -name desktop.ini` artık gerekmez.)
 
 ## Komutlar
 ```bash
@@ -66,14 +66,14 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 ## Bu klasör Google Drive'da: dikkat edilecekler
 
 - **Sanal ortam (`.venv`), veritabanları ve `media/` bu klasörün dışında tutulur: `%USERPROFILE%\miaza-local\finds\`** (D-008). Binlerce küçük dosya ve açık bir SQLite dosyası Drive eşitlemesini bozar. `%LOCALAPPDATA%` kullanılmaz: Claude masaüstü uygulaması o yolu kendi sanal klasörüne yönlendiriyor.
-- **Git deposu burada durabilir ama:**
-  - Aynı anda tek bilgisayarda çalışılır.
-  - Bilgisayar değiştirmeden önce Drive'ın eşitlemeyi bitirmesi beklenir.
-  - Uzak depo (private): https://github.com/cankatdonmez/miaza-finds (`origin`, 04.11.2026). Push yine yalnız istenince.
+- **Git deposu Drive dışında: `%USERPROFILE%\miaza-local\finds\git`** (04.11.2026). Bu klasördeki `.git` yalnızca oraya
+  işaret eden bir dosya (`gitdir: …`). Drive'ın kilit dosyalarını geri getirmesi ve `desktop.ini` sorunu böylece bitti.
+  - Uzak depo (private): https://github.com/cankatdonmez/miaza-finds (`origin`). Push yine yalnız istenince.
+  - Başka bir bilgisayarda çalışmak: Drive'daki klasörde git çalışmaz (`.git` bu bilgisayarın yoluna işaret eder);
+    depo GitHub'dan indirilir.
+  - Depo ayarı `core.trustctime=false`, `core.checkStat=minimal`: Drive dosya zamanlarını farklı bildirir. Yine de
+    içerik aynıyken „M“ görünürse dosyayı `git add` ile yeniden okut (Drive yarım boyut bildirmiş olabilir).
 - Klasörün yolu uzun (Drive kısayolu). Windows'taki 260 karakter sınırına takılmamak için derin klasör yapısından kaçınılır. Gerekirse Git'te `core.longpaths true` açılır.
-- Drive, `.git` içine `desktop.ini` dosyaları koyuyor; git bunları bozuk dal sanıyor ("ignoring broken ref"). Görünce sil: `find .git -name desktop.ini -delete`, sonra `git fsck`.
-- Drive bazen `.git/index.lock`'u silinse de geri getirir (04.11.2026): silmek yerine adını değiştir
-  (`index.lock.alt-drive`), sonra sil. Dosya içeriği aynıyken „M“ görünürse: `git -c core.trustctime=false -c core.checkStat=minimal update-index --refresh`.
 
 ## Açık sorular (SPEC 11)
 
