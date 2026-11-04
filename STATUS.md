@@ -1,11 +1,11 @@
 # STATUS
 
-Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `dilim-3/bewegung` (Dilim 2 main'de; push yok)
+Stand: 04.11.2026 · v0.1.0 · SPEC 0.5 · Dal `main` (Dilim 1–3 birleşik; push yok)
 
 ## Aktueller Stand
 - **Dilim 1** `main`de. Beta geri bildirimi 1 (D-014, D-015): masaüstü kamera + kamera seçimi, Option „+“, QR önizleme,
   `start.bat netz` ile QR ağ adresi, görsel boyutları ekrana göre.
-- **Dilim 2 (Büro)** main'de; 212 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
+- **Dilim 2 (Büro)** ve **Dilim 3 (Hareket)** main'de; 212 test yeşil. Kararlar D-016 (Hier einordnen), D-017 (kapsam).
   - Migration 003: plan, raum, einheit, fach (kimlik asla yeniden kullanılmaz), `produkt.fach_id`.
   - `/plan` (Einstellungen › Büroplan): altlık (PDF/PNG/JPG, taşı/ölçekle/90°), oda ve ünite çizimi (sürükle = dikdörtgen,
     tıkla = poligon), oda ataması, geri al/yinele, kaydetmeden önce etki özeti.
