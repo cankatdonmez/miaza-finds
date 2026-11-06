@@ -4,7 +4,7 @@
     {
       "name": "dev",
       "runtimeExecutable": "C:/Users/canka/miaza-local/finds/.venv/Scripts/python.exe",
-      "runtimeArgs": ["-B", "-c", "import os, sys; os.environ['MF_DB_PATH'] = os.path.expanduser('~/miaza-local/finds/data/dev.db'); os.environ['MF_MEDIA_DIR'] = os.path.expanduser('~/miaza-local/finds/media-dev'); import uvicorn.main; sys.argv = ['uvicorn', '--factory', 'app.main:create_app', '--host', '127.0.0.1', '--port', '8091']; uvicorn.main.main()"],
+      "runtimeArgs": ["-B", "-c", "import os, sys; os.chdir(r'C:/Users/canka/Documents/miaza-finds'); sys.path.insert(0, os.getcwd()); os.environ['MF_DB_PATH'] = os.path.expanduser('~/miaza-local/finds/data/dev.db'); os.environ['MF_MEDIA_DIR'] = os.path.expanduser('~/miaza-local/finds/media-dev'); import uvicorn.main; sys.argv = ['uvicorn', '--factory', 'app.main:create_app', '--host', '127.0.0.1', '--port', '8091']; uvicorn.main.main()"],
       "port": 8091
     }
   ]
