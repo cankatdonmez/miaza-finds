@@ -589,6 +589,8 @@ DATA/
 ### 8.5 Dış bağımlılık
 Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç yoktur. Drive eşitlemesi Drive uygulamasının işidir.
 
+**İstisna, en son (D-048):** „Linkten doldurma“ isteğe bağlı olarak Claude API'yi kullanır; yalnız dışarıya bağlantı, yalnız açık ürün sayfası ve kategori/filtre adları gider. Anahtar yoksa uygulama internetsiz çalışmaya devam eder.
+
 ## 9. İstenmeyen davranışlar
 
 **Etkileşim ve görsel**
@@ -648,10 +650,11 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 
 **v2 ve sonrası**
 - Sipariş listesi: miktar, fiyat hesabı, isteğe bağlı vergi, fiyatlı/fiyatsız PDF ve Excel
-- Linkten doldurma, fotoğraftan otomatik renk
+- Fotoğraftan otomatik renk
 - Brother etiket yazıcısına uygulamadan doğrudan baskı (D-035)
 - Fiyat geçmişi
 - "Klasörde göster" yardımcısı
+- **En son: Linkten doldurma** (D-048): yapay zekâ destekli okuma (Claude API); seri sayfasından seçerek toplu ekleme; her zaman önce önizleme, sonra Speichern. Anahtar/internet yoksa yalnız ad ve ana görsel.
 - Kanıt gelirse: 6.12'deki bekleyen fikirler
 
 **Demo ile ilgili not:** Demo, koleksiyonda v2'nin sipariş listesini de gösteriyor. Bu kısım demoda "sonraki sürüm" olarak işaretlenmelidir.

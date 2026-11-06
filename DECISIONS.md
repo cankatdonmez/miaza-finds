@@ -479,3 +479,19 @@ Cankat gab für Sammlungen keine Einzelvorgaben; es gilt die einfachste Fassung 
 - **Nicht in v1 (kein Beleg, SPEC 6.12):** Reihenfolge, Titelbild, Teilen, Warnung zu fehlenden Produkten. Wird ein Produkt gelöscht, verschwindet es aus allen Sammlungen.
 - **Daten:** Migration 011 (`sammlung`, `sammlung_produkt`).
 → SPEC 4.5, 6.8.
+
+## D-048 · 06.11.2026 · Linkten doldurma: yapay zekâ destekli okuma, en son
+Cankat'ın kararı. Onlarca üretici, farklı malzeme türleri (fayans, ahşap kaplama, kumaş …) ve farklı dillerdeki siteler
+yüzünden kurallı okuma yetmez; siteye özel okuyucular sürdürülemez.
+- **Yol:** sunucu sayfayı indirir; sayfa metni ile büronun kategori/filtre/seçenek listesi Claude API'ye gider. Dönen:
+  kategori, orijinal ad (D-045), marka, ürün kodu, filtre değerleri (sitenin dilinden büronun seçeneklerine eşlenmiş),
+  fotoğraf adresleri. Eşleşmeyen değer yalnız öneri olur („yeni seçenek eklensin mi?“). Fotoğrafları sunucu indirir.
+- **Seri/koleksiyon sayfası:** ürün linkleri bulunur, liste gösterilir, istenenler seçilir, her biri aynı yoldan okunur.
+- **Hiçbir şey kendiliğinden kaydedilmez:** doldurulmuş form gösterilir; kontrol, kırpma, sonra Speichern.
+- **Gerekenler:** mini PC'nin dışarıya bağlantısı (içeriden dışarı; sunucu internete açılmaz), Anthropic API anahtarı
+  (Systembereich'te saklanır), içe aktarma başına küçük bir ücret. Giden: açık ürün sayfası ve kategori/filtre adları;
+  büronun kendi verisi (konum, kişi, hareket) gitmez.
+- **Yedek:** anahtar yoksa ya da internet yoksa genel okuyucu yalnız ad ve ana görseli doldurur; gerisi elle.
+- **Sıra:** en son eklenecek özelliklerden; Dilim 4 ve diğer v2 işlerinden sonra. Model ve ücret o zaman güncel bilgiyle
+  seçilir.
+→ SPEC 8.5, 10.
