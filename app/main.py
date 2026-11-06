@@ -48,6 +48,10 @@ def create_app(db_path: Path | None = None, media_dir: Path | None = None,
     conn = connect(app.state.db_path)
     try:
         migrate(conn, app.state.sicherung_dir)
+        # Suchtexte älterer Stände enthalten den Fachcode noch nicht (SPEC 6.1); billig und idempotent
+        from .services import plan as plan_dienst
+        plan_dienst.suchtexte_alle_erneuern(conn)
+        conn.commit()
     finally:
         conn.close()
 

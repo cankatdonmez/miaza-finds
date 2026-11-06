@@ -15,7 +15,7 @@ Her adım için ortak kriterler (ayrıca yazılmaz):
 
 ---
 
-## 1. Aramada bölme kodu — `SIRADA`
+## 1. Aramada bölme kodu — `DENETİMDE`
 SPEC 6.1. Dal: `dilim-4/suche-fachcode`.
 - K1: Kütüphane aramasında bir bölme kodu (ör. `2.2`) yazılınca o bölmedeki ürünler sonuçta çıkar.
 - K2: Ürün başka bölmeye taşınınca (Platz ändern, Zurücklegen + yeni yer, Einordnen, toplu düzenleme) arama yeni kodu bulur, eskisini bulmaz.
