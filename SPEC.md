@@ -564,24 +564,24 @@ Tek ürünlük işlerde bu yeterlidir. Ama toplu yerleştirmede ve seri kayıtta
 - **Karar:** Büronun bir alan adı ve yönetim erişimi varsa **A**, yoksa **B** (11, açık sorular).
 - **Geliştirme sırası:** uygulama C ile de tam çalışacak şekilde yazılır. Canlı kamera, HTTPS varsa kendiliğinden devreye giren bir iyileştirmedir. Böylece HTTPS kararı kodlamayı bekletmez.
 
-### 8.3 Klasör düzeni (mini PC)
+### 8.3 Klasör düzeni (mini PC, Windows; D-008, D-049)
 ```
-DATA/
-├─ Apps/
-│  ├─ miaza-finds/
-│  │  ├─ app/        kod ve docker-compose.yml
-│  │  ├─ data/       finds.db
-│  │  ├─ media/      ürün ve ünite fotoğrafları, önizlemeler, plan altlığı
-│  │  ├─ backups/    yerel gece yedekleri
-│  │  └─ logs/
-│  └─ miaza-counts/  Zeiterfassung, aynı düzen
-└─ Bibliothek/       doküman kök klasörü (datasheet, katalog, sertifika)
+C:\miaza\finds\                         kod (GitHub deposundan; güncellemede değişir)
+%USERPROFILE%\miaza-local\finds\
+├─ .venv\     Python ortamı (start.bat kurar)
+├─ data\      finds.db
+├─ media\     ürün ve ünite fotoğrafları, önizlemeler, plan altlığı
+└─ backups\   yedekler (.zip)
+Doküman kök klasörü: yeri henüz kararlaştırılmadı (6.9)
 ```
+- Kurulum adımları: teknisyen belgesi (STATUS › Offene Fragen). Docker yolu (`Dockerfile`, `docker-compose.yml`) hazır ama
+  denenmedi; o yolda eski `DATA/Apps/miaza-finds/{app,data,media,backups}` düzeni geçerlidir.
 - Uygulama kendi klasörlerini yazılabilir, doküman kök klasörünü **salt okunur** bağlar.
 
 ### 8.4 Yedek
+- **Henüz yapılmadı, acelesi yok** (D-049): uygulama belli bir noktaya gelince ayrıntısı konuşulur. Bugünkü hedef:
 - Her gece 02:00: veritabanının güvenli kopyası ve `media/` klasörü.
-- **Yerel:** `DATA/Apps/miaza-finds/backups/`, son 30 gece ve 12 ay sonu.
+- **Yerel:** `%USERPROFILE%\miaza-local\finds\backups\`, son 30 gece ve 12 ay sonu.
 - **Google Drive:** Drive masaüstü uygulamasının eşitlediği klasöre kopya, son 14 gece. Uygulama Google'a doğrudan bağlanmaz.
 - Ayarlarda son başarılı yedeğin zamanı görünür; 2 günden eskiyse uyarı çıkar.
 - Geri yükleme adımları belgelenir ve kurulumda bir kez denenir.
@@ -640,7 +640,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 - Kategori ve filtre yönetimi (masaüstü)
 - **Kat planı düzenleyicisi:** oda, ünite, bölme; taslak, geri al/yinele, kaydet/vazgeç; altlık hizalama ve gizleme; kaydırma/yakınlaştırma
 - Ofis görünümü ve dört konum senaryosu
-- Ürün ve bölme QR'ları; A4 etiket PDF'i (20'li)
+- Ürün ve bölme QR'ları; etiket PDF'i: A4 3 × 8 (24'lü) ve 38 mm rulo (Brother QL-570) (D-033, D-035, D-049)
 - **Okut:** telefonda ana menüde, masaüstünde ikincil ikon (Dilim 3, sıra D-038)
 - **Ürün alma ve yerine koyma;** bölme onayı (Açık/Kapalı) ve toplu yerleştirme
 - "Düzenleniyor" uyarısı ve sürüm kontrolü
@@ -683,7 +683,7 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 **Açık kalanlar:**
 1. ~~Brother etiket yazıcısının modeli~~ → QL-570, 38 mm rulo (DK-22225), çalışıyor (D-035).
 2. **HTTPS yolu (8.2):** Büronun alan adı var mı (ör. miaza.at), yönetim erişimi kimde ve hangi sağlayıcıda? Varsa A, yoksa B. Ofiste hangi modem kullanılıyor?
-3. Kullanılacak etiket kâğıdının düzen PDF'i (ürün adı ya da kâğıt). Gelince düzen tanımı ona göre yapılır.
+3. ~~Etiket kâğıdının düzen PDF'i~~ → geldi, uygulandı (D-033); biçimler yalnız A4 24'lü ve 38 mm rulo (D-049).
 4. Google Drive masaüstü uygulaması mini PC'de mi, başka bir bilgisayarda mı?
 5. Almanca biçimler Avusturya'ya göre mi (de-AT)? Durum adlarının ve "Kütüphane" bölümünün Almanca adları da bu turda kesinleşir (4.10).
 6. "finds" ve "counts" vurgu renkleri, aile içinde birbirinden ayrışacak şekilde tasarımda belirlenecek.
@@ -694,9 +694,9 @@ Bulut servisi yok; her şey ofis ağında çalışır. v1'de internete ihtiyaç 
 - Stok yönetimi, sipariş takibi, muhasebe.
 - "Numune istendi" gibi ara durumlar.
 - Kilit yönetimi ekranı.
-- Kategori ve oda renkleri; birden fazla vurgu rengi.
+- Kategori renkleri; birden fazla vurgu rengi. (Oda renkleri vardır: D-024.)
 - Telefonda kategori, filtre ve plan düzenleme; telefondan etiket baskısı.
-- Birden fazla doküman klasörü; 40'lı etiket düzeni.
+- Birden fazla doküman klasörü; A4 24'lü ve 38 mm rulo dışında etiket düzeni (D-049).
 - Taslağı kaza sonrası geri getirme.
 - Ünite türleri için ayrı bir liste.
 - Ofis dışından erişim (gerekirse ayrıca değerlendirilir).

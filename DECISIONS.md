@@ -495,3 +495,17 @@ yüzünden kurallı okuma yetmez; siteye özel okuyucular sürdürülemez.
 - **Sıra:** en son eklenecek özelliklerden; Dilim 4 ve diğer v2 işlerinden sonra. Model ve ücret o zaman güncel bilgiyle
   seçilir.
 → SPEC 8.5, 10.
+
+## D-049 · 06.11.2026 · Eski kalıntılar temizlendi; Drive aradan çıkıyor; bekleyen konular
+Cankat'ın kararları (devir paketine verdiği cevaplar).
+- **Etiket biçimleri yalnız ikidir:** A4 kâğıt 3 × 8 = **24'lü** (D-033) ve **38 mm Brother rulo** (QL-570, D-035). 20'li ve
+  40'lı düzenlerle iş yok; SPEC'teki bu kalıntılar kaldırıldı. Kapanmış „etiket kâğıdı PDF'i“ sorusu da açıklardan çıktı.
+- **Oda renkleri vardır** (D-024); SPEC 12'deki „oda renkleri yok“ kalıntısı kaldırıldı. Kategori renkleri yine yok.
+- **Klasör düzeni Windows'a göre** (SPEC 8.3): kod `C:\miaza\finds` (mini PC, teknisyen belgesi), veri ve yedek
+  `%USERPROFILE%\miaza-local\finds\` (D-008). Eski `DATA/Apps/…` düzeni yalnız denenmemiş Docker yolunda geçerli.
+- **Google Drive aradan çıkar:** proje artık GitHub deposundan (`cankatdonmez/miaza-finds`) sürdürülür; çalışma kopyası
+  Drive dışında, `C:\Users\canka\Documents\miaza-finds` (counts'un `Documents\Zeiterfassung`'u gibi).
+- **Şimdilik bekleyenler** (uygulama belli bir noktaya gelince konuşulacak): otomatik (gece) yedek, HTTPS, gerçek QR adresi.
+  **Şu ana kadarki veriler ve QR'lar demo amaçlıdır**; gerçek veri ve kalıcı QR'lar uygulama tamamlanıp sunucuya
+  kurulunca başlar.
+→ SPEC 6.6, 8.3, 8.4, 10, 11, 12; CLAUDE.md.

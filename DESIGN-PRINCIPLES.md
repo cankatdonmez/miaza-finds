@@ -115,7 +115,7 @@ Yeni fikir ancak gerçek bir ihtiyaca karşılık geliyorsa girer. Ara durumlar 
 *Kontrol:* Bunu kim, ne sıklıkla kullanacak? Cevap belirsizse ekleme.
 
 ### 14. Yerel, sade, bağımsız teknoloji
-Ofisin mini PC'sinde çalışır; bulut servisine, CDN'e veya dış hesaba bağlı değildir. Bilinen, sıkıcı ama sağlam araçlar kullanılır (FastAPI, SQLite, düz JS, build adımı yok). Her uygulama aynı altyapıyı ve klasör düzenini paylaşır (`DATA/Apps/miaza-…`).
+Ofisin mini PC'sinde çalışır; bulut servisine, CDN'e veya dış hesaba bağlı değildir. Bilinen, sıkıcı ama sağlam araçlar kullanılır (FastAPI, SQLite, düz JS, build adımı yok). Her uygulama aynı altyapıyı ve klasör düzenini paylaşır (Windows: kod `C:\miaza\<uygulama>`, veri `%USERPROFILE%\miaza-local\<uygulama>`; D-049).
 - **Port düzeni:** her uygulamanın kendi port çifti vardır (beta / geliştirme), hiçbir zaman paylaşılmaz: counts 8080/8081, finds 8090/8091; yeni uygulama bir sonraki onluğu alır (8100/8101, 8110/8111 …).
 *Kontrol:* İnternet kesilse veya bir servis kapansa bu özellik çalışmaya devam eder mi?
 
