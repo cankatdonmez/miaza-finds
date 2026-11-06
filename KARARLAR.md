@@ -29,7 +29,7 @@ yerlerde „BİLİNMİYOR“ ya da „tahmin“ yazdım.
 | # | Karar | Gerekçe | Ne zaman |
 |---|---|---|---|
 | A2.1 | **Özel GitHub deposu:** https://github.com/cankatdonmez/miaza-finds (`origin`). Yalnız `main` yüklendi; dilim dalları main'e birleşmiş olduğu için yüklenmedi. | Kodun yedeği. Cankat önerdi, depoyu kendisi açtı (Bash'te `gh` yok). | 04.11.2026 |
-| A2.2 | **Git klasörü Drive dışına taşındı:** `C:\Users\canka\miaza-local\finds\git`. Drive'daki `.git` artık `gitdir:` satırı olan bir dosya. Depo ayarları: `core.trustctime=false`, `core.checkStat=minimal`. | Drive, git'in `index.lock` dosyasını silinse de geri getiriyordu, birleştirme durdu. Dosya boyutlarını da yarım bildirdi. Cankat onayladı. | 04.11.2026 |
+| A2.2 | (06.11'de A8.1 ile aşıldı) **Git klasörü Drive dışına taşındı:** `C:\Users\canka\miaza-local\finds\git`. Drive'daki `.git` artık `gitdir:` satırı olan bir dosya. Depo ayarları: `core.trustctime=false`, `core.checkStat=minimal`. | Drive, git'in `index.lock` dosyasını silinse de geri getiriyordu, birleştirme durdu. Dosya boyutlarını da yarım bildirdi. Cankat onayladı. | 04.11.2026 |
 | A2.3 | Başka bir bilgisayarda çalışmak için depo **GitHub'dan indirilir**. Drive'daki klasörde git yalnız bu bilgisayarda çalışır. | A2.2'nin sonucu. | 04.11.2026 |
 | A2.4 | `wt-sammlungen` çalışma kopyası ve `sammlungen` dalı **kalsın** (temizlenmesin). | Cankat'ın isteği. Dal main'e birleşmiş, içinde değişiklik yok. | 06.11.2026 |
 | A2.5 | Ege Seramik sitesinden indirme Python'un varsayılan sertifika deposuyla başarısız oldu („certificate has expired“). Çözüm: `httpx` (güncel sertifika listesi). **Sertifika doğrulaması kapatılmadı.** | Güvenlik. | 02.11.2026 |
@@ -61,7 +61,7 @@ yerlerde „BİLİNMİYOR“ ya da „tahmin“ yazdım.
 | # | Karar | Gerekçe | Ne zaman |
 |---|---|---|---|
 | A5.1 | **Mini PC Windows** olacak, henüz kurulmadı. Kurulumu bir teknisyen yapacak. Almanca teknisyen belgesi: https://claude.ai/artifact/KtCQDEkSQeHfcE4NGtbAoW (DHCP rezervasyonu, Windows ayarları, `C:\miaza\finds`, `MF_BASIS_URL` setx, güvenlik duvarı, Görev Zamanlayıcı ile `start.bat netz`, QL-570, yedek, kabul listesi). Almanca, çünkü teknisyen Viyana'da varsayıldı. **Hiç denenmedi.** | Cankat'ın isteği. | 04.11.2026 |
-| A5.2 | **QR'ın kalıcı adresi ve HTTPS açık; Cankat bilgi verecek.** Claude'un önerisi: şimdiden bir alt alan adı (ör. `finds.miaza.design`) `MF_BASIS_URL` olsun; DNS Wix'te ya da World4You'da kalabilir; Let's Encrypt sertifikası „DNS alias mode“ ile. World4You'da büronun bir hosting paketi var; hosting'in kendisi gerekmiyor, DNS'i işe yarar. Bu konuda teknisyen belgesi sonra güncellenecek. | Basılı etiketler adrese bağlı; HTTPS canlı kamera için gerekli. | 04.11.2026 |
+| A5.2 | (A8.4/A8.5: bekletiliyor) **QR'ın kalıcı adresi ve HTTPS açık; Cankat bilgi verecek.** Claude'un önerisi: şimdiden bir alt alan adı (ör. `finds.miaza.design`) `MF_BASIS_URL` olsun; DNS Wix'te ya da World4You'da kalabilir; Let's Encrypt sertifikası „DNS alias mode“ ile. World4You'da büronun bir hosting paketi var; hosting'in kendisi gerekmiyor, DNS'i işe yarar. Bu konuda teknisyen belgesi sonra güncellenecek. | Basılı etiketler adrese bağlı; HTTPS canlı kamera için gerekli. | 04.11.2026 |
 | A5.3 | World4You'nun resmî DNS API'si bulunamadı; acme.sh'in `dns_world4you` eklentisi hesap şifresiyle çalışıyor gibi (bir özetten okundu, doğrulanmadı). Bu yüzden alias yolu önerildi. | — | 04.11.2026 |
 | A5.4 | **mkcert ile deneme amaçlı HTTPS** (canlı taramayı gerçek telefonda görmek için) **sonraya bırakıldı** (Cankat: „sonra yaparız denemek için“). mkcert'i indirmek ayrıca izin ister; kök sertifikayı telefona Cankat kurar. | — | 04.11.2026 |
 | A5.5 | Tek ürün için telefonun kendi kamerası yeterli (etiketteki QR bir link). Uygulama içi taramanın asıl değeri art arda okutmada; bu da HTTPS ile rahatlar. | Cankat'ın „foto aufnehmen gereksiz adım“ eleştirisinden. | 04.11.2026 |
@@ -75,6 +75,17 @@ yerlerde „BİLİNMİYOR“ ya da „tahmin“ yazdım.
 | A6.3 | Dilim 4 sırası: Statistik → Sammlungen → Dokumente → Nachtsicherung → Almanca son okuma. Bu kararı başka bir oturum yazdı (D-046), „Cankat seçti“ diyor; ben o konuşmayı görmedim. | — | 04.11.2026 |
 | A6.4 | 04.11 akşamı (21:47–22:32) Dilim 4'ün ilk iki adımını yapan oturum, **büyük ihtimalle Cankat'ın terminalde açtığı Claude Code oturumu** (tahmin; uygulamanın oturum listesinde görünmüyor). D-046 ve D-047'yi Almanca yazmış. | — | 06.11.2026'da fark edildi |
 | A6.5 | „İyi tasarımın ilkeleri“ denetiminde ilk denetim yüzeysel bulundu (Cankat: „sadece bunları mı buldun?“); kontrol listesine göre yeniden yapıldı → D-029/D-030. | Denetim, kontrol listesine madde madde bakılarak yapılır. | 02.11.2026 |
+
+### A8. Devir paketinden sonra (D-049, 06.11.2026)
+
+| # | Karar | Gerekçe |
+|---|---|---|
+| A8.1 | **Google Drive tamamen aradan çıktı.** Çalışma kopyası `C:\Users\canka\Documents\miaza-finds` (yerel git deposundan klon, `origin` GitHub). Eski Drive klasörü ve eski git deposu (`miaza-local\finds\git`) yedek olarak duruyor; silme kararı Cankat'ın. | Cankat: „karışıklık çıkarıyorsa Drive'ı tamamen aradan çıkarabilirsin; zaten GitHub'dan devam ediyoruz.“ |
+| A8.2 | **Etiket biçimleri yalnız iki:** A4 24'lü (3×8) ve 38 mm Brother rulo. 20'li ve 40'lı düzenlerle iş yok; SPEC'ten kalıntılar silindi. | Cankat. |
+| A8.3 | **Otomatik (gece) yedek bekletiliyor;** uygulama belli bir noktaya gelince konuşulacak. | Cankat: „şu an acelesi yok.“ |
+| A8.4 | **HTTPS bekletiliyor.** | Cankat: „şu an bir şey yapamayız.“ |
+| A8.5 | **Bütün mevcut veri ve QR'lar demo.** Gerçek veri ve kalıcı QR'lar uygulama tamamlanıp sunucuya kurulunca; QR adresi için dikkat edilecekler o aşamada konuşulacak. | Cankat. |
+| A8.6 | Eski kalıntılar SPEC'ten temizlendi (20'li etiket, kapanmış soru 11.3, „oda renkleri yok“, `DATA/Apps` yolları); `version.py` 0.3.0; STATUS güncel. | Cankat: „eskiden kalmış olanları kaldırmak gerekli.“ |
 
 ### A7. Düzeltilen hatalar (karar sayılmaz ama bilinmeli)
 
@@ -142,3 +153,4 @@ Tarih biçimi gg.aa.yyyy. „C“ = Cankat'ın kararı/isteği, „Cl“ = Claud
 | D-046 | 04.11 | Dilim 4 İstatistik ile başlar; telefonda „Mehr“ (başka oturum, Almanca) | C (o oturuma göre) |
 | D-047 | 04.11 | Sammlungen miktarsız, Migration 011 (başka oturum, Almanca) | Cl, C „ayrıntı vermedi“ |
 | D-048 | 06.11 | Linkten doldurma: yapay zekâ destekli okuma, en son | C |
+| D-049 | 06.11 | Yalnız A4 24'lü + 38 mm rulo; SPEC kalıntıları silindi; Windows klasör düzeni; Drive aradan çıktı; yedek, HTTPS, gerçek QR bekletiliyor | C |

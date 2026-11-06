@@ -1,4 +1,4 @@
-# DEVIR — miaza finds (devir paketi, 06.11.2026)
+# DEVIR — miaza finds (devir paketi, 06.11.2026; D-049'dan sonra güncellendi)
 
 Bu paket, projeyi bu sohbeti görmeden devralacak oturum içindir. Dört dosya birlikte okunur:
 **DEVIR.md** (bu dosya: ne var, nerede, ne kadar bitti) · **KARARLAR.md** (verilen bütün kararlar, özellikle dosyalarda
@@ -28,12 +28,15 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 
 ## 2. Dosya haritası
 
-### Proje klasörü (Google Drive): `G:\.shortcut-targets-by-id\…\Miaza Apps\miaza finds`
+### Proje klasörü: `C:\Users\canka\Documents\miaza-finds` (GitHub: `cankatdonmez/miaza-finds`, private)
+
+Google Drive artık kullanılmıyor (D-049). Eski Drive klasörü (`G:\.shortcut-targets-by-id\…\Miaza Apps\miaza finds`)
+yalnız yedek; orada çalışılmaz.
 
 | Yol | Ne |
 |---|---|
 | `CLAUDE.md` | Çalışma notları ve kurallar. Her oturumda ilk okunur. |
-| `STATUS.md` | Anlık durum, < 40 satır. **Not:** test sayısı (212) ve bazı satırlar eski; gerçek: 219 test (bkz. DURUM.md). |
+| `STATUS.md` | Anlık durum, < 40 satır (06.11.2026'da güncellendi). |
 | `SPEC.md` | Ürün spesifikasyonu 0.5 (Türkçe). Ne yapılacağının tek kaynağı. 12 bölüm. |
 | `DECISIONS.md` | Karar günlüğü D-001…D-048. D-046 ve D-047 Almanca yazılmış (başka oturum), diğerleri Türkçe. |
 | `DESIGN-PRINCIPLES.md` | Tasarım ilkeleri, kontrol listesi, karar tablosu. |
@@ -45,11 +48,10 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 | `requirements.txt`, `requirements-dev.txt` | Sabit sürümlü bağımlılıklar (aşağıda). |
 | `pytest.ini` | `-p no:cacheprovider` (Drive'a önbellek yazmasın), `testpaths = tests`. |
 | `.claude/launch.json` | Geliştirme sunucusu „dev“: 127.0.0.1:8091, `dev.db`, `media-dev`, `--reload` yok. |
-| `.git` | **Dosya**, klasör değil: `gitdir: C:/Users/canka/miaza-local/finds/git` (04.11.2026'da taşındı). |
-| `_oturum/oturum-2026-11-01.zip` | 01.11 oturumunun arşivi. İçeriği bu oturumda incelenmedi (BİLİNMİYOR). |
+| `.git` | Normal git klasörü (06.11.2026'da yerel depodan klonlandı). `origin` = GitHub. |
+| `_oturum/oturum-2026-11-01.zip` | 01.11 oturumunun arşivi (`.gitignore`'da, yalnız yerelde; Drive'dan kopyalandı). İçeriği incelenmedi (BİLİNMİYOR). |
 | `demo/` | Tıklanabilir demo (`*.dc.html`, SPEC 0.3 düzeyinde), ofis planı PDF'i, `test-harness.html`. |
-| `demo/EKRANLAR.md`, `demo/ekranlar/*.png` | Demo ekran görüntüleri ve açıklaması. **Git'e eklenmemiş** (untracked); bu oturumdan önce vardı, kim/ne zaman ekledi BİLİNMİYOR (dosya 02.11.2026 tarihli olduğunu söylüyor). |
-| `desktop.ini` | Google Drive'ın dosyası; `.gitignore`'da. |
+| `demo/EKRANLAR.md`, `demo/ekranlar/*.png` | Demo ekran görüntüleri (33 PNG) ve açıklaması. **Git'e eklenmemiş** (untracked); Drive'dan kopyalandı. Kim/ne zaman ekledi BİLİNMİYOR (dosya 02.11.2026 tarihli olduğunu söylüyor). |
 
 ### Uygulama kodu: `app/`
 
@@ -61,7 +63,7 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 | `texte.py` | Bütün arayüz metinleri (Almanca sözlük `DE`), `t(anahtar, **değerler)`. |
 | `zeit.py` | `heute()`, `jetzt()` (Viyana saati). |
 | `fehler.py` | `Fehler(text, feld, status)` → `{"fehler": {...}}`. |
-| `version.py` | `VERSION = "0.1.0"` (**güncellenmemiş**, bkz. DURUM.md). |
+| `version.py` | `VERSION = "0.3.0"` (0.\<biten dilim\>.\<düzeltme\>; 06.11.2026'da 0.1.0'dan güncellendi). |
 | `etikett_bogen.json` / `etikett_rolle.json` | Etiket kâğıdı tanımları: A4 3×8 (69,5×36,84 mm) ve rulo 70×38 mm (QL-570). |
 | `migrations/001…011.sql` | Şema: 001 kütüphane, 002 system, 003 büro, 004 fach.name, 005 raum.farbe, 006 farben, 007 artikelnummer, 008 personen, 009 entnahme, 010 einstellung, 011 sammlungen. Yalnız eklenir, yayımlanmış dosya değişmez (`migrations/README.md`). |
 | `routes/pages.py` | HTML sayfaları, menüler (`MENUE_DESKTOP`, `MENUE_TELEFON`), `/p/<nr>` → ürün, `/f/<id>` → büro. |
@@ -89,8 +91,8 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 | `media\`, `media-dev\` | Fotoğraflar ve plan altlığı (beta / dev). |
 | `backups\` | Systembereich yedekleri (.zip). |
 | `import\verano\` | Ege Seramik'ten indirilen Verano fotoğrafları (içe aktarma kaynağı). |
-| `git\` | **Git deposu** (gitdir). Uzak: `origin` = https://github.com/cankatdonmez/miaza-finds (private). |
-| `wt-sammlungen\` | Başka bir oturumun açtığı git worktree'si (dal `sammlungen`, main'e birleşmiş, değişiklik yok). Cankat „kalsın“ dedi. |
+| `git\` | **Eski** git deposu (Drive dönemi, 04–06.11). Yedek olarak duruyor; artık kullanılmıyor. |
+| `wt-sammlungen\` | Başka bir oturumun açtığı worktree (eski depoya bağlı, dal `sammlungen`, main'e birleşmiş). Cankat „kalsın“ dedi. |
 
 ---
 
@@ -113,11 +115,11 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 - **Mini PC (henüz kurulmadı):** Windows. Teknisyen belgesi (Almanca) Claude Docs'ta:
   https://claude.ai/artifact/KtCQDEkSQeHfcE4NGtbAoW — sabit IP, `MF_BASIS_URL`, güvenlik duvarı, Görev Zamanlayıcı ile
   `start.bat netz`, QL-570 sürücüsü (38×70 mm, her etiketten sonra kes), yedek. **Hiç denenmedi.**
-- **Git:** depo `C:\Users\canka\miaza-local\finds\git`; çalışma klasörü Drive'da; depo ayarları
-  `core.trustctime=false`, `core.checkStat=minimal`. Push yalnız Cankat isteyince. Commit yazarı
+- **Git:** depo `C:\Users\canka\Documents\miaza-finds\.git`, `origin` = https://github.com/cankatdonmez/miaza-finds
+  (private). `main` GitHub'dan önde (push yapılmadı). Push ve main'e birleştirme yalnız Cankat isteyince. Commit yazarı
   `Cankat Dönmez <cankatdonmez@gmail.com>`, sonuna `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - **Etiket yazıcısı:** Brother QL-570, rulo DK-22225 (38 mm). Uygulama her etiketi bir PDF sayfası (70×38) üretir.
-- **Bash ortamında** `gh` ve `node` yok. Python ile dosya düzenlerken Windows yolu uzun: geçici dosyalar için kısa yol.
+- **Bash ortamında** `gh` ve `node` yok. Claude'un geçici klasörünün yolu uzun: Windows 260 karakter sınırına dikkat.
 
 ---
 
@@ -133,7 +135,7 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 | 6.1 | Aramada **bölme kodu** („2.2“) ve „seri“ | `produkte.suchtext_erneuern` ad, marka, Artikelnummer, ölçü, kategori, kod, envanter no ve filtre değerlerini alıyor; **fach kodu yok**. |
 | 6.1 | Masaüstünde **karta gelince konum kodu**, tıklayınca planda göster | `bibliothek.js` kart şablonunda yok. |
 | 6.9, 10 | **Dokümanlar** (kök klasör, göreli yol, aç, „bulunamadı“) | Servis/route/migration yok (D-004: dilim 4'te). |
-| 8.4, 10 | **Gece yedeği** (02:00, 30 gece + 12 ay sonu, Drive kopyası 14 gece, ayarlarda son yedek zamanı ve 2 gün uyarısı) | Zamanlayıcı yok. Elle yedek Systembereich'te var (`api_system` `/sicherung`). |
+| 8.4, 10 | **Gece yedeği** — **bilerek bekletiliyor** (D-049: uygulama belli bir noktaya gelince konuşulacak) | Zamanlayıcı yok. Elle yedek Systembereich'te var (`api_system` `/sicherung`). |
 | 6.11 | Ayarlar › Genel: **doküman kök klasörü**, **yedek durumu** | `einstellungen.html`'de yok. |
 | 10 | **Almanca son okuma** (terimler, de-AT biçimleri) | Yapılmadı; SPEC 11.5 açık. |
 
@@ -149,13 +151,12 @@ Kaynak önceliği: kararlar için `DECISIONS.md` (D-001 … D-048), ne yapılaca
 
 ### 4c. Çelişenler
 
+**D-049 ile giderilenler (06.11.2026):** SPEC 10 „20'li etiket“ → A4 24'lü + 38 mm rulo; SPEC 11.3 kapatıldı;
+SPEC 12 „oda renkleri yok“ kaldırıldı; SPEC 8.3/8.4 ve DESIGN-PRINCIPLES klasör yolları Windows'a göre; `version.py` 0.3.0;
+STATUS.md güncel. Kalanlar:
+
 | Konu | SPEC | Gerçek | Not |
 |---|---|---|---|
-| Etiket kâğıdı | 10: „A4 etiket PDF'i (20'li)“; 6.6 eski cümle „yaklaşık 20'li ≈48×52“ kaldırıldı | 3×8 = 24 (69,5×36,84) ve rulo 70×38, varsayılan Rolle | SPEC 10 güncellenmemiş. |
-| Açık soru 3 | 11: „Etiket kâğıdının düzen PDF'i“ açık | Geldi, uygulandı (D-033) | CLAUDE.md'de üstü çizili, SPEC 11'de değil. |
-| Oda renkleri | 12 (Hayır listesi): „Kategori ve oda renkleri“ yapılmaz | D-018/D-024: oda renkleri seçilir, üniteler odanın tonunda | Hayır listesi güncellenmemiş. |
-| Klasör düzeni | 8.3 / 8.4: `DATA/Apps/miaza-finds/{app,data,media,backups,logs}` | Windows'ta `%USERPROFILE%\miaza-local\finds\…` (D-008), teknisyen belgesi de bunu kullanıyor | 8.3 Docker/mini PC için yazılmış; Windows yolu karar verilmiş değil. |
-| Sürüm numarası | `version.py`: „orta sayı her biten dilimle artar“ | Dilim 1–3 bitti, hâlâ `0.1.0` | |
 | Telefon menüsü | 4.5'in ilk cümlesi Koleksiyonlar'ı alt menüde sayıyor | Aynı maddenin sonu (D-047) ve kod: Bibliothek · Büro · Scannen · Mehr; Sammlungen „Mehr“ içinde | Madde kendi içinde iki hâli anlatıyor; geçerli olan D-047. |
 | Python | 8.1: 3.12+ | venv 3.14.5, Dockerfile 3.13 | Çalışıyor; Docker ile venv aynı değil. |
 | Fach etiketi alt metni | D-020: „bölmenin adı, yoksa ünitenin adı“ | D-036/37: oda/ünite/bölme ağaç | D-036 D-020'yi değiştirdi; SPEC 6.6 güncel. Etiketten listesindeki alt satır hâlâ D-020 kuralıyla. |
@@ -182,7 +183,7 @@ maddeleri (13 madde) ve dilim 4'ün kendi sırası (D-046). Kanıt: dosya / fonk
 | 9 | Alma / yerine koyma, bölme onayı, toplu yerleştirme | **TAMAM** (gerçek telefonda denenmedi) | `services/entnahme.py` (`nehmen`, `zuruecklegen`, `einordnen`, geri alma), `entnahme.js`, `scannen.js` einordnen modu, `test_entnahme` (9). |
 | 10 | „Düzenleniyor“ uyarısı ve sürüm kontrolü | **TAMAM** (iki gerçek cihazla denenmedi) | `services/bearbeitung.py`, `bearbeitung.js` (ürün formu, plan, fach, kategori), `test_bearbeitung` (4); sürüm kontrolü dilim 1/2'den. |
 | 11 | Koleksiyonlar (miktarsız) | **TAMAM** (başka oturum yaptı; bu oturumda gözden geçirilmedi) | `services/sammlungen.py`, `api_sammlungen.py`, `sammlungen.js`, Migration 011, `test_sammlungen` (7). |
-| 12 | İstatistik, kişiler, gece yedeği | **KISMEN** | İstatistik: `pages.py` `/statistik`, `templates/statistik.html`, `test_seiten` (başka oturum, gözden geçirilmedi). Kişiler: `services/personen.py`, `personen.js`, `test_personen` (4). **Gece yedeği yok.** |
+| 12 | İstatistik, kişiler, gece yedeği (gece yedeği D-049 ile bekletiliyor) | **KISMEN** | İstatistik: `pages.py` `/statistik`, `templates/statistik.html`, `test_seiten` (başka oturum, gözden geçirilmedi). Kişiler: `services/personen.py`, `personen.js`, `test_personen` (4). **Gece yedeği yok.** |
 | 13 | Almanca arayüz | **KISMEN** | Bütün metinler `texte.py`'de Almanca. Son okuma ve de-AT kararı yapılmadı (SPEC 11.5). |
 
 **Sayım:** 13 maddenin **6'sı TAMAM** (4, 7, 8, 9, 10, 11), **7'si KISMEN** (1, 2, 3, 5, 6, 12, 13), **0'ı BAŞLANMADI**.
@@ -211,4 +212,5 @@ en son „Linkten doldurma“ (D-048).
   büyük, açılış ekranı ve koyu altlık küçük).
 - Dilim 4'ün 5 adımından 2'si bitti.
 - Bunlara ek olarak v1'i gerçek hayata çıkarmak için yapılmamış **kurulum işleri**: mini PC kurulumu, kalıcı QR adresi
-  (`MF_BASIS_URL`) ve HTTPS kararı, gerçek telefonda uçtan uca deneme. Bunlar SPEC maddesi değil ama yayın için gerekli.
+  (`MF_BASIS_URL`) ve HTTPS kararı, gerçek telefonda uçtan uca deneme. Cankat'ın kararı (D-049): bunlar ve gece yedeği
+  uygulama tamamlanıp sunucuya kurulurken konuşulur; o zamana kadarki bütün veri ve QR'lar demo.

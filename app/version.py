@@ -3,4 +3,4 @@
 Schema wie miaza counts: 0.<Dilim>.<Korrektur> – die mittlere Zahl steigt mit jedem abgeschlossenen Dilim,
 die letzte mit Korrekturen dazwischen. Der Code-Stand (Hash) steht im Tooltip.
 """
-VERSION = "0.1.0"
+VERSION = "0.3.0"

@@ -1,24 +1,25 @@
 # miaza finds — çalışma notları
 
-Bu klasör **miaza finds** uygulamasının proje klasörüdür. Uygulama, büronun malzeme kütüphanesi ve ofis düzeni içindir. Bu dosyayı her oturumun başında oku.
+Bu klasör (`C:\Users\canka\Documents\miaza-finds`, GitHub: `cankatdonmez/miaza-finds`) **miaza finds** uygulamasının proje klasörüdür. Uygulama, büronun malzeme kütüphanesi ve ofis düzeni içindir. Bu dosyayı her oturumun başında oku.
 
-## Durum (01.11.2026)
+## Durum (06.11.2026)
 
-- **SPEC 0.5** onaylı; dilim 1–3 `main`de (Dilim 3: D-038–D-045). Sıradaki: dilim 4. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
+- **SPEC 0.5** onaylı; dilim 1–3 `main`de, dilim 4'te Statistik ve Sammlungen bitti; sıradaki Dokumente.
+- **Devir paketi:** `DEVIR.md`, `KARARLAR.md`, `DURUM.md`, `CALISMA-TARZI.md` (06.11.2026). Yeni oturum önce bunları okur. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
 - Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni miaza counts'tan (`C:\Users\canka\Documents\Zeiterfassung`) alınır; iki uygulama aynı ailenin üyesi gibi görünmeli.
 
 ## Belge düzeni (counts ile aynı)
 - Oturum başında CLAUDE.md ve STATUS.md okunur. SPEC.md'nin yalnız ilgili bölümü okunur.
 - Her yeni karar: (1) DECISIONS.md sonuna yeni D-numarası, (2) SPEC.md / DESIGN-PRINCIPLES.md güncellenir, (3) ayrı belge commit'i, sonra kod.
 - Her biten adımdan sonra STATUS.md güncellenir (< 40 satır).
-- Commit: küçük, Almanca başlık; yazar `Cankat Dönmez <cankatdonmez@gmail.com>`; push yalnız istenince. (`find .git -name desktop.ini` artık gerekmez.)
+- Commit: küçük, Almanca başlık; yazar `Cankat Dönmez <cankatdonmez@gmail.com>`, sonuna `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`; push ve main'e birleştirme yalnız istenince.
 
 ## Komutlar
 ```bash
 %USERPROFILE%\miaza-local\finds\.venv\Scripts\python -m pytest -q
 start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\data\finds.db)
 ```
-- Geliştirme sunucusu: `.claude/launch.json` "dev" → 127.0.0.1:8091, `dev.db`, `--reload` yok (Drive klasöründe takılıyor). Her kod değişikliğinde sunucu yeniden başlatılır.
+- Geliştirme sunucusu: `.claude/launch.json` "dev" → 127.0.0.1:8091, `dev.db`, `--reload` yok. Her kod değişikliğinde sunucu yeniden başlatılır (asset sürümü başlangıçta hesaplanır).
 - Portlar ailede sabittir (D-001): counts 8080/8081, finds 8090/8091.
 
 ## Dosyalar
@@ -63,17 +64,13 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
 
 **Kamera:** uygulama önce HTTPS olmadan çalışacak şekilde yazılır ("Fotoğrafla okut"). Canlı kamera, HTTPS varsa kendiliğinden devreye girer (SPEC 8.2). HTTPS yolu (A: alan adı + Let's Encrypt, B: kendi kök sertifikası) henüz açık bir soru.
 
-## Bu klasör Google Drive'da: dikkat edilecekler
+## Klasörler (D-008, D-049)
 
-- **Sanal ortam (`.venv`), veritabanları ve `media/` bu klasörün dışında tutulur: `%USERPROFILE%\miaza-local\finds\`** (D-008). Binlerce küçük dosya ve açık bir SQLite dosyası Drive eşitlemesini bozar. `%LOCALAPPDATA%` kullanılmaz: Claude masaüstü uygulaması o yolu kendi sanal klasörüne yönlendiriyor.
-- **Git deposu Drive dışında: `%USERPROFILE%\miaza-local\finds\git`** (04.11.2026). Bu klasördeki `.git` yalnızca oraya
-  işaret eden bir dosya (`gitdir: …`). Drive'ın kilit dosyalarını geri getirmesi ve `desktop.ini` sorunu böylece bitti.
-  - Uzak depo (private): https://github.com/cankatdonmez/miaza-finds (`origin`). Push yine yalnız istenince.
-  - Başka bir bilgisayarda çalışmak: Drive'daki klasörde git çalışmaz (`.git` bu bilgisayarın yoluna işaret eder);
-    depo GitHub'dan indirilir.
-  - Depo ayarı `core.trustctime=false`, `core.checkStat=minimal`: Drive dosya zamanlarını farklı bildirir. Yine de
-    içerik aynıyken „M“ görünürse dosyayı `git add` ile yeniden okut (Drive yarım boyut bildirmiş olabilir).
-- Klasörün yolu uzun (Drive kısayolu). Windows'taki 260 karakter sınırına takılmamak için derin klasör yapısından kaçınılır. Gerekirse Git'te `core.longpaths true` açılır.
+- **Sanal ortam (`.venv`), veritabanları ve `media/` bu klasörün dışında tutulur: `%USERPROFILE%\miaza-local\finds\`** (D-008). Kod ile veri ayrı kalır: kod güncellenince veri etkilenmez.
+- **Google Drive artık kullanılmıyor** (D-049). Proje bu klasörde ve GitHub'da (`origin`, private). Başka bilgisayarda: GitHub'dan klonla.
+- Eski Drive klasörü (`G:\…\Miaza Apps\miaza finds`) ve eski git klasörü (`%USERPROFILE%\miaza-local\finds\git`, içinde
+  `wt-sammlungen` worktree'si) yalnız yedek; orada çalışılmaz.
+- `%USERPROFILE%` kullanılır, `%LOCALAPPDATA%` değil: Claude masaüstü uygulaması o yolu kendi sanal klasörüne yönlendiriyor.
 
 ## Açık sorular (SPEC 11)
 
