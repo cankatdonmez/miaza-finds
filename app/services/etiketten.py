@@ -24,7 +24,7 @@ from ..config import BASE_DIR
 from ..fehler import Fehler
 from ..texte import t
 from . import nummern
-from .suche import normalisieren
+from .suche import normalisieren, wort_bedingung
 
 ZUSTAENDE = ("ungedruckt", "gedruckt", "neu_drucken")
 
@@ -53,8 +53,9 @@ def liste(conn: sqlite3.Connection, q: str = "", zustand: str | None = None) -> 
     """Physische Produkte für die Etikettenseite; digitale haben kein Etikett."""
     wo, args = ["p.art = 'physisch'"], []
     for wort in normalisieren(q).split():
-        wo.append("instr(p.suchtext, ?) > 0")
-        args.append(wort)
+        bed, a = wort_bedingung(wort)
+        wo.append(bed)
+        args += a
     if zustand in ZUSTAENDE:
         wo.append("p.etikett = ?")
         args.append(zustand)
