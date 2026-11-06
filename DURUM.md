@@ -1,5 +1,8 @@
 # DURUM — miaza finds (devir paketi, 06.11.2026)
 
+> **Donmuş kayıt.** 06.11.2026 devir anının durumu; güncellenmez. Anlık durum `STATUS.md`, iş listesi `PLAN.md`,
+> test sonuçları `TEST_RAPORU.md`.
+
 Çalışma kopyası `C:\Users\canka\Documents\miaza-finds` (Google Drive artık yok, D-049). `main` GitHub'dan önde, push yapılmadı.
 219 test geçiyor (yeni klasörde de, 06.11.2026).
 

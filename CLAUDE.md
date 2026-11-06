@@ -5,7 +5,8 @@ Bu klasör (`C:\Users\canka\Documents\miaza-finds`, GitHub: `cankatdonmez/miaza-
 ## Durum (06.11.2026)
 
 - **SPEC 0.5** onaylı; dilim 1–3 `main`de, dilim 4'te Statistik ve Sammlungen bitti; sıradaki Dokumente.
-- **Devir paketi:** `DEVIR.md`, `KARARLAR.md`, `DURUM.md`, `CALISMA-TARZI.md` (06.11.2026). Yeni oturum önce bunları okur. Anlık durum: `STATUS.md`, kararlar: `DECISIONS.md`.
+- **Devir paketi:** `DEVIR.md`, `KARARLAR.md`, `DURUM.md`, `CALISMA-TARZI.md` (06.11.2026). Anlık durum: `STATUS.md`, iş listesi: `PLAN.md`, kararlar: `DECISIONS.md`.
+- **Çok ajanlı akış** kullanılıyor (aşağıda); oturum başında `PLAN.md` de okunur.
 - Altyapı, klasör yapısı, CSS değişkenleri, Docker ayarı ve test düzeni miaza counts'tan (`C:\Users\canka\Documents\Zeiterfassung`) alınır; iki uygulama aynı ailenin üyesi gibi görünmeli.
 
 ## Belge düzeni (counts ile aynı)
@@ -51,6 +52,26 @@ start.bat          (beta: 127.0.0.1:8090, data: %USERPROFILE%\miaza-local\finds\
   - Kullanıcı rahatsız edilmez: kontrol adımları atlanabilir, onay penceresi yerine geri al tercih edilir.
   - Ayrıntılar `DESIGN-PRINCIPLES.md` dosyasında.
 - **Kendi önerilerini işaretle:** kullanıcının istemediği bir şeyi eklersen bunu açıkça söyle ve onay iste.
+
+## Çok ajanlı akış (07.11.2026'dan beri)
+
+Başlangıç noktası: `pre-multiagent` etiketi. Ana oturum **Yönetici**dir: Cankat'la konuşur, adımı seçer, işi dağıtır,
+commit/birleştirme sorar, STATUS.md'yi günceller. Ajanlar `.claude/agents/` altında:
+
+| Ajan | Model | İş |
+|---|---|---|
+| `mimar` | Opus | Karar ve spec: D-girişi, SPEC, PLAN adımı ve kabul kriterleri. Kod yazmaz. |
+| `kodlayici` | Sonnet | Tek PLAN adımı, kendi dalında (`dilim-4/<ad>`), testli commit. Zor adımda Yönetici Opus'a çıkarabilir. |
+| `denetci` | Sonnet | Temiz bağlamla, yalnız kabul kriterlerine göre test; `TEST_RAPORU.md` yazar, kodu değiştirmez. |
+| `kesifci` | Haiku | Arama ve özet; karar vermez. |
+
+**Döngü:** PLAN'dan adım → kodlayici → denetci → geçtiyse PLAN ve STATUS güncellenir; kaldıysa en fazla 2 düzeltme,
+sonra Cankat'a gelir. Karar gerektiren adımda önce Cankat + mimar (karar önce, kod sonra). main'e birleştirme ve push
+yalnız Cankat isteyince.
+
+**Belgeler:** `PLAN.md` (adımlar, kabul kriterleri, durum) · `TEST_RAPORU.md` (denetim sonuçları) · `DECISIONS.md`
+(kararların tek kaynağı) · `STATUS.md` (anlık durum). `DEVIR.md` ve `DURUM.md` 06.11.2026 devir anının kaydıdır,
+güncellenmez. `KARARLAR.md` yalnız D-numarası almayan sözlü anlaşmalar için (bölüm A) yaşamaya devam eder.
 
 ## Gerçek uygulama: önerilen başlangıç
 

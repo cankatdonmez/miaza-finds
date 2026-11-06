@@ -1,5 +1,7 @@
 # DEVIR — miaza finds (devir paketi, 06.11.2026; D-049'dan sonra güncellendi)
 
+> **Donmuş kayıt.** 06.11.2026 devir anının fotoğrafı; güncellenmez. Anlık durum `STATUS.md`, iş listesi `PLAN.md`.
+
 Bu paket, projeyi bu sohbeti görmeden devralacak oturum içindir. Dört dosya birlikte okunur:
 **DEVIR.md** (bu dosya: ne var, nerede, ne kadar bitti) · **KARARLAR.md** (verilen bütün kararlar, özellikle dosyalarda
 yazmayanlar) · **DURUM.md** (hatalar, açık sorular, testler, borç, sıradaki adımlar) · **CALISMA-TARZI.md** (Cankat nasıl
