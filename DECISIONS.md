@@ -509,3 +509,30 @@ Cankat'ın kararları (devir paketine verdiği cevaplar).
   **Şu ana kadarki veriler ve QR'lar demo amaçlıdır**; gerçek veri ve kalıcı QR'lar uygulama tamamlanıp sunucuya
   kurulunca başlar.
 → SPEC 6.6, 8.3, 8.4, 10, 11, 12; CLAUDE.md.
+
+## D-050 · 07.11.2026 · Aramada bölme kodu tam eşleşir
+Cankat'ın kararı: „Kod tam eşleşsin.“ Sebep (PLAN 1 denetimi): düz alt dize aramasında `2.1.1` `12.1.1`'i de buluyordu,
+`2.2` ölçüsünde „…x2.2 cm“ geçen ürünleri getiriyordu.
+- **Koda benzeyen kelime:** noktayla ayrılmış **2 ya da 3 sayı** (`2.1`, `2.1.3`; başında/sonunda nokta yok, boşluk yok).
+  Tek sayı (`2`) koda benzemez, normal metin aramasıdır: bir oda kodu bütün odayı getirir, „265“ gibi ürün numarası
+  aramasıyla da çakışır (SPEC 6.1). 4 ve daha çok parça da normal metindir.
+- **Eşleşme, segment sınırında baştan:** `2.1` → ünite `2.1` ve bütün bölmeleri (`2.1.1`, `2.1.2` …); `2.10.x` ve
+  `12.1.x` değil. `2.1.3` → yalnız o bölme; `2.1.30`, `12.1.3` değil. Kod, sorgunun bütün segmentleriyle başlamalı ve
+  sonraki karakter ya nokta ya da kodun sonu olmalı.
+- **Koda benzeyen kelime yalnız bölme koduyla eşleşir;** ad, ölçü, ürün kodu, seri, özellik değerleri bakılmaz.
+  „Tam eşleşsin“ sözünün en sade yorumu budur ve ölçüdeki `2.2` sorununu kökten kapatır.
+- **Diğer kelimeler bölme koduyla eşleşmez:** `.1.3`, `1.` ya da `2` yazınca kodlar parça parça bulunmaz. Kod yalnız
+  kod biçimindeki kelimeyle bulunur (tek ad, tek yol).
+- **Birden çok kelime:** mevcut kural sürer, her kelime ayrı koşul, hepsi VE. `Eiche 2.1` → adında/… „eiche“ geçen ve
+  `2.1` ünitesindeki ürünler. Sıra önemsiz.
+- **Raumsuz ünite** (kodu `–.1.3`, plan.py `code_einheit`): klavyeyle yazılabilen bir kodu yoktur; koda benzeyen hiçbir
+  kelime onu bulmaz (`1.3` de bulmaz, çünkü kod `–` ile başlar). Ürünler Büro görünümünden bulunur. Ünite bir odaya
+  konunca kod oluşur ve aranabilir olur. Yalnız not; yeni kural yok.
+- **Hata düzeltmesi (aynı adım):** Systembereich'te „Büroplan“ silinince ve yedek geri yüklenince ürünlerin arama metni
+  hemen yenilenir; sunucu yeniden başlamadan eski kod aranamaz.
+- **Claude'un ekledikleri (Cankat onayladı, 07.11.2026):** (1) Koda benzeyen kelime ölçü/ad/ürün kodunda hiç aranmaz: noktalı ondalık
+  ölçü (`2.5`) ya da noktalı üretici kodu (`12.345`) bu yolla bulunamaz; böyle bir kullanım görülürse (SPEC 6.12)
+  yeniden bakılır. (2) Tek sayı ve diğer kelimeler bölme kodunu hiç bulmaz (`2` artık oda 2'nin ürünlerini getirmez).
+  (3) Sınır: 2–3 segment; segmentler metin olarak karşılaştırılır (`02.1` ≠ `2.1`). (4) Plan silme/geri yükleme
+  düzeltmesi Cankat'ın değil denetçinin bulgusudur.
+→ SPEC 6.1; PLAN 1 (K5–K10).

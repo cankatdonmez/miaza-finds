@@ -253,6 +253,8 @@ Daha (telefon) ─ istatistik
 
 ### 6.1 Kütüphane
 - **Tek arama kutusu:** ad, marka, ürün kodu (tamamı veya sadece numarası, ör. "265"), seri, özellik değerleri (ör. "R11") ve bölme kodu (ör. "2.2") içinde arar. Büyük/küçük harf ve Almanca özel harfler (ä/ae, ß/ss) duyarsızdır.
+  - Birden çok kelime: her kelime ayrı koşul, hepsi geçerli olmalı (`Eiche 2.1`).
+  - **Bölme kodu tam eşleşir (D-050):** noktayla ayrılmış 2–3 sayıdan oluşan kelime (`2.1`, `2.1.3`) yalnız bölme koduyla, baştan ve segment sınırında eşleşir: `2.1` → ünite 2.1'in bütün bölmeleri, `2.1.3` → yalnız o bölme; `12.1.3`, `2.1.30` ve ölçüdeki „2.2“ eşleşmez. Diğer kelimeler (tek sayı dahil) bölme kodunda aranmaz. Odasız ünitenin (`–.1.3`) kodu aranamaz.
 - **Tür seçimi:** Tümü / Fiziki / Dijital.
 - **Ortak filtreler:** kategori, renk, fiyat aralığı, marka, durum.
 - **Durum filtresi:** Tümü · Yerinde · Kullanımda · Büro dışında · **Konumsuz** · **Eksik bilgi**.
