@@ -15,12 +15,25 @@ Her adım için ortak kriterler (ayrıca yazılmaz):
 
 ---
 
-## 1. Aramada bölme kodu — `SIRADA`
-SPEC 6.1. Dal: `dilim-4/suche-fachcode`.
+## 1. Aramada bölme kodu — `KODLANIYOR`
+SPEC 6.1, D-050. Dal: `dilim-4/suche-fachcode` (K1–K4 denetlendi; K5–K10 D-050 ile eklendi, aynı dalda).
 - K1: Kütüphane aramasında bir bölme kodu (ör. `2.2`) yazılınca o bölmedeki ürünler sonuçta çıkar.
 - K2: Ürün başka bölmeye taşınınca (Platz ändern, Zurücklegen + yeni yer, Einordnen, toplu düzenleme) arama yeni kodu bulur, eskisini bulmaz.
 - K3: Plan yeniden numaralanınca ya da bölme/ünite kodu değişince etkilenen ürünlerin arama metni yenilenir.
 - K4: Konumsuz ürünlerde arama metni değişmez; mevcut arama testleri bozulmaz.
+- K5 (tam kod): Bölmeler `2.1.1`, `2.1.3`, `12.1.1`, `2.1.30`, `2.10.1`'de birer ürün varken `2.1.3` araması yalnız
+  `2.1.3`'teki ürünü, `2.1.1` araması yalnız `2.1.1`'deki ürünü döndürür (test).
+- K6 (ünite öneki): Aynı veriyle `2.1` araması tam olarak `2.1.1`, `2.1.3`, `2.1.30` ürünlerini döndürür; `12.1.1` ve
+  `2.10.1` dönmez (test).
+- K7 (diğer alanlar yok): Konumsuz bir ürünün adında/ölçüsünde „120x60x2.2 cm“ varken `2.2` araması onu döndürmez;
+  ünite `2.2`'deki ürün döner (test). `.1.3` ve tek `2` araması hiçbir ürünü yalnız bölme kodu yüzünden döndürmez (test).
+- K8 (birden çok kelime): `Eiche 2.1` yalnız adında „Eiche“ geçen ve `2.1.x` bölmesindeki ürünleri döndürür; `2.1`'deki
+  başka ürün ve başka bölmedeki „Eiche“ dönmez (test).
+- K9 (odasız ünite): Odasız bir ünitedeki (`–.1.3`) ürün `1.3` ve `1.1.3` aramasıyla dönmez; arama hata vermez (test).
+- K10 (hata düzeltmesi): Ürün `2.1.3`'teyken Systembereich'te „Büroplan“ silinince (`sicherung.loeschen`, `plan`) ve
+  ayrıca bölmesiz bir yedek geri yüklenince (`sicherung.einspielen`), uygulama yeniden başlatılmadan `2.1.3` araması
+  boş döner ve ürün ad aramasıyla hâlâ bulunur; tersine, bölmeli bir yedek geri yüklenince yedekteki kod hemen
+  aranabilir (test, aynı `TestClient`/bağlantı içinde, `create_app` yeniden çağrılmadan).
 
 ## 2. Kartta konum kodu (masaüstü) — `SIRADA`
 SPEC 6.1. Dal: `dilim-4/karte-platz`.
