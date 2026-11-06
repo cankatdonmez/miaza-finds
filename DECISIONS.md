@@ -534,5 +534,5 @@ Cankat'ın kararı: „Kod tam eşleşsin.“ Sebep (PLAN 1 denetimi): düz alt 
   ölçü (`2.5`) ya da noktalı üretici kodu (`12.345`) bu yolla bulunamaz; böyle bir kullanım görülürse (SPEC 6.12)
   yeniden bakılır. (2) Tek sayı ve diğer kelimeler bölme kodunu hiç bulmaz (`2` artık oda 2'nin ürünlerini getirmez).
   (3) Sınır: 2–3 segment; segmentler metin olarak karşılaştırılır (`02.1` ≠ `2.1`). (4) Plan silme/geri yükleme
-  düzeltmesi Cankat'ın değil denetçinin bulgusudur.
+  düzeltmesi Cankat'ın değil denetçinin bulgusudur. (5) Etiketten sayfasının araması da aynı kuralı kullanır (kodlayıcının eklemesi, Cankat onayladı).
 → SPEC 6.1; PLAN 1 (K5–K10).
