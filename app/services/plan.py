@@ -224,7 +224,6 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, daten: dict[str, Any]) 
     entwurf = _entwurf(conn, daten)
     wirkung_ = _wirkung(conn, entwurf)
     umbenannt = [eid for eid, code in _neue_codes(entwurf).items() if _alte_codes(conn).get(eid) != code]
-    mit_platz = _mit_platz(conn)
 
     # Räume: löschen, Nummern aus dem Weg, dann aktualisieren / anlegen
     behalten = [r["id"] for r in entwurf["raeume"] if r["id"] is not None]
@@ -257,8 +256,6 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, daten: dict[str, Any]) 
         conn.execute(f"UPDATE fach SET etikett = 'neu_drucken' WHERE etikett = 'gedruckt' AND einheit_id IN ({','.join('?' * len(umbenannt))})",
                      umbenannt)
 
-    _suchtexte_nach_plan(conn, mit_platz)
-
     u = entwurf["unterlage"]
     alte_unterlage = conn.execute("SELECT unterlage FROM plan WHERE id = 1").fetchone()[0]
     if u and u["datei"] != alte_unterlage and not (unterlage_ordner(media_dir) / f"{u['datei']}.png").exists():
@@ -268,24 +265,6 @@ def speichern(conn: sqlite3.Connection, media_dir: Path, daten: dict[str, Any]) 
                     unterlage_x = ?, unterlage_y = ?, unterlage_massstab = ?, unterlage_drehung = ?, unterlage_im_buero = ?
                     WHERE id = 1""", (*lage, int(entwurf["unterlage_im_buero"])))
     return {"wirkung": wirkung_, "dateien_weg": weg_fotos}
-
-
-def _mit_platz(conn: sqlite3.Connection, einheit_id: int | None = None) -> list[int]:
-    """Produkte mit Fach (einer Einheit oder alle), deren Suchtext vom Fachcode abhängt (SPEC 6.1)."""
-    if einheit_id is None:
-        sql, par = "SELECT inventar_nr FROM produkt WHERE fach_id IS NOT NULL", ()
-    else:
-        sql, par = "SELECT p.inventar_nr FROM produkt p JOIN fach f ON f.id = p.fach_id WHERE f.einheit_id = ?", (einheit_id,)
-    return [r[0] for r in conn.execute(sql, par)]
-
-
-def _suchtexte_nach_plan(conn: sqlite3.Connection, ids: list[int]) -> None:
-    from . import produkte  # produkte importiert plan
-    produkte.suchtexte_erneuern(conn, ids)
-
-
-def suchtexte_alle_erneuern(conn: sqlite3.Connection) -> None:
-    _suchtexte_nach_plan(conn, [r[0] for r in conn.execute("SELECT inventar_nr FROM produkt")])
 
 
 def faecher_speichern(conn: sqlite3.Connection, einheit_id: int, daten: dict[str, Any]) -> dict[str, int]:
@@ -303,7 +282,6 @@ def faecher_speichern(conn: sqlite3.Connection, einheit_id: int, daten: dict[str
                         "punkte": _punkte(f.get("punkte"), "fach", prozent=True)})
     _eindeutig([f["nr"] for f in faecher], t("fehler.fach_nr_doppelt"))
 
-    mit_platz = _mit_platz(conn, einheit_id)
     behalten = [f["id"] for f in faecher if f["id"] is not None]
     weg = [fid for fid in alte if fid not in behalten]
     ohne_platz = 0
@@ -325,7 +303,6 @@ def faecher_speichern(conn: sqlite3.Connection, einheit_id: int, daten: dict[str
             etiketten_neu += 1
         conn.execute("UPDATE fach SET nr = ?, name = ?, punkte = ?, etikett = ? WHERE id = ?",
                      (f["nr"], f["name"], json.dumps(f["punkte"]), etikett, f["id"]))
-    _suchtexte_nach_plan(conn, mit_platz)
     conn.execute("UPDATE plan SET version = version + 1 WHERE id = 1")
     return {"faecher_weg": len(weg), "ohne_platz": ohne_platz, "etiketten_neu": etiketten_neu}
 
@@ -419,5 +396,4 @@ def platz_setzen(conn: sqlite3.Connection, inventar_nr: int, fach_id: int | None
             raise Fehler(t("fehler.fach_unbekannt"), status=404)
     conn.execute("UPDATE produkt SET fach_id = ?, version = version + 1, geaendert_am = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') "
                  "WHERE inventar_nr = ?", (fach_id, inventar_nr))
-    _suchtexte_nach_plan(conn, [inventar_nr])
     return {"vorher": z["fach_id"], "fach": ziel}

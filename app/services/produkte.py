@@ -293,24 +293,15 @@ def werte_speichern(conn: sqlite3.Connection, inv: int, kategorie_id: int, werte
 
 
 def suchtext_erneuern(conn: sqlite3.Connection, inv: int) -> None:
-    """Name, Marke, Code, Inventarnummer, Kategorie, Maße, Filterwerte (z. B. „R11“) und Fachcode (z. B. „2.2.1“) – SPEC 6.1."""
+    """Name, Marke, Code, Inventarnummer, Kategorie, Maße und Filterwerte (z. B. „R11“) – SPEC 6.1."""
     p = conn.execute("""SELECT p.*, k.name AS kategorie FROM produkt p JOIN kategorie k ON k.id = p.kategorie_id
                         WHERE p.inventar_nr = ?""", (inv,)).fetchone()
     teile = [p["name"], p["marke"], p["artikelnummer"], p["abmessungen"], p["kategorie"],
              nummern.code(p["code_praefix"], p["kategorie_nr"], p["inventar_nr"]), str(p["inventar_nr"])]
-    if p["fach_id"]:
-        ziel = plan.fach(conn, p["fach_id"])
-        if ziel:
-            teile.append(ziel["code"])
     teile += [r[0] for r in conn.execute("""SELECT o.name FROM produkt_wert w JOIN filter_option o ON o.id = w.option_id
                                             WHERE w.produkt_id = ?""", (inv,))]
     conn.execute("UPDATE produkt SET suchtext = ? WHERE inventar_nr = ?",
                  (normalisieren(" ".join(x for x in teile if x)), inv))
-
-
-def suchtexte_erneuern(conn: sqlite3.Connection, ids: list[int]) -> None:
-    for inv in ids:
-        suchtext_erneuern(conn, inv)
 
 
 def loeschen(conn: sqlite3.Connection, inventar_nr: int) -> list[str]:

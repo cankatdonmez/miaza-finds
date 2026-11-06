@@ -17,7 +17,7 @@ import sqlite3
 from typing import Any
 
 from . import entnahme, nummern, produkte
-from .suche import normalisieren
+from .suche import normalisieren, wort_bedingung
 
 SEITE = 120
 STATUS = ("am_platz", "in_benutzung", "ausser_haus", "ohne_platz", "fehlend")
@@ -40,8 +40,9 @@ def _status_bedingung(status: str) -> str:
 def _bedingungen(auftrag: dict[str, Any], mit_kategorie: bool = True) -> tuple[list[str], list[Any]]:
     wo, args = [], []
     for wort in normalisieren(auftrag.get("q") or "").split():
-        wo.append("instr(p.suchtext, ?) > 0")
-        args.append(wort)
+        bed, a = wort_bedingung(wort)
+        wo.append(bed)
+        args += a
     if auftrag.get("art") in ("physisch", "digital"):
         wo.append("p.art = ?")
         args.append(auftrag["art"])

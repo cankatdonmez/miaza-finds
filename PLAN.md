@@ -15,7 +15,7 @@ Her adım için ortak kriterler (ayrıca yazılmaz):
 
 ---
 
-## 1. Aramada bölme kodu — `KODLANIYOR`
+## 1. Aramada bölme kodu — `DENETİMDE`
 SPEC 6.1, D-050. Dal: `dilim-4/suche-fachcode` (K1–K4 denetlendi; K5–K10 D-050 ile eklendi, aynı dalda).
 - K1: Kütüphane aramasında bir bölme kodu (ör. `2.2`) yazılınca o bölmedeki ürünler sonuçta çıkar.
 - K2: Ürün başka bölmeye taşınınca (Platz ändern, Zurücklegen + yeni yer, Einordnen, toplu düzenleme) arama yeni kodu bulur, eskisini bulmaz.
