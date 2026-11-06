@@ -7,6 +7,38 @@ Başlangıç durumu (07.11.2026, `pre-multiagent` etiketi): 219 test yeşil. Ön
 
 ---
 
+## Adım 1 — Aramada bölme kodu · 07.11.2026 · dilim-4/suche-fachcode @ 0d9f4f4
+**Sonuç:** GEÇTİ (deneme 2; K1–K10 karşılandı; bulgular aşağıda, hiçbiri kriteri kırmıyor)
+
+| Kriter | Sonuç | Nasıl doğrulandı | Kanıt |
+|---|---|---|---|
+| K1 bölme kodu bulunur | ✔ | Çalıştırıldı: pytest + tarayıcı | `test_fachcode_ganz_und_einheit_als_praefix`; dev.db'de arayüzden `1.6.4` → Verano Tarçın, `1.6` → 2 ürün, `1.1.3` → 2 ürün (masaüstü), `1.6 basalt` → yalnız Basalt anthrazit (375 px) |
+| K2 taşıma | ✔ (kısmen yalnız okundu) | Çalıştırıldı: `test_umziehen_und_umnummerieren` (Platz ändern: yeni kod bulunur, eskisi bulunmaz; konumsuz yapınca bulunmaz). Kod okundu: kod artık sorgu anında `fach→einheit→raum` ile hesaplanıyor (`suche.py:22-27`), suchtext'e yazılmıyor; bu yüzden Zurücklegen/Einordnen/toplu yolları yapısal olarak kapsanıyor | Zurücklegen+yeni yer, Einordnen, toplu düzenleme için ayrı test yok (denenmedi) |
+| K3 yeniden numaralama / kod değişimi | ✔ | Çalıştırıldı: pytest | aynı test: bölme nr 1→5, 2→6 sonrası `2.1.6` bulunur, `2.1.2` bulunmaz. Raum nr / ünite nr değişimi için test yok; canlı hesap olduğundan yapısal olarak kapsanıyor (yalnız okundu) |
+| K4 konumsuzda değişmez, eski testler | ✔ | Çalıştırıldı: tüm pytest | `produkte.suchtext_erneuern` bu dalda değişmemiş (diff'te yok) |
+| K5 tam kod | ✔ | Çalıştırıldı: pytest | `test_fachcode_ganz_und_einheit_als_praefix`: 2.1.1/2.1.3/2.1.30/2.10.1/12.1.1 verisiyle `2.1.3`→yalnız 2.1.3, `2.1.1`→yalnız 2.1.1, `12.1.1`, `2.10` |
+| K6 ünite öneki | ✔ | Çalıştırıldı: pytest | aynı test: `2.1` → tam olarak 2.1.1, 2.1.3, 2.1.30 |
+| K7 diğer alanlar yok | ✔ (ünite 2.2 şartı kısmen) | Çalıştırıldı: pytest | `test_nur_fachcode_keine_ausmasse`: ölçüsü „120x60x2.2 cm“ konumsuz ürün `2.2`'de dönmez; `.1.3`, `1.`, `2.1.3.4` boş; `test_einzelne_zahl_ist_kein_fachcode`: `2` boş. Eksik: K7 „ünite `2.2`'deki ürün döner“ olumlu kısmı testte yok (testte 2.2 ünitesi yok, yalnız `== []`); olumlu ünite öneki K6'da `2.1` ile gösteriliyor |
+| K8 çok kelime | ✔ | Çalıştırıldı: pytest + tarayıcı | `test_mehrere_woerter_und` (`Eiche 2.1` ve `2.1 eiche` → yalnız 2.1.3'teki Eiche; Buche ve 12.1.1'deki Eiche dönmez); dev.db'de `1.6 basalt` |
+| K9 odasız ünite | ✔ | Çalıştırıldı: pytest | `test_einheit_ohne_raum`: `1.3`, `1.1.3`, `–.1.3` dönmez, hata yok, ad aramasıyla bulunur |
+| K10 plan silme / yedek geri yükleme | ✔ | Çalıştırıldı: pytest | `test_plan_loeschen_und_geladene_sicherung_sofort`: aynı TestClient'ta plan silinince `2.1.1` boş, ad aramasıyla bulunur; bölmeli yedek yüklenince `2.1.1` hemen bulunur; bölmesiz yedek yüklenince boş. Canlı hesap sayesinde ek kod gerekmiyor |
+| Ortak: yeni test | ✔ | Çalıştırıldı | `tests/test_suche_fach.py` 6 test |
+| Ortak: metin/renk | ✔ | Yalnız okundu | diff'te arayüz metni ve CSS yok |
+| Ortak: telefon + masaüstü | ✔ | Çalıştırıldı | 375x812 ve masaüstü, dev.db; konsolda mesaj yok |
+
+- pytest: hata yok, 226 nokta (72+72+72+10; özet satırı çıktıda görünmedi, nokta sayısı sayıldı). `test_suche_fach.py` ayrıca çalıştırıldı, yeşil.
+- Arama süresi (çalıştırıldı; scratchpad `perf.py`, dev.db kopyası + 5000 sahte ürün = 5025, `bibliothek.suchen`, 5 deneme, medyan): `1.6.4` 11 ms, `1.6` 15 ms, `1.1.3` 19 ms, `eiche` 8 ms, `eiche 1.6` 30 ms, `2.2` 18 ms, `platte 2.2` 24 ms. Hedef < 200 ms karşılanıyor. (Sonuç listesi 120 ile sınırlı.) 20 bin ürün denenmedi.
+- Tarayıcı: **`preview_start "dev"` hâlâ eski koda açtı** (launch.json düzeltmesi etkili olmadı). Kanıt (çalıştırıldı): dal kodu doğrudan çağrılınca (`scratchpad/chk.py`, dev.db) `6.4` → boş, ama `preview_start` sunucusunda `?q=6.4` → 1 ürün (eski `instr` davranışı); süreç komut satırında launch.json'daki `os.chdir`/`sys.path.insert` parçaları yoktu. Bu ilk sunucuyla alınan tarayıcı sonuçları geçersiz sayıldı. Sunucuyu elle başlattım (uvicorn, çalışma kopyası, dal kodu, 8091, dev.db) ve yeniden denedim: curl `6.4`→0, `1.6`→2, `1.6.4`→1, `1.1.3`→2, `1.6+basalt`→1; tarayıcıda 375 px `1.6 basalt` → yalnız Basalt anthrazit, masaüstü `1.6` → Verano Tarçın + Basalt anthrazit, konsolda mesaj yok. Sunucu durduruldu, dal main'e döndürüldü; 8090 / finds.db'ye dokunulmadı.
+- Hiç denenmedi: Zurücklegen/Einordnen/toplu düzenleme yolları (ne test ne elle); Raum/Einheit numarası değişimi testi; K7 olumlu „ünite 2.2“ testi; 20 bin ürün; arayüzden elle taşıma; Etiketten sayfasında tarayıcı; gerçek cihaz.
+- Bulgular (gözlem, karar verilmedi):
+  1. `.claude/launch.json` düzeltmesi çalışmıyor: `preview_start "dev"` dal kodunu değil eski kodu çalıştırdı. Beklenen: çalışma kopyası. Görülen: `?q=6.4` → 1 sonuç (dal kodunda 0). Nedeni araştırılmadı.
+  2. Kapsam: diff PLAN'da adı geçmeyen `app/services/etiketten.py`'yi değiştiriyor (`liste`, Etiketten sayfası araması da `wort_bedingung` kullanıyor). PLAN yalnız Kütüphane aramasını söylüyor. Bu sayfa için test yok, tarayıcıda denenmedi (kod yalnız okundu). Diğer değişenler: PLAN.md (durum satırı), `suche.py`, `bibliothek.py`, test dosyası.
+  3. dev.db'de (yalnız dev verisi) önceki denemeden kalma suchtext'ler duruyor, ör. ürün 24: `… fl-021-024 24 1.6.4 braun` (çalıştırıldı, sqlite okuma). Yeni kod bunu kullanmıyor ama koda benzemeyen kelimeler suchtext'te aranır; D-050 „diğer kelimeler bölme koduyla eşleşmez“ diyor, bu veride tek sayı/parça sorguları (ör. `4`) eski koda takılabilir. Temiz bir veritabanında (main'den gelen) bu sorun yok; beta'ya eski suchtext hiç yazılmadı (7933568 main'de değil).
+  4. Önceki denemenin eklediği `suchtexte_alle_erneuern`, `_mit_platz`, `_suchtexte_nach_plan` ve `main.py` açılış çağrısı dalda yok (grep ile çalıştırıldı); gereksiz kalan kod görülmedi.
+  5. Test boşlukları: K2 için yalnız Platz ändern; K3 için Raum/Einheit nr değişimi; K7 olumlu ünite `2.2` durumu testte yok.
+
+---
+
 ## Adım 1 — Aramada bölme kodu · 06.11.2026 · dilim-4/suche-fachcode @ 7933568
 **Sonuç:** GEÇTİ (deneme 1)
 
