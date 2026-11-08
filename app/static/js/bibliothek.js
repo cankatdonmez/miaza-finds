@@ -128,9 +128,14 @@
   const digital = (p) => (p.art === "digital" ? `<span class="badge-digital">${esc(t("produkt.digital"))}</span>`
     : p.genommen ? `<span class="status-badge status-${p.genommen}">${esc(t("status." + p.genommen))}</span>` : "");
 
+  // Fach-Code nur am Desktop beim Darüberfahren (CSS); Ziel wie „Im Büro zeigen“. Kein <a> im <a>: span mit role="link".
+  const platzCode = (p) => (p.platz
+    ? `<span class="karte-platz num" role="link" tabindex="0" data-platz-href="/buero?fach=${p.platz.id}&produkt=${p.inventar_nr}"
+        title="${esc(t("produkt.im_buero_zeigen"))}" aria-label="${esc(p.platz.code + " · " + t("produkt.im_buero_zeigen"))}">${icon("pin", 14)}${esc(p.platz.code)}</span>` : "");
+
   function karte(p) {
     return `<a class="karte" href="/produkt/${p.inventar_nr}" data-produkt="${p.inventar_nr}">
-      <span class="karte-bild">${bild(p, "karte-img")}${digital(p)}</span>
+      <span class="karte-bild">${bild(p, "karte-img")}${digital(p)}${platzCode(p)}</span>
       <span class="karte-text">
         <span class="karte-name">${esc(name(p))}</span>
         <span class="karte-sub">${esc([p.marke, p.kategorie].filter(Boolean).join(" · "))}</span>
@@ -283,6 +288,8 @@
   function umschalten(liste, wert) { return liste.includes(wert) ? liste.filter((x) => x !== wert) : [...liste, wert]; }
 
   document.addEventListener("click", async (e) => {
+    const ort = e.target.closest("[data-platz-href]");
+    if (ort) { e.preventDefault(); e.stopPropagation(); location.href = ort.dataset.platzHref; return; }
     const b = e.target.closest("button, a");
     if (!b) return;
     const d = b.dataset;
@@ -379,6 +386,8 @@
     $$(".gewaehlt").forEach((x) => x.classList.remove("gewaehlt"));
   }
   document.addEventListener("keydown", (e) => {
+    const ort = e.target.closest?.("[data-platz-href]");
+    if (ort && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); e.stopPropagation(); location.href = ort.dataset.platzHref; return; }
     if (e.key !== "Escape") return;
     if (!panel.hidden) panelZu();
     $("[data-filterblatt]").hidden = true;

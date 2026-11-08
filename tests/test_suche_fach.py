@@ -121,3 +121,32 @@ def test_plan_loeschen_und_geladene_sicherung_sofort(client, buero):
 
 def test_einzelne_zahl_ist_kein_fachcode(client, buero):
     assert buero["nr"] == 1 and _treffer(client, "2") == []       # Raum 2, Produkt 1: „2“ ist nur Text
+
+
+def test_karte_platz_in_liste(client, buero):
+    """Karte am Desktop (SPEC 6.1): Fach-ID und -Code in der Liste; ohne Platz und digital: None."""
+    ohne = _produkt(client, buero["kid"], "Ohne")
+    dig = client.post("/api/produkte", json={"name": "Datei", "kategorie_id": buero["kid"], "art": "digital"})
+    liste = {p["inventar_nr"]: p for p in client.get("/api/bibliothek").json()["produkte"]}
+    assert liste[buero["nr"]]["platz"] == {"id": buero["fach"], "code": "2.1.1"}
+    assert liste[ohne]["platz"] is None
+    if dig.status_code == 201:
+        assert liste[dig.json()["inventar_nr"]]["platz"] is None
+
+
+def test_karte_platz_nach_umzug_und_ohne_raum(client, buero):
+    f = _raster(client, buero)
+    nr = _produkt(client, buero["kid"], "Kommodenstück", f["12.1.1"])
+    p = {x["inventar_nr"]: x for x in client.get("/api/bibliothek").json()["produkte"]}
+    assert p[nr]["platz"]["code"] == "12.1.1"
+    assert client.put(f"/api/produkte/{nr}/platz", json={"fach_id": f["2.1.3"]}).status_code == 200
+    p = {x["inventar_nr"]: x for x in client.get("/api/bibliothek").json()["produkte"]}
+    assert p[nr]["platz"]["code"] == "2.1.3" and p[nr]["platz"]["id"] == f["2.1.3"]
+
+
+def test_karte_platz_frontend_nur_hover(client):
+    js = client.get("/static/js/bibliothek.js").text
+    assert "/buero?fach=${p.platz.id}&produkt=${p.inventar_nr}" in js and "data-platz-href" in js
+    css = client.get("/static/css/app.css").text
+    i = css.index(".karte-platz{display:none")
+    assert "@media (hover:hover)" in css[i:i + 700] and "visibility:hidden" in css[i:i + 700]
