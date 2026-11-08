@@ -16,7 +16,6 @@ Akış: çok ajanlı (07.11.2026, etiket `pre-multiagent`): Yönetici + mimar/ko
 
 ## Sıradaki (çok ajanlı akış, `PLAN.md`)
 1. ~~PLAN 1: aramada bölme kodu~~ (D-050: kod tam/baştan eşleşir, yalnız bölme koduna bakar) — main'de.
-   Not: önizleme aracı bu oturumda Drive'daki eski launch.json'u okuyor; yeni oturumu Documents'ta aç.
 2. PLAN 2–4: kartta konum kodu, koyu temada altlık, açılış ekranı (karar gerektirmez).
 3. PLAN 5–7 karar bekliyor: Dokumente (kök klasör), kart yayı/yelpaze, Almanca son okuma.
 4. Cankat: gerçek dünya testi (etiket bas, telefonla okut) — demo verisiyle.
