@@ -7,6 +7,33 @@ Başlangıç durumu (07.11.2026, `pre-multiagent` etiketi): 219 test yeşil. Ön
 
 ---
 
+## Adım 2 — Kartta konum kodu (masaüstü) · 09.11.2026 · dilim-4/karte-platz @ c7c38e9 · deneme 1
+**Sonuç:** GEÇTİ (K1–K3 karşılandı; gözlemler aşağıda, hiçbiri kriteri kırmıyor)
+
+**pytest (tüm takım, çalıştırıldı):** `229 passed` (main'de 226; +3 test: `test_karte_platz_in_liste`, `test_karte_platz_nach_umzug_und_ohne_raum`, `test_karte_platz_frontend_nur_hover`).
+**Dijital ürün testi:** koşullu (`if dig.status_code == 201`) ama dal gerçekten çalışıyor: geçici olarak print ekleyip denedim, POST `art=digital` 201 döndü; kontrol çalışıyor (değişiklik geri alındı, repo temiz). Çalıştırıldı.
+**Sunucu:** 8091'de önceden çalışan süreç eski koddu (`/api/bibliothek` yanıtında `platz` yoktu); durdurulup yeniden başlatıldı. Yeni süreçte `platz` var (24 → `{id:7, code:"1.6.4"}`, dijital 4 → `None`). dev.db, 8090/finds.db'ye dokunulmadı. Sunucu sonda durduruldu.
+
+| Kriter | Sonuç | Nasıl doğrulandı | Kanıt |
+|---|---|---|---|
+| K1 kod yalnız üstüne gelince, konumsuzda hiçbir şey | ✔ | Çalıştırıldı: tarayıcı (826 px geniş, `hover:hover` eşleşiyor), açık ve koyu tema | 25 karttan yalnız 4'ünde `.karte-platz` var (24, 9, 6, 3 = konumlu olanlar); konumsuz ve dijital kartlarda DOM'da eleman yok (rozet yok). Fareyle gelmeden `visibility:hidden`, gelince görünür (kart 24, "1.6.4", pin ikonu); ekran görüntüleri alındı (koyu ve açık, kontrast okunaklı). Renkler token (`--card`, `--ink`, `--line`, `--accent`, `--accent-ink`); diff'te ham renk yok |
+| K2 koda tıklama → Büro bölme+ürün | ✔ | Çalıştırıldı: gerçek tıklama + klavye | Tıklama → `/buero?einheit=22&fach=7&produkt=24`; Büro sayfasında `1.6.4` bölmesi vurgulu, "Verano Tarçın FL-021-024" ve "Alle Fächer / 1.6.4" gösteriyor. Tab ile karttan sonra koda odak geliyor (odak çerçevesi var, kod görünür kalıyor), Enter aynı adrese gidiyor |
+| K2b kartın kendisi | ✔ | Çalıştırıldı | Konumsuz kart (23) tıklama → `/produkt/23`; konumlu kartın resmine tıklama (olay gönderimi) → `/produkt/24`. Koda tıklama `stopPropagation`/`preventDefault` ile ürün detayına gitmiyor |
+| K3 telefon değişmez | ✔ | Çalıştırıldı: 375x812 emülasyon (`hover:none`) | Eleman DOM'da ama `display:none` (görünmez, odaklanamaz); kart dokunuşu → `/produkt/24`; konsol hatası yok. Not: emülasyon `maxTouchPoints=0` bildirdi, yani gerçek dokunuş değil fare tıklaması (araç sınırı); karar `hover` medya sorgusuna dayanıyor |
+| Veri | ✔ | Çalıştırıldı: pytest | Liste N+1 yapmıyor (benzersiz `fach_id` başına bir `plan.fach`; en çok 120 satır); taşınınca yeni kod (`test_karte_platz_nach_umzug_und_ohne_raum`); dijital → None; metin `texte.py`'den (`produkt.im_buero_zeigen`, yeni sabit metin yok) |
+| D-045 görüntü kirliliği | ✔ | Çalıştırıldı + diff okundu | konumsuzda hiçbir eleman/rozet yok; konumlu kartta kod yalnız hover/odakta |
+
+**Gözlemler (kriter dışı, bilgi):**
+1. Seçim modu (Auswählen): liste satırlarına (`.zeile`) geçiyor, `.karte` hiç yok; bu yüzden orada kod yok ve koda tıklama sorunu doğmuyor (çalıştırıldı: 0 `.karte-platz`, 25 `.zeile`). Aynı şekilde kullanıcı "liste" görünümünü seçerse kod gösterilmiyor (yalnız okundu, `karte()` yalnız kart ızgarasında kullanılıyor).
+2. Kod kartta `<span role="link" tabindex="0">`; kart `<a>` içinde olduğu için `<a>` iç içe yok. Klavye Enter/Space destekli (Enter denendi, Space yalnız okundu).
+3. Kart yüksekliği/diğer rozetler: kod sol altta, rozetler sol üstte; çakışma yok (ekran görüntülerinde).
+4. Araç sınırı: bir gerçek tıklama denemesinde (resim üzerine) sayfa değişmedi, ekran görüntüsü o sırada bozuk boyutlu geldi; aynı eylem olay gönderimiyle doğru çalıştı. Kod sorunu değil gibi görünüyor ama gerçek fare tıklamasıyla tekrar denenmedi.
+5. Dar-masaüstü: pane 826 px ve alt gezinme çubuğu açık (genişlik eşiği altında); gerçek >1024 px masaüstü düzeni denenmedi, kural `hover`'a bağlı olduğundan fark beklenmiyor.
+
+**Hiç denenmeyenler:** gerçek dokunmatik cihaz; Space tuşu; >1024 px masaüstü düzeni; liste görünümü (`ansicht=liste`) ekranda; sayfa 2+ (120'den fazla ürün) kartları; ekran okuyucu.
+
+---
+
 ## Adım 1 — Aramada bölme kodu · 07.11.2026 · dilim-4/suche-fachcode @ 0d9f4f4
 **Sonuç:** GEÇTİ (deneme 2; K1–K10 karşılandı; bulgular aşağıda, hiçbiri kriteri kırmıyor)
 
