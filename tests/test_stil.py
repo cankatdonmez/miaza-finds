@@ -57,3 +57,20 @@ def test_jedes_benutzte_symbol_gibt_es():
     for p in [*(APP / "static/js").glob("*.js"), *(APP / "templates").glob("*.html")]:
         benutzt |= set(re.findall(r'icon\(\s*"([a-z-]+)"', p.read_text(encoding="utf-8")))
     assert not benutzt - symbole, f"Symbol fehlt: {sorted(benutzt - symbole)}"
+
+
+def test_unterlage_dunkel_invertiert_ueber_tokens():
+    """SPEC 4.3: Plan-Unterlage im dunklen Thema invertiert und blass; hell unverändert (Systemweg und Handwahl)."""
+    hell = CSS.split(TOKEN_ENDE, 1)[0]
+    root = re.search(r":root\{(.*?)\n\}", hell, re.S).group(1)
+    assert "--unterlage-filter:none" in root
+    dunkel = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', hell, re.S).group(1)
+    system = re.search(r"prefers-color-scheme:dark\)\{:root:not\(\[data-theme=\"light\"\]\)\{(.*?)\n\}\}", hell, re.S).group(1)
+    for block in (dunkel, system):
+        assert re.search(r"--unterlage-filter:invert\(1\)", block)
+        for n in ("--unterlage-deckkraft", "--unterlage-deckkraft-aktiv"):
+            assert n + ":" in block
+    regeln = CSS.split(TOKEN_ENDE, 1)[1]
+    assert re.search(r"\.unterlage\{[^}]*filter:var\(--unterlage-filter\)", regeln)
+    assert re.search(r"\.unterlage\{[^}]*opacity:var\(--unterlage-deckkraft\)", regeln)
+    assert re.search(r"\.unterlage\.aktiv\{[^}]*opacity:var\(--unterlage-deckkraft-aktiv\)", regeln)

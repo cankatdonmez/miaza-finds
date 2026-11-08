@@ -45,6 +45,8 @@
   --foto-hell:rgba(255,255,255,.22); --foto-marke:rgba(17,19,23,.74); --foto-marke-leer:rgba(17,19,23,.4); --foto-text:#FFFFFF;
   /* Etiketten sind immer hell (SPEC 4.3): Papier und Druckfarbe, in beiden Themen gleich */
   --papier:#FFFFFF; --papier-tinte:#111111; --papier-rand:#D5D9E0;
+  /* Plan-Unterlage (SPEC 4.3): hell unverändert, dunkel invertiert und blass */
+  --unterlage-filter:none; --unterlage-deckkraft:.35; --unterlage-deckkraft-aktiv:.6;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -67,6 +69,7 @@
   --st-haus:#F2A7C3; --st-haus-soft:#45263A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+  --unterlage-filter:invert(1) hue-rotate(180deg); --unterlage-deckkraft:.3; --unterlage-deckkraft-aktiv:.55;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -89,6 +92,7 @@
   --st-haus:#F2A7C3; --st-haus-soft:#45263A;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+  --unterlage-filter:invert(1) hue-rotate(180deg); --unterlage-deckkraft:.3; --unterlage-deckkraft-aktiv:.55;
   color-scheme:dark;
 }
 /* ---------- Ende der Token ---------- */
@@ -557,8 +561,8 @@ select.eingabe{padding-right:6px}
 .schalter:has(input:disabled){opacity:.55}
 .plan-leiste{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-card);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
 .plan-wirkung{display:flex;flex-direction:column;gap:2px}
-.unterlage{opacity:.35;pointer-events:none}
-.unterlage.aktiv{opacity:.6;pointer-events:auto;cursor:move}
+.unterlage{opacity:var(--unterlage-deckkraft);filter:var(--unterlage-filter);pointer-events:none}
+.unterlage.aktiv{opacity:var(--unterlage-deckkraft-aktiv);pointer-events:auto;cursor:move}
 .unterlage-rahmen{fill:none;stroke:var(--accent);stroke-dasharray:6 4}
 /* Plan (D-024): Farben kommen je Raum als --f/--e/--r/--t (MF.raumStil); Schrift aus derselben Farbfamilie */
 .raum{fill:var(--f);stroke:var(--muted);stroke-opacity:.7}
