@@ -41,7 +41,7 @@ SPEC 6.1. Dal: `dilim-4/karte-platz`.
 - K2: Koda tıklanınca Büro görünümü o bölmeyi ve ürünü gösterir (`/buero?fach=&produkt=`).
 - K3: Telefonda (dokunmatik) davranış değişmez.
 
-## 3. Koyu temada plan altlığı — `DENETİMDE`
+## 3. Koyu temada plan altlığı — `TAMAM` (09.11.2026, main 1eecc50)
 SPEC 4.3. Dal: `dilim-4/unterlage-dunkel`.
 - K1: Koyu temada kat planı altlığı renkleri ters çevrilmiş ve soluk görünür (Büro ve plan düzenleyici).
 - K2: Açık temada görünüm değişmez.
