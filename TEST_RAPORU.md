@@ -7,6 +7,33 @@ Başlangıç durumu (07.11.2026, `pre-multiagent` etiketi): 219 test yeşil. Ön
 
 ---
 
+## Adım 3 — Koyu temada plan altlığı · 09.11.2026 · dilim-4/unterlage-dunkel @ f8da8d9 · deneme 1
+**Sonuç:** GEÇTİ (K1–K3 karşılandı; gözlemler aşağıda)
+
+**pytest (çalıştırıldı, tüm takım):** `230 passed in 32.50s`.
+**Fark (okundu):** 3 dosya: `app/static/css/app.css` (token `--unterlage-filter/-deckkraft/-deckkraft-aktiv`, `.unterlage` kuralı), `tests/test_stil.py` (yeni test), `PLAN.md` (durum). Kapsam dışı değişiklik yok; JS/şablon/metin değişmedi (`texte.py` ilgisiz); yeni ham renk yok (filtre ve opaklık tokenlarda).
+
+**Hazırlık (çalıştırıldı):** dev.db planında altlık vardı (`unterlage` dolu) ama `unterlage_im_buero=false`; plan düzenleyicide „Unterlage im Büro zeigen“ açılıp kaydedildi (yalnız dev.db). Beta/finds.db'ye dokunulmadı.
+
+| Kriter | Sonuç | Kanıt |
+|---|---|---|
+| K1 koyu: ters çevrilmiş, soluk (Büro + editör) | geçti | Çalıştırıldı. Hesaplanan stil: Sistem+koyu, elle Dunkel (sistem koyu ve açık), `filter: invert(1) hue-rotate(180deg)`, opaklık 0,30 (normal) / 0,55 (Unterlage aracı seçili, sınıf `unterlage aktiv`). Hem `/buero` hem `/plan` ekran görüntüsü alındı. |
+| K2 açık değişmez | geçti | Çalıştırıldı: Sistem hell, elle Hell (sistem koyu iken de) → `filter: none`, 0,35 / 0,6 = main'deki eski değerler (diff'te de okundu). Ekran görüntüleri açık görünümü gösteriyor. |
+| K3 token/tema seçicisi, yenilemesiz | geçti | Okundu + çalıştırıldı: kural `:root`, `[data-theme="dark"]` ve `prefers-color-scheme` bloklarında token; `.unterlage` yalnız `var()` kullanır; yeni test bunu kontrol eder. Aynı sayfada `data-theme` özniteliği JS ile değiştirilince (einstellungen.js'in yaptığı aynı işlem) sayfa yenilenmeden filtre/opaklık değişti (dark→light→sistem). Sistem koyu/açık geçişi `resize_window colorScheme` ile sayfa yenilemeden de denendi (hesaplanan değerler izlendi). |
+| Ortak: konsol, 375/masaüstü | geçti | Konsolda hata/uyarı yok. 375 px: `/buero` koyu ve açık görüntülendi; `/plan` telefonda yalnız „am Desktop gezeichnet“ notu gösterir (tasarım gereği), altlık orada yok. |
+
+**Denenen kombinasyonlar (çalıştırıldı, ekran görüntüsü):** Büro: Sistem hell, elle Dunkel + sistem hell, Sistem koyu, elle Hell + sistem koyu; 375 koyu ve açık. Editör (Auswahl ve Unterlage aktiv): Sistem koyu, elle Hell + sistem koyu, elle Dunkel + sistem hell, Sistem hell, elle Dunkel + sistem koyu.
+
+**Gözlemler (tasarım tahmini):**
+- Koyu temada altlık, beyaz zemini siyaha dönen koyu bir dikdörtgen olarak yüzeyin biraz altında kalıyor; içindeki çizim (pembe/yeşil odalar, duvarlar) soluk ama seçilebiliyor. Odaların (renkli dolgu, etiketler) üstünde okunur kalıyor, etiket metinleri altlıktan etkilenmiyor.
+- Aktif araçta (0,55) çizim belirgin biçimde daha okunur; turuncu kesikli çerçeve görünür.
+- Dev.db'deki altlık küçük (planın sol üst kısmı) ve koyuda çok düşük kontrastlı; ayrıntılı duvar çizgileri 375'te güçlükle seçiliyor. Gereksinimi (soluk) karşılıyor; yalnız zevk meselesi.
+- Hue-rotate ile renk tonları korunuyor (pembe/yeşil odalar koyuda da pembe/yeşil).
+
+**Denenmeyenler:** Einstellungen'deki gerçek tema düğmesine tıklama (öznitelik elle değiştirildi, `einstellungen.js` yalnız okundu); gerçek cihaz; yazdırma/etiket PDF'i (ilgisiz); PDF'den yeni altlık yükleme (mevcut altlık kullanıldı); Safari/Firefox (yalnız Chromium'da `filter` denendi).
+
+---
+
 ## Adım 2 — Kartta konum kodu (masaüstü) · 09.11.2026 · dilim-4/karte-platz @ c7c38e9 · deneme 1
 **Sonuç:** GEÇTİ (K1–K3 karşılandı; gözlemler aşağıda, hiçbiri kriteri kırmıyor)
 
