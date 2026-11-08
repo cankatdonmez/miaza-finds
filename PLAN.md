@@ -35,7 +35,7 @@ SPEC 6.1, D-050. Dal: `dilim-4/suche-fachcode` (K1–K4 denetlendi; K5–K10 D-0
   boş döner ve ürün ad aramasıyla hâlâ bulunur; tersine, bölmeli bir yedek geri yüklenince yedekteki kod hemen
   aranabilir (test, aynı `TestClient`/bağlantı içinde, `create_app` yeniden çağrılmadan).
 
-## 2. Kartta konum kodu (masaüstü) — `DENETİMDE`
+## 2. Kartta konum kodu (masaüstü) — `TAMAM` (09.11.2026, main b12d7f1)
 SPEC 6.1. Dal: `dilim-4/karte-platz`.
 - K1: Masaüstünde kütüphane kartının üstüne gelince ürünün konum kodu görünür; konumsuz üründe hiçbir şey görünmez (rozet yok, D-045 ruhu).
 - K2: Koda tıklanınca Büro görünümü o bölmeyi ve ürünü gösterir (`/buero?fach=&produkt=`).

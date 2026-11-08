@@ -1,11 +1,11 @@
 # STATUS
 
-Stand: 07.11.2026 · v0.3.0 · SPEC 0.5 · Dal `main` (`origin/main`'den önde; push yalnız istenince)
+Stand: 09.11.2026 · v0.3.0 · SPEC 0.5 · Dal `main` (`origin/main`'den önde; push yalnız istenince)
 Çalışma kopyası: `C:\Users\canka\Documents\miaza-finds` (D-049; Google Drive artık kullanılmıyor)
 Akış: çok ajanlı (07.11.2026, etiket `pre-multiagent`): Yönetici + mimar/kodlayici/denetci/kesifci; bkz. CLAUDE.md.
 
 ## Aktueller Stand
-- **Dilim 1–3 main'de, 226 test yeşil.** Ayrıntı ve kanıtlar: `DEVIR.md` (§5), kararlar: `DECISIONS.md` D-001…D-050.
+- **Dilim 1–3 main'de, 229 test yeşil.** Ayrıntı ve kanıtlar: `DEVIR.md` (§5), kararlar: `DECISIONS.md` D-001…D-050.
   - Dilim 1: kütüphane, ürün kaydı, seri kayıt, kategori/filtre, etiket PDF'i, Systembereich.
   - Dilim 2: plan düzenleyici, üniteler, bölmeler, Büro görünümü, bölme etiketleri, „Hier einordnen“, tema (D-023/24).
   - Dilim 3: kişiler, Nehmen/Zurücklegen, Scannen (jsQR), bölme onayı, okutarak yerleştirme, „Wird bearbeitet“.
@@ -16,9 +16,10 @@ Akış: çok ajanlı (07.11.2026, etiket `pre-multiagent`): Yönetici + mimar/ko
 
 ## Sıradaki (çok ajanlı akış, `PLAN.md`)
 1. ~~PLAN 1: aramada bölme kodu~~ (D-050: kod tam/baştan eşleşir, yalnız bölme koduna bakar) — main'de.
-2. PLAN 2–4: kartta konum kodu, koyu temada altlık, açılış ekranı (karar gerektirmez).
-3. PLAN 5–7 karar bekliyor: Dokumente (kök klasör), kart yayı/yelpaze, Almanca son okuma.
-4. Cankat: gerçek dünya testi (etiket bas, telefonla okut) — demo verisiyle.
+2. ~~PLAN 2: kartta konum kodu~~ (masaüstünde fareyle/odakla, tıklayınca Büro) — main'de.
+3. PLAN 3–4: koyu temada altlık, açılış ekranı (karar gerektirmez).
+4. PLAN 5–7 karar bekliyor: Dokumente (kök klasör), kart yayı/yelpaze, Almanca son okuma.
+5. Cankat: gerçek dünya testi (etiket bas, telefonla okut) — demo verisiyle.
 
 ## Bekleyenler (acelesi yok, D-049)
 - Gece yedeği (SPEC 8.4), HTTPS ve canlı kamera (SPEC 8.2), kalıcı QR adresi (`MF_BASIS_URL`):
