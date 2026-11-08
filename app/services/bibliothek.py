@@ -16,7 +16,7 @@ from __future__ import annotations
 import sqlite3
 from typing import Any
 
-from . import entnahme, nummern, produkte
+from . import entnahme, nummern, plan, produkte
 from .suche import normalisieren, wort_bedingung
 
 SEITE = 120
@@ -152,12 +152,17 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
         oargs = [nummer, q.replace("%", "") + "%"]
     gesamt = conn.execute(f"SELECT count(*) FROM produkt p {where}", args).fetchone()[0]
     zeilen = conn.execute(f"""
-        SELECT p.inventar_nr, p.code_praefix, p.kategorie_nr, p.name, p.marke, p.art, p.etikett, p.version, k.name AS kategorie,
+        SELECT p.inventar_nr, p.code_praefix, p.kategorie_nr, p.name, p.marke, p.art, p.etikett, p.version, p.fach_id, k.name AS kategorie,
                pr.cent, pr.einheit, pr.datum AS preis_datum,
                (SELECT f.datei FROM foto f WHERE f.produkt_id = p.inventar_nr ORDER BY f.sortierung, f.id LIMIT 1) AS foto,
                (SELECT e.ort FROM entnahme e WHERE e.produkt_id = p.inventar_nr AND e.zurueck_am IS NULL) AS genommen
         FROM produkt p JOIN kategorie k ON k.id = p.kategorie_id LEFT JOIN preis pr ON pr.produkt_id = p.inventar_nr
         {where} ORDER BY {ordnung} LIMIT ? OFFSET ?""", [*args, *oargs, SEITE, seite * SEITE]).fetchall()
+    faecher = {}
+    for fid in {z["fach_id"] for z in zeilen if z["fach_id"]}:
+        f = plan.fach(conn, fid)
+        if f:
+            faecher[fid] = {"id": f["id"], "code": f["code"]}
     produkte = [{
         "inventar_nr": z["inventar_nr"], "code": nummern.code(z["code_praefix"], z["kategorie_nr"], z["inventar_nr"]),
         "name": z["name"], "marke": z["marke"], "art": z["art"], "kategorie": z["kategorie"], "etikett": z["etikett"],
@@ -165,6 +170,8 @@ def suchen(conn: sqlite3.Connection, auftrag: dict[str, Any], seite: int = 0) ->
         "foto": z["foto"], "version": z["version"],
         # nur für den Rozet auf der Karte (D-039): in_benutzung | ausser_haus | None
         "genommen": entnahme.STATUS_NACH_ORT.get(z["genommen"]) if z["art"] == "physisch" else None,
+        # Fach-Code für die Karte am Desktop (SPEC 6.1); ohne Platz oder digital: None
+        "platz": faecher.get(z["fach_id"]) if z["art"] == "physisch" else None,
     } for z in zeilen]
     return {"produkte": produkte, "gesamt": gesamt, "seite": seite, "weitere": (seite + 1) * SEITE < gesamt,
             "kategorien": _kategorie_zahlen(conn, auftrag), "marken": _marken(conn)}

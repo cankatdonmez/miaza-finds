@@ -354,6 +354,14 @@ select.eingabe{padding-right:6px}
 .leer-bild{display:grid;place-items:center;color:var(--muted)}
 .karte-bild .leer-bild{position:absolute;inset:0}
 .karte-bild .badge-digital,.karte-bild .status-badge{position:absolute;left:8px;top:8px}
+/* Fach-Code: nur mit Maus (hover), erscheint beim Darüberfahren oder Fokus; auf Touch gar nicht */
+.karte-platz{display:none;position:absolute;left:8px;bottom:8px;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;
+  background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:var(--fs-mini);font-weight:600;white-space:nowrap;cursor:pointer}
+@media (hover:hover){
+  .karte-platz{display:inline-flex;visibility:hidden}
+  .karte:hover .karte-platz,.karte:focus-within .karte-platz{visibility:visible}
+  .karte-platz:hover{border-color:var(--accent);color:var(--accent-ink)}
+}
 .karte-text{display:flex;flex-direction:column;gap:2px;padding:10px 12px 12px}
 .karte-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .karte-sub{font-size:var(--fs-klein);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
