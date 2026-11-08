@@ -28,6 +28,7 @@ Başlangıç durumu (07.11.2026, `pre-multiagent` etiketi): 219 test yeşil. Ön
 2. Kod kartta `<span role="link" tabindex="0">`; kart `<a>` içinde olduğu için `<a>` iç içe yok. Klavye Enter/Space destekli (Enter denendi, Space yalnız okundu).
 3. Kart yüksekliği/diğer rozetler: kod sol altta, rozetler sol üstte; çakışma yok (ekran görüntülerinde).
 4. Araç sınırı: bir gerçek tıklama denemesinde (resim üzerine) sayfa değişmedi, ekran görüntüsü o sırada bozuk boyutlu geldi; aynı eylem olay gönderimiyle doğru çalıştı. Kod sorunu değil gibi görünüyor ama gerçek fare tıklamasıyla tekrar denenmedi.
+   **Yönetici ek denemesi (09.11.2026, gerçek fare, dal kodu):** karta gelince „1.1.3“ göründü; kart resmine tıklama → `/produkt/3`; koda tıklama → `/buero?einheit=1&fach=1&produkt=9` (olay hedefi `SPAN.karte-platz`), Büro 1.1.3'ü vurguladı. Önceki sapma ekran görüntüsü ile CSS koordinatları arasındaki ölçek farkından (826 → 800 px); kod sorunu yok.
 5. Dar-masaüstü: pane 826 px ve alt gezinme çubuğu açık (genişlik eşiği altında); gerçek >1024 px masaüstü düzeni denenmedi, kural `hover`'a bağlı olduğundan fark beklenmiyor.
 
 **Hiç denenmeyenler:** gerçek dokunmatik cihaz; Space tuşu; >1024 px masaüstü düzeni; liste görünümü (`ansicht=liste`) ekranda; sayfa 2+ (120'den fazla ürün) kartları; ekran okuyucu.
