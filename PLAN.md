@@ -47,8 +47,8 @@ SPEC 4.3. Dal: `dilim-4/unterlage-dunkel`.
 - K2: Açık temada görünüm değişmez.
 - K3: Kural CSS'te tokenlarla/tema seçicisiyle yazılır; tema değişince sayfa yenilenmeden uygulanır.
 
-## 4. Açılış ekranı — `DENETİMDE`
-SPEC 4.1. Dal: `dilim-4/auftakt`.
+## 4. Açılış ekranı — `TAMAM` (11.11.2026, main-e4ygn0 3aead23)
+SPEC 4.1. Dal: `dilim-4/auftakt`. Açık: logo oranı (fiil %54, SPEC ≈%60, başlık %66) — Cankat'a soruldu.
 - K1: Soğuk açılışta marka ekranı en fazla 700 ms görünür; dokununca hemen geçer.
 - K2: Aynı oturumda sayfa geçişlerinde yeniden görünmez.
 - K3: Anlamsız efekt yok; `prefers-reduced-motion`'da hareket yok.
