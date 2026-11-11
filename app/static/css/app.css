@@ -114,6 +114,14 @@ a{color:var(--accent-ink)}
 .marke-verb{font-size:var(--fs-klein);font-weight:500;color:var(--accent-ink)}
 
 /* ---------- Gerüst ---------- */
+/* Auftakt (SPEC 4.1; bei „Hareketi azalt“ ohne Animation, dann blendet theme.js nach 700 ms hart aus): nur mit html.auftakt-an (von theme.js gesetzt), höchstens 700 ms; blockiert den Seitenaufbau nicht */
+.auftakt{display:none}
+.auftakt-an .auftakt{display:flex;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;background:var(--bg);
+  animation:auftakt-aus .7s linear forwards}
+.auftakt-marke{pointer-events:none}
+.auftakt-marke .marke-miaza{font-size:var(--fs-hero)}
+.auftakt-marke .marke-verb{font-size:var(--fs-zahl)}
+@keyframes auftakt-aus{0%,86%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden}}
 .kopf{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;
   background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .inhalt{max-width:1080px;margin:0 auto;padding:18px 16px calc(var(--leiste-unten) + 32px + env(safe-area-inset-bottom))}
