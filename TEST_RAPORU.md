@@ -7,6 +7,38 @@ Başlangıç durumu (07.11.2026, `pre-multiagent` etiketi): 219 test yeşil. Ön
 
 ---
 
+## Adım 4 — Açılış ekranı · 11.11.2026 · dilim-4/auftakt @ 2182fd6 · deneme 1
+**Sonuç:** GEÇTİ (K1–K3 karşılandı; iki düşük önemli gözlem aşağıda)
+
+**pytest (çalıştırıldı, tüm takım):** `231 passed in 28.27s`.
+**Fark (okundu):** 5 dosya: `app/static/js/theme.js`, `app/static/css/app.css`, `app/templates/base.html` (bir `div#auftakt`), `tests/test_grundgeruest.py` (yeni test), `PLAN.md` (durum). Kapsam dışı değişiklik yok; ham renk yok (`var(--bg)`, `--fs-*`); metin `t("marke.verb")` ile gelir, `texte.py` dışında yeni metin yok.
+**Ortam:** Bulut; dev sunucusu 8091, `/home/user/miaza-local/finds/data/dev.db` (repo dışı), Playwright Chromium 390×844 ve 1280×800. Sunucu iş bitince kapatıldı. Ekran görüntüleri: `/tmp/claude-0/-home-user-miaza-finds/11b831a9-5cda-5f4b-8985-72d093f5ee5c/scratchpad/{phone,desk}-{cold,light,dark,nojs}.png`.
+
+| Kriter | Sonuç | Kanıt |
+|---|---|---|
+| K1 soğuk açılışta ≤ 700 ms; dokununca hemen geçer | geçti | Çalıştırıldı. 20 ms aralıkla örnekleme: telefon ilk görünür 43 ms, son görünür 701 ms, kalkma 721 ms; masaüstü 44 / 680 / 700 ms (ölçüm payı ±20 ms; kod: `setTimeout(weg,700)` + animasyon 0,7 s, 602 ms'den itibaren solma). Telefonda `touchscreen.tap`, masaüstünde `mouse.click` (120 ms'de): sınıf `auftakt-an` hemen kalktı (29 / 8 ms). Tuş (Tab) da hemen kaldırdı. |
+| K2 aynı oturumda sayfa geçişinde yeniden görünmez | geçti | Çalıştırıldı. Aynı sekmede `/bibliothek` → `/sammlungen` ve ardından yenileme: `auftakt-an` yok, `display:none` (iki boyutta). Yeni bağlam (yeni oturum) her seferinde yeniden gösterdi. |
+| K3 tek dokunuş/tıklama/tuşla anında geçiş; veri beklemez | geçti | Çalıştırıldı (yukarıdaki geçişler). 100 ms'de `.inhalt` zaten yerleşik (telefon 500 px, masaüstü 718 px yükseklik): perde içeriği bloklamıyor, `theme.js` yalnız senkron küçük kod, veri/ağ beklemez (okundu). Perde `position:fixed` olduğu için akışı etkilemez. |
+| Ortak: konsol hatası | geçti | Çalıştırıldı: iki boyutta `console` error/warning ve `pageerror` yok. |
+| Ortak: koyu/açık tema | geçti | Çalıştırıldı + ekran görüntüsü: koyu `rgb(24,25,27)` zemin, `rgb(237,237,236)` yazı, sarı vurgu; açık beyaz zemin, koyu yazı, kahve vurgu; ikisi okunur ve ortalı. Elle `data-theme` ile denenmedi (zemin `var(--bg)` olduğundan okundu: aynı token). |
+| Ortak: testler | geçti | Yeni test yalnız kaynak metinlerinin varlığını kontrol ediyor (davranış denemesi değil); davranış bu denetimde elle çalıştırıldı. |
+
+**SPEC'ten çıkan ek noktalar:**
+- Hareketi azalt (çalıştırıldı, `reducedMotion:'reduce'`): `animation-name: none`; perde 300 ms'de görünür, 800 ms'de kalkmış (zamanlayıcı sert kapatır, ≤ 700 ms). Animasyonsuz: geçti.
+- JS kapalı (çalıştırıldı, `javaScriptEnabled:false`): `display:none`, `html` sınıfı boş; içerik kilitlenmez. Geçti.
+- `sessionStorage` erişimi `SecurityError` fırlatırsa (çalıştırıldı, `addInitScript` ile getter fırlatıyor): sayfa hatası yok, perde gösterilmiyor (kod bilerek „göstermeme“yi seçmiş). Geçti.
+- Perde `aria-hidden`, `pointer-events` yalnız marka üzerinde kapalı; tıklama perdeye düşüyor (çalıştırıldı).
+- Logo kuralları (çalıştırıldı, hesaplanan stil): „miaza“ Figtree 600, 52 px, metin rengi; fiil 500, 28 px, vurgu rengi; ekran görüntüsünde aynı taban çizgisi. **Fiil/miaza oranı: 28 / 52 = %53,8** (başlıktaki küçük logoda 12,5 / 19 = %65,8). SPEC „yaklaşık %60“.
+
+**Gözlemler (önem sırasıyla, hepsi düşük):**
+1. `app/static/css/app.css:122-123`: perde logosu %53,8 oranında; SPEC 4.1 „yaklaşık %60“, başlık logosu %65,8. Oran perde ile başlık arasında tutarsız; hata değil, kabul sınırında. Beklenen ≈ %60 (ör. 52 px için ≈ 31 px, `--fs-titel`+... token yok) ya da oranın kasıtlı olduğuna dair not.
+2. `tests/test_grundgeruest.py:~90-102`: yeni test yalnız dizge arar; davranışı (tek gösterim, dokunuşla kalkma) kapsamaz. Zaman/oturum davranışı yalnız elle doğrulandı.
+3. Zamanlama: kalkma ölçümü 700 ms'de ±20 ms; 700 ms sınırı örnekleme payı içinde, geçmesi kod yoluyla (700 ms zamanlayıcı) güvence altında.
+
+**Denenmedi:** gerçek telefon/dokunmatik cihaz (yalnız Playwright dokunma simülasyonu); Safari/Firefox; `data-theme` elle Dunkel + sistem açık kombinasyonu; yavaş ağ/CPU kısıtlaması; ekran okuyucu.
+
+---
+
 ## Adım 3 — Koyu temada plan altlığı · 09.11.2026 · dilim-4/unterlage-dunkel @ f8da8d9 · deneme 1
 **Sonuç:** GEÇTİ (K1–K3 karşılandı; gözlemler aşağıda)
 
