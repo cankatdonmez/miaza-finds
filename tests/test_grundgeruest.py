@@ -85,3 +85,18 @@ def test_fehlerhafte_migration_rollt_zurueck(tmp_path):
 def test_daten_landen_in_den_angegebenen_ordnern(tmp_path):
     create_app(tmp_path / "d" / "f.db", tmp_path / "m", tmp_path / "b")
     assert (tmp_path / "d" / "f.db").exists() and (tmp_path / "m").is_dir()
+
+
+def test_auftakt_markup_und_regeln(client):
+    """SPEC 4.1: Markenbild liegt im Seitenkopf, ist ohne JS verborgen, begrenzt auf 700 ms, hält nichts auf."""
+    from pathlib import Path
+    app_dir = Path(__file__).parent.parent / "app"
+    html = client.get("/bibliothek").text
+    assert 'id="auftakt"' in html and 'aria-hidden="true"' in html
+    css = (app_dir / "static/css/app.css").read_text(encoding="utf-8")
+    assert ".auftakt{display:none}" in css                      # ohne JS nie sichtbar
+    assert "animation:auftakt-aus .7s" in css                   # K1: höchstens 700 ms
+    js = (app_dir / "static/js/theme.js").read_text(encoding="utf-8")
+    assert 'sessionStorage.getItem("mf-auftakt")' in js         # K2: nur einmal je Sitzung
+    assert "setTimeout(weg, 700)" in js and 'addEventListener("pointerdown"' in js  # K1/K3
+    assert js.count("try {") >= 2 and "catch (e)" in js         # Speicherfehler ohne Absturz

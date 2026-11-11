@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/static/css/app.css?v={{ asset_v }}">
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
+<div id="auftakt" class="auftakt" aria-hidden="true"><span class="marke auftakt-marke"><span class="marke-miaza">miaza</span><span class="marke-verb">{{ t("marke.verb") }}</span></span></div>
 {% include "_icons.html" %}
 {% block body %}{% endblock %}
 <div class="version num" title="Code-Stand {{ asset_v }}">v{{ app_version }}</div>

@@ -47,7 +47,7 @@ SPEC 4.3. Dal: `dilim-4/unterlage-dunkel`.
 - K2: Açık temada görünüm değişmez.
 - K3: Kural CSS'te tokenlarla/tema seçicisiyle yazılır; tema değişince sayfa yenilenmeden uygulanır.
 
-## 4. Açılış ekranı — `SIRADA`
+## 4. Açılış ekranı — `DENETİMDE`
 SPEC 4.1. Dal: `dilim-4/auftakt`.
 - K1: Soğuk açılışta marka ekranı en fazla 700 ms görünür; dokununca hemen geçer.
 - K2: Aynı oturumda sayfa geçişlerinde yeniden görünmez.
